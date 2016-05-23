@@ -1,0 +1,143 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<#+
+public class EFContextTemplate : TextTransformation
+{
+	public string EntityAttribute = "A.Core.Attributes.EntityAttribute";
+	ServiceTemplateConfig Config {get; set;}
+	AutomationHelper VisualStudioHelper {get; set;}
+	public EFContextTemplate(ServiceTemplateConfig config, AutomationHelper helper)
+	{
+		VisualStudioHelper = helper;
+		Config = config;
+	}
+
+	public IList<EnvDTE.CodeClass> GetEntityList()
+    {
+		IList<EnvDTE.CodeClass> classList = new List<EnvDTE.CodeClass>();
+		IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+			
+		if(Config.InterfacesProjectList.Count > 0)
+        {
+			foreach(var projectName in Config.ModelProjectList)
+            {
+				var project = VisualStudioHelper.GetProject(projectName);
+				projectList.Add(project);
+            }
+        }
+
+		foreach(var project in projectList)
+        {
+			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+			foreach(EnvDTE.CodeClass entity in allClasses)
+			{
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false);
+					if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								.Any(att => att.FullName == EntityAttribute))
+				{
+					classList.Add(entity);
+				}
+			}
+        }
+
+		return classList;
+    }
+
+	public IList<EnvDTE.CodeClass> GetClassMapList()
+    {
+		IList<EnvDTE.CodeClass> classList = new List<EnvDTE.CodeClass>();
+		IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+			
+		if(Config.InterfacesProjectList.Count > 0)
+        {
+			foreach(var projectName in Config.ModelProjectList)
+            {
+				var project = VisualStudioHelper.CurrentProject;
+				projectList.Add(project);
+            }
+        }
+
+		foreach(var project in projectList)
+        {
+			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+			foreach(EnvDTE.CodeClass entity in allClasses)
+			{
+				var baseClass = VisualStudioHelper.CodeModel.GetBaseClass(entity);
+				if(baseClass != null)
+				{
+					if(baseClass.Name == "EntityTypeConfiguration")
+					{
+						classList.Add(entity);	
+					}
+				}
+			}
+        }
+
+		return classList;
+    }
+
+	public void GenerateContextDbSets()
+	{
+		var entityList = GetEntityList();
+		foreach(var entity in entityList)
+		{
+			WriteLine(string.Format(@"public System.Data.Entity.DbSet<{0}> {1} {{ get; set; }}", entity.FullName, entity.Name));
+		}
+	}
+
+	public void GenerateContextClassMaps()
+	{
+		var classMapList = GetClassMapList();
+		foreach(var entity in classMapList)
+		{
+			WriteLine(string.Format(@"modelBuilder.Configurations.Add(new {0}());", entity.FullName));
+		}
+	}
+
+
+    public override string TransformText()
+    {
+#>
+public partial class <#=Config.ContextName#> : System.Data.Entity.DbContext
+{
+		public <#=Config.ContextName#>()
+            : base("<#=Config.ContextName#>")
+        {
+            this.Configuration.LazyLoadingEnabled = false;
+        }
+
+	<#+
+		GenerateContextDbSets();
+	#>
+
+	protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
+        {
+		<#+
+			GenerateContextClassMaps();
+		#>
+		}
+
+		public partial class <#=Config.ContextName#>Initializer : IDatabaseInitializer<<#=Config.ContextName#>>
+		{
+			public void InitializeDatabase(<#=Config.ContextName#> context)
+			{
+				if (!context.Database.Exists())
+				{
+					context.Database.Create();
+				}
+			}
+		}
+
+}
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

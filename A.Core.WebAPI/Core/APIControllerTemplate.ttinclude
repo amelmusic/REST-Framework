@@ -1,0 +1,374 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+
+<#+
+public class APIControllerTemplate : TextTransformation
+{
+	public APIControllerTemplate(EnvDTE.CodeInterface entity, string controllerName, AutomationHelper helper)
+    {
+		Entity = entity;
+		ControllerName =  controllerName;
+		VisualStudioHelper = helper;
+    }
+
+	public string GetBaseClassName()
+    {
+		return "System.Web.Http.ApiController";
+    }
+
+	public AutomationHelper VisualStudioHelper { get; set; }
+
+    public string ControllerName {get; set;}
+    public EnvDTE.CodeInterface Entity { get; set; }
+
+	public void GenerateGetById(EnvDTE.CodeFunction method)
+	 {
+		WriteLine("//Generating template for GetById for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+				//Find property that is marked as [Key] or named Id
+				string primaryKeyType = null;
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+				foreach(var property in allProperties)
+                {
+					if(property.Name == "Id")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+					foreach(var attr in allAttributes)
+					{
+						if(attr.Name == "Key")
+						{
+							primaryKeyType = property.Type.AsFullName;
+						}
+					}	
+                }
+				string additionalDataName = null;
+				var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					if(prm.Type.AsFullName.Contains("Additional"))
+					{
+						additionalDataName = prm.Type.AsFullName;
+					}
+				}
+			
+
+				WriteLine(string.Format(
+				@"
+				[Route(""{{id}}"")]
+				[System.Web.Http.Description.ResponseType(typeof({3}))]
+				[System.Web.Http.HttpGet]
+				public System.Web.Http.IHttpActionResult  {2}({0} id, [FromUri]{1} additionalData)
+				{{
+					var result = Service.{2}(id, additionalData);
+					if(result == null)
+					{{
+						return NotFound();
+					}}
+					else
+					{{
+						return Ok(result);
+					}}
+				}}", primaryKeyType, additionalDataName, method.Name,method.Type.AsFullName));
+		}
+	 }
+
+	 public void GenerateGet(EnvDTE.CodeFunction method)
+	 {
+		WriteLine("//Generating template for Get for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					typeAndNameParamListString.Append(string.Format("[FromUri]{0} {1},", prm.Type.AsFullName, prm.Name));
+					paramListString.Append(string.Format("{0},", prm.Name));
+
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+
+			WriteLine(string.Format(
+				@"
+				[Route("""")]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpGet]
+				public System.Web.Http.IHttpActionResult  {0}({1})
+				{{
+					var result = Service.{0}({3});
+					return Ok(result);
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString));
+		}
+	 }
+
+	 public void GenerateInsert(EnvDTE.CodeFunction method)
+	 {
+		WriteLine("//Generating template for Insert for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					if(prm.Name != "saveChanges")
+					{
+						typeAndNameParamListString.Append(string.Format("[FromBody]{0} {1},", prm.Type.AsFullName, prm.Name));
+						paramListString.Append(string.Format("{0},", prm.Name));
+					}
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+
+			WriteLine(string.Format(
+				@"
+				[Route("""")]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpPost]
+				public HttpResponseMessage  {0}({1})
+				{{
+					var result = Service.{0}({3});					 
+					var response = Request.CreateResponse<{2}>(HttpStatusCode.Created, result);
+					return response;
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString));
+		}
+	}
+
+	 public void GenerateUpdate(EnvDTE.CodeFunction method)
+	 {
+		WriteLine("//Generating template for Update for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+			
+			//Find property that is marked as [Key] or named Id
+			string primaryKeyType = null;
+			string primaryKeyName = null;
+			var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+			foreach(var property in allProperties)
+            {
+				if(property.Name == "Id")
+				{
+					primaryKeyType = property.Type.AsFullName;
+				}
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+				foreach(var attr in allAttributes)
+				{
+					if(attr.Name == "Key")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+				}	
+            }
+
+			bool isFirstParameter = true;
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					if(prm.Name == "saveChanges")
+						{
+							continue;
+						}
+					typeAndNameParamListString.Append(string.Format("{2}{0} {1},", isFirstParameter ? primaryKeyType : prm.Type.AsFullName, prm.Name, isFirstParameter?"[FromUri]":"[FromBody]"));
+					paramListString.Append(string.Format("{0},", prm.Name));
+					isFirstParameter = false;
+
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+
+			WriteLine(string.Format(
+				@"
+				[Route(""{{id}}"")]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpPut]
+				public HttpResponseMessage  {0}({1})
+				{{
+					var result = Service.{0}({3});					 
+					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
+					return response;
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString));
+		}
+	 }
+
+
+
+    public override string TransformText()
+    {
+#>
+[RoutePrefix("<#= ControllerName #>")]
+public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
+{
+	[Microsoft.Practices.Unity.Dependency]
+	public <#= Entity.FullName #> Service { get; set; }
+	
+	<#+
+			string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
+			var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface(Entity);
+			foreach(var method in methods)
+			{
+				EnvDTE.CodeAttribute defaultMethodBehaviour = null;
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+				foreach(var attr in allAttributes)
+                {
+					if(attr.FullName == DefaultMethodBehaviourAttribute)
+					{
+						defaultMethodBehaviour = attr;
+						break; 
+					}
+					WriteLine("//" + attr.Name + "|" + attr.Value);
+                }
+				if((method.Name == "Get" && method.FullName.Contains("IReadService"))
+					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.GetById"))
+				 {
+					//render get by Id method
+					GenerateGetById(method);
+				 }
+				if((method.Name == "GetPage" && method.FullName.Contains("IReadService"))
+					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Get"))
+				 {
+					//render get by Id method
+					GenerateGet(method);
+				 }
+				 if((method.Name == "Insert" && method.FullName.Contains("ICRUDService"))
+					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Insert"))
+				 {
+					//render get by Id method
+					GenerateInsert(method);
+				 }
+				 if((method.Name == "Update" && method.FullName.Contains("ICRUDService"))
+					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Update"))
+				 {
+					//render update by Id method
+					GenerateUpdate(method);
+				 }
+
+			}
+			/*
+		
+		IList<EnvDTE.CodeFunction> methods = new List<EnvDTE.CodeFunction>();
+	    var baseInterfaces = VisualStudioHelper.CodeModel.GetAllBaseInterfaces(Entity);
+
+		foreach(EnvDTE.CodeInterface i in baseInterfaces)
+        {
+		WriteLine("//BASE FULLNAME" +i.FullName);
+			//KNOWN BUG IN VS - WE CAN'T GET ATTRIBUTES FROM GENERICS, SO WE HAVE TO HARDCODE SOME CODE https://connect.microsoft.com/VisualStudio/feedback/details/816801/t4-scripts-cannot-access-the-attributes-on-inherited-functions#tabs
+			if(i.Name == "IReadService")
+            {
+				//inheritsIReadService = true;
+            }
+			if(i.Name == "ICRUDService")
+            {
+				//inheritsICRUDService = true;
+            }
+			var baseInterfacesMethods = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(i.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>();
+			foreach(EnvDTE.CodeFunction method in baseInterfacesMethods)
+            {
+				var allAttributes = i.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, true);
+				if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+							.Any(att => att.FullName == DefaultMethodBehaviourAttribute))
+				{
+					//methods.Add(method);
+				}
+            }
+        }
+
+		var interfaceMethods = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Entity.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>();
+		foreach(EnvDTE.CodeFunction method in interfaceMethods)
+            {
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, false);
+				if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+							.Any(att => att.FullName == DefaultMethodBehaviourAttribute))
+				{
+					methods.Add(method);
+				}
+            }
+
+		foreach(var method in methods)
+        {
+			WriteLine("//" + method.Name);
+        }
+		*/
+        
+	#>
+
+
+
+	<#+ //if we inherit base read service, we need to generate get and get page methods 
+	//if(inheritsIReadService)
+	/*{
+		foreach(var i in baseInterfaces)
+        {
+			if(i.Name == "IReadService")
+            {
+				WriteLine("//Read service " + i.FullName);
+				string firstArgument = i.FullName.Split('<', '>')[1];
+				string entityName = firstArgument.Split(',')[0];
+				var cls = VisualStudioHelper.CodeModel.FindClass(entityName);
+				if(cls != null)
+                {
+					WriteLine("//FULL RETREIVED NAME " + cls.FullName);
+                }
+				
+
+				var baseInterfacesMethods = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(i.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>();
+				foreach(EnvDTE.CodeFunction method in baseInterfacesMethods)
+				{
+					WriteLine("//" + method.Name);
+					if(method.Name == "Get" || method.Name == "GetPage")
+                    {
+						string paramString = "string empty"; //we will construct parameters here
+                        if(method.Name == "Get")
+                        {
+							WriteLine((method.Type.CodeType).FullName.ToString());
+							var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Type.CodeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+							foreach(var property in allProperties)
+                            {
+								var allAttributes = property.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);
+								
+								//if(attr.Name == "Key")
+                                {
+									WriteLine("//attr: " + property.Name);
+								}
+                            }
+							
+                        }
+						WriteLine(string.Format("public {0} {1}({2})", method.Type.AsFullName, method.Name, paramString));
+						PushIndent("\t");
+						WriteLine("{");
+
+						WriteLine("}");
+						PopIndent();
+					}
+				}
+
+				
+				
+			}
+        }
+	} */#>
+}
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+
+}
+#>
