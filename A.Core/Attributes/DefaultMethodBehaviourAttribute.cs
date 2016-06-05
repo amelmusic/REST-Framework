@@ -23,6 +23,10 @@ namespace A.Core.Attributes
         GetById = 1,
         Get = 2,
         Insert = 10,
-        Update = 11
+        Update = 11,
+        StateMachineInsert = 20,
+        StateMachineUpdate = 21,
+        StateMachineInsertWithoutServiceImpl = 22,
+        StateMachineUpdateWithoutServiceImpl = 23
     }
 }

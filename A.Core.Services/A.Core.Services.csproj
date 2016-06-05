@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressService.cs" />
     <Compile Include="Core\BaseEFBasedCRUDService.cs" />
     <Compile Include="Core\BaseEFBasedReadService.cs" />
     <Compile Include="Core\ServiceTemplate.cs">
@@ -90,6 +93,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ServiceTemplate.tt</DependentUpon>
     </Compile>
+    <Compile Include="Core\StateBase.cs" />
+    <Compile Include="Core\StateMachineBase.cs" />
+    <Compile Include="Core\TriggerBase.cs" />
     <Compile Include="Mapping\AddressMap.cs" />
     <Compile Include="Mapping\CurrencyMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -113,8 +119,11 @@
     <None Include="Core\EFBasedServiceTemplate.ttinclude" />
     <None Include="Core\ServiceRegistrationTemplate.ttinclude" />
     <None Include="Core\ServiceTemplate.Config.ttinclude" />
+    <None Include="Core\StateMachineTemplate.ttinclude" />
     <None Include="Core\VisualStudioHelper.ttinclude" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\EFContextTemplate.ttinclude" />
@@ -131,6 +140,13 @@
     <PostBuildEvent>xcopy /E /Y "$(ProjectDir)$(OutDir)A.Core.Services.dll" "$(SolutionDir)A.Core.WebAPI\bin"
 xcopy /E /Y "$(ProjectDir)$(OutDir)A.Core.Services.pdb" "$(SolutionDir)A.Core.WebAPI\bin"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

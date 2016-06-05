@@ -309,6 +309,7 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 			GenerateAddFilterFromDesigner();
 
 			GenerateIncludeList();
+		List<string> StateMachines = new List<string>();
         var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface(Entity);
 		foreach(var method in methods)
 			{
@@ -336,7 +337,7 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 					//TODO: Add this
 					//render update by Id method
 					//GenerateUpdate(method);
-				 }
+				 }				 
 
 			}
 	#>

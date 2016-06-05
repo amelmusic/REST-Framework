@@ -1,0 +1,84 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+
+<#+
+public class RequestTemplate : TextTransformation
+{
+	public RequestTemplate(EnvDTE.CodeClass entity, KeyValuePair<string, IList<EnvDTE.CodeProperty>> request, AutomationHelper helper)
+    {
+		Entity = entity;
+		ClassName = string.Format("{0}{1}Request", entity.Name,request.Key);
+		Request = request;
+		VisualStudioHelper = helper;
+    }
+
+	public string RequestFieldAttributeFullName = "A.Core.Attributes.RequestFieldAttribute";
+	public AutomationHelper VisualStudioHelper { get; set; }
+    public string ClassName {get; set;}
+    public EnvDTE.CodeClass Entity { get; set; }
+	public KeyValuePair<string, IList<EnvDTE.CodeProperty>> Request { get; set; }
+
+	protected string GetAttributesFromRequestAttribute(EnvDTE.CodeAttribute attribute)
+            {
+				if(attribute.Value.IndexOf(',') > 0)
+				{
+					return attribute.Value.Substring(attribute.Value.IndexOf(',')+1).Trim().Trim('"').Replace("\\","");
+				}
+				return string.Empty;
+            }
+	
+	protected string GetRequestNameFromAttribute(EnvDTE.CodeAttribute attribute)
+            {
+				string requestName = "";
+				var parts = attribute.Value.Split(',');
+				if(parts.Length >= 1)
+                {
+					requestName = parts[0];
+                }
+				else
+                {
+					throw new Exception("Request name in invalid format or empty");
+                }
+				return requestName.Trim('"');
+            }
+
+    public override string TransformText()
+    {
+#>
+public partial class <#= ClassName #>
+{
+
+	<#+
+		if(Request.Value != null)
+        {
+			PushIndent("\t");
+			foreach (var property in Request.Value)
+			{
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+					foreach(var attr in allAttributes)
+					{
+						if(attr.FullName == RequestFieldAttributeFullName
+							&& GetRequestNameFromAttribute(attr) == Request.Key)
+						{
+							WriteLine(GetAttributesFromRequestAttribute(attr));
+						}
+					}
+					WriteLine(string.Format("public {0} {1}", property.Type.AsFullName, property.Name) + " { get; set; }");
+			}
+			PopIndent();
+        }
+        
+	#>
+}
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

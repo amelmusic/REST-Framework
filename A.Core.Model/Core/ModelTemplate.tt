@@ -5,17 +5,21 @@
 <#@ include file="RequestTemplate.ttinclude" #>
 <#@ include file="SearchObjectTemplate.ttinclude" #>
 <#@ include file="ModelHelper.ttinclude" #>
+<#@ include file="StateMachineModelTemplate.ttinclude" #>
 
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml.Serialization" #>
 <#@ output extension=".cs" #>
 
 <#
 	var entityList = ModelHelperInstance.GetEntityList();
 	RequestTemplate requestTemplate = null;
 	SearchObjectTemplate searchObjectTemplate = null;
+	StateMachineModelTemplate stateMachineModelTemplate = null;
 #>
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +37,9 @@ namespace <#= VisualStudioHelper.CurrentProject.Name#>.Requests
 		<#= PopIndent() #>
 	<#}#>
 
+	<# stateMachineModelTemplate = new StateMachineModelTemplate(entityList, VisualStudioHelper); #>
+	<#=stateMachineModelTemplate.TransformText()#>
+	<#= PopIndent() #>
 }
 
 namespace <#= VisualStudioHelper.CurrentProject.Name#>.SearchObjects

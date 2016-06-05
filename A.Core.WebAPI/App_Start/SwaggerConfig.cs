@@ -12,7 +12,7 @@ namespace A.Core.WebAPI
     {
         public static void Register()
         {
-            Debugger.Launch();
+            //Debugger.Launch();
             var thisAssembly = typeof(SwaggerConfig).Assembly;
 
             GlobalConfiguration.Configuration 

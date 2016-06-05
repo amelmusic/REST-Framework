@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stateGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" name="AddressStateMachine" description="A.Core.Model.AddressStateMachineEnum" xmlns="http://www.tangiblearchitect.com/dsltools/State">
+  <ArrayOfStereoType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <StereoType>
+      <StereoTypeName>StateGraph</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.StateGraph</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>Synchronization</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.Synchronization</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>State</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.State</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>StartPoint</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.StartPoint</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>Flow</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.Flow</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>EndPoint</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.EndPoint</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>ConditionState</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.ConditionState</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+    <StereoType>
+      <StereoTypeName>Comment</StereoTypeName>
+      <BaseModelElementTypeFullName>tangible.Modelling.StateDiagrams.Comment</BaseModelElementTypeFullName>
+      <DefinedProperties />
+    </StereoType>
+  </ArrayOfStereoType>
+  <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+  <flowElements>
+    <startPoint name="Init" description="0">
+      <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      <flowTo>
+        <flow guard="Start" effect="AddressEntered" eventAndGuardLabel="Start/" effectLabel="AddressEntered" eventGuardEffectLabel="Start/AddressEntered">
+          <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <stateMoniker name="/AddressStateMachine/Entered" />
+        </flow>
+      </flowTo>
+    </startPoint>
+    <state name="Entered" description="1" entryActionLabel="entry/" exitActionLabel="exit/">
+      <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      <flowTo>
+        <flow guard="Verify" effect="AddressVerified" eventAndGuardLabel="Verify/" effectLabel="AddressVerified" eventGuardEffectLabel="Verify/AddressVerified">
+          <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <stateMoniker name="/AddressStateMachine/Verified" />
+        </flow>
+        <flow guard="MarkAsInvalid" effect="AddresNotValid" eventAndGuardLabel="MarkAsInvalid/" effectLabel="AddresNotValid" eventGuardEffectLabel="MarkAsInvalid/AddresNotValid">
+          <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <stateMoniker name="/AddressStateMachine/Invalid" />
+        </flow>
+      </flowTo>
+    </state>
+    <state name="Verified" description="2" entryActionLabel="entry/" exitActionLabel="exit/">
+      <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      <flowTo>
+        <flow eventAndGuardLabel="/" effectLabel="" eventGuardEffectLabel="">
+          <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <endPointMoniker name="/AddressStateMachine/EndPoint1" />
+        </flow>
+      </flowTo>
+    </state>
+    <endPoint name="EndPoint1">
+      <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+    </endPoint>
+    <state name="Invalid" description="5" entryActionLabel="entry/" exitActionLabel="exit/">
+      <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      <flowTo>
+        <flow eventAndGuardLabel="/" effectLabel="" eventGuardEffectLabel="">
+          <ArrayOfExtensiblePropertyInstance xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+          <endPointMoniker name="/AddressStateMachine/EndPoint1" />
+        </flow>
+      </flowTo>
+    </state>
+  </flowElements>
+</stateGraph>

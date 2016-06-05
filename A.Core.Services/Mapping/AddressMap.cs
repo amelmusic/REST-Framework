@@ -22,6 +22,7 @@ namespace A.Core.Services.Mapping
             //this.Property(t => t.SpatialLocation).HasColumnName("SpatialLocation");
             this.Property(t => t.rowguid).HasColumnName("rowguid");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            this.Ignore(t => t.StateId);
         }
     }
 }

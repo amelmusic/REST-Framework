@@ -150,7 +150,7 @@ public class APIControllerTemplate : TextTransformation
 		}
 	}
 
-	 public void GenerateUpdate(EnvDTE.CodeFunction method)
+	 public void GenerateUpdate(EnvDTE.CodeFunction method, bool addMethodNameToRoute)
 	 {
 		WriteLine("//Generating template for Update for: " + method.Name);	
 		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
@@ -194,10 +194,14 @@ public class APIControllerTemplate : TextTransformation
 				}
 			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
 			string paramString = paramListString.ToString().TrimEnd(',');
-
+			string methodNameInRouteIfNeeded = "";
+				if(addMethodNameToRoute)
+                {
+					methodNameInRouteIfNeeded = string.Format("/{0}", method.Name);
+                }
 			WriteLine(string.Format(
 				@"
-				[Route(""{{id}}"")]
+				[Route(""{{id}}{4}"")]
 				[System.Web.Http.Description.ResponseType(typeof({2}))]
 				[System.Web.Http.HttpPut]
 				public HttpResponseMessage  {0}({1})
@@ -205,7 +209,7 @@ public class APIControllerTemplate : TextTransformation
 					var result = Service.{0}({3});					 
 					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
 					return response;
-				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString));
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, methodNameInRouteIfNeeded));
 		}
 	 }
 
@@ -249,16 +253,23 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 					GenerateGet(method);
 				 }
 				 if((method.Name == "Insert" && method.FullName.Contains("ICRUDService"))
-					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Insert"))
+					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Insert"
+															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineInsert"
+															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")))
 				 {
 					//render get by Id method
 					GenerateInsert(method);
 				 }
 				 if((method.Name == "Update" && method.FullName.Contains("ICRUDService"))
-					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Update"))
+					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Update"
+															 || defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
+													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")))
 				 {
+					 bool addMethodNameToRoute = (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
+													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl"));
+					 
 					//render update by Id method
-					GenerateUpdate(method);
+					GenerateUpdate(method, addMethodNameToRoute);
 				 }
 
 			}

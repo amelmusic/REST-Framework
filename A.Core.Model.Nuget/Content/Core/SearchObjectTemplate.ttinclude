@@ -1,0 +1,192 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+
+<#+
+public class SearchObjectTemplate : TextTransformation
+{
+	public string FilterAttributeFullName = "A.Core.Attributes.FilterAttribute";
+	public string LazyLoadingAttributeFullName = "A.Core.Attributes.LazyLoadingAttribute";
+	public SearchObjectTemplate(EnvDTE.CodeClass entity, ModelHelper helper)
+    {
+		Entity = entity;
+		ClassName = string.Format("{0}SearchObject", entity.Name);
+		AdditionalSearchRequestDataClassName = string.Format("{0}AdditionalSearchRequestData", entity.Name);
+		ModelHelperInstance = helper;
+		
+		PropertyList = ModelHelperInstance.GetPropertiesWithSpecificAttribute(entity, FilterAttributeFullName);
+		LazyLoadingPropertyList = ModelHelperInstance.GetPropertiesWithSpecificAttribute(entity, LazyLoadingAttributeFullName);
+    }
+    public string ClassName {get; set;}
+	public string AdditionalSearchRequestDataClassName {get; set;}
+    public EnvDTE.CodeClass Entity { get; set; }
+	public IList<EnvDTE.CodeProperty> PropertyList {get; set; }
+	public IList<EnvDTE.CodeProperty> LazyLoadingPropertyList {get; set; }
+    public ModelHelper ModelHelperInstance { get; set; }
+
+	public bool IsOperatorExisting(EnvDTE.CodeProperty property, string operatorName)
+    {
+		bool isExisting = false;
+		var allAttributes = ModelHelperInstance.VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+                    {
+						if(attribute.FullName == FilterAttributeFullName)
+                        {
+							string[] arguments = attribute.Value.Split(',');
+							string[] operators = arguments[0].Trim().Split('|');
+							foreach(string op in operators)
+                            {
+								if(op.Trim()==operatorName)
+								{
+									isExisting = true;
+                                }
+                            }
+                        }
+                    }
+		return isExisting;
+    }
+
+	public bool IsCodeOnServiceGenerationEnabled(EnvDTE.CodeProperty property)
+	{
+		bool isExisting = false;
+		var allAttributes = ModelHelperInstance.VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+                    {
+						if(attribute.FullName == FilterAttributeFullName)
+                        {
+							string[] arguments = attribute.Value.Split(',');
+							if(arguments.Length > 1)
+							{
+								isExisting = bool.Parse(arguments[1].Trim());
+							}
+                        }
+                    }
+		return isExisting;
+	}
+
+	public bool IsForLazyLoading(EnvDTE.CodeProperty property, out bool defaultValue)
+    {
+	    defaultValue = false;
+		bool isExisting = false;
+		var allAttributes = ModelHelperInstance.VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+                    {
+					WriteLine("//" + attribute.FullName);
+						if(attribute.FullName == LazyLoadingAttributeFullName)
+                        {
+							isExisting = true;
+							if(!string.IsNullOrWhiteSpace(attribute.Value))
+                            {
+								defaultValue = bool.Parse(attribute.Value);
+                            }
+                        }
+                    }
+		return isExisting;
+    }
+
+    public override string TransformText()
+    {
+#>
+
+	<#+
+			if(PropertyList.Count > 0)
+            {
+				WriteLine(string.Format("public partial class {0} : A.Core.Model.BaseSearchObject<{1}>", ClassName, AdditionalSearchRequestDataClassName));
+				WriteLine("{");
+				PushIndent("\t");
+				foreach (var property in PropertyList)
+				{
+					string propertyName = property.Type.CodeType.Name.ToLower();
+					WriteLine("//PROP:"+propertyName);
+					
+					string nullableIfNeeded = propertyName == "string" || propertyName == "nullable" ? "" : "?";
+					if(IsOperatorExisting(property,"FilterEnum.Equal"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.Equal, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.NotEqual"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.NotEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}NE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.GreatherThan"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.GreatherThan, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}GT", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.GreatherThanOrEqual"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.GreatherThanOrEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}GTE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.LowerThan"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.LowerThan, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}LT", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.LowerThanOrEqual"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.LowerThanOrEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}LTE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.List"))
+                    {
+						WriteLine(string.Format("protected System.Collections.Generic.IList<{0}> m{1}List = new System.Collections.Generic.List<{0}>();", property.Type.AsFullName, property.Name));
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.List, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual System.Collections.Generic.IList<{0}> {1}List", property.Type.AsFullName, property.Name) + " { get {return m" +property.Name+"List;} set { m" +property.Name+ "List = value; }}");
+						WriteLine("\r\n");
+                    }
+					
+				}
+
+				/*if(LazyLoadingPropertyList.Count > 0)
+                {
+					WriteLine(string.Format("public virtual {0} AdditionalData", AdditionalSearchRequestDataClassName) + " { get; set; }");
+                }*/
+				
+				PopIndent();
+				WriteLine("}");
+            }
+
+			WriteLine(string.Format("public partial class {0} :  A.Core.Model.BaseAdditionalSearchRequestData", AdditionalSearchRequestDataClassName));
+			WriteLine("{");
+
+			PushIndent("\t");
+
+
+			if(LazyLoadingPropertyList.Count > 0)
+            {
+				foreach (var property in LazyLoadingPropertyList)
+                {
+					bool defaultValue;
+					if(IsForLazyLoading(property, out defaultValue))
+                    {
+						WriteLine(string.Format("protected bool? mIs{1}LoadingEnabled", property.Type.AsFullName, property.Name) + " = " + defaultValue.ToString().ToLower() + ";");
+						WriteLine(string.Format("[{0}.LazyLoading({1})]", this.ModelHelperInstance.CoreAttributesNamespace, defaultValue.ToString().ToLower()));
+						WriteLine(string.Format("public virtual bool? Is{1}LoadingEnabled {{ get {{ return  mIs{1}LoadingEnabled; }} set {{ mIs{1}LoadingEnabled = value; }} }}", property.Type.AsFullName, property.Name));
+						WriteLine("\r\n");
+                    }
+                }
+            }
+			PopIndent();
+			WriteLine("}");
+	#>
+
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

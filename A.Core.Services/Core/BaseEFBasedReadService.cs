@@ -35,6 +35,11 @@ namespace A.Core.Services.Core
                 return mEntity;
             }
         }
+        protected virtual TEntity CreateNewInstance()
+        {
+            TEntity entity = new TEntity();
+            return entity;
+        }
 
         [Dependency]
         public TDBContext Context { get; set; }
@@ -42,6 +47,38 @@ namespace A.Core.Services.Core
         public BaseEFBasedReadService()
         {
             DefaultPageSize = 100;
+        }
+
+        public virtual void SaveChanges()
+        {
+            if (Context != null)
+            {
+                this.Context.SaveChanges();
+            }
+        }
+
+        public virtual void Save(TEntity entity)
+        {
+            var validationResult = Validate(entity);
+            if (validationResult.HasErrors)
+            {
+                throw new A.Core.Validation.ValidationException(validationResult);
+            }
+            this.SaveChanges();
+        }
+        public virtual A.Core.Validation.ValidationResult Validate(object entity)
+        {
+            A.Core.Validation.ValidationResult result = new Validation.ValidationResult();
+
+            var context = new ValidationContext(entity, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
+            if (!isValid)
+            {
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+            }
+            return result;
         }
 
         public virtual TEntity Get(object id, TSearchAdditionalData additionalData = null)

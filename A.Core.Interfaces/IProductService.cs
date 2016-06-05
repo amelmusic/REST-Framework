@@ -14,6 +14,8 @@ namespace A.Core.Interfaces
     [DefaultServiceBehaviour(DefaultImplementationEnum.EntityFramework, "products")]
     public interface IProductService : ICRUDService<Product, ProductSearchObject, ProductAdditionalSearchRequestData, ProductInsertRequest, ProductUpdateRequest>
     {
+       
 
     }
+
 }

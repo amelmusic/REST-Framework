@@ -20,6 +20,7 @@ namespace A.Core.Model
         [Filter(FilterEnum.Equal | FilterEnum.List | FilterEnum.GreatherThan)]
         [RequestField("Insert")]
         public string CurrencyCode { get; set; }
+        
         [RequestField("Insert", "[Required][MinLength(10)][Range(10,100,ErrorMessageResourceName=\"DD\")]")]
         [Filter(FilterEnum.GreatherThan)]
         public string Name { get; set; }

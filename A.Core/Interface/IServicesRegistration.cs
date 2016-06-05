@@ -17,6 +17,6 @@ namespace A.Core.Interface
         /// <summary>
         /// Contains registration for services
         /// </summary>
-        void Register(UnityContainer container);
+        void Register(ref UnityContainer container);
     }
 }

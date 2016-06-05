@@ -12,6 +12,8 @@
 
 
 
+
+
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 //Requests section
@@ -38,17 +40,6 @@ namespace A.Core.Model.Requests
 {
 
 	
-	public System.String Name { get; set; }
-}
-
-							
-														//A.Core.Model.Currency
-				public partial class CurrencyInsertRequest
-{
-
-	
-	public System.String CurrencyCode { get; set; }
-	[Required][MinLength(10)][Range(10,100,ErrorMessageResourceName="DD")]
 	public System.String Name { get; set; }
 }
 
@@ -81,7 +72,48 @@ namespace A.Core.Model.Requests
 	public System.String City { get; set; }
 }
 
+											//A.Core.Model.Address
+				public partial class AddressStartRequest
+{
+
+	
+	public System.String AddressLine1 { get; set; }
+}
+
 							
+														//A.Core.Model.Currency
+				public partial class CurrencyInsertRequest
+{
+
+	
+	public System.String CurrencyCode { get; set; }
+	[Required][MinLength(10)][Range(10,100,ErrorMessageResourceName="DD")]
+	public System.String Name { get; set; }
+}
+
+							
+	
+		//Creating requests for state machines
+//file:C:\Projects\Other\REST-Framework\A.Core.Model\A.Core.Model.csproj_C:\Projects\Other\REST-Framework\A.Core.Model
+//Creating state machine from: C:\Projects\Other\REST-Framework\A.Core.Model\AddressStateMachine.tastate
+				//StateMachine: Address, name: AddressStateMachine, graphCount 3
+
+				public partial class AddressVerifyRequest { }	
+
+				public partial class AddressMarkAsInvalidRequest { }	
+
+					public partial class AddressStartRequest { }	
+
+				public enum AddressTriggerEnum
+				{
+				 AddressVerifyRequest,
+
+				 AddressMarkAsInvalidRequest,
+
+					AddressStartRequest,
+				}
+
+
 	
 }
 
@@ -131,40 +163,6 @@ public partial class ProductAdditionalSearchRequestData :  A.Core.Model.BaseAddi
 	protected bool? mIsProductGroupLoadingEnabled = false;
 	[A.Core.Attributes.LazyLoading(false)]
 	public virtual bool? IsProductGroupLoadingEnabled { get { return  mIsProductGroupLoadingEnabled; } set { mIsProductGroupLoadingEnabled = value; } }
-	
-
-}
-
-							//A.Core.Model.Currency
-				
-	public partial class CurrencySearchObject : A.Core.Model.BaseSearchObject<CurrencyAdditionalSearchRequestData>
-{
-	//PROP:string
-	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.Equal, false)]
-	public virtual System.String CurrencyCode { get; set; }
-	
-
-	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.GreatherThan, false)]
-	public virtual System.String CurrencyCodeGT { get; set; }
-	
-
-	protected System.Collections.Generic.IList<System.String> mCurrencyCodeList = new System.Collections.Generic.List<System.String>();
-	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.List, false)]
-	public virtual System.Collections.Generic.IList<System.String> CurrencyCodeList { get {return mCurrencyCodeList;} set { mCurrencyCodeList = value; }}
-	
-
-	//PROP:string
-	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.GreatherThan, false)]
-	public virtual System.String NameGT { get; set; }
-	
-
-}
-public partial class CurrencyAdditionalSearchRequestData :  A.Core.Model.BaseAdditionalSearchRequestData
-{
-	//A.Core.Attributes.LazyLoadingAttribute
-	protected bool? mIsAddrLoadingEnabled = true;
-	[A.Core.Attributes.LazyLoading(true)]
-	public virtual bool? IsAddrLoadingEnabled { get { return  mIsAddrLoadingEnabled; } set { mIsAddrLoadingEnabled = value; } }
 	
 
 }
@@ -222,6 +220,40 @@ public partial class CurrencyAdditionalSearchRequestData :  A.Core.Model.BaseAdd
 }
 public partial class AddressAdditionalSearchRequestData :  A.Core.Model.BaseAdditionalSearchRequestData
 {
+}
+
+							//A.Core.Model.Currency
+				
+	public partial class CurrencySearchObject : A.Core.Model.BaseSearchObject<CurrencyAdditionalSearchRequestData>
+{
+	//PROP:string
+	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.Equal, false)]
+	public virtual System.String CurrencyCode { get; set; }
+	
+
+	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.GreatherThan, false)]
+	public virtual System.String CurrencyCodeGT { get; set; }
+	
+
+	protected System.Collections.Generic.IList<System.String> mCurrencyCodeList = new System.Collections.Generic.List<System.String>();
+	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.List, false)]
+	public virtual System.Collections.Generic.IList<System.String> CurrencyCodeList { get {return mCurrencyCodeList;} set { mCurrencyCodeList = value; }}
+	
+
+	//PROP:string
+	[A.Core.Attributes.Filter(A.Core.Attributes.FilterEnum.GreatherThan, false)]
+	public virtual System.String NameGT { get; set; }
+	
+
+}
+public partial class CurrencyAdditionalSearchRequestData :  A.Core.Model.BaseAdditionalSearchRequestData
+{
+	//A.Core.Attributes.LazyLoadingAttribute
+	protected bool? mIsAddrLoadingEnabled = true;
+	[A.Core.Attributes.LazyLoading(true)]
+	public virtual bool? IsAddrLoadingEnabled { get { return  mIsAddrLoadingEnabled; } set { mIsAddrLoadingEnabled = value; } }
+	
+
 }
 
 		

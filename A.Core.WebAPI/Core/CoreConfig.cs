@@ -1,5 +1,7 @@
 ﻿using A.Core.Interface;
+using A.Core.Interfaces;
 using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.InterceptionExtension;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -24,10 +26,12 @@ namespace A.Core.WebAPI.Core
         {
             Container = new UnityContainer();
             Resolver = new UnityResolver(Container);
-            //NOTE: We should add unity interception extension here if needed
+            
+
+            Container.AddNewExtension<Interception>();
         }
         private static List<IServicesRegistration> servicesRegistrationList = new List<IServicesRegistration>();
-        public static void LoadAllBinDirectoryAssemblies()
+        public static void LoadAllAssembliesFromBin()
         {
             string binPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "bin"); // note: don't use CurrentEntryAssembly or anything like that.
             var thisAssemblyName = Assembly.GetExecutingAssembly().ManifestModule.ToString();
@@ -39,35 +43,32 @@ namespace A.Core.WebAPI.Core
                     {
                         continue;
                     }
-                    //if (dll.Contains(".Services") || dll.Contains(".Adapter"))
+                    Assembly loadedAssembly = Assembly.LoadFrom(dll);
+                    var asm = AppDomain.CurrentDomain.Load(loadedAssembly.FullName);
+                    foreach (var type in asm.GetTypes())
                     {
-                        //AppDomain.CurrentDomain.GetAssemblies()
-                        Assembly loadedAssembly = Assembly.LoadFrom(dll);
-                        var asm = AppDomain.CurrentDomain.Load(loadedAssembly.FullName);
-                        foreach (var type in asm.GetTypes())
+                        if (type.GetInterfaces().Contains(typeof(IServicesRegistration)))
                         {
-                            if (type.GetInterfaces().Contains(typeof(IServicesRegistration)))
-                            {
-                                var registration = Activator.CreateInstance(type) as IServicesRegistration;
-                                servicesRegistrationList.Add(registration);
+                            var registration = Activator.CreateInstance(type) as IServicesRegistration;
+                            servicesRegistrationList.Add(registration);
 
-                            }
                         }
                     }
-
                 }
-                catch (FileLoadException loadEx)
+                catch (FileLoadException)
                 { } // The Assembly has already been loaded.
-                catch (BadImageFormatException imgEx)
+                catch (BadImageFormatException)
                 { } // If a BadImageFormatException exception is thrown, the file is not an assembly.
-                catch (FileNotFoundException imgEx)
+                catch (FileNotFoundException)
                 { }
 
-            } // foreach dll
+            }
+            var container = Container;
+            // foreach dll
             servicesRegistrationList.OrderBy(x => x.Priority).ToList()
             .ForEach(x =>
             {
-                x.Register(Container);
+                x.Register(ref container);
             });
         }
         
@@ -87,13 +88,16 @@ namespace A.Core.WebAPI.Core
             config.Filters.Add(new LogFilterAttribute());
             config.Filters.Add(new CommonExceptionFilterAttribute());
 
-            LoadAllBinDirectoryAssemblies();
+            LoadAllAssembliesFromBin();
 
             //We don't need missing data ond client and we should set camel case style. JS fans. :)
             config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, ContractResolver = new CamelCasePropertyNamesContractResolver() };
 
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+
+            Container.RegisterType<A.Core.Interface.IActionContext, A.Core.ActionContext>(new HierarchicalLifetimeManager());
+            Container.RegisterInstance<IUnityContainer>(Container);
         }
     }
 }
