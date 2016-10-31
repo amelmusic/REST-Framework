@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using A.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,11 @@ namespace A.Core.Services.Core
             Mapper.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
             Mapper.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
         }
+
+        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
+        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
         
-        public TEntity Insert(TInsert request, bool saveChanges = true)
+        public virtual TEntity Insert(TInsert request, bool saveChanges = true)
         {
             TEntity entity = CreateNewInstance();
             if (entity != null)
@@ -39,11 +42,14 @@ namespace A.Core.Services.Core
                 Context.Entry(entity).State = EntityState.Added;
                 if (saveChanges)
                 {
-                    this.SaveChanges();
+                    Save(entity);
                 }
             }
             return entity;
         }
+
+        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
+        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
 
         public virtual TEntity Update(object id, TUpdate request, bool saveChanges = true)
         {
@@ -60,7 +66,7 @@ namespace A.Core.Services.Core
                 Context.Entry(entity).State = EntityState.Modified;
                 if (saveChanges)
                 {
-                    this.SaveChanges();
+                    Save(entity);
                 }
             }
             return entity;
@@ -68,7 +74,7 @@ namespace A.Core.Services.Core
 
         public virtual A.Core.Validation.ValidationResult ValidateInsert(TInsert request, TEntity entity)
         {
-            A.Core.Validation.ValidationResult result = new Validation.ValidationResult();
+            A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
             var context = new ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
@@ -83,7 +89,7 @@ namespace A.Core.Services.Core
 
         public virtual A.Core.Validation.ValidationResult ValidateUpdate(TUpdate request, TEntity entity)
         {
-            A.Core.Validation.ValidationResult result = new Validation.ValidationResult();
+            A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
             
             var context = new ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();

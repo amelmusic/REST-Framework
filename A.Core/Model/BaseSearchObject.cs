@@ -19,7 +19,7 @@ namespace A.Core.Model
 
         public int? Page { get; set; }
         public int? PageSize { get; set; }
-        public bool? RetreiveAll { get; set; }
+        public bool? RetrieveAll { get; set; }
 
         public bool? IncludeCount { get; set; }
         public string OrderBy { get; set; }

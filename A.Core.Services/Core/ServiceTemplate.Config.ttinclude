@@ -23,9 +23,13 @@
 			InterfacesProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Interfaces"));
 			ModelProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Model"));
 			ContextName = "Context";
+			DatabaseName = "MongoDb";
+			ConnectionStringName = "MongoDb";
         }
 		public AutomationHelper VisualStudioHelper  { get; set; }
 		public string ContextName  { get; set; }
+		public string DatabaseName { get; set; }
+		public string ConnectionStringName { get; set; }
 
 		public IList<string> InterfacesProjectList {get; set;}
 		public IList<string> ModelProjectList {get; set;}

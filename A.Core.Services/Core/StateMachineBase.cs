@@ -1,4 +1,6 @@
-﻿using System;
+using A.Core.Interface;
+using Microsoft.Practices.Unity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,6 +11,9 @@ namespace A.Core.Services.Core
 {
     public abstract partial class StateMachineBase : INotifyPropertyChanged
     {
+        [Dependency]
+        public IActionContext ActionContext { get; set; }
+
         /// <summary>
         /// Creates a new instance of this state machine.
         /// </summary>

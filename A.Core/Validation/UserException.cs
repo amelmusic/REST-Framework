@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace A.Core.Validation
 {
+    [Serializable]
     public class UserException : ApplicationException
     {
         public UserException(string message)

@@ -229,17 +229,26 @@ public class VsCodeModel
     /// <param name="elementType">Objects of this CodeModelElement-Type will be returned.</param>
     /// <param name="includeExternalTypes">If set to true objects that are not part of this solution are retrieved, too. E.g. the INotifyPropertyChanged interface from the System.ComponentModel namespace.</param>
     /// <returns>A list of CodeElement objects matching the desired elementType.</returns>
-    public IEnumerable<EnvDTE.CodeElement> GetAllCodeElementsOfType(EnvDTE.CodeElements elements, EnvDTE.vsCMElement elementType, bool includeExternalTypes)
+    public IEnumerable<EnvDTE.CodeElement> GetAllCodeElementsOfType(EnvDTE.CodeElements elements, EnvDTE.vsCMElement elementType, bool includeExternalTypes, string defaultNamespace = null)
     {
         var ret = new List<EnvDTE.CodeElement>();
 
         foreach (EnvDTE.CodeElement elem in elements)
         {
+			System.Diagnostics.Debug.WriteLine("//Elem: " + elem.Name + " kind: " + elem.Kind); 
             // iterate all namespaces (even if they are external)
             // > they might contain project code
             if (elem.Kind == EnvDTE.vsCMElement.vsCMElementNamespace)
             {
-                ret.AddRange(GetAllCodeElementsOfType(((EnvDTE.CodeNamespace)elem).Members, elementType, includeExternalTypes));
+				if(defaultNamespace != null && defaultNamespace.StartsWith(elem.Name))
+                {
+					ret.AddRange(GetAllCodeElementsOfType(((EnvDTE.CodeNamespace)elem).Members, elementType, includeExternalTypes));
+                }
+				else if(defaultNamespace == null)
+                {
+					ret.AddRange(GetAllCodeElementsOfType(((EnvDTE.CodeNamespace)elem).Members, elementType, includeExternalTypes));
+                }
+                
             }
             // if its not a namespace but external
             // > ignore it
@@ -252,6 +261,23 @@ public class VsCodeModel
             {
                 ret.AddRange(GetAllCodeElementsOfType(((EnvDTE.CodeType)elem).Members, elementType, includeExternalTypes));
             }
+
+            // if this item is of the desired type
+            // > store it
+            if (elem.Kind == elementType)
+                ret.Add(elem);
+        }
+
+        return ret;
+    }
+
+
+	public IEnumerable<EnvDTE.CodeElement> GetAllCodeElementsOfTypeNonRecursive(EnvDTE.CodeElements elements, EnvDTE.vsCMElement elementType)
+    {
+        var ret = new List<EnvDTE.CodeElement>();
+
+        foreach (EnvDTE.CodeElement elem in elements)
+        {
 
             // if this item is of the desired type
             // > store it
@@ -292,7 +318,7 @@ public class VsCodeModel
     {
 		var implFunctions = new List<EnvDTE.CodeFunction>();
 
-		implFunctions.AddRange(GetMethodsOnInterface(@interface));
+		implFunctions.AddRange(GetMethodsOnInterface((EnvDTE80.CodeInterface2)@interface));
 		var basInterfaceList = GetBaseInterfaces(@interface);
 		if (basInterfaceList != null)
 		{
@@ -308,9 +334,49 @@ public class VsCodeModel
 	/// <summary>
 	/// Gets all methods and functions directly implemented by a code class
 	/// </summary>
-	public IEnumerable<EnvDTE.CodeFunction> GetMethodsOnInterface(EnvDTE.CodeInterface codeClass)
+	public IEnumerable<EnvDTE.CodeFunction> GetMethodsOnInterface(EnvDTE80.CodeInterface2 codeClass)
     {
-		return GetAllCodeElementsOfType(codeClass.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>();
+		List<CodeFunction> codeElementList = new List<CodeFunction>();
+		string elemName = codeClass.FullName;
+		string kind = codeClass.Kind.ToString();
+		
+        
+			try
+			{
+				if(!codeClass.IsGeneric)
+                {
+					foreach (CodeElement elem in codeClass.Parts)
+					{
+							System.Diagnostics.Debug.WriteLine("//Parts detail:" + (elem).Kind + "name: " + elem.FullName); 
+						if(elem.Kind == vsCMElement.vsCMElementInterface || elem.Kind == vsCMElement.vsCMElementClass)
+						{
+							var @interfacePart = (CodeType)elem;
+							codeElementList.AddRange(GetAllCodeElementsOfType(@interfacePart.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>());
+				
+								System.Diagnostics.Debug.WriteLine("//Parts detail:" + (elem).Kind); 
+						//codeElementList.AddRange(GetAllCodeElementsOfType(elem.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>());
+							System.Diagnostics.Debug.WriteLine("//Parts detail:" + elem.FullName + "count: " + codeElementList.Count); 
+							foreach(var internalELem in codeElementList)
+							{
+								System.Diagnostics.Debug.WriteLine("//INTERNAL Parts detail:" + internalELem.FullName + "count: " + codeElementList.Count); 
+								codeElementList.AddRange(GetAllCodeElementsOfType(@interfacePart.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>());
+							}
+			 
+						}
+
+			
+					}
+                }
+				
+				codeElementList.AddRange(GetAllCodeElementsOfType(codeClass.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>());
+			}
+			catch(Exception ex){
+
+				System.Diagnostics.Debug.WriteLine("//Parts detail ERROR:" + elemName + "kind: " + kind); 
+				codeElementList.AddRange(GetAllCodeElementsOfType(codeClass.Members, EnvDTE.vsCMElement.vsCMElementFunction, true).OfType<EnvDTE.CodeFunction>());
+			}
+
+		return codeElementList;
     }
 
 
@@ -445,23 +511,34 @@ public class VsCodeModel
 
 	public EnvDTE.CodeClass FindClass(string className)
 	{   
-		//string classNamespace = className.Substring(0, className.LastIndexOf('.'));
+		className = className.Trim();
+		string classNamespace = className.Substring(0, className.LastIndexOf('.')).Trim();
 
 		EnvDTE.CodeClass cls = null;
 		var allProjects = this.VisualStudioHelper.GetAllProjects();
 		foreach(var project in allProjects)
         {
-			cls = FindClass(project.CodeModel.CodeElements, className);
-			if(cls != null)
+			if(project.CodeModel != null)
             {
-				break;
+				var codeElements = GetAllCodeElementsOfType(project.CodeModel.CodeElements, vsCMElement.vsCMElementClass, false, classNamespace);
+				/*cls = FindClass(project.CodeModel.CodeElements, className, classNamespace);
+				if(*/
+				foreach(var codeElement in codeElements)
+                {
+					if(codeElement.FullName == className)
+                    {
+						System.Diagnostics.Debug.WriteLine("//Loop current class: " +codeElement.FullName + " Class: " + className); 
+						return (EnvDTE.CodeClass)codeElement;
+                    }
+                }
             }
+			
         }
 		
 		return cls;
 	}
 
-	private CodeClass FindClass(CodeElements elements, string className)
+	private CodeClass FindClass(CodeElements elements, string className, string defaultNamespace = null)
 	{
 		foreach (CodeElement element in elements)
 		{       
@@ -473,17 +550,28 @@ public class VsCodeModel
 					if(c.FullName == className)
 						return c;
 
-					CodeClass subClass = FindClass(c.Members, className);
+					/*CodeClass subClass = FindClass(c.Members, className);
 					if(subClass!= null)
-						return subClass;
+						return subClass;*/
 				}
 
 				CodeNamespace ns = element as CodeNamespace;
 				if(ns != null)
 				{
-					CodeClass cc = FindClass(ns.Members, className);
+					System.Diagnostics.Debug.WriteLine("//NS: " + ns.Name + " Default: " + defaultNamespace); 
+					if(defaultNamespace != null && defaultNamespace.StartsWith(ns.FullName))
+					{
+						CodeClass cc = FindClass(ns.Members, className);
+						if(cc != null)
+							return cc;
+					}
+					else if(defaultNamespace == null)
+                    {
+						CodeClass cc = FindClass(ns.Members, className);
 					if(cc != null)
 						return cc;
+                    }
+					
 				}
 			}
 		}

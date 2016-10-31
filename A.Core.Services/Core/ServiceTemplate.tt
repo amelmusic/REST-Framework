@@ -1,12 +1,15 @@
 ﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="EnvDTE" #>
 <#@ import namespace="EnvDTE" #>
+<#@ import namespace="EnvDTE80" #>
 <#@ include file="VisualStudioHelper.ttinclude" #>
 <#@ include file="ServiceTemplate.Config.ttinclude" #>
 <#@ include file="EFBasedServiceTemplate.ttinclude" #>
 <#@ include file="ServiceRegistrationTemplate.ttinclude" #>
 <#@ include file="StateMachineTemplate.ttinclude" #>
 <#@ include file="EFContextTemplate.ttinclude" #>
+<#@ include file="MongoDbBasedServiceTemplate.ttinclude" #>
+
 
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
@@ -22,7 +25,9 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System;
 using System.Collections.Generic;
+using A.Core.Interface;
 
+	
 //<#= ServiceTemplateConfig.InterfacesProjectList[0] #>
 <#
 	foreach(var modelProject in ServiceTemplateConfig.ModelProjectList)
@@ -37,6 +42,7 @@ using <#= modelProject #>.Requests;
 
 <# ServiceHelper helper = new ServiceHelper(VisualStudioHelper, ServiceTemplateConfig); #>
 <# 
+
 	string @namespace = VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString();
 	//write namespace and add all classes to it
 	PopIndent();
@@ -44,24 +50,28 @@ using <#= modelProject #>.Requests;
 	{{ ", @namespace));
 	PushIndent("\t");
 	var interfaceList = helper.GetInterfaceList();
-	foreach(var i in interfaceList)
-	{
-				string baseInterface = "IReadService";
-				if(helper.IsICRUDServiceInterface(i))
-				{
-					baseInterface = "ICRUDService";
-				}
-				//TODO: add different implementations here (Mongo, None etc)
-				EFBasedServiceTemplate template = new EFBasedServiceTemplate(i, baseInterface, ServiceTemplateConfig.ContextName, VisualStudioHelper);
-				WriteLine(template.TransformText());
-	}
-	
+
 	ServiceRegistrationTemplate registrationTemplate = new ServiceRegistrationTemplate(interfaceList);
 	WriteLine(registrationTemplate.TransformText());
 
-	EFContextTemplate contextTemplate = new EFContextTemplate(ServiceTemplateConfig, VisualStudioHelper);
-	WriteLine(contextTemplate.TransformText());
+	var eFBasedInterfaceList = helper.GetInterfaceList("DefaultImplementationEnum.EntityFramework");
+	if(eFBasedInterfaceList.Count > 0)
+    {
+		EFContextTemplate contextTemplate = new EFContextTemplate(ServiceTemplateConfig, VisualStudioHelper);
+		WriteLine(contextTemplate.TransformText());
 
+		EFBasedServiceTemplate template = new EFBasedServiceTemplate(ServiceTemplateConfig.ContextName, VisualStudioHelper,eFBasedInterfaceList, helper);
+		WriteLine(template.TransformText());
+    }
+
+	var mongoDbBasedInterfaceList = helper.GetInterfaceList("DefaultImplementationEnum.MongoDB");
+	if(mongoDbBasedInterfaceList.Count > 0)
+    {
+		MongoDbBasedServiceTemplate mongoTemplate = new MongoDbBasedServiceTemplate(ServiceTemplateConfig.DatabaseName, ServiceTemplateConfig.ConnectionStringName, VisualStudioHelper,mongoDbBasedInterfaceList, helper);
+		WriteLine(mongoTemplate.TransformText());
+    }
+	
+	
 	StateMachineTemplate stateMachineTemplate = new StateMachineTemplate(interfaceList, ServiceTemplateConfig, VisualStudioHelper);
 	WriteLine(stateMachineTemplate.TransformText());
 
@@ -81,7 +91,7 @@ WriteLine("}");
 		public AutomationHelper VisualStudioHelper { get; set; }
 		public ServiceTemplateConfig ServiceTemplateConfig { get; set; }
 
-		public IList<EnvDTE.CodeInterface> GetInterfaceList()
+		public IList<EnvDTE.CodeInterface> GetInterfaceList(string behaviour = null)
         {
 			IList<EnvDTE.CodeInterface> interfaceList = new List<EnvDTE.CodeInterface>();
 			IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
@@ -97,15 +107,36 @@ WriteLine("}");
 
 			foreach(var project in projectList)
             {
-				var allInterfaces = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementInterface, false);
-				foreach(EnvDTE.CodeInterface entity in allInterfaces)
+				string @namespace = project.Properties.Item("DefaultNamespace").Value.ToString();
+				var allInterfaces = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementInterface, false, @namespace);
+				System.Diagnostics.Debug.WriteLine("//Getting all interfaces:" ); 
+				foreach(EnvDTE80.CodeInterface2 entity in allInterfaces)
 				{
-					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false);
-					 if (allAttributes.OfType<EnvDTE.CodeAttribute>()
-								 .Any(att => att.FullName == DefaultServiceBehaviourAttribute))
-					{
-						interfaceList.Add(entity);
-					}
+					foreach(var part in entity.Parts)
+                    {
+						System.Diagnostics.Debug.WriteLine("//Interface parts: " +entity.FullName); 
+						var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(((CodeType)part).Attributes, vsCMElement.vsCMElementAttribute, false);
+						 if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+									 .Any(att => att.FullName == DefaultServiceBehaviourAttribute))
+						{
+							if(behaviour == null)
+                            {
+								interfaceList.Add(entity);
+                            }
+							else
+                            {
+								foreach(var attr in allAttributes)
+                                {
+									string val = ((CodeAttribute)attr).Value;
+									if(attr.FullName == DefaultServiceBehaviourAttribute
+										&& val.Contains(behaviour))
+                                    {
+										interfaceList.Add(entity);
+                                    }
+                                }
+                            }
+						}
+                    }
 				}
             }
 

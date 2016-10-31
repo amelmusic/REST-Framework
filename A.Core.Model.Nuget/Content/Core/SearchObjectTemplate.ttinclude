@@ -13,6 +13,8 @@ public class SearchObjectTemplate : TextTransformation
 {
 	public string FilterAttributeFullName = "A.Core.Attributes.FilterAttribute";
 	public string LazyLoadingAttributeFullName = "A.Core.Attributes.LazyLoadingAttribute";
+	public string KeyAttributeFullName = "System.ComponentModel.DataAnnotations.KeyAttribute";
+
 	public SearchObjectTemplate(EnvDTE.CodeClass entity, ModelHelper helper)
     {
 		Entity = entity;
@@ -20,6 +22,11 @@ public class SearchObjectTemplate : TextTransformation
 		AdditionalSearchRequestDataClassName = string.Format("{0}AdditionalSearchRequestData", entity.Name);
 		ModelHelperInstance = helper;
 		
+		var keyProperties = ModelHelperInstance.GetPropertiesWithSpecificAttribute(entity, KeyAttributeFullName);
+		if(keyProperties.Count() > 0)
+        {
+			KeyProperty = keyProperties[0];
+		}
 		PropertyList = ModelHelperInstance.GetPropertiesWithSpecificAttribute(entity, FilterAttributeFullName);
 		LazyLoadingPropertyList = ModelHelperInstance.GetPropertiesWithSpecificAttribute(entity, LazyLoadingAttributeFullName);
     }
@@ -29,6 +36,7 @@ public class SearchObjectTemplate : TextTransformation
 	public IList<EnvDTE.CodeProperty> PropertyList {get; set; }
 	public IList<EnvDTE.CodeProperty> LazyLoadingPropertyList {get; set; }
     public ModelHelper ModelHelperInstance { get; set; }
+	public EnvDTE.CodeProperty KeyProperty {get; set; }
 
 	public bool IsOperatorExisting(EnvDTE.CodeProperty property, string operatorName)
     {
@@ -95,19 +103,32 @@ public class SearchObjectTemplate : TextTransformation
 #>
 
 	<#+
+			WriteLine(string.Format("public partial class {0} : A.Core.Model.BaseSearchObject<{1}>", ClassName, AdditionalSearchRequestDataClassName));
+			WriteLine("{");
+			PushIndent("\t");
+			bool keyGenerated = false;
+        
 			if(PropertyList.Count > 0)
             {
-				WriteLine(string.Format("public partial class {0} : A.Core.Model.BaseSearchObject<{1}>", ClassName, AdditionalSearchRequestDataClassName));
-				WriteLine("{");
-				PushIndent("\t");
 				foreach (var property in PropertyList)
 				{
 					string propertyName = property.Type.CodeType.Name.ToLower();
 					WriteLine("//PROP:"+propertyName);
 					
-					string nullableIfNeeded = propertyName == "string" || propertyName == "nullable" ? "" : "?";
+					string nullableIfNeeded = propertyName == "string" || propertyName == "nullable" || propertyName.EndsWith("?") ? "" : "?";
 					if(IsOperatorExisting(property,"FilterEnum.Equal"))
                     {
+						var allAttributes = ModelHelperInstance.VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+					
+						foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+						{
+							if(attribute.FullName == KeyAttributeFullName)
+							{
+								keyGenerated = true;
+								WriteLine("[Key]");
+								break;
+							}
+						}
 						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.Equal, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
 						WriteLine(string.Format("public virtual {0}{2} {1}", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
@@ -150,17 +171,23 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine("\r\n");
                     }
 					
-				}
-
-				/*if(LazyLoadingPropertyList.Count > 0)
-                {
-					WriteLine(string.Format("public virtual {0} AdditionalData", AdditionalSearchRequestDataClassName) + " { get; set; }");
-                }*/
-				
-				PopIndent();
-				WriteLine("}");
+				}				
             }
 
+			
+			
+			if(!keyGenerated)
+            {
+				string propertyName = KeyProperty.Type.CodeType.Name.ToLower();
+				string nullableIfNeeded = propertyName == "string" || propertyName == "nullable" ? "" : "?";
+				WriteLine("[Key]//nofilter");
+				WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.Equal, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(KeyProperty).ToString().ToLower()));
+				WriteLine(string.Format("public virtual {0}{2} {1}", KeyProperty.Type.AsFullName, KeyProperty.Name, nullableIfNeeded) + " { get; set; }");
+				WriteLine("\r\n");
+			}
+			
+			PopIndent();
+			WriteLine("}");
 			WriteLine(string.Format("public partial class {0} :  A.Core.Model.BaseAdditionalSearchRequestData", AdditionalSearchRequestDataClassName));
 			WriteLine("{");
 

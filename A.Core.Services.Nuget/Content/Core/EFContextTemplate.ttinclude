@@ -35,7 +35,8 @@ public class EFContextTemplate : TextTransformation
 
 		foreach(var project in projectList)
         {
-			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+			string @namespace = project.Properties.Item("DefaultNamespace").Value.ToString();
+			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false,  @namespace);
 			foreach(EnvDTE.CodeClass entity in allClasses)
 			{
 				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false);
@@ -66,7 +67,8 @@ public class EFContextTemplate : TextTransformation
 
 		foreach(var project in projectList)
         {
-			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+			string @namespace = project.Properties.Item("DefaultNamespace").Value.ToString();
+			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false, @namespace);
 			foreach(EnvDTE.CodeClass entity in allClasses)
 			{
 				var baseClass = VisualStudioHelper.CodeModel.GetBaseClass(entity);

@@ -70,7 +70,7 @@ public partial class <#= ClassName #>
 							WriteLine(GetAttributesFromRequestAttribute(attr));
 						}
 					}
-					WriteLine(string.Format("public {0} {1}", property.Type.AsFullName, property.Name) + " { get; set; }");
+					WriteLine(string.Format("public {0} {1}", property.Type.CodeType.FullName, property.Name) + " { get; set; }");
 			}
 			PopIndent();
         }

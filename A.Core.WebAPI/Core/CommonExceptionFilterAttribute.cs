@@ -1,4 +1,4 @@
-﻿using A.Core.Validation;
+using A.Core.Validation;
 using log4net;
 using Newtonsoft.Json;
 using System;
@@ -28,6 +28,17 @@ namespace A.Core.WebAPI.Core
         {
             if (Log.IsErrorEnabled)
             {
+                if(context.Request.Properties.ContainsKey("RequestId"))
+                {
+                   var requestId = context.Request.Properties["RequestId"].ToString();
+                   log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
+                }
+                if (context.Request.Properties.ContainsKey("UserName"))
+                {
+                    var userName = context.Request.Properties["UserName"].ToString();
+                    log4net.LogicalThreadContext.Properties["UserName"] = userName;
+                }
+                
                 Log.Error(context.Exception.Message, context.Exception);
             }
 

@@ -1,0 +1,84 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ include file="VisualStudioHelper.ttinclude" #>
+<#@ include file="InterfaceFromModelTemplate.ttinclude" #>
+
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ output extension=".cs" #>
+
+<#
+	InterfaceHelper helper = new InterfaceHelper(VisualStudioHelper);
+	var entityList = helper.GetEntityList();
+	InterfaceFromModelTemplate interfaceTemplate = new InterfaceFromModelTemplate(entityList, VisualStudioHelper);
+	
+#>
+using System.Collections.Generic;
+using A.Core.Interface;
+using A.Core.Attributes;
+<# foreach(var project in helper.ModelProjectList){ #>
+using <#= project #>;
+<# } #>
+//Requests section
+namespace <#= VisualStudioHelper.CurrentProject.Name#>
+{
+	<#= interfaceTemplate.TransformText()  #>
+}
+
+<#+ 
+
+
+public class InterfaceHelper
+{
+	public string DefaultInterfaceBehaviourAttribute = "A.Core.Attributes.DefaultInterfaceBehaviourAttribute";
+	public AutomationHelper VisualStudioHelper { get; set; }
+	public List<string> ModelProjectList { get; set; }
+
+	public InterfaceHelper(AutomationHelper helper)
+    {
+		ModelProjectList = new List<string>();
+		VisualStudioHelper = helper;
+		ModelProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Interfaces", "Model"));
+		
+    }
+
+	public IEnumerable<EnvDTE.CodeClass> GetEntityList()
+			{
+				IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+
+				foreach(var projectName in ModelProjectList)
+				{
+					var project = VisualStudioHelper.GetProject(projectName);
+					projectList.Add(project);
+				}
+				
+			
+				IList<EnvDTE.CodeClass> entityList = new List<EnvDTE.CodeClass>();
+				foreach(var project in projectList)
+				{
+					var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+				
+					foreach(EnvDTE.CodeClass entity in allClasses)
+					{
+						var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false);
+							if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+										.Any(att => att.FullName == DefaultInterfaceBehaviourAttribute))
+						{
+							entityList.Add(entity);
+						}
+					}
+					
+				}
+				return entityList;
+				
+			}
+}
+ #>
+
+
+

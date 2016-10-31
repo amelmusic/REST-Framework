@@ -1,4 +1,4 @@
-﻿using log4net;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,14 +22,14 @@ namespace A.Core.WebAPI.Core
             JsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
         }
 
-        private static ILog Log = log4net.LogManager.GetLogger("General");
+        private static ILog Log = log4net.LogManager.GetLogger(typeof(LogFilterAttribute));
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             actionContext.Request.Properties.Add(new KeyValuePair<string, object>("REQUEST_START_TIME", Stopwatch.StartNew()));
 
             log4net.LogicalThreadContext.Properties["Controller"] = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
             log4net.LogicalThreadContext.Properties["Action"] = actionContext.ControllerContext.ControllerDescriptor.ControllerName + "_" + actionContext.ActionDescriptor.ActionName;
-
+            
 
             base.OnActionExecuting(actionContext);
         }
@@ -56,11 +56,20 @@ namespace A.Core.WebAPI.Core
 
                 if (actionExecutedContext.Exception == null && actionExecutedContext.ActionContext.Response.Content != null)
                 {
-                    string response = JsonConvert.SerializeObject((actionExecutedContext.ActionContext.Response.Content as ObjectContent).Value, JsonSerializerSettings);
-                    log4net.LogicalThreadContext.Properties["Response"] = response;
+                    //NOTE: We need this in extra secure apps
+                    //string response = JsonConvert.SerializeObject((actionExecutedContext.ActionContext.Response.Content as ObjectContent).Value, JsonSerializerSettings);
+                    //log4net.LogicalThreadContext.Properties["Response"] = response;
                 }
 
-                Log.Info(actionExecutedContext.Request.RequestUri);
+                if (actionExecutedContext.Exception == null)
+                {
+                    Log.Info(actionExecutedContext.Request.RequestUri);
+                }
+                else
+                {
+                    Log.Error(actionExecutedContext.Request.RequestUri);
+                }
+                
             }
         }
 

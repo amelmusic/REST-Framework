@@ -11,7 +11,7 @@ namespace A.Core.Interface
     /// <summary>
     /// Has only readonly methods (get and get many)
     /// </summary>
-    public interface IReadService<TEntity, TSearchObject, TSearchAdditionalData>
+    public interface IReadService<TEntity, TSearchObject, TSearchAdditionalData> : IService
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()

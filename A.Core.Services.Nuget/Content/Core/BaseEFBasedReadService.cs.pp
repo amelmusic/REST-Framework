@@ -22,6 +22,9 @@ namespace $rootnamespace$.Core
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
+        [Dependency]
+        public Lazy<IActionContext> ActionContext { get; set; }
+
         public virtual int DefaultPageSize { get; set; }
         DbSet<TEntity> mEntity = null;
         protected virtual DbSet<TEntity> Entity
@@ -35,6 +38,11 @@ namespace $rootnamespace$.Core
                 return mEntity;
             }
         }
+        protected virtual TEntity CreateNewInstance()
+        {
+            TEntity entity = new TEntity();
+            return entity;
+        }
 
         [Dependency]
         public TDBContext Context { get; set; }
@@ -44,8 +52,55 @@ namespace $rootnamespace$.Core
             DefaultPageSize = 100;
         }
 
+        public virtual void SaveChanges()
+        {
+            if (Context != null)
+            {
+                this.Context.SaveChanges();
+            }
+        }
+
+        public virtual void Save(TEntity entity)
+        {
+            if (entity is BaseEntityWithDateTokens)
+            {
+                var tmpEntity = entity as BaseEntityWithDateTokens;
+                if(tmpEntity.CreatedDate == DateTime.MinValue)
+                {
+                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                }
+                
+                tmpEntity.ModifiedDate = DateTime.UtcNow;
+            }
+
+            var validationResult = Validate(entity);
+            if (validationResult.HasErrors)
+            {
+                throw new A.Core.Validation.ValidationException(validationResult);
+            }
+            this.SaveChanges();
+        }
+        public virtual A.Core.Validation.ValidationResult Validate(object entity)
+        {
+            A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
+
+            var context = new ValidationContext(entity, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
+            if (!isValid)
+            {
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+            }
+            return result;
+        }
+
         public virtual TEntity Get(object id, TSearchAdditionalData additionalData = null)
         {
+            if(additionalData != null)
+            {
+
+            }
             if(additionalData != null && additionalData.IncludeList.Count > 0)
             {
                 //TODO: Implement lazy loading
@@ -61,6 +116,7 @@ namespace $rootnamespace$.Core
         {
             var query = Entity.AsQueryable();
             AddFilter(search, ref query);
+            AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
             return query;
         }
@@ -70,10 +126,16 @@ namespace $rootnamespace$.Core
         /// </summary>
         /// <param name="search"></param>
         /// <param name="query"></param>
-        protected virtual void AddInclude(TSearchObject search, ref IQueryable<TEntity> query)
+        protected virtual void AddInclude(TSearchAdditionalData searchAdditionalData, ref IQueryable<TEntity> query)
         {
-            var include = search.AdditionalData.IncludeList.ToArray();
+            var include = GetIncludeList(searchAdditionalData);
             query = include.Aggregate(query, (current, inc) => current.Include(inc));
+        }
+
+        protected virtual IList<string> GetIncludeList(TSearchAdditionalData searchAdditionalData)
+        {
+            var include = searchAdditionalData.IncludeList.ToArray();
+            return include;
         }
 
         protected virtual void AddFilter(TSearchObject search, ref IQueryable<TEntity> query)
@@ -123,22 +185,23 @@ namespace $rootnamespace$.Core
 
         public virtual PagedResult<TEntity> GetPage(TSearchObject search)
         {
-            if(search == null)
+            if (search == null)
             {
                 search = new TSearchObject(); //if we don't get search object, instantiate default
             }
             PagedResult<TEntity> result = new PagedResult<TEntity>();
             var query = Get(search);
-            if(search.IncludeCount.GetValueOrDefault(false) == true)
+            if (search.IncludeCount.GetValueOrDefault(false) == true)
             {
                 result.Count = GetCount(query);
             }
             AddPaging(search, ref query);
             result.ResultList = query.ToList();
             result.HasMore = result.ResultList.Count >= search.PageSize.GetValueOrDefault(DefaultPageSize) && result.ResultList.Count > 0;
-            
+
             return result;
         }
+
 
         protected virtual long GetCount(IQueryable<TEntity> query)
         {
@@ -147,7 +210,7 @@ namespace $rootnamespace$.Core
 
         public virtual void AddPaging(TSearchObject search, ref IQueryable<TEntity> query)
         {
-            if (!search.RetreiveAll.GetValueOrDefault(false) == true)
+            if (!search.RetrieveAll.GetValueOrDefault(false) == true)
             {
                 query = query.Skip(search.Page.GetValueOrDefault(0)
                     * search.PageSize.GetValueOrDefault(DefaultPageSize))
@@ -171,6 +234,49 @@ namespace $rootnamespace$.Core
             Dispose(true);
         }
 
+        public bool BeginTransaction()
+        {
+            object transactionStarted = false;
+            bool exists = this.ActionContext.Value.Data.TryGetValue("CORE_TRANSACTION_STARTED", out transactionStarted);
+            if(exists && (bool)transactionStarted)
+            {
+                return false;
+            }
+            else
+            {
+                this.Context.Database.BeginTransaction();
+                this.ActionContext.Value.Data["CORE_TRANSACTION_STARTED"] = true;
+                return true;
+            }
+            
+        }
+
+        public void CommitTransaction()
+        {
+            if(this.Context.Database.CurrentTransaction != null)
+            {
+                this.Context.Database.CurrentTransaction.Commit();
+                this.ActionContext.Value.Data["CORE_TRANSACTION_STARTED"] = false;
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            if (this.Context.Database.CurrentTransaction != null)
+            {
+                this.Context.Database.CurrentTransaction.Rollback();
+                this.ActionContext.Value.Data["CORE_TRANSACTION_STARTED"] = false;
+            }
+        }
+
+        public void DisposeTransaction()
+        {
+            if (this.Context.Database.CurrentTransaction != null)
+            {
+                this.Context.Database.CurrentTransaction.Dispose();
+
+            }
+        }
 
         ~BaseEFBasedReadService()
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,14 @@ namespace A.Core.WebAPI.Core
 {
     public class UnityResolver : IDependencyResolver
     {
-        protected IUnityContainer container;
+        public Guid ContainerId { get; set; }
+        private IUnityContainer container;
+
+        public IUnityContainer Container
+        {
+            get { return container; }
+            set { container = value; }
+        }
 
         public UnityResolver(IUnityContainer container)
         {
@@ -18,6 +25,7 @@ namespace A.Core.WebAPI.Core
                 throw new ArgumentNullException("container");
             }
             this.container = container;
+            ContainerId = Guid.NewGuid();
         }
 
         public object GetService(Type serviceType)

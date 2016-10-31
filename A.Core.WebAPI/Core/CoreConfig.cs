@@ -1,16 +1,18 @@
-﻿using A.Core.Interface;
-using A.Core.Interfaces;
+using A.Core.Interface;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.InterceptionExtension;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+//using System.Web.Http.Cors;
+using Owin;
 
 namespace A.Core.WebAPI.Core
 {
@@ -81,12 +83,21 @@ namespace A.Core.WebAPI.Core
 
         public static void Register(HttpConfiguration config)
         {
+            //config.EnableCors();
+
+
             
+            var formatters = GlobalConfiguration.Configuration.Formatters;
+            
+            formatters.Remove(formatters.XmlFormatter);
+
             log4net.Config.XmlConfigurator.Configure();   
             config.DependencyResolver = Resolver;
-            
+
+            config.Filters.Add(new ActionContextAttribute());
             config.Filters.Add(new LogFilterAttribute());
             config.Filters.Add(new CommonExceptionFilterAttribute());
+            //config.Filters.Add(new AuthorizeAttribute());
 
             LoadAllAssembliesFromBin();
 
@@ -95,6 +106,7 @@ namespace A.Core.WebAPI.Core
 
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
+            config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 
             Container.RegisterType<A.Core.Interface.IActionContext, A.Core.ActionContext>(new HierarchicalLifetimeManager());
             Container.RegisterInstance<IUnityContainer>(Container);

@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartup(typeof(A.Core.WebAPI.Startup))]
+//[assembly: OwinStartup(typeof(A.Core.WebAPI.Startup))]
 
 namespace A.Core.WebAPI
 {
@@ -12,7 +12,7 @@ namespace A.Core.WebAPI
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            //ConfigureAuth(app);
         }
     }
 }

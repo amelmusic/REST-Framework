@@ -1,4 +1,5 @@
 ﻿using A.Core.Interface;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace A.Core
 {
     public class ActionContext : IActionContext
     {
+        public IUnityContainer CurrentContainer { get; set; }
         public ActionContext()
         {
             Data = new Dictionary<string, object>();
