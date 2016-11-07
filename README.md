@@ -1,10 +1,19 @@
 # REST-Framework with T4 and WebAPI
-Creating REST services based on existing model and interfaces with T4 and WebAPI - <b>proof of concept</b>
+Creating REST services based on existing model and interfaces with T4 and WebAPI
 
-TODO:
-- Create nuget packages which will contain scripts
-- Remove dummy classes from platform
-- Create example project
+Quick start:
+
+Create new solution called [Test] for example.
+
+Create new project [Test].Model and add Nuget package A.Core.Model
+
+Create new project [Test].Interfaces and add Nuget package A.Core.Interfaces
+
+Create new project [Test].Services and add Nuget package A.Core.Services
+
+Create new project [Test].WebAPI and add Nuget package A.Core.WebAPI
+
+Visit https://github.com/amelmusic/REST-Framework-AdventureWorks/wiki for detailed explanations.
 
 # Project structure
 
