@@ -20,8 +20,17 @@ namespace A.Core.Services.Core
     {
         static BaseEFBasedCRUDService()
         {
-            Mapper.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
-            Mapper.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
+            Mapper.Initialize(cfg => cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
+                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+                    || (context.SourceType.IsValueType
+                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                        ))));
+
+            Mapper.Initialize(cfg => cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
+                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+                    || (context.SourceType.IsValueType
+                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                        ))));
         }
 
         [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]

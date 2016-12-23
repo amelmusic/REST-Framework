@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>A.Core.WebAPI</RootNamespace>
     <AssemblyName>A.Core.WebAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -49,6 +49,10 @@
   <ItemGroup>
     <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Foundatio, Version=4.2.1183.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Foundatio.4.2.1183\lib\net46\Foundatio.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
@@ -123,6 +127,22 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.2.4\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Swashbuckle.Core">
       <HintPath>..\packages\Swashbuckle.Core.5.3.2\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
@@ -148,9 +168,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -303,6 +320,7 @@
     <Compile Include="Core\CommonExceptionFilterAttribute.cs" />
     <Compile Include="Core\CoreConfig.cs" />
     <Compile Include="Core\LogFilterAttribute.cs" />
+    <Compile Include="Core\PermissionAttribute.cs" />
     <Compile Include="Core\UnityResolver.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -355,6 +373,12 @@
     <Content Include="Core\APITemplate.Config.ttinclude" />
     <Content Include="Core\VisualStudioHelper.ttinclude" />
     <Content Include="Core\APIControllerTemplate.ttinclude" />
+    <Content Include="Core\ActionContextAttribute.cs.pp" />
+    <Content Include="Core\CommonExceptionFilterAttribute.cs.pp" />
+    <Content Include="Core\CoreConfig.cs.pp" />
+    <Content Include="Core\LogFilterAttribute.cs.pp" />
+    <Content Include="Core\PermissionAttribute.cs.pp" />
+    <Content Include="Core\UnityResolver.cs.pp" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -405,6 +429,10 @@
       <Project>{ACB45707-E0F1-48F5-877D-D9CC8CDD15BB}</Project>
       <Name>A.Core.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\A.Core.Services\A.Core.Services.csproj">
+      <Project>{DC1BDD7B-5029-4CE6-A687-2706DDC14D08}</Project>
+      <Name>A.Core.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\A.Core\A.Core.csproj">
       <Project>{3ca7424f-d1ce-49f8-88e6-40ee079fc34c}</Project>
       <Name>A.Core</Name>
@@ -435,7 +463,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>42222</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/A.Core.WebAPI</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
@@ -447,6 +475,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)Core\*.tt*" "$(SolutionDir)A.Core.WebAPI.Nuget\Content\Core" /d /y
+xcopy "$(ProjectDir)Core\*.pp" "$(SolutionDir)A.Core.WebAPI.Nuget\Content\Core" /d /y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

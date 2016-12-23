@@ -1,4 +1,5 @@
-﻿using A.Core.WebAPI.Core;
+﻿using A.Core.Services;
+using A.Core.WebAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace A.Core.WebAPI
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+            
             //ADDTHIS
             GlobalConfiguration.Configure(CoreConfig.Register);
         }

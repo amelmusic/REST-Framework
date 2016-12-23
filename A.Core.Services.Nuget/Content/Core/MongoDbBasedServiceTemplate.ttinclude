@@ -313,7 +313,7 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 						}}
 						else
 						{{
-							var filter = MongoDB.Driver.Builders<A.Core.Model.User>.Filter.Eq(s => s.{1}, entity.{1});
+							var filter = MongoDB.Driver.Builders<{0}>.Filter.Eq(s => s.{1}, entity.{1});
 							GetCollection().ReplaceOne(filter,
 							entity,
 							new MongoDB.Driver.UpdateOptions {{ IsUpsert = true }});

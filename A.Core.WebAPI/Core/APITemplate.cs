@@ -42,9 +42,9 @@ namespace A.Core.WebAPI.Controllers
             foreach (var description in apiDescriptions.ToList())
             {
                 var route = Url.Request.RequestUri.AbsoluteUri;
-                var path = route + description.RelativePath;
+                var path = route + description.RelativePath.Split('?')[0];
                 var controller = description.ActionDescriptor.ControllerDescriptor.ControllerName;
-                string key = string.Format("{1}", "", description.RelativePath.Replace('/', '_').Replace("{id}","id"), description.HttpMethod.Method.ToLower());
+                string key = string.Format("{1}", "", description.RelativePath.Split('?')[0].Replace('/', '_').Replace("{id}","id"), description.HttpMethod.Method.ToLower());
 
                     if(key == controller + "_get")
                     {
@@ -54,7 +54,6 @@ namespace A.Core.WebAPI.Controllers
                     {
                         model.Links[key] = path;
                     }
-
             }
 
             

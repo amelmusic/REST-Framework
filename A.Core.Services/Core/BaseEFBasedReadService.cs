@@ -108,8 +108,18 @@ namespace A.Core.Services.Core
             }
             else
             {
-                return Entity.Find(id);
+                return GetByIdInternal(id);
             }
+        }
+
+        /// <summary>
+        /// Simple getbyid, suitable for override when you want to include caching
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public virtual TEntity GetByIdInternal(object id)
+        {
+            return Entity.Find(id);
         }
 
         public virtual IQueryable<TEntity> Get(TSearchObject search)
@@ -218,21 +228,6 @@ namespace A.Core.Services.Core
             }
         }
 
-        public void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (Context != null)
-                {
-                    Context.Dispose();
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
 
         public bool BeginTransaction()
         {
@@ -276,11 +271,6 @@ namespace A.Core.Services.Core
                 this.Context.Database.CurrentTransaction.Dispose();
 
             }
-        }
-
-        ~BaseEFBasedReadService()
-        {
-            Dispose(false);
         }
     }
 }

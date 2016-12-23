@@ -1,15 +1,11 @@
 using A.Core.Interface;
-
-using log4net;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Web;
+using System.Security.Claims;
 using System.Web.Http.Filters;
-using Microsoft.AspNet.Identity.Owin;
+
 
 namespace A.Core.WebAPI.Core
 {
@@ -30,22 +26,45 @@ namespace A.Core.WebAPI.Core
             }
             var coreActionContext = container.GetService(typeof(IActionContext)) as IActionContext;
             coreActionContext.CurrentContainer = resolver.Container;
-            coreActionContext.Data.Add("UserId", "8E023B32-C436-495D-B81E-2E942CFA1F18");
+            
             var requestId = Guid.NewGuid().ToString();
-            var userName = "amel";
+            PopulateFromClaimsPrincipal(actionContext, coreActionContext);
             log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
-            log4net.LogicalThreadContext.Properties["UserName"] = userName; //get this from OAuth token
+           
             actionContext.Request.Properties.Add(new KeyValuePair<string, object>("RequestId", requestId));
-            actionContext.Request.Properties.Add(new KeyValuePair<string, object>("UserName", userName));
+            
             //coreActionContext.CurrentContainer = container.
             base.OnActionExecuting(actionContext);
         }
 
-        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        private void PopulateFromClaimsPrincipal(System.Web.Http.Controllers.HttpActionContext actionContext, IActionContext coreActionContext)
         {
-            base.OnActionExecuted(actionExecutedContext);
-            
-            
+
+            List<string> roleList = new List<string>();
+            var userFromClaim = actionContext.RequestContext.Principal as ClaimsPrincipal;
+            if (userFromClaim != null)
+            {
+                var idClaimName = userFromClaim.Identity.Name;
+                var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                if (idClaim != null)
+                {
+                    coreActionContext.Data["UserId"] = idClaim.Value.ToString();
+                    log4net.LogicalThreadContext.Properties["UserName"] = idClaim.Value.ToString();  //get this from OAuth token
+                    actionContext.Request.Properties.Add(new KeyValuePair<string, object>("UserName", idClaim.Value.ToString()));
+                }
+                else
+                {
+                    coreActionContext.Data.Add("UserId", "8E023B32-C436-495D-B81E-2E942CFA1F18"); //NOTE: this is for test only...
+                    log4net.LogicalThreadContext.Properties["UserName"] = "8E023B32-C436-495D-B81E-2E942CFA1F18"; //get this from OAuth token
+                }
+                var roleClaims = userFromClaim.Claims.Where(x => x.Type == ClaimTypes.Role || x.Type == "role");
+                foreach (var claim in roleClaims)
+                {
+                    roleList.Add(claim.Value);
+                }
+                coreActionContext.Data.Add("RoleList", roleList.ToArray());
+            }
+
         }
 
     }

@@ -125,19 +125,39 @@ public partial class <#=Config.ContextName#> : System.Data.Entity.DbContext
 			GenerateContextClassMaps();
 		#>
 		}
-
+		
 		public partial class <#=Config.ContextName#>Initializer : IDatabaseInitializer<<#=Config.ContextName#>>
 		{
+			partial void OnInitializeDatabase(ref <#=Config.ContextName#> context, ref bool isHandled);
 			public void InitializeDatabase(<#=Config.ContextName#> context)
 			{
-				if (!context.Database.Exists())
+				bool isHandled = false;
+				OnInitializeDatabase(ref context, ref isHandled);
+				if(!isHandled)
 				{
-					context.Database.Create();
+					if (!context.Database.Exists())
+					{
+						context.Database.Create();
+					}
 				}
 			}
 		}
 
 }
+
+public partial class <#=Config.ContextName#>Registration : A.Core.Interface.IServicesRegistration
+	{
+		public int Priority {get; set; }
+		public <#=Config.ContextName#>Registration()
+		{
+			Priority = 0; //This is root. Add new class with higher priority
+		}
+		public void Register(ref Microsoft.Practices.Unity.UnityContainer container)
+		{
+			container.RegisterType<<#=Config.ContextName#>, <#=Config.ContextName#>>(new HierarchicalLifetimeManager());
+		}
+	}
+
 <#+
 		return this.GenerationEnvironment.ToString();
     }

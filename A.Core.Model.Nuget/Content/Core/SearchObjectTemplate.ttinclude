@@ -178,6 +178,10 @@ public class SearchObjectTemplate : TextTransformation
 			
 			if(!keyGenerated)
             {
+				if(KeyProperty == null)
+                {
+					throw new Exception("Missing [Key] attribute on: " + Entity.Name);
+                }
 				string propertyName = KeyProperty.Type.CodeType.Name.ToLower();
 				string nullableIfNeeded = propertyName == "string" || propertyName == "nullable" ? "" : "?";
 				WriteLine("[Key]//nofilter");

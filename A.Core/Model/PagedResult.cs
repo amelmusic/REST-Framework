@@ -9,6 +9,7 @@ namespace A.Core.Model
     /// <summary>
     /// Represents result of search request
     /// </summary>
+    [Serializable]
     public class PagedResult<TEntity>
     {
         /// <summary>

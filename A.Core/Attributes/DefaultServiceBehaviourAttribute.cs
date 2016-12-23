@@ -23,6 +23,7 @@ namespace A.Core.Attributes
     {
         EntityFramework = 1,
         MSSQLStoredProcedures = 2,
-        MongoDB = 3
+        MongoDB = 3,
+        WithoutServiceImplementation = 4
     }
 }

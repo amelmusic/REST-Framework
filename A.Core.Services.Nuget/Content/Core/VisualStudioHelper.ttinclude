@@ -331,6 +331,21 @@ public class VsCodeModel
 		return implFunctions.Distinct(new CodeFunctionEqualityComparer());
     }
 
+	public IEnumerable<EnvDTE.CodeAttribute> GetAllAttributesOnInterface(EnvDTE.CodeInterface @interface)
+    {
+		var castedInterface = (EnvDTE80.CodeInterface2)@interface;
+		List<EnvDTE.CodeAttribute> attributeList = new List<EnvDTE.CodeAttribute>();
+
+		foreach (EnvDTE80.CodeInterface2 elem in castedInterface.Parts)
+        {
+			var allAttributes = GetAllCodeElementsOfType(elem.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+			attributeList.AddRange(allAttributes);
+        }
+		return attributeList;
+    }
+
+
+
 	/// <summary>
 	/// Gets all methods and functions directly implemented by a code class
 	/// </summary>

@@ -26,6 +26,7 @@ using System.ComponentModel.DataAnnotations;
 //Requests section
 namespace <#= VisualStudioHelper.CurrentProject.Name#>.Requests
 {
+	public partial class __IGNORE_CLASS { }
 	<# foreach(var entity in entityList) { #>
 		<# if(ModelHelperInstance.PropertyOnEntityHasAttribute(entity, ModelHelperInstance.RequestFieldAttributeFullName)) { #>
 			<# foreach(var request in ModelHelperInstance.GetRequestListForEntity(entity)) { #>
@@ -44,6 +45,7 @@ namespace <#= VisualStudioHelper.CurrentProject.Name#>.Requests
 
 namespace <#= VisualStudioHelper.CurrentProject.Name#>.SearchObjects
 {
+	public partial class __IGNORE_CLASS { }
 	<# foreach(var entity in entityList) { #>
 		<# searchObjectTemplate = new SearchObjectTemplate(entity,ModelHelperInstance); #>
 				//<#=entity.FullName.ToString()#>

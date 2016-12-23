@@ -195,7 +195,7 @@ public class StateMachineTemplate : TextTransformation
 	public bool IsValidForCreatingStateMachine(EnvDTE.CodeInterface @interface)
     {
 		bool isExisting = false;
-		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(@interface.Attributes, vsCMElement.vsCMElementAttribute, false);
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(@interface);
 		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
         {
 			if(attribute.FullName == StateMachineAttribute)
@@ -209,7 +209,7 @@ public class StateMachineTemplate : TextTransformation
 
 	public string GetStateMachineName()
     {
-		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Interface.Attributes, vsCMElement.vsCMElementAttribute, false);
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
 		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
         {
 			if(attribute.FullName == StateMachineAttribute)
@@ -223,7 +223,7 @@ public class StateMachineTemplate : TextTransformation
 
 	public string GetStateMachineEnumName()
     {
-		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Interface.Attributes, vsCMElement.vsCMElementAttribute, false);
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
 		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
         {
 			if(attribute.FullName == StateMachineAttribute)
@@ -237,7 +237,7 @@ public class StateMachineTemplate : TextTransformation
 
 	public string GetStateMachinePropertyNameOnModel()
     {
-		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Interface.Attributes, vsCMElement.vsCMElementAttribute, false);
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
 		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
         {
 			if(attribute.FullName == StateMachineAttribute)
@@ -424,7 +424,11 @@ public class StateMachineTemplate : TextTransformation
 #>
 					static <#= stateMachineName #><#= triggerName #>Trigger()
                     {
-                        AutoMapper.Mapper.CreateMap<<#= shortEntityName #><#= triggerName #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
+						AutoMapper.Mapper.Initialize(cfg => cfg.CreateMap<<#= shortEntityName #><#= triggerName #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(
+							context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+								|| (context.SourceType.IsValueType
+									 && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+							))));
                     }
 					public <#= stateMachineName #><#= triggerName #>Trigger()
 					{
@@ -456,7 +460,11 @@ public class StateMachineTemplate : TextTransformation
 #>
 					static <#= stateMachineName #><#= startFlow.Guard #>Trigger()
                     {
-                        AutoMapper.Mapper.CreateMap<<#= shortEntityName #><#= startFlow.Guard #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(srs => !srs.IsSourceValueNull));
+						AutoMapper.Mapper.Initialize(cfg => cfg.CreateMap<<#= shortEntityName #><#= startFlow.Guard #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(
+							context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+								|| (context.SourceType.IsValueType
+									 && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+							))));
                     }
 					public <#= stateMachineName #><#= startFlow.Guard #>Trigger()
 					{
@@ -683,8 +691,8 @@ public class StateMachineTemplate : TextTransformation
 						}
 						StringBuilder typeAndNameParamListString = new StringBuilder();
 						var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
-						var firstParam = allParameters.First();
-						var lastParam = allParameters.Last();
+						var firstParam = allParameters.FirstOrDefault();
+						var lastParam = allParameters.LastOrDefault();
 						foreach(var prm in allParameters)
 						{
 							typeAndNameParamListString.Append(string.Format("{0} {1},", prm.Type.AsFullName, prm.Name));

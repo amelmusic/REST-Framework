@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>A.Core.Services</RootNamespace>
     <AssemblyName>A.Core.Services</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -108,7 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\BaseEFBasedCRUDService.cs" />
+    <Compile Include="Core\BaseEFBasedCRUDServiceAsync.cs" />
     <Compile Include="Core\BaseEFBasedReadService.cs" />
+    <Compile Include="Core\BaseEFBasedReadServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedCRUDService.cs" />
     <Compile Include="Core\BaseMongoDbBasedReadService.cs" />
     <Compile Include="Core\ServiceTemplate.cs">
@@ -137,12 +139,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Core\BaseEFBasedCRUDService.cs.pp" />
+    <None Include="Core\BaseEFBasedReadService.cs.pp" />
+    <None Include="Core\BaseMongoDbBasedCRUDService.cs.pp" />
+    <None Include="Core\BaseMongoDbBasedReadService.cs.pp" />
     <None Include="Core\MongoDbBaseClasses.ttinclude" />
     <None Include="Core\EFBaseClassesTemplate.ttinclude" />
     <None Include="Core\EFBasedServiceTemplate.ttinclude" />
     <None Include="Core\ServiceRegistrationTemplate.ttinclude" />
     <None Include="Core\ServiceTemplate.Config.ttinclude" />
+    <None Include="Core\StateBase.cs.pp" />
+    <None Include="Core\StateMachineBase.cs.pp" />
     <None Include="Core\StateMachineTemplate.ttinclude" />
+    <None Include="Core\TriggerBase.cs.pp" />
     <None Include="Core\VisualStudioHelper.ttinclude" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -162,7 +171,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /E /Y "$(ProjectDir)$(OutDir)A.Core.Services.dll" "$(SolutionDir)A.Core.WebAPI\bin"
-xcopy /E /Y "$(ProjectDir)$(OutDir)A.Core.Services.pdb" "$(SolutionDir)A.Core.WebAPI\bin"</PostBuildEvent>
+xcopy /E /Y "$(ProjectDir)$(OutDir)A.Core.Services.pdb" "$(SolutionDir)A.Core.WebAPI\bin"
+xcopy "$(ProjectDir)Core\*.tt*" "$(SolutionDir)A.Core.Services.Nuget\Content\Core" /d /y
+xcopy "$(ProjectDir)Core\*.pp" "$(SolutionDir)A.Core.Services.Nuget\Content\Core" /d /y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

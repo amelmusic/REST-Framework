@@ -32,7 +32,7 @@ namespace A.Core.Interceptors
                 instance.Service.CommitTransaction();
             }
         }
- 
+
         public override void OnExit(MethodExecutionArgs args)
         {
             var instance = (TransactionInterceptorData)args.MethodExecutionTag;

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>A.Core</RootNamespace>
     <AssemblyName>A.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -37,6 +37,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Foundatio, Version=4.2.1183.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Foundatio.4.2.1183\lib\net46\Foundatio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
@@ -59,8 +63,20 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Concurrent.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Enlightenment, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.1\lib\net45\Nito.AsyncEx.Enlightenment.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PostSharp, Version=4.2.27.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
@@ -83,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionContext.cs" />
+    <Compile Include="AsyncHelper.cs" />
     <Compile Include="Attributes\DefaultInterfaceBehaviourAttribute.cs" />
     <Compile Include="Attributes\DefaultServiceBehaviourAttribute.cs" />
     <Compile Include="Attributes\EntityAttribute.cs" />
@@ -92,14 +109,19 @@
     <Compile Include="Attributes\LazyLoadingAttribute.cs" />
     <Compile Include="Attributes\StateMachineAttribute.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="DummyPermissionChecker.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Interceptors\CacheInterceptorAttribute.cs" />
+    <Compile Include="Interceptors\InvalidateCacheInterceptorAttribute.cs" />
     <Compile Include="Interceptors\LogAttribute.cs" />
     <Compile Include="Interceptors\LogInterceptorAttribute.cs" />
     <Compile Include="Interceptors\TransactionInterceptorAttribute.cs" />
     <Compile Include="Interface\IActionContext.cs" />
     <Compile Include="Interface\ICRUDService.cs" />
+    <Compile Include="Interface\ICRUDServiceAsync.cs" />
     <Compile Include="Interface\IPermissionChecker.cs" />
     <Compile Include="Interface\IReadService.cs" />
+    <Compile Include="Interface\IReadServiceAsync.cs" />
     <Compile Include="Interface\IService.cs" />
     <Compile Include="Interface\IServicesRegistration.cs" />
     <Compile Include="Model\BaseAdditionalSearchRequestData.cs" />
@@ -107,6 +129,7 @@
     <Compile Include="Model\BaseSearchObject.cs" />
     <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicesRegistration.cs" />
     <Compile Include="Validation\UserException.cs" />
     <Compile Include="Validation\ValidationException.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
@@ -130,6 +153,9 @@
     <Error Condition="!Exists('..\packages\PostSharp.4.2.27\tools\PostSharp.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://www.postsharp.net/links/nuget-restore." />
     <Error Condition="Exists('..\packages\PostSharp.4.2.27\tools\PostSharp.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://www.postsharp.net/links/nuget-restore." />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)A.Core.Nuget\Lib\net40" /d /y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

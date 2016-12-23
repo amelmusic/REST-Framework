@@ -197,4 +197,10 @@ This is how it looks like for currency service:
 				}
 	}
 	
-	Did I mention that you will get Swagger to? :)
+
+Did I mention that you will get Swagger to? :)
+
+	
+# Media
+
+InfoQ.com article - https://www.infoq.com/articles/T4-Rest-Code-Generation

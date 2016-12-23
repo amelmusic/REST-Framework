@@ -50,12 +50,26 @@ public class EFBasedServiceTemplate : TextTransformation
         {
 			baseclassName = "BaseEFBasedCRUDService";
         }
+		else if(BaseInterface == "ICRUDServiceAsync")
+        {
+			baseclassName = "BaseEFBasedCRUDServiceAsync";
+        }
+		else if(BaseInterface == "IReadServiceAsync")
+        {
+			baseclassName = "BaseEFBasedReadServiceAsync";
+        }
+		else if(BaseInterface == "IReadService")
+        {
+			baseclassName = "BaseEFBasedReadService";
+        }
 		var project = this.VisualStudioHelper.CurrentProject;
 		if(allClasses == null)
         {
 			string @namespace = project.Properties.Item("DefaultNamespace").Value.ToString();
 			allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false, @namespace).OfType<EnvDTE.CodeClass>();
         }
+
+		
 
 		foreach(EnvDTE.CodeClass entity in allClasses)
 		{
@@ -73,8 +87,8 @@ public class EFBasedServiceTemplate : TextTransformation
 				//return entity.FullName;//.Replace("TEntity",Entity.FullName);
 			}
 		}
-
-		throw new Exception("Can't find base class");
+		
+		throw new Exception("Can't find base class, base interface: " + baseclassName + ", "  + Entity.FullName);
     }
 
 	public AutomationHelper VisualStudioHelper { get; set; }
@@ -114,7 +128,7 @@ public class EFBasedServiceTemplate : TextTransformation
 		var baseInterfaces = BaseInterfacesForCurrentEntity;//VisualStudioHelper.CodeModel.GetAllBaseInterfaces(Entity);
 		foreach(var i in baseInterfaces)
 		{
-			if(i.Name == "IReadService" || i.Name == "ICRUDService")
+			if(i.Name == "IReadService" || i.Name == "ICRUDService" || i.Name == "IReadServiceAsync" || i.Name == "ICRUDServiceAsync")
 			{
 				string firstArgument = i.FullName.Split('<', '>')[1];
 				string entityName = firstArgument.Split(',')[0];
@@ -187,9 +201,32 @@ public class EFBasedServiceTemplate : TextTransformation
 					}}
 				", additionalSearchObjectName, entityName, includeBuilder));
 
-
-				WriteLine(string.Format(
-				@"
+				if(i.Name.EndsWith("Async"))
+                {
+					WriteLine(string.Format(
+					@"
+					public override async System.Threading.Tasks.Task<{1}> GetAsync(object id, {0} additionalData = null)
+					{{
+							if (additionalData != null)
+                            {{
+                                var count = GetIncludeList(additionalData).Count;
+                                if (count > 0)
+                                {{
+                                    {2} search = new {2}();
+                                    search.{3} = ({4})id;
+									search.AdditionalData = additionalData;
+                                    var result = await GetAsync(search);
+	                                return await result.FirstOrDefaultAsync();
+                                }}
+                            }}
+						return await base.GetAsync(id, additionalData);
+					}}
+				", additionalSearchObjectName, entityName, searchObjectName, keyPropertyName, keyPropertyType));
+                }
+				else
+                {
+					WriteLine(string.Format(
+					@"
 					public override {1} Get(object id, {0} additionalData = null)
 					{{
 							if (additionalData != null)
@@ -206,6 +243,8 @@ public class EFBasedServiceTemplate : TextTransformation
 						return base.Get(id, additionalData);
 					}}
 				", additionalSearchObjectName, entityName, searchObjectName, keyPropertyName, keyPropertyType));
+                }
+				
 
 				break; //only one is enough
 			}
@@ -224,7 +263,7 @@ public class EFBasedServiceTemplate : TextTransformation
 		watch.Restart();
 		foreach(var i in baseInterfaces)
 		{
-			if(i.Name == "IReadService" || i.Name == "ICRUDService")
+			if(i.Name == "IReadService" || i.Name == "ICRUDService" || i.Name == "IReadServiceAsync" || i.Name == "ICRUDServiceAsync")
 			{
 				string firstArgument = i.FullName.Split('<', '>')[1];
 				string entityName = firstArgument.Split(',')[0];
@@ -393,6 +432,45 @@ public class EFBasedServiceTemplate : TextTransformation
 		
 	}
 
+	public void GenerateDelete(EnvDTE.CodeFunction method)
+    {
+		var firstParameter =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>().First();
+		WriteLine(string.Format(
+				@"
+					public virtual {0} Delete({1} {2})
+					{{
+						var entity = Get({2});
+						if(entity != null)
+						{{
+							Entity.Attach(entity);
+							Context.Entry(entity).State = EntityState.Deleted;
+							Context.SaveChanges();
+							return entity;
+						}}
+						else
+						{{
+							return null;
+						}}
+					}}
+				", method.Type.AsFullName, firstParameter.Type.AsFullName, firstParameter.Name));
+    }
+
+	/*public virtual Test Delete(object id)
+        {
+            var entity = Get(id);
+            if(entity != null)
+            {
+                Entity.Attach(entity);
+                Context.Entry(entity).State = EntityState.Deleted;
+                Context.SaveChanges();
+                return entity;
+            }
+            else
+            {
+                return null;
+            }
+        }*/
+
     public override string TransformText()
     {
 		foreach(var @interface in InterfaceList)
@@ -404,6 +482,12 @@ public class EFBasedServiceTemplate : TextTransformation
 			{
 				baseInterface = "ICRUDService";
 			}
+
+			if(@interface.Name.EndsWith("Async"))
+            {
+				baseInterface += "Async";
+			}
+
 			Entity = @interface;
 			ClassName =  @interface.Name.Substring(1);
 			BaseInterface = baseInterface;
@@ -413,17 +497,14 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 {
 
 	<#+
-			WriteLine("//ElapsedEFSingle getBaseClassName: " + ClassName + ":" + watch.ElapsedMilliseconds);
-			watch.Restart();
+
 			GenerateAddFilterFromDesigner();
-			WriteLine("//ElapsedEFSingle filter for: " + ClassName + ":" + watch.ElapsedMilliseconds);
-			watch.Restart();
+
 			GenerateIncludeList();
-			WriteLine("//ElapsedEFSingle include for: " + ClassName + ":" + watch.ElapsedMilliseconds);
-			watch.Restart();
+
 		List<string> StateMachines = new List<string>();
         var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface(Entity);
-			WriteLine("//ElapsedEFSingle get methods for: " + ClassName + ":" + watch.ElapsedMilliseconds);
+			
 			watch.Restart();
 		foreach(var method in methods)
 			{
@@ -437,7 +518,6 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 						break; 
 					}
                 }
-
 				 if((method.Name == "Insert" && !method.FullName.Contains("ICRUDService"))
 					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Insert"))
 				 {
@@ -445,12 +525,16 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 					//render get by Id method
 					//GenerateInsert(method);
 				 }
-				 if((method.Name == "Update" && !method.FullName.Contains("ICRUDService"))
+				 else if((method.Name == "Update" && !method.FullName.Contains("ICRUDService"))
 					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Update"))
 				 {
 					//TODO: Add this
 					//render update by Id method
 					//GenerateUpdate(method);
+				 }
+				 else if(defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Delete")
+				 {
+					GenerateDelete(method);
 				 }				 
 
 			}
