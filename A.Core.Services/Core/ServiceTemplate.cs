@@ -19,6 +19,8 @@
 
 
 
+
+#region A_Core generated code
 using System.Linq;
 using Microsoft.Practices.Unity;
 using System.Data.Entity;
@@ -49,3 +51,4 @@ namespace A.Core.Services
 
 
 }
+#endregion

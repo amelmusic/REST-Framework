@@ -14,6 +14,7 @@
 
 
 
+#region A_Core generated code
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 //Requests section
@@ -32,4 +33,5 @@ namespace A.Core.Model.SearchObjects
 		
 }
 
+#endregion
 

@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -111,7 +112,9 @@
     <Compile Include="Core\BaseEFBasedCRUDServiceAsync.cs" />
     <Compile Include="Core\BaseEFBasedReadService.cs" />
     <Compile Include="Core\BaseEFBasedReadServiceAsync.cs" />
+    <Compile Include="Core\BaseMongoDbBasedCRUDServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedCRUDService.cs" />
+    <Compile Include="Core\BaseMongoDbBasedReadServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedReadService.cs" />
     <Compile Include="Core\ServiceTemplate.cs">
       <AutoGen>True</AutoGen>
@@ -139,7 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Core\BaseEFBasedCRUDServiceAsync.pp" />
     <None Include="Core\BaseEFBasedCRUDService.cs.pp" />
+    <None Include="Core\BaseEFBasedReadServiceAsync.pp" />
     <None Include="Core\BaseEFBasedReadService.cs.pp" />
     <None Include="Core\BaseMongoDbBasedCRUDService.cs.pp" />
     <None Include="Core\BaseMongoDbBasedReadService.cs.pp" />
@@ -167,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mapping\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -19,6 +19,8 @@
 <#@ import namespace="System.Xml.Serialization" #>
 
 <#@ output extension=".cs" #>
+
+#region A_Core generated code
 using System.Linq;
 using Microsoft.Practices.Unity;
 using System.Data.Entity;
@@ -79,6 +81,7 @@ using <#= modelProject #>.Requests;
 //end of namespace
 WriteLine("}");
 #>
+#endregion
 <#+ 
 	public class ServiceHelper
 	{
@@ -149,11 +152,11 @@ WriteLine("}");
 			var baseInterfaces = VisualStudioHelper.CodeModel.GetBaseInterfaces(entity);
 			foreach(var baseInterface in baseInterfaces)
             {
-				if(baseInterface.Name == "IReadService")
+				if(baseInterface.Name == "IReadService" || baseInterface.Name == "IReadServiceAsync")
                 {
 					isValid = true;
                 }
-				else if(baseInterface.Name == "ICRUDService")
+				else if(baseInterface.Name == "ICRUDService" || baseInterface.Name == "ICRUDServiceAsync")
                 {
 					//if service also implements ICRUDService, it will be implemented in second method
 					isValid = false;
@@ -169,7 +172,7 @@ WriteLine("}");
 			var baseInterfaces = VisualStudioHelper.CodeModel.GetBaseInterfaces(entity);
 			foreach(var baseInterface in baseInterfaces)
             {
-				if(baseInterface.Name == "ICRUDService")
+				if(baseInterface.Name == "ICRUDService" || baseInterface.Name == "ICRUDServiceAsync")
                 {
 					isValid = true;
 					break;
@@ -179,3 +182,4 @@ WriteLine("}");
         }
 	}
 #>
+

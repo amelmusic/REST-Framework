@@ -1,29 +1,30 @@
-using A.Core.Interface;
+﻿using A.Core.Interface;
+using A.Core.Model;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using A.Core.Model;
-using System.Data.Entity;
-using Microsoft.Practices.Unity;
 using System.Linq.Dynamic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using A.Core.Interceptors;
 
-namespace A.Core.Services.Core
+namespace $rootnamespace$.Core
 {
     /// <summary>
     /// Base implementation for IReadService and ICRUDService
     /// </summary>
-    public partial class BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : IReadService<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
         [Dependency]
-        public virtual Lazy<IActionContext> ActionContext { get; set; }
+        public Lazy<IActionContext> ActionContext { get; set; }
 
         public virtual int DefaultPageSize { get; set; }
         DbSet<TEntity> mEntity = null;
@@ -31,7 +32,7 @@ namespace A.Core.Services.Core
         {
             get
             {
-                if(mEntity == null)
+                if (mEntity == null)
                 {
                     mEntity = Context.Set<TEntity>();
                 }
@@ -47,40 +48,40 @@ namespace A.Core.Services.Core
         [Dependency]
         public TDBContext Context { get; set; }
 
-        public BaseEFBasedReadService()
+        public BaseEFBasedReadServiceAsync()
         {
             DefaultPageSize = 100;
         }
 
-        public virtual void SaveChanges()
+        public virtual async Task SaveChangesAsync()
         {
             if (Context != null)
             {
-                this.Context.SaveChanges();
+                await this.Context.SaveChangesAsync();
             }
         }
 
-        public virtual void Save(TEntity entity)
+        public virtual async Task SaveAsync(TEntity entity)
         {
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if(tmpEntity.CreatedDate == DateTime.MinValue)
+                if (tmpEntity.CreatedDate == DateTime.MinValue)
                 {
                     tmpEntity.CreatedDate = DateTime.UtcNow;
                 }
-                
+
                 tmpEntity.ModifiedDate = DateTime.UtcNow;
             }
 
-            var validationResult = Validate(entity);
+            var validationResult = await ValidateAsync(entity);
             if (validationResult.HasErrors)
             {
                 throw new A.Core.Validation.ValidationException(validationResult);
             }
-            this.SaveChanges();
+            await this.SaveChangesAsync();
         }
-        public virtual A.Core.Validation.ValidationResult Validate(object entity)
+        public virtual async Task<A.Core.Validation.ValidationResult> ValidateAsync(object entity)
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
@@ -92,23 +93,24 @@ namespace A.Core.Services.Core
             {
                 validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
             }
-            return result;
+            return await Task.FromResult(result);
         }
 
-        public virtual TEntity Get(object id, TSearchAdditionalData additionalData = null)
+        
+        public virtual async Task<TEntity> GetAsync(object id, TSearchAdditionalData additionalData = null)
         {
-            if(additionalData != null)
+            if (additionalData != null)
             {
 
             }
-            if(additionalData != null && additionalData.IncludeList.Count > 0)
+            if (additionalData != null && additionalData.IncludeList.Count > 0)
             {
                 //TODO: Implement lazy loading
                 throw new ApplicationException("Not yet supported :(");
             }
             else
             {
-                return GetByIdInternal(id);
+                return await GetByIdInternalAsync(id);
             }
         }
 
@@ -117,18 +119,18 @@ namespace A.Core.Services.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual TEntity GetByIdInternal(object id)
+        public virtual async Task<TEntity> GetByIdInternalAsync(object id)
         {
-            return Entity.Find(id);
+            return await Entity.FindAsync(id);
         }
 
-        public virtual IQueryable<TEntity> Get(TSearchObject search)
+        public virtual async Task<IQueryable<TEntity>> GetAsync(TSearchObject search)
         {
             var query = Entity.AsQueryable();
-            AddFilter(search, ref query);
+            query = await AddFilterAsync(search, query);
             AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
-            return query;
+            return await Task.FromResult(query);
         }
 
         /// <summary>
@@ -148,9 +150,11 @@ namespace A.Core.Services.Core
             return include;
         }
 
-        protected virtual void AddFilter(TSearchObject search, ref IQueryable<TEntity> query)
+        protected virtual async Task<IQueryable<TEntity>> AddFilterAsync(TSearchObject search, IQueryable<TEntity> query)
         {
             AddFilterFromGeneratedCode(search, ref query);
+
+            return await Task.FromResult(query);
         }
         protected virtual void AddFilterFromGeneratedCode(TSearchObject search, ref IQueryable<TEntity> query)
         {
@@ -159,7 +163,7 @@ namespace A.Core.Services.Core
 
         protected virtual void AddOrder(TSearchObject search, ref IQueryable<TEntity> query)
         {
-            if(!string.IsNullOrWhiteSpace(search.OrderBy))
+            if (!string.IsNullOrWhiteSpace(search.OrderBy))
             {
                 var items = search.OrderBy.Split(' ');
                 if (items.Length > 2 || items.Length == 0)
@@ -193,29 +197,31 @@ namespace A.Core.Services.Core
             }
         }
 
-        public virtual PagedResult<TEntity> GetPage(TSearchObject search)
+        
+        [TransactionInterceptorAsync(AspectPriority = 1)]
+        public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
             {
                 search = new TSearchObject(); //if we don't get search object, instantiate default
             }
             PagedResult<TEntity> result = new PagedResult<TEntity>();
-            var query = Get(search);
+            var query = await GetAsync(search);
             if (search.IncludeCount.GetValueOrDefault(false) == true)
             {
-                result.Count = GetCount(query);
+                result.Count = await GetCountAsync(query);
             }
             AddPaging(search, ref query);
-            result.ResultList = query.ToList();
+            result.ResultList = await query.ToListAsync();
             result.HasMore = result.ResultList.Count >= search.PageSize.GetValueOrDefault(DefaultPageSize) && result.ResultList.Count > 0;
 
             return result;
         }
 
 
-        protected virtual long GetCount(IQueryable<TEntity> query)
+        protected virtual async Task<long> GetCountAsync(IQueryable<TEntity> query)
         {
-            return query.LongCount();
+            return await query.LongCountAsync();
         }
 
         public virtual void AddPaging(TSearchObject search, ref IQueryable<TEntity> query)
@@ -228,12 +234,12 @@ namespace A.Core.Services.Core
             }
         }
 
-
+        [LogInterceptor(AspectPriority = 0)]
         public bool BeginTransaction()
         {
             object transactionStarted = false;
             bool exists = this.ActionContext.Value.Data.TryGetValue("CORE_TRANSACTION_STARTED", out transactionStarted);
-            if(exists && (bool)transactionStarted)
+            if (exists && (bool)transactionStarted)
             {
                 return false;
             }
@@ -243,18 +249,20 @@ namespace A.Core.Services.Core
                 this.ActionContext.Value.Data["CORE_TRANSACTION_STARTED"] = true;
                 return true;
             }
-            
+
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void CommitTransaction()
         {
-            if(this.Context.Database.CurrentTransaction != null)
+            if (this.Context.Database.CurrentTransaction != null)
             {
                 this.Context.Database.CurrentTransaction.Commit();
                 this.ActionContext.Value.Data["CORE_TRANSACTION_STARTED"] = false;
             }
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void RollbackTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
@@ -264,6 +272,7 @@ namespace A.Core.Services.Core
             }
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void DisposeTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)

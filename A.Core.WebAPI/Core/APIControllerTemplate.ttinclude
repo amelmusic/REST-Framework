@@ -50,7 +50,7 @@ public class APIControllerTemplate : TextTransformation
 			codeTypeName = codeTypeName.Substring(0, codeTypeName.Length  - 1);
         }
 
-		WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
+		//WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
 		var codeType = VisualStudioHelper.CodeModel.FindCodeType(codeTypeName);
 		if(codeType != null)
 		{
@@ -59,7 +59,7 @@ public class APIControllerTemplate : TextTransformation
 				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
 				foreach(var property in allProperties)
                 {
-					WriteLine("//Property: " + property.Name);
+					//WriteLine("//Property: " + property.Name);
 					if(property.Name == "Id")
 					{
 						primaryKeyType = property.Type.AsFullName;
@@ -87,7 +87,7 @@ public class APIControllerTemplate : TextTransformation
 				}
 
 				bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
-								WriteLine("//Async: " + isAsync + "KeyType: " + primaryKeyType);
+								//WriteLine("//Async: " + isAsync + "KeyType: " + primaryKeyType);
 				if(isAsync)
                 {
 					string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
@@ -137,7 +137,7 @@ public class APIControllerTemplate : TextTransformation
 
 	 public void GenerateGet(EnvDTE.CodeFunction method, bool addRoute = false)
 	 {
-		WriteLine("//Generating template for Get for: " + method.Name);	
+		//WriteLine("//Generating template for Get for: " + method.Name);	
 		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
 		if(codeType != null)
 		{
@@ -190,7 +190,7 @@ public class APIControllerTemplate : TextTransformation
 
 	 public void GenerateInsert(EnvDTE.CodeFunction method)
 	 {
-		WriteLine("//Generating template for Insert for: " + method.Name);	
+		//WriteLine("//Generating template for Insert for: " + method.Name);	
 		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
 		if(codeType != null)
 		{
@@ -248,8 +248,16 @@ public class APIControllerTemplate : TextTransformation
 
 	 public void GenerateUpdate(EnvDTE.CodeFunction method, bool addMethodNameToRoute)
 	 {
-		WriteLine("//Generating template for Update for: " + method.Name);	
-		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		string codeTypeName = method.Type.AsFullName;
+		if(codeTypeName.StartsWith("System.Threading.Tasks.Task"))
+        {
+			codeTypeName = codeTypeName.Remove(0, codeTypeName.IndexOf('<') + 1);
+			codeTypeName = codeTypeName.Substring(0, codeTypeName.Length  - 1);
+        }
+
+		//WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(codeTypeName);
+
 		if(codeType != null)
 		{
 			StringBuilder typeAndNameParamListString = new StringBuilder();
@@ -334,7 +342,7 @@ public class APIControllerTemplate : TextTransformation
 
 	 public void GenerateDelete(EnvDTE.CodeFunction method)
 	 {
-		WriteLine("//Generating template for Delete for: " + method.Name);	
+		//WriteLine("//Generating template for Delete for: " + method.Name);	
 		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
 		if(codeType != null)
 		{
@@ -422,7 +430,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 	
 	<#+
 			System.Diagnostics.Debug.WriteLine("//Getting all methods for:" + Entity.FullName ); 
-			WriteLine("//Getting all methods for:" + Entity.FullName);
+			//WriteLine("//Getting all methods for:" + Entity.FullName);
 			if(Entity.FullName.Contains("IAccountService"))
             {
 
@@ -431,7 +439,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 			var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface((EnvDTE80.CodeInterface2)Entity);
 			foreach(var method in methods)
 			{
-				WriteLine("//metoda: " + method.Name + ", " + method.FullName);
+				//WriteLine("//metoda: " + method.Name + ", " + method.FullName);
 				EnvDTE.CodeAttribute defaultMethodBehaviour = null;
 				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
 				foreach(var attr in allAttributes)
@@ -441,7 +449,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 						defaultMethodBehaviour = attr;
 						break; 
 					}
-					WriteLine("//" + attr.Name + "|" + attr.Value);
+					//WriteLine("//" + attr.Name + "|" + attr.Value);
                 }
 				if(((method.Name == "Get" || method.Name == "GetAsync") && method.FullName.Contains("IReadService"))
 					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.GetById"))
@@ -449,7 +457,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 					//render get by Id method
 					GenerateGetById(method);
 				 }
-				else if((method.Name == "GetPage" || method.Name == "GetPageAsync")&& method.FullName.Contains("IReadService"))
+				else if((method.Name == "GetPage" || method.Name == "GetPageAsync") && method.FullName.Contains("IReadService"))
 				 {
 					//render get by Id method
 					GenerateGet(method);
@@ -459,7 +467,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 					//render get by Id method
 					GenerateGet(method, true);
 				 }
-				else if((method.Name == "Insert" && method.FullName.Contains("ICRUDService"))
+				else if(((method.Name == "Insert" || method.Name == "InsertAsync") && method.FullName.Contains("ICRUDService"))
 					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Insert"
 															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineInsert"
 															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")))
@@ -467,7 +475,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 					//render get by Id method
 					GenerateInsert(method);
 				 }
-				else if((method.Name == "Update" && method.FullName.Contains("ICRUDService"))
+				else if(((method.Name == "Update" || method.Name == "UpdateAsync")&& method.FullName.Contains("ICRUDService"))
 					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Update"
 															 || defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
 													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")))

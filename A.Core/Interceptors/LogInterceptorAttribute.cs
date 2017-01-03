@@ -70,5 +70,12 @@ namespace A.Core.Interceptors
 
         }
 
+        public override void OnExit(MethodExecutionArgs args)
+        {
+            if (log.IsDebugEnabled)
+            {
+                log.Debug(string.Format("Exited: {0}_{1}", loggerName, args.Method.Name));
+            }
+        }
     }
 }

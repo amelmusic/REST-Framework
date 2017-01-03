@@ -18,6 +18,8 @@
 	InterfaceFromModelTemplate interfaceTemplate = new InterfaceFromModelTemplate(entityList, VisualStudioHelper);
 	
 #>
+#region A_Core generated code
+
 using System.Collections.Generic;
 using A.Core.Interface;
 using A.Core.Attributes;
@@ -29,6 +31,8 @@ namespace <#= VisualStudioHelper.CurrentProject.Name#>
 {
 	<#= interfaceTemplate.TransformText()  #>
 }
+
+#endregion
 
 <#+ 
 

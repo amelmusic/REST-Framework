@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using A.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -8,10 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using System.ComponentModel.DataAnnotations;
-using AutoMapper.Internal;
 
 
-namespace A.Core.Services.Core
+namespace $rootnamespace$.Core
 {
     public partial class BaseEFBasedCRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate, TDBContext> : BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext>, ICRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate>
         where TEntity : class, new()
@@ -19,28 +18,19 @@ namespace A.Core.Services.Core
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        // ReSharper disable once StaticMemberInGenericType
-        public static IMapper Mapper { get; set; }
         static BaseEFBasedCRUDServiceAsync()
         {
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.SourceType.IsNullableType() && !context.IsSourceValueNull)
-                                || context.SourceType.IsClass && !context.IsSourceValueNull)
-                                || (context.SourceType.IsValueType
-                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
-                cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.SourceType.IsNullableType() && !context.IsSourceValueNull)
-                               || context.SourceType.IsClass && !context.IsSourceValueNull)
-                               || (context.SourceType.IsValueType
-                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+            Mapper.Initialize(cfg => cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
+                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+                    || (context.SourceType.IsValueType
+                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                        ))));
 
-            });
-
-            Mapper = config.CreateMapper();
+            Mapper.Initialize(cfg => cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
+                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
+                    || (context.SourceType.IsValueType
+                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                        ))));
         }
 
         [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]

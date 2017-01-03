@@ -1,22 +1,22 @@
-﻿using PostSharp.Aspects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Reflection;
-using Newtonsoft.Json;
-using PostSharp.Extensibility;
-using System.Collections;
-using System.IO;
+using System.Text;
 using System.Threading.Tasks;
-using PostSharp;
-using Microsoft.Practices.Unity;
 using Foundatio.Caching;
+using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
+using PostSharp;
+using PostSharp.Aspects;
+using PostSharp.Extensibility;
+using IService = A.Core.Interface.IService;
 
 namespace A.Core.Interceptors
 {
     [Serializable]
-    public class CacheInterceptorAttribute : OnMethodBoundaryAspect
+    public sealed class CacheInterceptorAsyncAttribute : OnAsyncMethodBoundaryAspect
     {
         private string _methodName;
         private string _className;
@@ -29,7 +29,6 @@ namespace A.Core.Interceptors
         [NonSerialized]
         static JsonSerializerSettings jsonSerializerSettings;
 
-
         /// <summary>
         /// Initializing caching mechanism
         /// </summary>
@@ -37,14 +36,13 @@ namespace A.Core.Interceptors
         /// <param name="expirationPattern">Format shoud be in hh:mm:ss - for example 01:15:00</param>
         /// <param name="isUserContextAware">if [true] UserId will be added to cache key</param>
         /// <param name="prefix">if [null] fully qualified class name will be used for prefix</param>
-        public CacheInterceptorAttribute(ExpirationType expirationType, string expirationPattern, string prefix = null, bool isUserContextAware = false)
+        public CacheInterceptorAsyncAttribute(ExpirationType expirationType, string expirationPattern, string prefix = null, bool isUserContextAware = false)
         {
             _expirationType = expirationType;
             _expirationPattern = expirationPattern;
             _isUserContextAware = isUserContextAware;
             _prefix = prefix;
         }
-
         public override void CompileTimeInitialize(MethodBase method, AspectInfo aspectInfo)
         {
             _methodName = method.Name;
@@ -55,13 +53,15 @@ namespace A.Core.Interceptors
         public override void RuntimeInitialize(System.Reflection.MethodBase method)
         {
             base.RuntimeInitialize(method);
+            
             jsonSerializerSettings = new JsonSerializerSettings();
             jsonSerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
             jsonSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             var methodType = ((MethodInfo)method).ReturnType;
             _getFromCacheMethodInfo = typeof(ICacheClient).GetMethod("GetAsync")
-                                         .MakeGenericMethod(new Type[] { methodType });
+                                         .MakeGenericMethod(new Type[] { methodType.GetGenericArguments()[0] });
+           
             
         }
 
@@ -100,11 +100,11 @@ namespace A.Core.Interceptors
 
             var key = BuildCacheKey(args.Arguments, instance);
 
-            var cacheResultTask = (dynamic) _getFromCacheMethodInfo.Invoke(cacheClient, new string[] { key });
+            var cacheResultTask = (dynamic)_getFromCacheMethodInfo.Invoke(cacheClient, new string[] { key });
             var cacheResult = cacheResultTask.GetAwaiter().GetResult();
             if (cacheResult.HasValue)
             {
-                args.ReturnValue = cacheResult.Value;
+                args.ReturnValue = Task.FromResult(cacheResult.Value);
                 args.FlowBehavior = FlowBehavior.Return;
             }
             else
@@ -113,26 +113,10 @@ namespace A.Core.Interceptors
             }
         }
 
-        public override void OnSuccess(MethodExecutionArgs args)
-        {
-            A.Core.Interface.IService instance = (A.Core.Interface.IService)args.Instance;
-            var cacheClient = instance.ActionContext.Value.CurrentContainer.Resolve<ICacheClient>();
-            string key = (string)args.MethodExecutionTag;
-            if(_expirationType == ExpirationType.Default)
-            {
-                cacheClient.AddAsync(key, args.ReturnValue).GetAwaiter().GetResult();
-            }
-            else if(_expirationType == ExpirationType.ExpiresIn)
-            {
-                TimeSpan span = TimeSpan.Parse(_expirationPattern);
-                cacheClient.AddAsync(key, args.ReturnValue, span).GetAwaiter().GetResult();
-            }
-        }
-
         private string BuildCacheKey(Arguments arguments, A.Core.Interface.IService instance)
         {
             var sb = new StringBuilder();
-            if(!string.IsNullOrWhiteSpace(_prefix))
+            if (!string.IsNullOrWhiteSpace(_prefix))
             {
                 sb.Append(_prefix);
             }
@@ -153,11 +137,34 @@ namespace A.Core.Interceptors
             sb.Append(output);
             return sb.ToString();
         }
-    }
 
-    public enum ExpirationType
-    {
-        Default = 0,
-        ExpiresIn = 1
+        public override void OnTaskFinished(Task precedingTask, MethodExecutionArgs args)
+        {
+           
+        }
+
+        public override void OnTaskFaulted(Task precedingTask, MethodExecutionArgs args)
+        {
+            
+        }
+
+        public override async void OnTaskCompletion(Task precedingTask, MethodExecutionArgs args)
+        {
+            A.Core.Interface.IService instance = (A.Core.Interface.IService)args.Instance;
+            var cacheClient = instance.ActionContext.Value.CurrentContainer.Resolve<ICacheClient>();
+            string key = (string)args.MethodExecutionTag;
+
+            dynamic retValue = ((dynamic)args.ReturnValue).Result;
+
+            if (_expirationType == ExpirationType.Default)
+            {
+                await cacheClient.AddAsync(key, retValue);
+            }
+            else if (_expirationType == ExpirationType.ExpiresIn)
+            {
+                TimeSpan span = TimeSpan.Parse(_expirationPattern);
+                await cacheClient.AddAsync(key, retValue, span);
+            }
+        }
     }
 }

@@ -96,7 +96,7 @@ namespace A.Core.Services.Core
             return await Task.FromResult(result);
         }
 
-        [TransactionInterceptor]
+        
         public virtual async Task<TEntity> GetAsync(object id, TSearchAdditionalData additionalData = null)
         {
             if (additionalData != null)
@@ -197,6 +197,8 @@ namespace A.Core.Services.Core
             }
         }
 
+        
+        [TransactionInterceptorAsync(AspectPriority = 1)]
         public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
@@ -232,6 +234,7 @@ namespace A.Core.Services.Core
             }
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public bool BeginTransaction()
         {
             object transactionStarted = false;
@@ -249,6 +252,7 @@ namespace A.Core.Services.Core
 
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void CommitTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
@@ -258,6 +262,7 @@ namespace A.Core.Services.Core
             }
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void RollbackTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
@@ -267,6 +272,7 @@ namespace A.Core.Services.Core
             }
         }
 
+        [LogInterceptor(AspectPriority = 0)]
         public void DisposeTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)

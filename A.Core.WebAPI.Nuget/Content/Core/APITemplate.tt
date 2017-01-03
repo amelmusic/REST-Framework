@@ -18,6 +18,8 @@
 APIHelper helper = new APIHelper(VisualStudioHelper, APITemplateConfig);
 string @namespace = VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString();
 #>
+#region A_Core generated code
+
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -90,6 +92,9 @@ foreach(var i in helper.GetInterfaceList())
 //end of namespace
 WriteLine("}");
 #>
+
+
+#endregion
 <#+ 
 	public class APIHelper
 	{

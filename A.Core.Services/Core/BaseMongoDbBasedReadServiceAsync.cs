@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ using System.Linq.Dynamic;
 
 namespace A.Core.Services.Core
 {
-    public partial class BaseMongoDbBasedReadService<TEntity, TSearchObject, TSearchAdditionalData> : IReadService<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseMongoDbBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
@@ -28,7 +29,7 @@ namespace A.Core.Services.Core
         public virtual int DefaultPageSize { get; set; }
         public virtual string DatabaseName { get; set; }
         public virtual string ConnectionStringName { get; set; }
-        public BaseMongoDbBasedReadService()
+        public BaseMongoDbBasedReadServiceAsync()
         {
             // NOTE, this can be changed in T4 script
             DefaultPageSize = 100;
@@ -68,7 +69,7 @@ namespace A.Core.Services.Core
             return entity;
         }
 
-        public virtual TEntity Get(object id, TSearchAdditionalData additionalData = null)
+        public virtual async Task<TEntity> GetAsync(object id, TSearchAdditionalData additionalData = null)
         {
             /*
              NOTE: This will work for entities that has following attribute on Id field
@@ -77,37 +78,40 @@ namespace A.Core.Services.Core
              */
             var objId = id.ToString();//ObjectId.Parse(id.ToString());
             var filter = Builders<TEntity>.Filter.Eq("_id", objId);
-            return GetCollection().Find(filter).FirstOrDefault();
+            var result = await GetCollection().FindAsync(filter);
+
+            return await result.FirstOrDefaultAsync();
         }
 
-        public PagedResult<TEntity> GetPage(TSearchObject search)
+        public async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
             {
                 search = new TSearchObject(); //if we don't get search object, instantiate default
             }
             PagedResult<TEntity> result = new PagedResult<TEntity>();
-            var query = Get(search);
+            var query = await GetAsync(search);
             if (search.IncludeCount.GetValueOrDefault(false) == true)
             {
-                result.Count = GetCount(query);
+                result.Count = await GetCountAsync(query);
             }
+
             AddPaging(search, ref query);
-            result.ResultList = query.ToList();
+            result.ResultList = await ((IMongoQueryable < TEntity >)query).ToListAsync();
             result.HasMore = result.ResultList.Count >= search.PageSize.GetValueOrDefault(DefaultPageSize) && result.ResultList.Count > 0;
 
             return result;
         }
-        protected virtual long GetCount(IQueryable<TEntity> query)
+        protected virtual async Task<long> GetCountAsync(IQueryable<TEntity> query)
         {
-            return query.LongCount();
+            return await ((IMongoQueryable<TEntity>)query).LongCountAsync();
         }
-        public virtual IQueryable<TEntity> Get(TSearchObject search)
+        public virtual async Task<IQueryable<TEntity>> GetAsync(TSearchObject search)
         {
             IQueryable<TEntity> query = GetCollection().AsQueryable<TEntity>();
-            AddFilter(search, ref query);
+            query = await AddFilterAsync(search, query);
             AddOrder(search, ref query);
-            return query;
+            return await Task.FromResult(query);
         }
 
         protected virtual IList<string> GetIncludeList(TSearchAdditionalData searchAdditionalData)
@@ -116,9 +120,10 @@ namespace A.Core.Services.Core
             return include;
         }
 
-        protected virtual void AddFilter(TSearchObject search, ref IQueryable<TEntity> query)
+        protected virtual Task<IQueryable<TEntity>> AddFilterAsync(TSearchObject search, IQueryable<TEntity> query)
         {
             AddFilterFromGeneratedCode(search, ref query);
+            return Task.FromResult(query);
         }
         protected virtual void AddFilterFromGeneratedCode(TSearchObject search, ref IQueryable<TEntity> query)
         {
@@ -202,7 +207,7 @@ namespace A.Core.Services.Core
             }
             return result;
         }
-        public virtual void Save(TEntity entity)
+        public virtual async Task<bool> SaveAsync(TEntity entity)
         {
             if (entity is BaseEntityWithDateTokens)
             {
@@ -221,10 +226,12 @@ namespace A.Core.Services.Core
                 throw new A.Core.Validation.ValidationException(validationResult);
             }
            //upsert here
-            Upsert(entity);
+            await UpsertAsync(entity);
+
+            return true;
         }
 
-        protected virtual void Upsert(TEntity entity)
+        protected virtual async Task UpsertAsync(TEntity entity)
         {
             throw new MissingMethodException("Upsert has to be implemented");
         }

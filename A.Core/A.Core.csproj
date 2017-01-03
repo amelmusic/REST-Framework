@@ -111,10 +111,13 @@
     <Compile Include="Class1.cs" />
     <Compile Include="DummyPermissionChecker.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Interceptors\CacheInterceptorAsyncAttribute.cs" />
     <Compile Include="Interceptors\CacheInterceptorAttribute.cs" />
     <Compile Include="Interceptors\InvalidateCacheInterceptorAttribute.cs" />
     <Compile Include="Interceptors\LogAttribute.cs" />
     <Compile Include="Interceptors\LogInterceptorAttribute.cs" />
+    <Compile Include="Interceptors\OnAsyncMethodBoundaryAspect.cs" />
+    <Compile Include="Interceptors\TransactionInterceptorAsyncAttribute.cs" />
     <Compile Include="Interceptors\TransactionInterceptorAttribute.cs" />
     <Compile Include="Interface\IActionContext.cs" />
     <Compile Include="Interface\ICRUDService.cs" />

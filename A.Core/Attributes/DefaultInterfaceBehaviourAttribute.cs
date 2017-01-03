@@ -24,5 +24,7 @@ namespace A.Core.Attributes
     {
         ReadService = 1
         ,CRUDService = 2
+        ,ReadServiceAsync = 3
+        ,CRUDServiceAsync = 4
     }
 }

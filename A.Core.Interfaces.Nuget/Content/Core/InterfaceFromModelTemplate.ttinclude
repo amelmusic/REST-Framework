@@ -90,11 +90,35 @@ public class InterfaceFromModelTemplate : TextTransformation
             }
 #>
 <#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.ReadServiceAsync")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>ServiceAsync : IReadServiceAsync<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+ 
             if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.CRUDService")
             {
 #>
 		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
 		public partial interface I<#= Class.Name #>Service : ICRUDService<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>InsertRequest, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>UpdateRequest>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.CRUDServiceAsync")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>ServiceAsync : ICRUDServiceAsync<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>InsertRequest, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>UpdateRequest>
 		{
 		
 		}

@@ -8,6 +8,8 @@
 
 
 
+#region A_Core generated code
+
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -68,3 +70,6 @@ namespace A.Core.WebAPI.Controllers
 namespace A.Core.WebAPI.Controllers 
 { 
 }
+
+
+#endregion

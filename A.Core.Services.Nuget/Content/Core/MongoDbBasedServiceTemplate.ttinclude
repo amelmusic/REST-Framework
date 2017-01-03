@@ -50,6 +50,18 @@ public class MongoDbBasedServiceTemplate : TextTransformation
         {
 			baseclassName = "BaseMongoDbBasedCRUDService";
         }
+		else if(BaseInterface == "ICRUDServiceAsync")
+        {
+			baseclassName = "BaseMongoDbBasedCRUDServiceAsync";
+        }
+		else if(BaseInterface == "IReadServiceAsync")
+        {
+			baseclassName = "BaseMongoDbBasedReadServiceAsync";
+        }
+		else if(BaseInterface == "IReadService")
+        {
+			baseclassName = "BaseMongoDbBasedReadService";
+        }
 		var project = this.VisualStudioHelper.CurrentProject;
 		if(allClasses == null)
         {
@@ -120,7 +132,7 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 		bool isUpsertGenerated = false;
 		foreach(var i in baseInterfaces)
 		{
-			if(i.Name == "IReadService" || i.Name == "ICRUDService")
+			if(i.Name == "IReadService" || i.Name == "ICRUDService" || i.Name == "IReadServiceAsync" || i.Name == "ICRUDServiceAsync")
 			{
 				string firstArgument = i.FullName.Split('<', '>')[1];
 				string entityName = firstArgument.Split(',')[0];
@@ -303,7 +315,29 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 
 	public void GenerateUpsert(string entityName, string keyPropertyName)
     {
-		WriteLine(string.Format(
+		if(ClassName.EndsWith("Async"))
+        {
+			WriteLine(string.Format(
+				@"
+					protected override async System.Threading.Tasks.Task UpsertAsync({0} entity)
+					{{
+						if(entity.{1} == null || string.IsNullOrWhiteSpace(entity.{1}.ToString()))
+						{{
+							await GetCollection().InsertOneAsync(entity);
+						}}
+						else
+						{{
+							var filter = MongoDB.Driver.Builders<{0}>.Filter.Eq(s => s.{1}, entity.{1});
+							await GetCollection().ReplaceOneAsync(filter,
+							entity,
+							new MongoDB.Driver.UpdateOptions {{ IsUpsert = true }});
+						}}
+					}}
+				", entityName, keyPropertyName));
+        }
+		else
+		{
+			WriteLine(string.Format(
 				@"
 					protected override void Upsert({0} entity)
 					{{
@@ -320,6 +354,7 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 						}}
 					}}
 				", entityName, keyPropertyName));
+        }
     }
 
     public override string TransformText()
@@ -333,6 +368,12 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 			{
 				baseInterface = "ICRUDService";
 			}
+
+			if(@interface.Name.EndsWith("Async"))
+            {
+				baseInterface += "Async";
+			}
+
 			Entity = @interface;
 			ClassName =  @interface.Name.Substring(1);
 			BaseInterface = baseInterface;

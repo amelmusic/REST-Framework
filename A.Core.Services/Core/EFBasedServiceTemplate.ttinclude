@@ -259,7 +259,7 @@ public class EFBasedServiceTemplate : TextTransformation
 		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
 		watch.Start();
 		var baseInterfaces = BaseInterfacesForCurrentEntity;//VisualStudioHelper.CodeModel.GetAllBaseInterfaces(Entity);
-		WriteLine("//ElapsedEFSingle Get base interfaces: " + ClassName + ":" + watch.ElapsedMilliseconds);
+		//WriteLine("//ElapsedEFSingle Get base interfaces: " + ClassName + ":" + watch.ElapsedMilliseconds);
 		watch.Restart();
 		foreach(var i in baseInterfaces)
 		{
@@ -283,7 +283,7 @@ public class EFBasedServiceTemplate : TextTransformation
 
 				StringBuilder filterBuilder = new StringBuilder();
 				//var allPropertiesOnSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(searchObjectFromBaseClass.Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
-				WriteLine("//ElapsedEFSingle Get allPropertiesOnSearchObject: " + ClassName + ":" + watch.ElapsedMilliseconds);
+				//WriteLine("//ElapsedEFSingle Get allPropertiesOnSearchObject: " + ClassName + ":" + watch.ElapsedMilliseconds);
 				watch.Restart();
 		
 				foreach(EnvDTE.CodeProperty property in allPropertiesOnSearchObject)
@@ -541,7 +541,7 @@ public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.Full
 	#>
 }
 <#+
-			WriteLine("//ElapsedEFSingle for: " + ClassName + ":" + watch.ElapsedMilliseconds);
+			//WriteLine("//ElapsedEFSingle for: " + ClassName + ":" + watch.ElapsedMilliseconds);
         }
 		return this.GenerationEnvironment.ToString();
     }
