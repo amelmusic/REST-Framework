@@ -1,24 +1,22 @@
-﻿using A.Core.Interface;
-using A.Core.Model;
-using Microsoft.Practices.Unity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq.Dynamic;
-using System.Linq.Expressions;
 using A.Core.Interceptors;
+using A.Core.Interface;
+using A.Core.Model;
+using Microsoft.Practices.Unity;
+using A.Core;
 
 namespace $rootnamespace$.Core
 {
-    /// <summary>
-    /// Base implementation for IReadService and ICRUDService
-    /// </summary>
-    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
+        where TDbEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
@@ -26,22 +24,28 @@ namespace $rootnamespace$.Core
         [Dependency]
         public Lazy<IActionContext> ActionContext { get; set; }
 
+        /// <summary>
+        /// If true, all gets will go to Get method. This is suitable when we need to implement multi tenant scenarios and have filter in one place.
+        /// Performance may suffer.
+        /// </summary>
+        public virtual bool IsMultitenantAwareService { get; set; }
+
         public virtual int DefaultPageSize { get; set; }
-        DbSet<TEntity> mEntity = null;
-        protected virtual DbSet<TEntity> Entity
+        DbSet<TDbEntity> mEntity = null;
+        protected virtual DbSet<TDbEntity> Entity
         {
             get
             {
                 if (mEntity == null)
                 {
-                    mEntity = Context.Set<TEntity>();
+                    mEntity = Context.Set<TDbEntity>();
                 }
                 return mEntity;
             }
         }
-        protected virtual TEntity CreateNewInstance()
+        protected virtual TDbEntity CreateNewInstance()
         {
-            TEntity entity = new TEntity();
+            TDbEntity entity = new TDbEntity();
             return entity;
         }
 
@@ -61,7 +65,7 @@ namespace $rootnamespace$.Core
             }
         }
 
-        public virtual async Task SaveAsync(TEntity entity)
+        public virtual async Task SaveAsync(TDbEntity entity)
         {
             if (entity is BaseEntityWithDateTokens)
             {
@@ -91,12 +95,12 @@ namespace $rootnamespace$.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return await Task.FromResult(result);
         }
 
-        
+
         public virtual async Task<TEntity> GetAsync(object id, TSearchAdditionalData additionalData = null)
         {
             if (additionalData != null)
@@ -110,8 +114,14 @@ namespace $rootnamespace$.Core
             }
             else
             {
-                return await GetByIdInternalAsync(id);
+                var item = await GetByIdInternalAsync(id);
+                return await GetByIdInternalMappedAsync(item, additionalData);
             }
+        }
+
+        public virtual Task<TEntity> GetByIdInternalMappedAsync(TDbEntity item, TSearchAdditionalData additionalData = null)
+        {
+            return Task.FromResult(GlobalMapper.Mapper.Map<TEntity>(item));
         }
 
         /// <summary>
@@ -119,26 +129,34 @@ namespace $rootnamespace$.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual async Task<TEntity> GetByIdInternalAsync(object id)
+        public virtual async Task<TDbEntity> GetByIdInternalAsync(object id)
         {
             return await Entity.FindAsync(id);
         }
 
-        public virtual async Task<IQueryable<TEntity>> GetAsync(TSearchObject search)
+        public virtual async Task<IQueryable<TDbEntity>> GetAsync(TSearchObject search)
         {
             var query = Entity.AsQueryable();
             query = await AddFilterAsync(search, query);
-            AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
+            AddInclude(search.AdditionalData, ref query);
             return await Task.FromResult(query);
         }
+
+        protected virtual async Task<TEntity> GetFirstOrDefaultForSearchObjectAsync(TSearchObject search)
+        {
+            var query = await GetAsync(search);
+            var result = await query.FirstOrDefaultAsync();
+            return await GetByIdInternalMappedAsync(result, search?.AdditionalData);
+        }
+
 
         /// <summary>
         /// Adds include based on IncludeList from search object
         /// </summary>
         /// <param name="search"></param>
         /// <param name="query"></param>
-        protected virtual void AddInclude(TSearchAdditionalData searchAdditionalData, ref IQueryable<TEntity> query)
+        protected virtual void AddInclude(TSearchAdditionalData searchAdditionalData, ref IQueryable<TDbEntity> query)
         {
             var include = GetIncludeList(searchAdditionalData);
             query = include.Aggregate(query, (current, inc) => current.Include(inc));
@@ -150,18 +168,18 @@ namespace $rootnamespace$.Core
             return include;
         }
 
-        protected virtual async Task<IQueryable<TEntity>> AddFilterAsync(TSearchObject search, IQueryable<TEntity> query)
+        protected virtual async Task<IQueryable<TDbEntity>> AddFilterAsync(TSearchObject search, IQueryable<TDbEntity> query)
         {
             AddFilterFromGeneratedCode(search, ref query);
 
             return await Task.FromResult(query);
         }
-        protected virtual void AddFilterFromGeneratedCode(TSearchObject search, ref IQueryable<TEntity> query)
+        protected virtual void AddFilterFromGeneratedCode(TSearchObject search, ref IQueryable<TDbEntity> query)
         {
 
         }
 
-        protected virtual void AddOrder(TSearchObject search, ref IQueryable<TEntity> query)
+        protected virtual void AddOrder(TSearchObject search, ref IQueryable<TDbEntity> query)
         {
             if (!string.IsNullOrWhiteSpace(search.OrderBy))
             {
@@ -197,7 +215,7 @@ namespace $rootnamespace$.Core
             }
         }
 
-        
+
         [TransactionInterceptorAsync(AspectPriority = 1)]
         public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
@@ -212,19 +230,24 @@ namespace $rootnamespace$.Core
                 result.Count = await GetCountAsync(query);
             }
             AddPaging(search, ref query);
-            result.ResultList = await query.ToListAsync();
+            result.ResultList = await MaterializeResult(query);
             result.HasMore = result.ResultList.Count >= search.PageSize.GetValueOrDefault(DefaultPageSize) && result.ResultList.Count > 0;
 
             return result;
         }
 
+        protected virtual async Task<List<TEntity>> MaterializeResult(IQueryable<TDbEntity> query)
+        {
+            var resultList = GlobalMapper.Mapper.Map<List<TEntity>>(await query.ToListAsync());
+            return resultList;
+        }
 
-        protected virtual async Task<long> GetCountAsync(IQueryable<TEntity> query)
+        protected virtual async Task<long> GetCountAsync(IQueryable<TDbEntity> query)
         {
             return await query.LongCountAsync();
         }
 
-        public virtual void AddPaging(TSearchObject search, ref IQueryable<TEntity> query)
+        public virtual void AddPaging(TSearchObject search, ref IQueryable<TDbEntity> query)
         {
             if (!search.RetrieveAll.GetValueOrDefault(false) == true)
             {
@@ -282,4 +305,5 @@ namespace $rootnamespace$.Core
             }
         }
     }
+
 }

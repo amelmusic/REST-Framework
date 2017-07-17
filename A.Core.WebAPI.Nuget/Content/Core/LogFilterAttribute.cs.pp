@@ -63,11 +63,11 @@ namespace $rootnamespace$.Core
 
                 if (actionExecutedContext.Exception == null)
                 {
-                    Log.Info(actionExecutedContext.Request.RequestUri);
+                    Log.Info(actionExecutedContext.Request.RequestUri.ToString());
                 }
                 else
                 {
-                    Log.Error(actionExecutedContext.Request.RequestUri);
+                    Log.Error(actionExecutedContext.Request.RequestUri.ToString());
                 }
                 
             }

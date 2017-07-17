@@ -38,6 +38,16 @@ namespace A.Core.Attributes
         GreatherThanOrEqual = GreatherThan << 1,   // 8
         LowerThan = GreatherThanOrEqual << 1,
         LowerThanOrEqual = LowerThan << 1,
-        List = LowerThanOrEqual << 1
+        List = LowerThanOrEqual << 1,
+        EqualOrNull = List << 1,
+        NotEqualOrNull = EqualOrNull << 1,
+        GreatherThanOrEqualOrNull = NotEqualOrNull << 1,
+        LowerThanOrEqualOrNull = GreatherThanOrEqualOrNull << 1,
+        Null = LowerThanOrEqualOrNull << 1,
+        GreatherThanOrNull = Null << 1,
+        LowerThanOrNull = GreatherThanOrNull << 1,
+        ListOrNull = LowerThanOrNull << 1,
+        ListNotEqualOrNull = ListOrNull << 1,
+        ListNotEqual = ListNotEqualOrNull << 1,
     }
 }

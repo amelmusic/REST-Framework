@@ -30,6 +30,7 @@ namespace A.Core.Attributes
         StateMachineUpdateWithoutServiceImpl = 23,
         DeleteWithoutServiceImpl = 30,
         Delete = 31,
+        Download = 50,
         Custom1 = 100,
         Custom2 = 101,
         Custom3 = 102,

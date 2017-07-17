@@ -133,10 +133,22 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine(string.Format("public virtual {0}{2} {1}", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
+					if(IsOperatorExisting(property,"FilterEnum.EqualOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.EqualOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}OrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
 					if(IsOperatorExisting(property,"FilterEnum.NotEqual"))
                     {
 						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.NotEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
 						WriteLine(string.Format("public virtual {0}{2} {1}NE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.NotEqualOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.NotEqualOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}NEOrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
 					if(IsOperatorExisting(property,"FilterEnum.GreatherThan"))
@@ -145,10 +157,22 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine(string.Format("public virtual {0}{2} {1}GT", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
+					if(IsOperatorExisting(property,"FilterEnum.GreatherThanOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.GreatherThanOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}GTOrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
 					if(IsOperatorExisting(property,"FilterEnum.GreatherThanOrEqual"))
                     {
 						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.GreatherThanOrEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
 						WriteLine(string.Format("public virtual {0}{2} {1}GTE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.GreatherThanOrEqualOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.GreatherThanOrEqualOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}GTEOrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
 					if(IsOperatorExisting(property,"FilterEnum.LowerThan"))
@@ -157,10 +181,22 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine(string.Format("public virtual {0}{2} {1}LT", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
+					if(IsOperatorExisting(property,"FilterEnum.LowerThanOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.LowerThanOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}LTOrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
 					if(IsOperatorExisting(property,"FilterEnum.LowerThanOrEqual"))
                     {
 						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.LowerThanOrEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
 						WriteLine(string.Format("public virtual {0}{2} {1}LTE", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.LowerThanOrEqualOrNull"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.LowerThanOrEqualOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}LTEOrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
 					if(IsOperatorExisting(property,"FilterEnum.List"))
@@ -170,7 +206,27 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine(string.Format("public virtual System.Collections.Generic.IList<{0}> {1}List", property.Type.AsFullName, property.Name) + " { get {return m" +property.Name+"List;} set { m" +property.Name+ "List = value; }}");
 						WriteLine("\r\n");
                     }
-					
+					if(IsOperatorExisting(property,"FilterEnum.ListNotEqual"))
+                    {
+						WriteLine(string.Format("protected System.Collections.Generic.IList<{0}> m{1}ListNE = new System.Collections.Generic.List<{0}>();", property.Type.AsFullName, property.Name));
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.ListNotEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual System.Collections.Generic.IList<{0}> {1}ListNE", property.Type.AsFullName, property.Name) + " { get {return m" +property.Name+"ListNE;} set { m" +property.Name+ "ListNE = value; }}");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.ListOrNull"))
+                    {
+						WriteLine(string.Format("protected System.Collections.Generic.IList<{0}> m{1}ListOrNull = new System.Collections.Generic.List<{0}>();", property.Type.AsFullName, property.Name));
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.ListOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual System.Collections.Generic.IList<{0}> {1}ListOrNull", property.Type.AsFullName, property.Name) + " { get {return m" +property.Name+"ListOrNull;} set { m" +property.Name+ "ListOrNull = value; }}");
+						WriteLine("\r\n");
+                    }
+					if(IsOperatorExisting(property,"FilterEnum.ListNotEqualOrNull"))
+                    {
+						WriteLine(string.Format("protected System.Collections.Generic.IList<{0}> m{1}ListNEOrNull = new System.Collections.Generic.List<{0}>();", property.Type.AsFullName, property.Name));
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.ListNotEqualOrNull, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual System.Collections.Generic.IList<{0}> {1}ListNEOrNull", property.Type.AsFullName, property.Name) + " { get {return m" +property.Name+"ListNEOrNull;} set { m" +property.Name+ "ListNEOrNull = value; }}");
+						WriteLine("\r\n");
+                    }
 				}				
             }
 

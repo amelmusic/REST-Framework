@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using A.Core.Model;
 using System;
 using System.Collections.Generic;
@@ -26,18 +26,17 @@ namespace A.Core.Services.Core
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.SourceType.IsNullableType() && !context.IsSourceValueNull)
+                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
                                 || context.SourceType.IsClass && !context.IsSourceValueNull)
                                 || (context.SourceType.IsValueType
                                    && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
                                )));
                 cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.SourceType.IsNullableType() && !context.IsSourceValueNull)
+                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
                                || context.SourceType.IsClass && !context.IsSourceValueNull)
                                || (context.SourceType.IsValueType
                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
                                )));
-
             });
 
             Mapper = config.CreateMapper();
@@ -101,7 +100,7 @@ namespace A.Core.Services.Core
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return await Task.FromResult(result);
         }
@@ -116,7 +115,7 @@ namespace A.Core.Services.Core
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return await Task.FromResult(result);
         }

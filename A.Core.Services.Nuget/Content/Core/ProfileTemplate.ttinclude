@@ -1,0 +1,103 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<#+
+public class ProfileMapInfo
+{
+    public string EntityName { get; set; }
+    public string EntityFullName { get; set; }
+    public string MappedTo { get; set; }
+}
+public class ProfileTemplate : TextTransformation
+{
+	public string EntityAttribute = "A.Core.Attributes.EntityAttribute";
+	ServiceTemplateConfig Config {get; set;}
+	AutomationHelper VisualStudioHelper {get; set;}
+	public ProfileTemplate(ServiceTemplateConfig config, AutomationHelper helper)
+	{
+		VisualStudioHelper = helper;
+		Config = config;
+	}
+
+	public IList<ProfileMapInfo> GetProfileList()
+    {
+		IList<ProfileMapInfo> mapList = new List<ProfileMapInfo>();
+		
+		IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+			
+		if(Config.InterfacesProjectList.Count > 0)
+        {
+			foreach(var projectName in Config.ModelProjectList)
+            {
+				var project = VisualStudioHelper.GetProject(projectName);
+				projectList.Add(project);
+            }
+        }
+
+		foreach(var project in projectList)
+        {
+			string @namespace = project.Properties.Item("DefaultNamespace").Value.ToString();
+			var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false,  @namespace);
+			foreach(EnvDTE.CodeClass entity in allClasses)
+			{
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+				foreach(var attr in allAttributes)
+                {
+					if(attr.FullName == EntityAttribute)
+                    {
+						string[] values = attr.Value.Split(',');
+						if(values.Length >= 2)
+                        {
+							string mappedTo = values[1].Trim().Trim('"');
+
+							if(!string.IsNullOrWhiteSpace(mappedTo))
+                            {
+                                var profileMapInfo = new ProfileMapInfo();
+								profileMapInfo.EntityName = entity.Name;
+								profileMapInfo.EntityFullName = entity.FullName;
+								profileMapInfo.MappedTo = Config.DefaultNamespaceForDatabaseModel + mappedTo;
+
+								mapList.Add(profileMapInfo);
+                            }
+                        }
+                    }
+                }
+			}
+        }
+
+		return mapList;
+    }
+
+
+    public override string TransformText()
+    {
+		var profileList = GetProfileList();
+		foreach(var profile in profileList)
+        {
+#>
+			public partial class <#= profile.EntityName #>To<#= profile.MappedTo.Replace('.','_') #>MapProfile : AutoMapper.Profile
+				{
+				    protected override void Configure()
+				    {
+				        var profile = base.CreateMap<<#= profile.EntityName #>, <#= profile.MappedTo #>>();
+						profile.ForAllMembers(opt => opt.Condition(
+							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+										|| context.SourceType.IsClass && !context.IsSourceValueNull)
+										|| (context.SourceType.IsValueType
+										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+									   )));
+						profile.ReverseMap();
+				    }
+			}
+<#+
+        }
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

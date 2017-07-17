@@ -127,6 +127,7 @@ public class StateMachineTemplate : TextTransformation
 {
 	public string StateMachineAttribute = "A.Core.Attributes.StateMachineAttribute";
 	public string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
+	public string EntityAttributeName = "A.Core.Attributes.EntityAttribute";
 	ServiceTemplateConfig Config {get; set;}
 	AutomationHelper VisualStudioHelper {get; set;}
 	IList<EnvDTE.CodeInterface> InterfaceList {get; set;}
@@ -228,7 +229,8 @@ public class StateMachineTemplate : TextTransformation
         {
 			if(attribute.FullName == StateMachineAttribute)
             {
-				return attribute.Value.Split(',')[1].Trim().Trim('"');
+				string name = attribute.Value.Split(',')[1].Trim().Trim('"');
+				return name;
             }
         }
 		
@@ -396,14 +398,33 @@ public class StateMachineTemplate : TextTransformation
 <#+ 
 						string entityName = null;
 						string shortEntityName = null;
+						string mappedToEntityName = null;
+						string mappedToEntityNameWithoutDots = null;
 						var baseInterfaces = VisualStudioHelper.CodeModel.GetAllBaseInterfaces(Interface);
 						foreach(var i in baseInterfaces)
                         {
-							if(i.Name == "IReadService" || i.Name == "ICRUDService")
+							if(i.Name == "IReadService" || i.Name == "ICRUDService" || i.Name == "IReadServiceAsync" || i.Name == "ICRUDServiceAsync")
                             {
 								string firstArgument = i.FullName.Split('<', '>')[1];
 								entityName = firstArgument.Split(',')[0];
 								shortEntityName = entityName.Split('.').Last();
+
+								var entityFromModel = VisualStudioHelper.CodeModel.FindCodeType(entityName);
+								
+								var allAttributes = entityFromModel.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(EntityFromModel.Attributes, vsCMElement.vsCMElementAttribute, false);//.OfType<EnvDTE.CodeAttribute>();
+								foreach(EnvDTE.CodeAttribute attr in allAttributes)
+								{
+									if(attr.FullName == EntityAttributeName)
+									{
+										string[] values = attr.Value.Split(',');
+										if(values.Length >= 2)
+										{
+											mappedToEntityName = Config.DefaultNamespaceForDatabaseModel + values[1].Trim().Trim('"');
+											mappedToEntityNameWithoutDots = mappedToEntityName.Replace('.','_');
+										}
+										break; 
+									}
+								}
                             }
                         }
 						
@@ -411,7 +432,21 @@ public class StateMachineTemplate : TextTransformation
 <#+				
 				foreach(var triggerName in GetGuardNames(this.CurrentStateGraph))
 				{
-#>
+#>				
+				public partial class <#= stateMachineName#><#= triggerName #>TriggerTo<#= mappedToEntityNameWithoutDots ?? shortEntityName #>MapProfile : AutoMapper.Profile
+				{
+				    protected override void Configure()
+				    {
+				        var profile = base.CreateMap<<#= stateMachineName#><#= triggerName #>Trigger, <#= mappedToEntityName ?? entityName #>>();
+						profile.ForAllMembers(opt => opt.Condition(
+							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+										|| context.SourceType.IsClass && !context.IsSourceValueNull)
+										|| (context.SourceType.IsValueType
+										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+									   )));
+						profile.ReverseMap();
+				    }
+				}
 				public partial class <#= stateMachineName#><#= triggerName #>Trigger : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase 
 				{
 <#+
@@ -422,14 +457,6 @@ public class StateMachineTemplate : TextTransformation
 <#+ 
 					}
 #>
-					static <#= stateMachineName #><#= triggerName #>Trigger()
-                    {
-						AutoMapper.Mapper.Initialize(cfg => cfg.CreateMap<<#= shortEntityName #><#= triggerName #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(
-							context => (context.SourceType.IsClass && !context.IsSourceValueNull)
-								|| (context.SourceType.IsValueType
-									 && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-							))));
-                    }
 					public <#= stateMachineName #><#= triggerName #>Trigger()
 					{
 						TriggerId = (int)mTriggerId;
@@ -437,7 +464,7 @@ public class StateMachineTemplate : TextTransformation
 					public <#= shortEntityName #><#= triggerName #>Request Request {get; set;}
 					public override void UpdateEntity(object entity)
 					{
-						AutoMapper.Mapper.Map(Request, entity);
+						A.Core.GlobalMapper.Mapper.Map(Request, entity);
 					}
 				}
 
@@ -448,7 +475,21 @@ public class StateMachineTemplate : TextTransformation
 				foreach(var startFlow in CurrentStateGraph.FlowElements.StartPoint.FlowTo.Flow)
 				{
 #>
-					public partial class <#= stateMachineName #><#= startFlow.Guard #>Trigger : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase 
+				public partial class <#= stateMachineName#><#= startFlow.Guard #>TriggerTo<#= mappedToEntityNameWithoutDots ?? shortEntityName #>MapProfile : AutoMapper.Profile
+				{
+				    protected override void Configure()
+				    {
+				        var profile = base.CreateMap<<#= stateMachineName#><#= startFlow.Guard #>Trigger, <#= mappedToEntityName ?? entityName #>>();
+						profile.ForAllMembers(opt => opt.Condition(
+							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+										|| context.SourceType.IsClass && !context.IsSourceValueNull)
+										|| (context.SourceType.IsValueType
+										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+									   )));
+						profile.ReverseMap();
+				    }
+				}
+				public partial class <#= stateMachineName #><#= startFlow.Guard #>Trigger : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase 
 				{
 <#+
 					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
@@ -458,14 +499,6 @@ public class StateMachineTemplate : TextTransformation
 <#+ 
 					}
 #>
-					static <#= stateMachineName #><#= startFlow.Guard #>Trigger()
-                    {
-						AutoMapper.Mapper.Initialize(cfg => cfg.CreateMap<<#= shortEntityName #><#= startFlow.Guard #>Request, <#= entityName #>>().ForAllMembers(opt => opt.Condition(
-							context => (context.SourceType.IsClass && !context.IsSourceValueNull)
-								|| (context.SourceType.IsValueType
-									 && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-							))));
-                    }
 					public <#= stateMachineName #><#= startFlow.Guard #>Trigger()
 					{
 						TriggerId = (int)mTriggerId;
@@ -473,7 +506,7 @@ public class StateMachineTemplate : TextTransformation
 					public <#= shortEntityName #><#= startFlow.Guard #>Request Request {get; set;}
 					public override void UpdateEntity(object entity)
 					{
-						AutoMapper.Mapper.Map(Request, entity);
+						A.Core.GlobalMapper.Mapper.Map(Request, entity);
 					}
 				}
 <#+ 
@@ -555,6 +588,77 @@ public class StateMachineTemplate : TextTransformation
 
 					}
 
+					/// <summary>
+					/// Makes the state machine react to a trigger.
+					/// </summary>
+					public override async Task ProcessTriggerAsync(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase trigger)
+					{
+						if (this.CurrentState == null) return;
+						if (trigger == null) throw new ArgumentException("Trigger must not be null");
+
+						// determine what action to take based on the current state
+						// and the given trigger.
+						// iterate all states in the diagram
+<#+						
+						
+#>
+						if (this.CurrentState is <#= stateMachineName#><#= startState.Name #>State)
+						{
+							if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                    {
+                                        throw new A.Core.Validation.UserException("Action not allowed!");
+                                    }
+<#+
+							foreach(var transition in startState.FlowTo.Flow)
+							{
+#>
+								if (trigger is <#= stateMachineName #><#= transition.Guard#>Trigger)
+								{
+									 var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(startState, transition.Guard)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+									await this.TransitionToNewStateAsync(state, trigger);
+								}
+<#+ 
+							}
+#>
+						}
+
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							else if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+								if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                        {
+                                             throw new A.Core.Validation.UserException("Action not allowed!");
+                                        }
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if (trigger is <#= stateMachineName #><#= transition#>Trigger)
+									{
+										var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(state, transition)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+										await this.TransitionToNewStateAsync(state, trigger);
+										
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+					}
+
 					 public System.Collections.Generic.IList<<#= shortEntityName #>TriggerEnum> GetAllowedTriggerList()
                         {
                             IList<<#= shortEntityName #>TriggerEnum> triggerList = new List<<#= shortEntityName #>TriggerEnum>();
@@ -600,7 +704,7 @@ public class StateMachineTemplate : TextTransformation
 						if(entityName != null)
                         {
 #>						
-						public <#=entityName#> Entity { get; set; }
+						public <#= mappedToEntityName ?? entityName#> Entity { get; set; }
 						public <#= stateMachineName #>()
 						:base()
 						{
@@ -613,7 +717,7 @@ public class StateMachineTemplate : TextTransformation
                             base.UpdateEntityState();
                         }
 
-						public void Initialize(<#=entityName#> entity)
+						public void Initialize(<#=mappedToEntityName ?? entityName#> entity)
 						{
 							//bind entity that we are operating ON
 							
@@ -706,20 +810,24 @@ public class StateMachineTemplate : TextTransformation
 					partial void On<#= method.Name #>BeforeSave(<#= typeAndNameParamString #>);
 					partial void On<#= method.Name #>AfterSave(<#= typeAndNameParamString #>);
 					[A.Core.Interceptors.LogInterceptor(AspectPriority=0)]
-					[A.Core.Interceptors.TransactionInterceptor(AspectPriority=1)]
-					public virtual <#= shortEntityName #> <#= method.Name #>(<#= typeAndNameParamString #>)
+					[A.Core.Interceptors.TransactionInterceptor<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(AspectPriority=1)]
+					public virtual <#= method.Type.AsFullName.Contains("Task<") ? "async" : "" #> <#= method.Type.AsFullName #> <#= method.Name #>(<#= typeAndNameParamString #>)
 					{
 						var entity = CreateNewInstance();
 
 						<#= stateMachineName#>Instance.Initialize(entity);
 
-						<#= stateMachineName#>Instance.ProcessTrigger(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= firstParam.Name #> });
+						<#= method.Type.AsFullName.Contains("Task<") ? "await" : "" #> <#= stateMachineName#>Instance.ProcessTrigger<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= firstParam.Name #> });
 						On<#= method.Name #>BeforeSave(<#= firstParam.Name #>);
-						Entity.Attach(entity);
-                        Context.Entry(entity).State = EntityState.Added;
-						Save(entity);
+						if (!Context.ExistsInContext(entity))
+						{
+                            Entity.Attach(entity);
+                            Context.Entry(entity).State = EntityState.Added;
+                        }
+						<#+ if(method.Type.AsFullName.Contains("Task<")) { #>await SaveAsync(entity); <#+ } #>
+						<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>Save(entity); <#+ } #>
 						On<#= method.Name #>AfterSave(<#= firstParam.Name #>);
-						return entity;
+						return <#+ if(string.IsNullOrWhiteSpace(mappedToEntityName)) { #> entity <#+ } else { #> await GetByIdInternalMappedAsync(entity) <#+ } #>;
 					}
 <#+ 
 						 }
@@ -731,27 +839,29 @@ public class StateMachineTemplate : TextTransformation
 					partial void On<#= method.Name #>BeforeSave(<#= typeAndNameParamString #>);
 					partial void On<#= method.Name #>AfterSave(<#= typeAndNameParamString #>);
 					[A.Core.Interceptors.LogInterceptor(AspectPriority=0)]
-					[A.Core.Interceptors.TransactionInterceptor(AspectPriority=1)]
-					public virtual <#= shortEntityName #> <#= method.Name #>(<#= typeAndNameParamString #>)
+					[A.Core.Interceptors.TransactionInterceptor<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(AspectPriority=1)]
+					public virtual <#= method.Type.AsFullName.Contains("Task<") ? "async" : "" #> <#= method.Type.AsFullName #> <#= method.Name #>(<#= typeAndNameParamString #>)
 					{
-						var entity = Get(<#= firstParam.Name #>);
+						<#+ if(method.Type.AsFullName.Contains("Task<")) { #>var entity = await GetByIdInternalAsync(id); <#+ } #>
+						<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>var entity = Get(<#= firstParam.Name #>); <#+ } #>
 						if(entity != null)
 						{
 							Entity.Attach(entity);
 							<#= stateMachineName#>Instance.Initialize(entity);
 
-							<#= stateMachineName#>Instance.ProcessTrigger(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= lastParam.Name #> });
+							<#= method.Type.AsFullName.Contains("Task<") ? "await" : "" #> <#= stateMachineName#>Instance.ProcessTrigger<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= lastParam.Name #> });
 							
 							//Context.Entry(entity).State = EntityState.Modified;
 							On<#= method.Name #>BeforeSave(<#= firstParam.Name #>, <#= lastParam.Name #>);
-							Save(entity);
+							<#+ if(method.Type.AsFullName.Contains("Task<")) { #>await SaveAsync(entity); <#+ } #>
+							<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>Save(entity); <#+ } #>
 							On<#= method.Name #>AfterSave(<#= firstParam.Name #>, <#= lastParam.Name #>);
 						}
 						else
 						{
 							throw new ApplicationException("Entity not found!");
 						}
-						return entity;
+						return <#+ if(string.IsNullOrWhiteSpace(mappedToEntityName)) { #> entity <#+ } else { #> await GetByIdInternalMappedAsync(entity) <#+ } #>;
 					}
 <#+ 
 						 }

@@ -25,6 +25,12 @@ namespace A.Core.Services.Core
         [Dependency]
         public virtual Lazy<IActionContext> ActionContext { get; set; }
 
+        /// <summary>
+        /// If true, all gets will go to Get method. This is suitable when we need to implement multi tenant scenarios and have filter in one place.
+        /// Performance may suffer.
+        /// </summary>
+        public virtual bool IsMultitenantAwareService { get; set; }
+
         public virtual int DefaultPageSize { get; set; }
         DbSet<TEntity> mEntity = null;
         protected virtual DbSet<TEntity> Entity
@@ -90,7 +96,7 @@ namespace A.Core.Services.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }
@@ -126,9 +132,16 @@ namespace A.Core.Services.Core
         {
             var query = Entity.AsQueryable();
             AddFilter(search, ref query);
-            AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
+            AddInclude(search.AdditionalData, ref query);
             return query;
+        }
+
+        protected virtual TEntity GetFirstOrDefaultForSearchObject(TSearchObject search)
+        {
+            var query = Get(search);
+            var result = query.FirstOrDefault();
+            return result;
         }
 
         /// <summary>

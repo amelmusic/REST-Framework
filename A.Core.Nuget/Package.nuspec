@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>A.Core</id>
-    <version>0.0.4</version>
+    <version>0.0.6</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

@@ -155,7 +155,10 @@ namespace A.Core.Interceptors
             string key = (string)args.MethodExecutionTag;
 
             dynamic retValue = ((dynamic)args.ReturnValue).Result;
-
+            if (retValue == null)
+            {
+                return;
+            }
             if (_expirationType == ExpirationType.Default)
             {
                 await cacheClient.AddAsync(key, retValue);

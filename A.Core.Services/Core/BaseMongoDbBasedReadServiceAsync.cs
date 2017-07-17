@@ -83,7 +83,7 @@ namespace A.Core.Services.Core
             return await result.FirstOrDefaultAsync();
         }
 
-        public async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
+        public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
             {
@@ -203,7 +203,7 @@ namespace A.Core.Services.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }

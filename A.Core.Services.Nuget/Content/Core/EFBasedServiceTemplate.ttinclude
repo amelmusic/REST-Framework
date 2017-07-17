@@ -15,6 +15,7 @@ public class EFBasedServiceTemplate : TextTransformation
 	public string LazyLoadingAttributeFullName = "A.Core.Attributes.LazyLoadingAttribute";
 	public string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
 	public string KeyAttributeFullName = "System.ComponentModel.DataAnnotations.KeyAttribute";
+	public string EntityAttributeName = "A.Core.Attributes.EntityAttribute";
 
 	public EFBasedServiceTemplate(string contextName, AutomationHelper helper, IList<CodeInterface> interfaceList, ServiceHelper serviceHelper )
     {
@@ -22,7 +23,6 @@ public class EFBasedServiceTemplate : TextTransformation
 		VisualStudioHelper = helper;
 		InterfaceList = interfaceList;
 		Helper =  serviceHelper;
-
     }
 
 	IEnumerable<EnvDTE.CodeInterface> baseInterfacesForCurrentEntity = null;
@@ -80,8 +80,39 @@ public class EFBasedServiceTemplate : TextTransformation
                 {
 					if(i.Name == BaseInterface)
                     {
+						//get from model where do we map it to
 						string genericArgs = i.FullName.Substring(i.FullName.IndexOf('<'));
-						return entity.Namespace.FullName + "." + entity.Name + genericArgs.Replace(">", ", " + ContextName + ">");
+						string firstArgument = genericArgs.Split('<', '>')[1];
+						string entityName = firstArgument.Split(',')[0];
+						
+						//var entityFromBaseClass = VisualStudioHelper.CodeModel.FindClass(entityName);
+						var EntityFromModel = VisualStudioHelper.CodeModel.FindCodeType(entityName);
+						string mappedTo = null;
+						var allAttributes = EntityFromModel.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(EntityFromModel.Attributes, vsCMElement.vsCMElementAttribute, false);//.OfType<EnvDTE.CodeAttribute>();
+						foreach(EnvDTE.CodeAttribute attr in allAttributes)
+						{
+							if(attr.FullName == EntityAttributeName)
+							{
+								string[] values = attr.Value.Split(',');
+								if(values.Length >= 2)
+                                {
+									mappedTo = Helper.ServiceTemplateConfig.DefaultNamespaceForDatabaseModel + values[1].Trim().Trim('"');
+                                }
+								break; 
+							}
+						}
+
+						if(!string.IsNullOrWhiteSpace(mappedTo))
+                        {
+							MappedToName = mappedTo;
+							return entity.Namespace.FullName + "." + entity.Name + genericArgs.Replace(">", ", " + ContextName + ", " + MappedToName + ">");
+                        }
+						else 
+						{
+							return entity.Namespace.FullName + "." + entity.Name + genericArgs.Replace(">", ", " + ContextName + ">");
+                        }
+						WriteLine("/*EntityName: " + firstArgument + "FUllName:" + Entity.FullName + " Mapped: " + EntityFromModel.FullName +"*/");
+						
                     }
                 }
 				//return entity.FullName;//.Replace("TEntity",Entity.FullName);
@@ -99,6 +130,7 @@ public class EFBasedServiceTemplate : TextTransformation
 	public string ContextName {get; set;}
 	public IList<CodeInterface> InterfaceList {get; set;}
 	public ServiceHelper Helper {get; set;}
+    public string MappedToName { get; set; }
 
 	public bool IsOperatorExisting(EnvDTE.CodeProperty property, string operatorName)
     {
@@ -165,30 +197,37 @@ public class EFBasedServiceTemplate : TextTransformation
 					}
 				}
 				
-				var allPropertiesOnAdditionalSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(additionalSearchObjectFromBaseClass.Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
-				foreach(EnvDTE.CodeProperty property in allPropertiesOnAdditionalSearchObject)
-                {
-						var allAttributes = property.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
-						foreach(EnvDTE.CodeAttribute attr in allAttributes)
-						{
-							if(attr.FullName == LazyLoadingAttributeFullName)
+				//var allPropertiesOnAdditionalSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(additionalSearchObjectFromBaseClass.Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
+				EnvDTE80.CodeClass2 searchAdditionalDataExtended = (EnvDTE80.CodeClass2)additionalSearchObjectFromBaseClass;
+
+				foreach(var part in searchAdditionalDataExtended.Parts)
+				{
+					var allPropertiesOnAdditionalSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(((EnvDTE80.CodeClass2)part).Members, EnvDTE.vsCMElement.vsCMElementProperty);
+					foreach(EnvDTE.CodeProperty property in allPropertiesOnAdditionalSearchObject)
+					{
+							var allAttributes = property.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+							foreach(EnvDTE.CodeAttribute attr in allAttributes)
 							{
-								//includeLoaded = true;
-								includeBuilder.AppendFormat(@"if(search.{0}.HasValue && search.{0} == true)
-								{{
-									search.IncludeList.Add(""{1}"");
-								}}",property.Name, property.Name.Substring(2, property.Name.Length - 16));
+								if(attr.FullName == LazyLoadingAttributeFullName)
+								{
+									//includeLoaded = true;
+									includeBuilder.AppendFormat(@"if(search.{0}.HasValue && search.{0} == true)
+									{{
+										search.IncludeList.Add(""{1}"");
+									}}",property.Name, property.Name.Substring(2, property.Name.Length - 16));
 								
 								
+								}
+								if(attr.FullName == KeyAttributeFullName)
+								{
+									//keyLoaded = true;
+									keyPropertyName = property.Name;
+									keyPropertyType = property.Type.AsFullName;
+								}
 							}
-							if(attr.FullName == KeyAttributeFullName)
-							{
-								//keyLoaded = true;
-								keyPropertyName = property.Name;
-								keyPropertyType = property.Type.AsFullName;
-							}
-						}
+					}
 				}
+				
 
 				WriteLine(string.Format(
 				@"
@@ -207,18 +246,26 @@ public class EFBasedServiceTemplate : TextTransformation
 					@"
 					public override async System.Threading.Tasks.Task<{1}> GetAsync(object id, {0} additionalData = null)
 					{{
+							bool redirectGet = IsMultitenantAwareService;
 							if (additionalData != null)
                             {{
                                 var count = GetIncludeList(additionalData).Count;
                                 if (count > 0)
                                 {{
-                                    {2} search = new {2}();
-                                    search.{3} = ({4})id;
-									search.AdditionalData = additionalData;
-                                    var result = await GetAsync(search);
-	                                return await result.FirstOrDefaultAsync();
+                                    redirectGet = true;
                                 }}
                             }}
+							if (redirectGet) 
+							{{
+								{2} search = new {2}();
+                                    search.{3} = ({4})id;
+									if (additionalData != null)
+									{{
+										search.AdditionalData = additionalData;
+									}}
+                                    var result = await GetFirstOrDefaultForSearchObjectAsync(search);
+	                                return result;
+							}}
 						return await base.GetAsync(id, additionalData);
 					}}
 				", additionalSearchObjectName, entityName, searchObjectName, keyPropertyName, keyPropertyType));
@@ -229,17 +276,26 @@ public class EFBasedServiceTemplate : TextTransformation
 					@"
 					public override {1} Get(object id, {0} additionalData = null)
 					{{
+							bool redirectGet = IsMultitenantAwareService;
 							if (additionalData != null)
                             {{
                                 var count = GetIncludeList(additionalData).Count;
                                 if (count > 0)
                                 {{
-                                    {2} search = new {2}();
-                                    search.{3} = ({4})id;
-									search.AdditionalData = additionalData;
-                                    return Get(search).FirstOrDefault();
+                                    redirectGet = true;
                                 }}
                             }}
+							if (redirectGet) 
+							{{
+								{2} search = new {2}();
+								search.{3} = ({4})id;
+								if (additionalData != null)
+								{{
+									search.AdditionalData = additionalData;
+								}}
+								var result = GetFirstOrDefaultForSearchObject(search);
+	                            return result;
+							}}
 						return base.Get(id, additionalData);
 					}}
 				", additionalSearchObjectName, entityName, searchObjectName, keyPropertyName, keyPropertyType));
@@ -267,6 +323,10 @@ public class EFBasedServiceTemplate : TextTransformation
 			{
 				string firstArgument = i.FullName.Split('<', '>')[1];
 				string entityName = firstArgument.Split(',')[0];
+				if(!string.IsNullOrWhiteSpace(MappedToName))
+                {
+					entityName = MappedToName;
+                }
 				string searchObjectName = firstArgument.Split(',')[1];
 				//var entityFromBaseClass = VisualStudioHelper.CodeModel.FindClass(entityName);
 				var searchObjectFromBaseClass = VisualStudioHelper.CodeModel.FindCodeType(searchObjectName);//VisualStudioHelper.CodeModel.FindClass(searchObjectName);
@@ -300,6 +360,15 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.EqualOrNull"))
+						{
+							string filter = string.Format("\tquery = query.Where(x => x.{0} == search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 6), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.NotEqual"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} != search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
@@ -309,9 +378,27 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
-						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.Greater"))
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.NotEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} != search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThan"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} > search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThanOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} > search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
 							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
 							{{
 								{1}
@@ -327,6 +414,15 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThanOrEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} >= search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 9), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThan"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} < search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
@@ -336,9 +432,27 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} < search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrEqual"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} <= search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 3), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} <= search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 9), property.Name);
 							filterBuilder.AppendFormat(@"if(search.{0}.HasValue)
 							{{
 								{1}
@@ -357,6 +471,15 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.EqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} == search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 6), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.NotEqual"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} != search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
@@ -366,9 +489,27 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
-						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.Greater"))
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.NotEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0} != search.{1} || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThan"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0}.StartsWith(search.{1}));\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThanOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0}.StartsWith(search.{1}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
 							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
 							{{
 								{1}
@@ -384,6 +525,15 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.GreatherThanOrEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0}.StartsWith(search.{1}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 9), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThan"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0}.EndsWith(search.{1}));\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);
@@ -393,9 +543,27 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0}.EndsWith(search.{1}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 8), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrEqual"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0}.EndsWith(search.{1}));\r\n", property.Name.Substring(0,property.Name.Length - 3), property.Name);
+							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.LowerThanOrEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => x.{0}.EndsWith(search.{1}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 9), property.Name);
 							filterBuilder.AppendFormat(@"if(!string.IsNullOrWhiteSpace(search.{0}))
 							{{
 								{1}
@@ -414,7 +582,36 @@ public class EFBasedServiceTemplate : TextTransformation
 							", property.Name, filter);
 							
 						}
-					
+					if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.ListOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => search.{1}.Contains(x.{0}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 10), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0} != null && search.{0}.Count > 0)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+							
+						}
+					if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.ListNotEqual"))
+					{
+						string filter = string.Format("query = query.Where(x => !search.{1}.Contains(x.{0}));\r\n", property.Name.Substring(0,property.Name.Length - 6), property.Name);
+						filterBuilder.AppendFormat(@"if(search.{0} != null && search.{0}.Count > 0)
+						{{
+							{1}
+						}}
+						", property.Name, filter);
+							
+					}
+					if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.ListNotEqualOrNull"))
+						{
+							string filter = string.Format("query = query.Where(x => !search.{1}.Contains(x.{0}) || x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 12), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0} != null && search.{0}.Count > 0)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+							
+						}
                 }
 
 				WriteLine(string.Format(
@@ -455,22 +652,6 @@ public class EFBasedServiceTemplate : TextTransformation
 				", method.Type.AsFullName, firstParameter.Type.AsFullName, firstParameter.Name));
     }
 
-	/*public virtual Test Delete(object id)
-        {
-            var entity = Get(id);
-            if(entity != null)
-            {
-                Entity.Attach(entity);
-                Context.Entry(entity).State = EntityState.Deleted;
-                Context.SaveChanges();
-                return entity;
-            }
-            else
-            {
-                return null;
-            }
-        }*/
-
     public override string TransformText()
     {
 		foreach(var @interface in InterfaceList)
@@ -492,6 +673,8 @@ public class EFBasedServiceTemplate : TextTransformation
 			ClassName =  @interface.Name.Substring(1);
 			BaseInterface = baseInterface;
 			BaseInterfacesForCurrentEntity = null;
+			MappedToName = null;
+						
 #>
 public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.FullName#>
 {

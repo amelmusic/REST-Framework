@@ -100,6 +100,8 @@
     <Reference Include="System.Linq.Dynamic">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.6\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -108,10 +110,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseEFBasedCRUDSeparateModelService.cs" />
     <Compile Include="Core\BaseEFBasedCRUDService.cs" />
     <Compile Include="Core\BaseEFBasedCRUDServiceAsync.cs" />
+    <Compile Include="Core\BaseEFBasedCRUDServiceSeparateModelAsync.cs" />
     <Compile Include="Core\BaseEFBasedReadService.cs" />
     <Compile Include="Core\BaseEFBasedReadServiceAsync.cs" />
+    <Compile Include="Core\BaseEFBasedSeparateModelReadService.cs" />
+    <Compile Include="Core\BaseEFBasedSeparateModelReadServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedCRUDServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedCRUDService.cs" />
     <Compile Include="Core\BaseMongoDbBasedReadServiceAsync.cs" />
@@ -142,12 +148,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Core\BaseEFBasedCRUDServiceAsync.pp" />
+    <None Include="Core\BaseEFBasedCRUDSeparateModelService.cs.pp" />
     <None Include="Core\BaseEFBasedCRUDService.cs.pp" />
-    <None Include="Core\BaseEFBasedReadServiceAsync.pp" />
+    <None Include="Core\BaseEFBasedCRUDServiceSeparateModelAsync.cs.pp" />
+    <None Include="Core\BaseEFBasedCRUDServiceAsync.cs.pp" />
     <None Include="Core\BaseEFBasedReadService.cs.pp" />
+    <None Include="Core\BaseEFBasedSeparateModelReadServiceAsync.cs.pp" />
+    <None Include="Core\BaseEFBasedSeparateModelReadService.cs.pp" />
+    <None Include="Core\BaseEFBasedReadServiceAsync.cs.pp" />
     <None Include="Core\BaseMongoDbBasedCRUDService.cs.pp" />
+    <None Include="Core\BaseMongoDbBasedCRUDServiceAsync.cs.pp" />
     <None Include="Core\BaseMongoDbBasedReadService.cs.pp" />
+    <None Include="Core\BaseMongoDbBasedReadServiceAsync.cs.pp" />
+    <None Include="Core\ProfileTemplate.ttinclude" />
     <None Include="Core\MongoDbBaseClasses.ttinclude" />
     <None Include="Core\EFBaseClassesTemplate.ttinclude" />
     <None Include="Core\EFBasedServiceTemplate.ttinclude" />

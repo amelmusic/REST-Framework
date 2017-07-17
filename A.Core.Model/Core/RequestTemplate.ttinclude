@@ -17,6 +17,16 @@ public class RequestTemplate : TextTransformation
 		ClassName = string.Format("{0}{1}Request", entity.Name,request.Key);
 		Request = request;
 		VisualStudioHelper = helper;
+		CopyAttributesOnRequests = false;
+
+		var attribute = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Entity.Attributes, vsCMElement.vsCMElementAttribute, false)
+			.OfType<EnvDTE.CodeAttribute>().Where(x=>x.FullName.StartsWith("A.Core.Attributes.EntityAttribute")).FirstOrDefault();
+
+			var parts = attribute.Value.Split(',');
+			if(parts.Length >= 1 && parts[0].Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            {
+				CopyAttributesOnRequests = true;
+            }
     }
 
 	public string RequestFieldAttributeFullName = "A.Core.Attributes.RequestFieldAttribute";
@@ -24,14 +34,16 @@ public class RequestTemplate : TextTransformation
     public string ClassName {get; set;}
     public EnvDTE.CodeClass Entity { get; set; }
 	public KeyValuePair<string, IList<EnvDTE.CodeProperty>> Request { get; set; }
-
+	private bool CopyAttributesOnRequests {get; set;}
 	protected string GetAttributesFromRequestAttribute(EnvDTE.CodeAttribute attribute)
             {
-				if(attribute.Value.IndexOf(',') > 0)
-				{
-					return attribute.Value.Substring(attribute.Value.IndexOf(',')+1).Trim().Trim('"').Replace("\\","");
-				}
-				return string.Empty;
+				string requestName = "";
+				var parts = attribute.Value.Split(',');
+				if(parts.Length >= 2)
+                {
+					requestName = parts[1];
+                }
+				return requestName.Trim().Trim('"').Replace("\\","");
             }
 	
 	protected string GetRequestNameFromAttribute(EnvDTE.CodeAttribute attribute)
@@ -69,6 +81,10 @@ public partial class <#= ClassName #>
 						{
 							WriteLine(GetAttributesFromRequestAttribute(attr));
 						}
+						else if (CopyAttributesOnRequests && !attr.FullName.StartsWith("A.Core.Attributes"))
+						{
+							WriteLine(string.Format("[{0}({1})]", attr.FullName, attr.Value));
+                        }
 					}
 					WriteLine(string.Format("public {0} {1}", property.Type.CodeType.FullName, property.Name) + " { get; set; }");
 			}

@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using A.Core.Model;
 using Microsoft.Practices.Unity;
 using System;
@@ -25,6 +25,12 @@ namespace A.Core.Services.Core
     {
         [Dependency]
         public Lazy<IActionContext> ActionContext { get; set; }
+
+        /// <summary>
+        /// If true, all gets will go to Get method. This is suitable when we need to implement multi tenant scenarios and have filter in one place.
+        /// Performance may suffer.
+        /// </summary>
+        public virtual bool IsMultitenantAwareService { get; set; }
 
         public virtual int DefaultPageSize { get; set; }
         DbSet<TEntity> mEntity = null;
@@ -91,7 +97,7 @@ namespace A.Core.Services.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return await Task.FromResult(result);
         }
@@ -128,9 +134,16 @@ namespace A.Core.Services.Core
         {
             var query = Entity.AsQueryable();
             query = await AddFilterAsync(search, query);
-            AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
+            AddInclude(search.AdditionalData, ref query);
             return await Task.FromResult(query);
+        }
+
+        protected virtual async Task<TEntity> GetFirstOrDefaultForSearchObjectAsync(TSearchObject search)
+        {
+            var query = await GetAsync(search);
+            var result = await query.FirstOrDefaultAsync();
+            return result;
         }
 
         /// <summary>

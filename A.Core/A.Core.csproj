@@ -37,6 +37,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Foundatio, Version=4.2.1183.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Foundatio.4.2.1183\lib\net46\Foundatio.dll</HintPath>
       <Private>True</Private>
@@ -110,6 +114,7 @@
     <Compile Include="Attributes\StateMachineAttribute.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DummyPermissionChecker.cs" />
+    <Compile Include="GlobalMapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interceptors\CacheInterceptorAsyncAttribute.cs" />
     <Compile Include="Interceptors\CacheInterceptorAttribute.cs" />
@@ -130,6 +135,7 @@
     <Compile Include="Model\BaseAdditionalSearchRequestData.cs" />
     <Compile Include="Model\BaseEntityWithDateTokens.cs" />
     <Compile Include="Model\BaseSearchObject.cs" />
+    <Compile Include="Model\DownloadRequest.cs" />
     <Compile Include="Model\PagedResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesRegistration.cs" />

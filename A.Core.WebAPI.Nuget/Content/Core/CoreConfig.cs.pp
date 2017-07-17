@@ -11,8 +11,10 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using AutoMapper;
 //using System.Web.Http.Cors;
 using Owin;
+using A.Core;
 
 namespace $rootnamespace$.Core
 {
@@ -33,6 +35,8 @@ namespace $rootnamespace$.Core
             Container.AddNewExtension<Interception>();
         }
         private static List<IServicesRegistration> servicesRegistrationList = new List<IServicesRegistration>();
+        private static List<Profile> profileList = new List<Profile>();
+
         public static void LoadAllAssembliesFromBin()
         {
             string binPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "bin"); // note: don't use CurrentEntryAssembly or anything like that.
@@ -55,6 +59,11 @@ namespace $rootnamespace$.Core
                             servicesRegistrationList.Add(registration);
 
                         }
+                        if (!type.IsAbstract && type.GetInterfaces().Contains(typeof(IProfileConfiguration)) && type.GetConstructor(Type.EmptyTypes) != null)
+                        {
+                            var profile = Activator.CreateInstance(type) as Profile;
+                            profileList.Add(profile);
+                        }
                     }
                 }
                 catch (FileLoadException)
@@ -72,6 +81,7 @@ namespace $rootnamespace$.Core
             {
                 x.Register(ref container);
             });
+            GlobalMapper.Init(profileList);
         }
         
         //public static void LoadAllBinDirectoryAssemblies()

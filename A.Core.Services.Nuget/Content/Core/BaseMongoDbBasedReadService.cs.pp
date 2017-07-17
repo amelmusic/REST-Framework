@@ -70,7 +70,12 @@ namespace $rootnamespace$.Core
 
         public virtual TEntity Get(object id, TSearchAdditionalData additionalData = null)
         {
-            var objId = new ObjectId(id.ToString());
+            /*
+             NOTE: This will work for entities that has following attribute on Id field
+             [Key]
+             [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+             */
+            var objId = id.ToString();//ObjectId.Parse(id.ToString());
             var filter = Builders<TEntity>.Filter.Eq("_id", objId);
             return GetCollection().Find(filter).FirstOrDefault();
         }
@@ -193,7 +198,7 @@ namespace $rootnamespace$.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }

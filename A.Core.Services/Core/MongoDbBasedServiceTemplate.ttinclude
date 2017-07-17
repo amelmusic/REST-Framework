@@ -142,8 +142,16 @@ public class MongoDbBasedServiceTemplate : TextTransformation
 				var searchObjectFromBaseClass = VisualStudioHelper.CodeModel.FindCodeType(searchObjectName);//VisualStudioHelper.CodeModel.FindClass(searchObjectName);
 				//WriteLine(entityFromBaseClass.FullName);
 				//foreach property in search object
+				EnvDTE80.CodeClass2 searchExtended = (EnvDTE80.CodeClass2)searchObjectFromBaseClass;
+				List<EnvDTE.CodeElement> allPropertiesOnSearchObject = new List<EnvDTE.CodeElement>();
+
+				foreach(var part in searchExtended.Parts)
+				{
+					var propertiesOnSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(((EnvDTE80.CodeClass2)part).Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
+					allPropertiesOnSearchObject.AddRange(propertiesOnSearchObject);
+                }
+
 				StringBuilder filterBuilder = new StringBuilder();
-				var allPropertiesOnSearchObject = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(searchObjectFromBaseClass.Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
 				WriteLine("//Mongodb Get allPropertiesOnSearchObject: " + ClassName + ":" + watch.ElapsedMilliseconds);
 				watch.Restart();
 				

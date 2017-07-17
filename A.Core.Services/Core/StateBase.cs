@@ -42,10 +42,20 @@ namespace A.Core.Services.Core
         {
             trigger.UpdateEntity(this.StateMachine.CurrentEntity);
         }
+
+        public virtual async Task OnEntryAsync(TriggerBase trigger)
+        {
+            trigger.UpdateEntity(this.StateMachine.CurrentEntity);
+        }
         /// <summary>
         /// Is executed when the state machine leaves this state.
         /// </summary>
         public virtual void OnExit(TriggerBase trigger)
+        {
+
+        }
+
+        public virtual async Task OnExitAsync(TriggerBase trigger)
         {
 
         }

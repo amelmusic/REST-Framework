@@ -9,7 +9,7 @@
 <#@ include file="StateMachineTemplate.ttinclude" #>
 <#@ include file="EFContextTemplate.ttinclude" #>
 <#@ include file="MongoDbBasedServiceTemplate.ttinclude" #>
-
+<#@ include file="ProfileTemplate.ttinclude" #>
 
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml" #>
@@ -28,8 +28,11 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System;
 using System.Collections.Generic;
 using A.Core.Interface;
+using AutoMapper.Internal;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using A.Core.Validation;
 
-	
 //<#= ServiceTemplateConfig.InterfacesProjectList[0] #>
 <#
 	foreach(var modelProject in ServiceTemplateConfig.ModelProjectList)
@@ -76,6 +79,9 @@ using <#= modelProject #>.Requests;
 	
 	StateMachineTemplate stateMachineTemplate = new StateMachineTemplate(interfaceList, ServiceTemplateConfig, VisualStudioHelper);
 	WriteLine(stateMachineTemplate.TransformText());
+
+	ProfileTemplate profileTemplate = new ProfileTemplate(ServiceTemplateConfig, VisualStudioHelper);
+	WriteLine(profileTemplate.TransformText());
 
 	PopIndent();
 //end of namespace

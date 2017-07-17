@@ -45,6 +45,23 @@ namespace A.Core.Services.Core
                 this.CurrentState.OnEntry(causedByTrigger);
         }
 
+        /// <summary>
+        /// Makes the state machine go into another state.
+        /// </summary>
+        public async Task TransitionToNewStateAsync(StateBase newState, TriggerBase causedByTrigger)
+        {
+            // exit the current state
+            if (this.CurrentState != null)
+                await this.CurrentState.OnExitAsync(causedByTrigger);
+
+            this.CurrentState = newState;
+
+            UpdateEntityState();
+            // enter the new state
+            if (this.CurrentState != null)
+                await this.CurrentState.OnEntryAsync(causedByTrigger);
+        }
+
         public virtual void UpdateEntityState()
         {
 
@@ -67,7 +84,19 @@ namespace A.Core.Services.Core
         /// Makes the state machine recive a command. Depending on its current state
         /// and the designed transitions the machine reacts to the trigger.
         /// </summary>
-        public abstract void ProcessTrigger(TriggerBase trigger);
+        public virtual void ProcessTrigger(TriggerBase trigger)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Makes the state machine recive a command. Depending on its current state
+        /// and the designed transitions the machine reacts to the trigger.
+        /// </summary>
+        public virtual Task ProcessTriggerAsync(TriggerBase trigger)
+        {
+            throw new NotImplementedException();
+        }
 
         protected void OnPropertyChanged(string propertyName)
         {

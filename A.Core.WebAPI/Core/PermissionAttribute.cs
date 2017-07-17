@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using log4net;
 using Newtonsoft.Json;
 using System;

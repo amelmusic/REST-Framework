@@ -20,6 +20,7 @@
 
 
 
+
 #region A_Core generated code
 using System.Linq;
 using Microsoft.Practices.Unity;
@@ -28,8 +29,11 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System;
 using System.Collections.Generic;
 using A.Core.Interface;
+using AutoMapper.Internal;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using A.Core.Validation;
 
-	
 //A.Core.Interfaces
 using A.Core.Model;
 using A.Core.Model.Requests;
@@ -48,6 +52,7 @@ namespace A.Core.Services
 		{
 			}
 	}
+
 
 
 }

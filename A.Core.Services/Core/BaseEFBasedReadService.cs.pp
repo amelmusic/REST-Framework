@@ -23,7 +23,13 @@ namespace $rootnamespace$.Core
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
         [Dependency]
-        public Lazy<IActionContext> ActionContext { get; set; }
+        public virtual Lazy<IActionContext> ActionContext { get; set; }
+
+        /// <summary>
+        /// If true, all gets will go to Get method. This is suitable when we need to implement multi tenant scenarios and have filter in one place.
+        /// Performance may suffer.
+        /// </summary>
+        public virtual bool IsMultitenantAwareService { get; set; }
 
         public virtual int DefaultPageSize { get; set; }
         DbSet<TEntity> mEntity = null;
@@ -90,7 +96,7 @@ namespace $rootnamespace$.Core
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }
@@ -126,9 +132,16 @@ namespace $rootnamespace$.Core
         {
             var query = Entity.AsQueryable();
             AddFilter(search, ref query);
-            AddInclude(search.AdditionalData, ref query);
             AddOrder(search, ref query);
+            AddInclude(search.AdditionalData, ref query);
             return query;
+        }
+
+        protected virtual TEntity GetFirstOrDefaultForSearchObject(TSearchObject search)
+        {
+            var query = Get(search);
+            var result = query.FirstOrDefault();
+            return result;
         }
 
         /// <summary>
@@ -228,21 +241,6 @@ namespace $rootnamespace$.Core
             }
         }
 
-        public void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (Context != null)
-                {
-                    Context.Dispose();
-                }
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
 
         public bool BeginTransaction()
         {
@@ -286,11 +284,6 @@ namespace $rootnamespace$.Core
                 this.Context.Database.CurrentTransaction.Dispose();
 
             }
-        }
-
-        ~BaseEFBasedReadService()
-        {
-            Dispose(false);
         }
     }
 }

@@ -23,8 +23,10 @@ namespace A.Core.Attributes
     public enum DefaultInterfaceBehaviourEnum
     {
         ReadService = 1
+        // ReSharper disable once InconsistentNaming
         ,CRUDService = 2
         ,ReadServiceAsync = 3
+        // ReSharper disable once InconsistentNaming
         ,CRUDServiceAsync = 4
     }
 }

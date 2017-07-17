@@ -87,11 +87,15 @@ public class EFContextTemplate : TextTransformation
 
 	public void GenerateContextDbSets()
 	{
-		var entityList = GetEntityList();
-		foreach(var entity in entityList)
-		{
-			WriteLine(string.Format(@"public System.Data.Entity.DbSet<{0}> {1} {{ get; set; }}", entity.FullName, entity.Name));
-		}
+		if (Config.BaseContextName == "System.Data.Entity.DbContext")
+        {
+			var entityList = GetEntityList();
+			foreach(var entity in entityList)
+			{
+				WriteLine(string.Format(@"public System.Data.Entity.DbSet<{0}> {1} {{ get; set; }}", entity.FullName, entity.Name));
+			}
+        }
+		
 	}
 
 	public void GenerateContextClassMaps()
@@ -107,13 +111,75 @@ public class EFContextTemplate : TextTransformation
     public override string TransformText()
     {
 #>
-public partial class <#=Config.ContextName#> : System.Data.Entity.DbContext
+public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 {
+		
 		public <#=Config.ContextName#>()
             : base("<#=Config.ContextName#>")
         {
             this.Configuration.LazyLoadingEnabled = false;
         }
+
+		public virtual bool ExistsInContext<TEntity>(TEntity entity)
+			where TEntity : class
+		{
+			return this.Set<TEntity>().Local.Any(e => e == entity);
+		}
+
+		public override int SaveChanges()
+	    {
+	        try
+	        {
+                return base.SaveChanges();
+            }
+	        catch (System.Data.Entity.Validation.DbEntityValidationException e)
+	        {
+                A.Core.Validation.ValidationResult validationResult = new A.Core.Validation.ValidationResult();
+	            foreach (var dbEntityValidationResult in e.EntityValidationErrors)
+	            {
+	                if (!dbEntityValidationResult.IsValid)
+	                {
+	                    foreach (var dbValidationError in dbEntityValidationResult.ValidationErrors)
+	                    {
+                            validationResult.ResultList.Add(new ValidationResultItem { Description = dbValidationError.ErrorMessage
+                                , Level = ValidationResultLevelEnum.Error
+                                , Key = dbValidationError.PropertyName});
+                        }
+	                }
+	            }
+	            throw new ValidationException(validationResult);
+	        }
+	    }
+
+	    public override async Task<int> SaveChangesAsync()
+	    {
+            try
+            {
+                return await base.SaveChangesAsync();
+            }
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+                A.Core.Validation.ValidationResult validationResult = new A.Core.Validation.ValidationResult();
+                foreach (var dbEntityValidationResult in e.EntityValidationErrors)
+                {
+                    if (!dbEntityValidationResult.IsValid)
+                    {
+                        foreach (var dbValidationError in dbEntityValidationResult.ValidationErrors)
+                        {
+                            validationResult.ResultList.Add(new ValidationResultItem
+                            {
+                                Description = dbValidationError.ErrorMessage
+                                ,
+                                Level = ValidationResultLevelEnum.Error
+                                ,
+                                Key = dbValidationError.PropertyName
+                            });
+                        }
+                    }
+                }
+                throw new ValidationException(validationResult);
+            }
+	    }
 
 	<#+
 		GenerateContextDbSets();
@@ -121,6 +187,7 @@ public partial class <#=Config.ContextName#> : System.Data.Entity.DbContext
 
 	protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
+			base.OnModelCreating(modelBuilder);
 		<#+
 			GenerateContextClassMaps();
 		#>

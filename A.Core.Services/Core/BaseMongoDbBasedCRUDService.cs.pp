@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 
 namespace $rootnamespace$.Core
 {
@@ -15,19 +16,27 @@ namespace $rootnamespace$.Core
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
+        // ReSharper disable once StaticMemberInGenericType
+        public static IMapper Mapper { get; set; }
         static BaseMongoDbBasedCRUDService()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
-                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
-                    || (context.SourceType.IsValueType
-                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                ))));
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
+                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+                                || context.SourceType.IsClass && !context.IsSourceValueNull)
+                                || (context.SourceType.IsValueType
+                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                               )));
+                cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
+                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+                               || context.SourceType.IsClass && !context.IsSourceValueNull)
+                               || (context.SourceType.IsValueType
+                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+                               )));
+            });
 
-            Mapper.Initialize(cfg => cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                context => (context.SourceType.IsClass && !context.IsSourceValueNull)
-                    || (context.SourceType.IsValueType
-                         && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                        ))));
+            Mapper = config.CreateMapper();
         }
 
         [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
@@ -80,7 +89,7 @@ namespace $rootnamespace$.Core
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }
@@ -95,7 +104,7 @@ namespace $rootnamespace$.Core
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
             if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.First(), Description = x.ErrorMessage }); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }

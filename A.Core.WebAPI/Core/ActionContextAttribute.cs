@@ -30,7 +30,7 @@ namespace A.Core.WebAPI.Core
             var requestId = Guid.NewGuid().ToString();
             PopulateFromClaimsPrincipal(actionContext, coreActionContext);
             log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
-           
+
             actionContext.Request.Properties.Add(new KeyValuePair<string, object>("RequestId", requestId));
             
             //coreActionContext.CurrentContainer = container.
@@ -39,9 +39,10 @@ namespace A.Core.WebAPI.Core
 
         private void PopulateFromClaimsPrincipal(System.Web.Http.Controllers.HttpActionContext actionContext, IActionContext coreActionContext)
         {
-
+            
             List<string> roleList = new List<string>();
             var userFromClaim = actionContext.RequestContext.Principal as ClaimsPrincipal;
+
             if (userFromClaim != null)
             {
                 var idClaimName = userFromClaim.Identity.Name;
@@ -54,8 +55,10 @@ namespace A.Core.WebAPI.Core
                 }
                 else
                 {
+#if DEBUG
                     coreActionContext.Data.Add("UserId", "8E023B32-C436-495D-B81E-2E942CFA1F18"); //NOTE: this is for test only...
-                    log4net.LogicalThreadContext.Properties["UserName"] = "8E023B32-C436-495D-B81E-2E942CFA1F18"; //get this from OAuth token
+                    log4net.LogicalThreadContext.Properties["UserName"] = "-1"; //get this from OAuth token
+#endif
                 }
                 var roleClaims = userFromClaim.Claims.Where(x => x.Type == ClaimTypes.Role || x.Type == "role");
                 foreach (var claim in roleClaims)
