@@ -17,6 +17,11 @@ namespace A.Core
         /// </summary>
         public static IMapper Mapper = null;
 
+        /// <summary>
+        /// Use this one if there is no profile mapping
+        /// </summary>
+        public static IMapper DefaultMapper = null;
+
         public static void Init(List<Profile> profileList)
         {
             var config = new MapperConfiguration(cfg =>
@@ -28,6 +33,19 @@ namespace A.Core
             });
 
             Mapper = config.CreateMapper();
+
+            var defaultCfg = new MapperConfiguration(cfg =>
+            {
+                cfg.ForAllPropertyMaps(pm => true,
+                    (pm, c) =>
+                    {
+                        c.Condition((s, d, sVal) => sVal != null);
+                    });
+
+                cfg.CreateMissingTypeMaps = true;
+            });
+            DefaultMapper = defaultCfg.CreateMapper();
         }
+
     }
 }

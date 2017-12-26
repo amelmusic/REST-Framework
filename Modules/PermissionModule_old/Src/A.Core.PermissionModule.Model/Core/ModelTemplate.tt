@@ -1,0 +1,59 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ include file="VisualStudioHelper.ttinclude" #>
+<#@ include file="RequestTemplate.ttinclude" #>
+<#@ include file="SearchObjectTemplate.ttinclude" #>
+<#@ include file="ModelHelper.ttinclude" #>
+<#@ include file="StateMachineModelTemplate.ttinclude" #>
+
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ output extension=".cs" #>
+
+<#
+	var entityList = ModelHelperInstance.GetEntityList();
+	RequestTemplate requestTemplate = null;
+	SearchObjectTemplate searchObjectTemplate = null;
+	StateMachineModelTemplate stateMachineModelTemplate = null;
+#>
+#region A_Core generated code
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+//Requests section
+namespace <#= VisualStudioHelper.CurrentProject.Name#>.Requests
+{
+	public partial class __IGNORE_CLASS { }
+	<# foreach(var entity in entityList) { #>
+		<# if(ModelHelperInstance.PropertyOnEntityHasAttribute(entity, ModelHelperInstance.RequestFieldAttributeFullName)) { #>
+			<# foreach(var request in ModelHelperInstance.GetRequestListForEntity(entity)) { #>
+				<# requestTemplate = new RequestTemplate(entity,request, VisualStudioHelper); #>
+				//<#=entity.FullName.ToString()#>
+				<#=requestTemplate.TransformText()#>
+			<#}#>
+		<#}#>
+		<#= PopIndent() #>
+	<#}#>
+
+	<# stateMachineModelTemplate = new StateMachineModelTemplate(entityList, VisualStudioHelper); #>
+	<#=stateMachineModelTemplate.TransformText()#>
+	<#= PopIndent() #>
+}
+
+namespace <#= VisualStudioHelper.CurrentProject.Name#>.SearchObjects
+{
+	public partial class __IGNORE_CLASS { }
+	<# foreach(var entity in entityList) { #>
+		<# searchObjectTemplate = new SearchObjectTemplate(entity,ModelHelperInstance); #>
+				//<#=entity.FullName.ToString()#>
+				<#=searchObjectTemplate.TransformText()#>
+	<#}#>
+	<#= PopIndent() #>
+}
+
+#endregion
+

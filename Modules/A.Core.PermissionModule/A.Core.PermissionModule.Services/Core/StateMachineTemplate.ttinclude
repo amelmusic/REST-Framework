@@ -1,0 +1,881 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ import namespace="System.Xml" #>
+
+<#+
+        [XmlRoot(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class ArrayOfExtensiblePropertyInstance
+        {
+            [XmlAttribute(AttributeName = "xsi", Namespace = "http://www.w3.org/2000/xmlns/")]
+            public string Xsi { get; set; }
+            [XmlAttribute(AttributeName = "xsd", Namespace = "http://www.w3.org/2000/xmlns/")]
+            public string Xsd { get; set; }
+        }
+
+        [XmlRoot(ElementName = "stateMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class StateMoniker
+        {
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
+
+        [XmlRoot(ElementName = "flow", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class Flow
+        {
+            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+            [XmlElement(ElementName = "stateMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public StateMoniker StateMoniker { get; set; }
+			[XmlAttribute(AttributeName = "guard")]
+            public string Guard { get; set; }
+            [XmlAttribute(AttributeName = "eventAndGuardLabel")]
+            public string EventAndGuardLabel { get; set; }
+            [XmlAttribute(AttributeName = "effectLabel")]
+            public string EffectLabel { get; set; }
+            [XmlAttribute(AttributeName = "eventGuardEffectLabel")]
+            public string EventGuardEffectLabel { get; set; }
+            [XmlElement(ElementName = "endPointMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public EndPointMoniker EndPointMoniker { get; set; }
+        }
+
+        [XmlRoot(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class FlowTo
+        {
+            [XmlElement(ElementName = "flow", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public List<Flow> Flow { get; set; }
+        }
+
+        [XmlRoot(ElementName = "startPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class StartPoint
+        {
+            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+            [XmlElement(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public FlowTo FlowTo { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
+
+        [XmlRoot(ElementName = "state", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class State
+        {
+            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+            [XmlElement(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public FlowTo FlowTo { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "entryActionLabel")]
+            public string EntryActionLabel { get; set; }
+            [XmlAttribute(AttributeName = "exitActionLabel")]
+            public string ExitActionLabel { get; set; }
+        }
+
+        [XmlRoot(ElementName = "endPointMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class EndPointMoniker
+        {
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
+
+        [XmlRoot(ElementName = "endPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class EndPoint
+        {
+            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+        }
+
+        [XmlRoot(ElementName = "flowElements", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class FlowElements
+        {
+            [XmlElement(ElementName = "startPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public StartPoint StartPoint { get; set; }
+            [XmlElement(ElementName = "state", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public List<State> State { get; set; }
+            [XmlElement(ElementName = "endPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public EndPoint EndPoint { get; set; }
+        }
+
+        [XmlRoot(ElementName = "stateGraph", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+        public class StateGraph
+        {
+            [XmlElement(ElementName = "flowElements", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
+            public FlowElements FlowElements { get; set; }
+            [XmlAttribute(AttributeName = "dm0", Namespace = "http://www.w3.org/2000/xmlns/")]
+            public string Dm0 { get; set; }
+            [XmlAttribute(AttributeName = "dslVersion")]
+            public string DslVersion { get; set; }
+            [XmlAttribute(AttributeName = "name")]
+            public string Name { get; set; }
+            [XmlAttribute(AttributeName = "xmlns")]
+            public string Xmlns { get; set; }
+			[XmlAttribute(AttributeName = "description")]
+            public string Description { get; set; }
+        }
+
+
+public class StateMachineTemplate : TextTransformation
+{
+	public string StateMachineAttribute = "A.Core.Attributes.StateMachineAttribute";
+	public string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
+	public string EntityAttributeName = "A.Core.Attributes.EntityAttribute";
+	ServiceTemplateConfig Config {get; set;}
+	AutomationHelper VisualStudioHelper {get; set;}
+	IList<EnvDTE.CodeInterface> InterfaceList {get; set;}
+	EnvDTE.CodeInterface Interface {get; set;}
+	StateGraph CurrentStateGraph {get; set;}
+	public StateMachineTemplate(IList<EnvDTE.CodeInterface> interfaceList, ServiceTemplateConfig config, AutomationHelper helper)
+	{
+		VisualStudioHelper = helper;
+		Config = config;
+		InterfaceList = interfaceList;
+		
+	}
+	/// <summary>
+	/// Gets a list of all triggers in the diagram.
+	/// </summary>
+		List<string> GetGuardNames(StateGraph sg)
+        {
+            var ret = new List<string>();
+
+            // iterate all states
+            foreach (State s in sg.FlowElements.State)
+            {
+                if(s.FlowTo != null)
+                {
+                    // get all flows where s is the start point
+                    foreach (Flow f in s.FlowTo.Flow)
+                    {
+						if(!string.IsNullOrWhiteSpace(f.Guard))
+                        {
+							string name = f.Guard.Replace("/","");
+							if (!ret.Contains(name) && !string.IsNullOrEmpty(name))
+                            {
+								ret.Add(name);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+		List<string> GetGuardNamesForState(State s)
+        {
+            var ret = new List<string>();
+
+			if(s.FlowTo != null)
+			{
+				// get all flows where s is the start point
+				foreach (Flow f in s.FlowTo.Flow)
+				{
+					if(!string.IsNullOrWhiteSpace(f.Guard))
+					{
+						string name = f.Guard.Replace("/","");
+						if (!ret.Contains(name) && !string.IsNullOrEmpty(name))
+						{
+							ret.Add(name);
+						}
+					}
+				}
+			}
+
+            return ret;
+        }
+
+	public bool IsValidForCreatingStateMachine(EnvDTE.CodeInterface @interface)
+    {
+		bool isExisting = false;
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(@interface);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == StateMachineAttribute)
+            {
+				isExisting = true;
+				break;
+            }
+        }
+		return isExisting;
+    }
+
+	public string GetStateMachineName()
+    {
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == StateMachineAttribute)
+            {
+				return attribute.Value.Split(',')[0].Trim().Trim('"');
+            }
+        }
+		
+		throw new Exception("State machine name not found on:" + Interface.FullName);
+    }
+
+	public string GetStateMachineEnumName()
+    {
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == StateMachineAttribute)
+            {
+				string name = attribute.Value.Split(',')[1].Trim().Trim('"');
+				return name;
+            }
+        }
+		
+		throw new Exception("State machine name not found on:" + Interface.FullName);
+    }
+
+	public string GetStateMachinePropertyNameOnModel()
+    {
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllAttributesOnInterface(Interface);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == StateMachineAttribute)
+            {
+				return attribute.Value.Split(',')[2].Trim().Trim('"');
+            }
+        }
+		
+		throw new Exception("State machine name not found on:" + Interface.FullName);
+    }
+
+
+	public string GetNextStateName(State state, string flowName)
+    {
+        string nextStateName = "";
+        if(state.FlowTo != null)
+        {
+            foreach(var currentFlow in state.FlowTo.Flow)
+            {
+                if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.StateMoniker != null)
+                {
+                    if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        return nextStateName;
+    }
+
+	public string GetNextStateName(StartPoint state, string flowName)
+    {
+        string nextStateName = "";
+        if(state.FlowTo != null)
+        {
+            foreach(var currentFlow in state.FlowTo.Flow)
+            {
+                if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.StateMoniker != null)
+                {
+                    if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+                }
+            }
+        }
+        return nextStateName;
+    }
+
+
+    public override string TransformText()
+    {
+		//we will first create for each state new class and state machine
+		foreach(var @interface in InterfaceList)
+        {
+			if(IsValidForCreatingStateMachine(@interface))
+            {
+				Interface = @interface; //we will now proceed rendering based on this interface
+				XmlSerializer ser = new XmlSerializer(typeof(StateGraph));
+				string fileName = "";
+				foreach(var projectName in Config.ModelProjectList)
+				{
+					var project = VisualStudioHelper.GetProject(projectName);
+        
+					WriteLine("//file:"+project.FullName + "_" + System.IO.Path.GetDirectoryName(project.FullName));
+					var files = Directory.EnumerateFiles(System.IO.Path.GetDirectoryName(project.FullName), GetStateMachineName() +".tastate", SearchOption.AllDirectories);
+					if(files.Count() != 1)
+                    {
+						continue;
+                    }
+					foreach(var file in files)
+                    {
+						fileName = file;
+						break;
+                    }
+				}
+				WriteLine("//Creating state machine from: "+fileName);
+				using (XmlReader reader = XmlReader.Create(fileName))
+				{
+					CurrentStateGraph = (StateGraph)ser.Deserialize(reader);
+				}
+				var stateMachineName = GetStateMachineName();
+#>
+//, enum <#= CurrentStateGraph.Description #>
+				//StateMachine: <#= Interface.Name #>,
+				// name: <#= GetStateMachineName() #>,
+				// graphCount <#= CurrentStateGraph.FlowElements.State.Count #>
+				
+<#+ 
+				var startPoint = this.CurrentStateGraph.FlowElements.StartPoint;
+				if(startPoint != null)
+                {
+#>
+				public partial class <#= stateMachineName#><#= startPoint.Name #>State : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase 
+				{
+<#+
+					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
+                    {
+#>
+					protected <#=GetStateMachineEnumName()#> mStateId = <#=GetStateMachineEnumName()#>.<#= startPoint.Name#>;
+<#+ 
+					}
+#>
+					public <#= stateMachineName#><#= startPoint.Name #>State(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateMachineBase machine) : base(machine) 
+					{
+						StateId = (int)mStateId;
+					}
+				}
+<#+ 
+                }
+#>
+
+<#+ 
+				foreach(var state in this.CurrentStateGraph.FlowElements.State)
+                {
+#>
+				public partial class <#= stateMachineName#><#= state.Name #>State : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase 
+				{
+<#+
+					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
+                    {
+#>
+					protected <#=GetStateMachineEnumName()#> mStateId = <#=GetStateMachineEnumName()#>.<#= state.Name#>;
+<#+ 
+					}
+#>
+					public <#= stateMachineName#><#= state.Name #>State(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateMachineBase machine) : base(machine)
+					{
+						StateId = (int)mStateId;
+					}
+				}
+<#+ 
+                }
+#>
+<#+ 
+						string entityName = null;
+						string shortEntityName = null;
+						string mappedToEntityName = null;
+						string mappedToEntityNameWithoutDots = null;
+						var baseInterfaces = VisualStudioHelper.CodeModel.GetAllBaseInterfaces(Interface);
+						foreach(var i in baseInterfaces)
+                        {
+							if(i.Name == "IReadService" || i.Name == "ICRUDService" || i.Name == "IReadServiceAsync" || i.Name == "ICRUDServiceAsync")
+                            {
+								string firstArgument = i.FullName.Split('<', '>')[1];
+								entityName = firstArgument.Split(',')[0];
+								shortEntityName = entityName.Split('.').Last();
+
+								var entityFromModel = VisualStudioHelper.CodeModel.FindCodeType(entityName);
+								
+								var allAttributes = entityFromModel.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(EntityFromModel.Attributes, vsCMElement.vsCMElementAttribute, false);//.OfType<EnvDTE.CodeAttribute>();
+								foreach(EnvDTE.CodeAttribute attr in allAttributes)
+								{
+									if(attr.FullName == EntityAttributeName)
+									{
+										string[] values = attr.Value.Split(',');
+										if(values.Length >= 2)
+										{
+											mappedToEntityName = Config.DefaultNamespaceForDatabaseModel + values[1].Trim().Trim('"');
+											mappedToEntityNameWithoutDots = mappedToEntityName.Replace('.','_');
+										}
+										break; 
+									}
+								}
+                            }
+                        }
+						
+#>
+<#+				
+				foreach(var triggerName in GetGuardNames(this.CurrentStateGraph))
+				{
+#>				
+				public partial class <#= stateMachineName#><#= triggerName #>TriggerTo<#= mappedToEntityNameWithoutDots ?? shortEntityName #>MapProfile : AutoMapper.Profile
+				{
+				    protected override void Configure()
+				    {
+				        var profile = base.CreateMap<<#= stateMachineName#><#= triggerName #>Trigger, <#= mappedToEntityName ?? entityName #>>();
+						profile.ForAllMembers(opt => opt.Condition(
+							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+										|| context.SourceType.IsClass && !context.IsSourceValueNull)
+										|| (context.SourceType.IsValueType
+										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+									   )));
+						profile.ReverseMap();
+				    }
+				}
+				public partial class <#= stateMachineName#><#= triggerName #>Trigger : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase 
+				{
+<#+
+					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
+                    {
+#>
+					protected <#= shortEntityName #>TriggerEnum mTriggerId = <#= shortEntityName #>TriggerEnum.<#= shortEntityName #><#= triggerName#>Request;
+<#+ 
+					}
+#>
+					public <#= stateMachineName #><#= triggerName #>Trigger()
+					{
+						TriggerId = (int)mTriggerId;
+					}
+					public <#= shortEntityName #><#= triggerName #>Request Request {get; set;}
+					public override void UpdateEntity(object entity)
+					{
+						A.Core.GlobalMapper.Mapper.Map(Request, entity);
+					}
+				}
+
+<#+ 
+                }
+#>
+<#+				
+				foreach(var startFlow in CurrentStateGraph.FlowElements.StartPoint.FlowTo.Flow)
+				{
+#>
+				public partial class <#= stateMachineName#><#= startFlow.Guard #>TriggerTo<#= mappedToEntityNameWithoutDots ?? shortEntityName #>MapProfile : AutoMapper.Profile
+				{
+				    protected override void Configure()
+				    {
+				        var profile = base.CreateMap<<#= stateMachineName#><#= startFlow.Guard #>Trigger, <#= mappedToEntityName ?? entityName #>>();
+						profile.ForAllMembers(opt => opt.Condition(
+							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
+										|| context.SourceType.IsClass && !context.IsSourceValueNull)
+										|| (context.SourceType.IsValueType
+										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
+									   )));
+						profile.ReverseMap();
+				    }
+				}
+				public partial class <#= stateMachineName #><#= startFlow.Guard #>Trigger : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase 
+				{
+<#+
+					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
+                    {
+#>
+					protected <#= shortEntityName #>TriggerEnum mTriggerId = <#= shortEntityName #>TriggerEnum.<#= shortEntityName #><#= startFlow.Guard#>Request;
+<#+ 
+					}
+#>
+					public <#= stateMachineName #><#= startFlow.Guard #>Trigger()
+					{
+						TriggerId = (int)mTriggerId;
+					}
+					public <#= shortEntityName #><#= startFlow.Guard #>Request Request {get; set;}
+					public override void UpdateEntity(object entity)
+					{
+						A.Core.GlobalMapper.Mapper.Map(Request, entity);
+					}
+				}
+<#+ 
+                }
+#>
+				/// <summary>
+				/// This class is the actual state machine designed in the State-Diagarm.
+				/// </summary>
+				public partial class <#= stateMachineName #> : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateMachineBase
+				{
+					/// <summary>
+					/// Makes the state machine react to a trigger.
+					/// </summary>
+					public override void ProcessTrigger(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase trigger)
+					{
+						if (this.CurrentState == null) return;
+						if (trigger == null) throw new ArgumentException("Trigger must not be null");
+
+						// determine what action to take based on the current state
+						// and the given trigger.
+						// iterate all states in the diagram
+<#+						
+						var startState = this.CurrentStateGraph.FlowElements.StartPoint;
+#>
+						if (this.CurrentState is <#= stateMachineName#><#= startState.Name #>State)
+						{
+							if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                    {
+                                        throw new A.Core.Validation.UserException("Action not allowed!");
+                                    }
+<#+
+							foreach(var transition in startState.FlowTo.Flow)
+							{
+#>
+								if (trigger is <#= stateMachineName #><#= transition.Guard#>Trigger)
+								{
+									 var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(startState, transition.Guard)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+									this.TransitionToNewState(state, trigger);
+								}
+<#+ 
+							}
+#>
+						}
+
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							else if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+								if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                        {
+                                             throw new A.Core.Validation.UserException("Action not allowed!");
+                                        }
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if (trigger is <#= stateMachineName #><#= transition#>Trigger)
+									{
+										var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(state, transition)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+										this.TransitionToNewState(state, trigger);
+										
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+					}
+
+					/// <summary>
+					/// Makes the state machine react to a trigger.
+					/// </summary>
+					public override async Task ProcessTriggerAsync(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.TriggerBase trigger)
+					{
+						if (this.CurrentState == null) return;
+						if (trigger == null) throw new ArgumentException("Trigger must not be null");
+
+						// determine what action to take based on the current state
+						// and the given trigger.
+						// iterate all states in the diagram
+<#+						
+						
+#>
+						if (this.CurrentState is <#= stateMachineName#><#= startState.Name #>State)
+						{
+							if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                    {
+                                        throw new A.Core.Validation.UserException("Action not allowed!");
+                                    }
+<#+
+							foreach(var transition in startState.FlowTo.Flow)
+							{
+#>
+								if (trigger is <#= stateMachineName #><#= transition.Guard#>Trigger)
+								{
+									 var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(startState, transition.Guard)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+									await this.TransitionToNewStateAsync(state, trigger);
+								}
+<#+ 
+							}
+#>
+						}
+
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							else if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+								if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                        {
+                                             throw new A.Core.Validation.UserException("Action not allowed!");
+                                        }
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if (trigger is <#= stateMachineName #><#= transition#>Trigger)
+									{
+										var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(state, transition)#>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+										await this.TransitionToNewStateAsync(state, trigger);
+										
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+					}
+
+					 public System.Collections.Generic.IList<<#= shortEntityName #>TriggerEnum> GetAllowedTriggerList()
+                        {
+                            IList<<#= shortEntityName #>TriggerEnum> triggerList = new List<<#= shortEntityName #>TriggerEnum>();
+<#+						
+						var startStateTrigger = this.CurrentStateGraph.FlowElements.StartPoint;
+#>
+							if (this.CurrentState is <#= stateMachineName#><#= startStateTrigger.Name #>State)
+							{
+<#+
+							foreach(var transition in startStateTrigger.FlowTo.Flow)
+							{
+#>
+									triggerList.Add(<#= shortEntityName #>TriggerEnum.<#= shortEntityName #><#= transition.Guard#>Request);
+<#+ 
+							}
+#>
+							}
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									triggerList.Add(<#= shortEntityName #>TriggerEnum.<#= shortEntityName #><#= transition#>Request);
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+
+                            return triggerList;
+                        }
+
+<#+
+						if(entityName != null)
+                        {
+#>						
+						public <#= mappedToEntityName ?? entityName#> Entity { get; set; }
+						public <#= stateMachineName #>()
+						:base()
+						{
+							
+						}
+						public override void UpdateEntityState()
+                        {
+							//Entity: <#=entityName#>
+							Entity.<#=GetStateMachinePropertyNameOnModel()#> = (<#=GetStateMachineEnumName()#>)CurrentState.StateId;
+                            base.UpdateEntityState();
+                        }
+
+						public void Initialize(<#=mappedToEntityName ?? entityName#> entity)
+						{
+							//bind entity that we are operating ON
+							
+							Entity = entity;
+							CurrentEntity = entity;
+							CurrentState = GetState(entity.<#=GetStateMachinePropertyNameOnModel()#>);
+						}
+
+						public <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase GetState(<#=GetStateMachineEnumName()#> stateId)
+						{
+							switch(stateId)
+							{
+<#+							//var startPoint = this.CurrentStateGraph.FlowElements.StartPoint;
+							if(startPoint != null)
+							{
+#>
+								case <#=GetStateMachineEnumName()#>.<#= startPoint.Name#>:
+								{
+									var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#= startPoint.Name #>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+									return state;
+								}
+<#+ 
+							}
+#>
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{						
+#>
+								case <#=GetStateMachineEnumName()#>.<#= state.Name#>:
+								{
+									var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#= state.Name #>State>(new ResolverOverride[]
+                                        {
+                                            new ParameterOverride("machine", this)
+                                        });
+									return state;
+								}
+<#+ 
+						}
+#>
+								default:
+								{
+									throw new ApplicationException("Invalid stateId:" + stateId);
+								}
+							}
+
+							throw new ApplicationException("States undefined");
+						}
+
+<#+
+                        }
+#>
+				}
+
+				public partial class <#=  @interface.Name.ToString().Substring(1) #>
+				{
+					
+					
+					public <#= stateMachineName#> <#= stateMachineName#>Instance { get; set; }
+<#+ 
+					var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface(@interface);
+					foreach(var method in methods)
+					{
+						EnvDTE.CodeAttribute defaultMethodBehaviour = null;
+						var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+						foreach(var attr in allAttributes)
+						{
+							if(attr.FullName == DefaultMethodBehaviourAttribute)
+							{
+								defaultMethodBehaviour = attr;
+								break; 
+							}
+						}
+						StringBuilder typeAndNameParamListString = new StringBuilder();
+						var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+						var firstParam = allParameters.FirstOrDefault();
+						var lastParam = allParameters.LastOrDefault();
+						foreach(var prm in allParameters)
+						{
+							typeAndNameParamListString.Append(string.Format("{0} {1},", prm.Type.AsFullName, prm.Name));
+						}
+						string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+#>
+<#+
+						if(defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineInsert")
+						 {
+#>
+					partial void On<#= method.Name #>BeforeSave(<#= typeAndNameParamString #>);
+					partial void On<#= method.Name #>AfterSave(<#= typeAndNameParamString #>);
+					[A.Core.Interceptors.LogInterceptor(AspectPriority=0)]
+					[A.Core.Interceptors.TransactionInterceptor<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(AspectPriority=1)]
+					public virtual <#= method.Type.AsFullName.Contains("Task<") ? "async" : "" #> <#= method.Type.AsFullName #> <#= method.Name #>(<#= typeAndNameParamString #>)
+					{
+						var entity = CreateNewInstance();
+
+						<#= stateMachineName#>Instance.Initialize(entity);
+
+						<#= method.Type.AsFullName.Contains("Task<") ? "await" : "" #> <#= stateMachineName#>Instance.ProcessTrigger<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= firstParam.Name #> });
+						On<#= method.Name #>BeforeSave(<#= firstParam.Name #>);
+						if (!Context.ExistsInContext(entity))
+						{
+                            Entity.Attach(entity);
+                            Context.Entry(entity).State = EntityState.Added;
+                        }
+						<#+ if(method.Type.AsFullName.Contains("Task<")) { #>await SaveAsync(entity); <#+ } #>
+						<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>Save(entity); <#+ } #>
+						On<#= method.Name #>AfterSave(<#= firstParam.Name #>);
+						return <#+ if(string.IsNullOrWhiteSpace(mappedToEntityName)) { #> entity <#+ } else { #> await GetByIdInternalMappedAsync(entity) <#+ } #>;
+					}
+<#+ 
+						 }
+#>
+<#+
+						if(defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate")
+						 {
+#>
+					partial void On<#= method.Name #>BeforeSave(<#= typeAndNameParamString #>);
+					partial void On<#= method.Name #>AfterSave(<#= typeAndNameParamString #>);
+					[A.Core.Interceptors.LogInterceptor(AspectPriority=0)]
+					[A.Core.Interceptors.TransactionInterceptor<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(AspectPriority=1)]
+					public virtual <#= method.Type.AsFullName.Contains("Task<") ? "async" : "" #> <#= method.Type.AsFullName #> <#= method.Name #>(<#= typeAndNameParamString #>)
+					{
+						<#+ if(method.Type.AsFullName.Contains("Task<")) { #>var entity = await GetByIdInternalAsync(id); <#+ } #>
+						<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>var entity = Get(<#= firstParam.Name #>); <#+ } #>
+						if(entity != null)
+						{
+							Entity.Attach(entity);
+							<#= stateMachineName#>Instance.Initialize(entity);
+
+							<#= method.Type.AsFullName.Contains("Task<") ? "await" : "" #> <#= stateMachineName#>Instance.ProcessTrigger<#= method.Type.AsFullName.Contains("Task<") ? "Async" : "" #>(new <#= stateMachineName#><#= method.Name #>Trigger() { Request = <#= lastParam.Name #> });
+							
+							//Context.Entry(entity).State = EntityState.Modified;
+							On<#= method.Name #>BeforeSave(<#= firstParam.Name #>, <#= lastParam.Name #>);
+							<#+ if(method.Type.AsFullName.Contains("Task<")) { #>await SaveAsync(entity); <#+ } #>
+							<#+ if(!method.Type.AsFullName.Contains("Task<")) { #>Save(entity); <#+ } #>
+							On<#= method.Name #>AfterSave(<#= firstParam.Name #>, <#= lastParam.Name #>);
+						}
+						else
+						{
+							throw new ApplicationException("Entity not found!");
+						}
+						return <#+ if(string.IsNullOrWhiteSpace(mappedToEntityName)) { #> entity <#+ } else { #> await GetByIdInternalMappedAsync(entity) <#+ } #>;
+					}
+<#+ 
+						 }
+#>
+
+<#+ 	
+					}
+
+ #>					
+				}
+<#+
+            }
+        }
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

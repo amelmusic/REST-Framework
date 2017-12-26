@@ -8,7 +8,7 @@ namespace A.Core.Model
 {
     public class BaseEntityWithDateTokens
     {
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
+        public System.DateTime CreatedOn { get; set; }
+        public System.DateTime ModifiedOn { get; set; }
     }
 }

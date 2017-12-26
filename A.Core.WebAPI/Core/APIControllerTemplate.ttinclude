@@ -35,9 +35,9 @@ public class APIControllerTemplate : TextTransformation
 		return str.Substring(0, 1).ToLower() + str.Substring(1);
     }
 
-	private string GeneratePermissionFilter(string methodName)
+	private string GeneratePermissionFilter(string methodName, string operationType)
     {
-		return string.Format("[{0}.Core.Permission(\"{1}.{2}\")]", Namespace,Entity.FullName, methodName);
+		return string.Format("[{0}.Core.Permission(\"{1}.{2}\", \"{3}\")]", Namespace,Entity.FullName, methodName, operationType);
     }
 
 	public void GenerateGetById(EnvDTE.CodeFunction method)
@@ -109,7 +109,7 @@ public class APIControllerTemplate : TextTransformation
 						{{
 							return Ok(result);
 						}}
-					}}", primaryKeyType, additionalDataName, method.Name,returnType, GeneratePermissionFilter(method.Name), additionalData));
+					}}", primaryKeyType, additionalDataName, method.Name,returnType, GeneratePermissionFilter(method.Name, "View"), additionalData));
                 }
 				else
                 {
@@ -130,7 +130,7 @@ public class APIControllerTemplate : TextTransformation
 						{{
 							return Ok(result);
 						}}
-					}}", primaryKeyType, additionalDataName, method.Name,method.Type.AsFullName, GeneratePermissionFilter(method.Name), additionalData));
+					}}", primaryKeyType, additionalDataName, method.Name,method.Type.AsFullName, GeneratePermissionFilter(method.Name, "View"), additionalData));
                 }
 		}
 	 }
@@ -169,7 +169,7 @@ public class APIControllerTemplate : TextTransformation
 				{{
 					var result = await Service.{0}({3});
 					return Ok(result);
-				}}", method.Name, typeAndNameParamString, returnType, paramString, addRoute?"\""+ToLowerFirstCharacter(methodNameForRoute) +"\"":"\"\"", GeneratePermissionFilter(method.Name)));//""
+				}}", method.Name, typeAndNameParamString, returnType, paramString, addRoute?"\""+ToLowerFirstCharacter(methodNameForRoute) +"\"":"\"\"", GeneratePermissionFilter(method.Name, "View")));//""
             }
 			else
             {
@@ -183,7 +183,7 @@ public class APIControllerTemplate : TextTransformation
 				{{
 					var result = Service.{0}({3});
 					return Ok(result);
-				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, addRoute?"\""+ToLowerFirstCharacter(method.Name) +"\"":"\"\"", GeneratePermissionFilter(method.Name)));//""
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, addRoute?"\""+ToLowerFirstCharacter(method.Name) +"\"":"\"\"", GeneratePermissionFilter(method.Name, "View")));//""
             }
 			
 		}
@@ -209,7 +209,11 @@ public class APIControllerTemplate : TextTransformation
 				}
 			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
 			string paramString = paramListString.ToString().TrimEnd(',');
-
+			string additionalRouteName = "\"\"";
+            if (method.Name != "Insert" && method.Name != "InsertAsync")
+            {
+				additionalRouteName = string.Format("\"{0}\"", method.Name.Replace("Async", "")).ToLower();
+            }
 			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
 			if(isAsync)
             {
@@ -218,7 +222,7 @@ public class APIControllerTemplate : TextTransformation
 
 				WriteLine(string.Format(
 				@"
-				[Route("""")]
+				[Route({5})]
 				[System.Web.Http.Description.ResponseType(typeof({2}))]
 				[System.Web.Http.HttpPost]
                 {4}
@@ -227,13 +231,13 @@ public class APIControllerTemplate : TextTransformation
 					var result = await Service.{0}({3});					 
 					var response = Request.CreateResponse<{2}>(HttpStatusCode.Created, result);
 					return response;
-				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name)));
+				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name, "Edit"), additionalRouteName));
             }
 			else
             {
 				WriteLine(string.Format(
 				@"
-				[Route("""")]
+				[Route({5})]
 				[System.Web.Http.Description.ResponseType(typeof({2}))]
 				[System.Web.Http.HttpPost]
 				{4}
@@ -242,7 +246,7 @@ public class APIControllerTemplate : TextTransformation
 					var result = Service.{0}({3});					 
 					var response = Request.CreateResponse<{2}>(HttpStatusCode.Created, result);
 					return response;
-				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name)));
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name, "Edit"), additionalRouteName));
             }
 		}
 	}
@@ -334,7 +338,7 @@ public class APIControllerTemplate : TextTransformation
 					var result = await Service.{0}({3});					 
 					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
 					return response;
-				}}", method.Name, typeAndNameParamString, returnType, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name), idInRoutePart));
+				}}", method.Name, typeAndNameParamString, returnType, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name, "Edit"), idInRoutePart));
             }
 			else
             {
@@ -349,7 +353,7 @@ public class APIControllerTemplate : TextTransformation
 					var result = Service.{0}({3});					 
 					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
 					return response;
-				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name), idInRoutePart));
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name, "Edit"), idInRoutePart));
             }
 		}
 	 }
@@ -405,7 +409,7 @@ public class APIControllerTemplate : TextTransformation
 						{{
 							return Ok(result);
 						}}
-					}}", primaryKeyType, method.Name,returnType, GeneratePermissionFilter(method.Name)));
+					}}", primaryKeyType, method.Name,returnType, GeneratePermissionFilter(method.Name, "Delete")));
                 }
 				else
                 {
@@ -426,7 +430,7 @@ public class APIControllerTemplate : TextTransformation
 						{{
 							return Ok(result);
 						}}
-					}}", primaryKeyType, method.Name,method.Type.AsFullName, GeneratePermissionFilter(method.Name)));
+					}}", primaryKeyType, method.Name,method.Type.AsFullName, GeneratePermissionFilter(method.Name, "Delete")));
                 }
 		}
 	 }
@@ -481,7 +485,7 @@ public class APIControllerTemplate : TextTransformation
 			
 					return resp;
 
-				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name)));
+				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name, "View")));
             }
 			else
             {
@@ -511,7 +515,7 @@ public class APIControllerTemplate : TextTransformation
 			
 					return resp;
 
-				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name)));
+				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name, "View")));
             }
 		}
 	}
@@ -523,7 +527,6 @@ public class APIControllerTemplate : TextTransformation
 [RoutePrefix("<#= ControllerName #>")]
 public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 {
-	[Microsoft.Practices.Unity.Dependency]
 	public <#= Entity.FullName #> Service { get; set; }
 	
 	<#+

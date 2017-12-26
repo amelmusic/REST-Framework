@@ -83,17 +83,13 @@ public class ProfileTemplate : TextTransformation
 #>
 			public partial class <#= profile.EntityName #>To<#= profile.MappedTo.Replace('.','_') #>MapProfile : AutoMapper.Profile
 				{
-				    protected override void Configure()
-				    {
-				        var profile = base.CreateMap<<#= profile.EntityName #>, <#= profile.MappedTo #>>();
-						profile.ForAllMembers(opt => opt.Condition(
-							context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-										|| context.SourceType.IsClass && !context.IsSourceValueNull)
-										|| (context.SourceType.IsValueType
-										   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-									   )));
-						profile.ReverseMap();
-				    }
+				        public <#= profile.EntityName #>To<#= profile.MappedTo.Replace('.','_') #>MapProfile()
+						{
+							var profile = CreateMap<<#= profile.EntityName #>, <#= profile.MappedTo #>>();
+							profile.ForAllMembers(opt =>
+								opt.Condition((src, dest, srcVal) => { return srcVal != null; }));
+							profile.ReverseMap().PreserveReferences();
+						}
 			}
 <#+
         }

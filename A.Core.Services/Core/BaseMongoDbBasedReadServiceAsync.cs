@@ -1,6 +1,5 @@
 ﻿using A.Core.Interface;
 using A.Core.Model;
-using Microsoft.Practices.Unity;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -16,7 +15,7 @@ using System.Linq.Dynamic;
 
 namespace A.Core.Services.Core
 {
-    public partial class BaseMongoDbBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseMongoDbBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData> : BaseService, IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
@@ -24,7 +23,6 @@ namespace A.Core.Services.Core
         private static object syncLock = new Object();
         private static IMongoDatabase dataBase = null;
 
-        [Dependency]
         public Lazy<IActionContext> ActionContext { get; set; }
         public virtual int DefaultPageSize { get; set; }
         public virtual string DatabaseName { get; set; }
@@ -212,12 +210,28 @@ namespace A.Core.Services.Core
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if (tmpEntity.CreatedDate == DateTime.MinValue)
+                if (tmpEntity.CreatedOn == DateTime.MinValue)
                 {
-                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                    tmpEntity.CreatedOn = DateTime.UtcNow;
                 }
 
-                tmpEntity.ModifiedDate = DateTime.UtcNow;
+                tmpEntity.ModifiedOn = DateTime.UtcNow;
+            }
+
+            if (entity is BaseEntityWithDateAndUserTokens)
+            {
+                object userIdObj;
+                if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
+                {
+                    string userId = userIdObj.ToString();
+                    var tmpEntity = entity as BaseEntityWithDateAndUserTokens;
+                    if (string.IsNullOrWhiteSpace(tmpEntity.CreatedById))
+                    {
+                        tmpEntity.CreatedById = userId;
+                    }
+
+                    tmpEntity.ModifiedById = userId;
+                }
             }
 
             var validationResult = Validate(entity);

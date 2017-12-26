@@ -1,0 +1,184 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="EnvDTE80" #>
+<#@ include file="VisualStudioHelper.ttinclude" #>
+<#@ include file="APITemplate.Config.ttinclude" #>
+<#@ include file="APIControllerTemplate.ttinclude" #>
+
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+
+<# 
+APIHelper helper = new APIHelper(VisualStudioHelper, APITemplateConfig);
+string @namespace = VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString();
+#>
+#region A_Core generated code
+
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Net.Http.Headers;
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+
+
+namespace <#= @namespace #>.Controllers
+{
+    public partial class EndpointModel
+	{
+		public EndpointModel()
+		{
+			Links = new Dictionary<string, string>();
+		}
+		public Dictionary<string, string> Links {get; set;}
+	}
+	[RoutePrefix("<#= APITemplateConfig.ModuleName #>")]
+    public class endpointsController : ApiController
+    {
+        [Route("")]
+        public HttpResponseMessage Get()
+        {
+            EndpointModel model = new EndpointModel();
+            
+            var apiDescriptions = Configuration.Services.GetApiExplorer().ApiDescriptions;
+            foreach (var description in apiDescriptions.ToList())
+            {
+                var route = Url.Request.RequestUri.AbsoluteUri;
+                var path = route + description.RelativePath.Split('?')[0];
+                var controller = description.ActionDescriptor.ControllerDescriptor.ControllerName;
+                string key = string.Format("{1}", "", description.RelativePath.Split('?')[0].Replace('/', '_').Replace("{id}","id"), description.HttpMethod.Method.ToLower());
+
+                    if(key == controller + "_get")
+                    {
+                        key = controller;
+                    }
+                    if (!model.Links.ContainsKey(key))
+                    {
+                        model.Links[key] = path;
+                    }
+            }
+
+            
+            var resp = Request.CreateResponse<EndpointModel>(HttpStatusCode.OK, model);
+           
+            return resp;
+        }
+    }
+}
+
+
+<# 
+
+//write namespace and add all classes to it
+WriteLine(string.Format(@"namespace {0}.Controllers 
+{{ ", @namespace));
+foreach(var i in helper.GetInterfaceList())
+{
+			string clientName = helper.GetClientName((EnvDTE80.CodeInterface2)i);
+			APIControllerTemplate template = new APIControllerTemplate(i, clientName, VisualStudioHelper, @namespace, APITemplateConfig);
+			WriteLine(template.TransformText());
+			
+}
+//end of namespace
+WriteLine("}");
+#>
+
+
+#endregion
+<#+ 
+	public class APIHelper
+	{
+        public string DefaultServiceBehaviourAttribute = "A.Core.Attributes.DefaultServiceBehaviourAttribute";
+		public APIHelper(AutomationHelper helper, APITemplateConfig config)
+        {
+			VisualStudioHelper = helper;
+			APITemplateConfig = config;
+        }
+		public AutomationHelper VisualStudioHelper { get; set; }
+		public APITemplateConfig APITemplateConfig { get; set; }
+
+		public IList<EnvDTE.CodeInterface> GetInterfaceList()
+        {
+			IList<EnvDTE.CodeInterface> interfaceList = new List<EnvDTE.CodeInterface>();
+			IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+			
+			if(APITemplateConfig.InterfacesProjectList.Count > 0)
+            {
+				foreach(var projectName in APITemplateConfig.InterfacesProjectList)
+                {
+					var project = VisualStudioHelper.GetProject(projectName);
+					projectList.Add(project);
+                }
+            }
+
+			foreach(var project in projectList)
+            {
+				var allInterfaces = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementInterface, false);
+				System.Diagnostics.Debug.WriteLine("//Getting all interfaces:" ); 
+				foreach(EnvDTE80.CodeInterface2 entity in allInterfaces)
+				{
+					System.Diagnostics.Debug.WriteLine("//Interface: " +entity.FullName); 
+					if(!string.IsNullOrWhiteSpace(GetClientName(entity)))
+                    {
+						interfaceList.Add(entity);
+                    }
+				}
+            }
+
+			return interfaceList;
+        }
+
+		public string GetClientName(EnvDTE80.CodeInterface2 entity)
+        {
+			foreach(var part in entity.Parts)
+            {
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(((EnvDTE80.CodeInterface2)part).Attributes, vsCMElement.vsCMElementAttribute, false);
+					 if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								 .Any(att => att.FullName == DefaultServiceBehaviourAttribute))
+					{
+						foreach(var attr in allAttributes)
+                        {
+							if(attr.FullName == DefaultServiceBehaviourAttribute)
+                            {
+								string clientName = GetClientNameFromAttribute((EnvDTE.CodeAttribute)attr);
+								if(!string.IsNullOrWhiteSpace(clientName))
+                                {
+									return clientName;
+									break;
+                                }
+                            }
+                        }
+						
+					}
+            }
+			
+			return "";
+        }
+		protected string GetClientNameFromAttribute(EnvDTE.CodeAttribute attribute)
+            {
+				string requestName = "";
+				var parts = attribute.Value.Split(',');
+				if(parts.Length >= 1)
+                {
+					requestName = parts[1].Trim().Trim('"');;
+                }
+				else
+                {
+					throw new Exception("Request name in invalid format or empty");
+                }
+				return requestName.Trim('"');
+            }
+		
+	}
+#>

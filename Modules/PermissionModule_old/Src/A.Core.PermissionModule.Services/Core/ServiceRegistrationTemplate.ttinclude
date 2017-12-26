@@ -1,0 +1,51 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<#+
+public class ServiceRegistrationTemplate : TextTransformation
+{
+	public IList<EnvDTE.CodeInterface> InterfaceList {get; set;}
+	public ServiceRegistrationTemplate(IList<EnvDTE.CodeInterface> interfaceList)
+	{
+		InterfaceList = interfaceList;
+	}
+
+	public void GenerateServicesRegistration()
+	{
+		foreach(var i in InterfaceList)
+		{
+			WriteLine(string.Format(@"container.RegisterType<{0}, {1}>(new HierarchicalLifetimeManager());", i.FullName, i.Name.Substring(1)));
+			/*WriteLine(string.Format(@"container.RegisterType<{0}, {1}>(new HierarchicalLifetimeManager()).Configure<Microsoft.Practices.Unity.InterceptionExtension.Interception>()
+    .SetDefaultInterceptorFor<{0}>(new Microsoft.Practices.Unity.InterceptionExtension.InterfaceInterceptor());", i.FullName, i.Name.TrimStart('I')));*/
+		}
+	}
+
+
+    public override string TransformText()
+    {
+#>
+public partial class ServicesRegistration : A.Core.Interface.IServicesRegistration
+{
+	public int Priority {get; set; }
+	public ServicesRegistration()
+	{
+		Priority = 0; //This is root, If you want to override this. Add new class with higher priority
+	}
+	public void Register(ref Microsoft.Practices.Unity.UnityContainer container)
+	{
+	<#+
+			GenerateServicesRegistration();        
+	#>
+	}
+}
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

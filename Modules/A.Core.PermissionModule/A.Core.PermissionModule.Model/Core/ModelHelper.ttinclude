@@ -1,0 +1,141 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+
+
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+<#
+
+	this.ModelHelperInstance = new ModelHelper(VisualStudioHelper);
+#>
+
+<#+
+	
+	public ModelHelper ModelHelperInstance {get; set;}
+	public class ModelHelper
+	{
+			public AutomationHelper VisualStudioHelper { get; set; }
+			public string EntityAttributeFullName = "A.Core.Attributes.EntityAttribute";
+			public string RequestFieldAttributeFullName = "A.Core.Attributes.RequestFieldAttribute";
+			public string CoreNamespace = "A.Core";
+			public string CoreAttributesNamespace = "A.Core.Attributes";
+			
+			public ModelHelper(AutomationHelper helper)
+            {
+				VisualStudioHelper = helper;
+            }
+
+			public IEnumerable<EnvDTE.CodeClass> GetEntityList()
+			{
+				var project = this.VisualStudioHelper.CurrentProject;
+				var allClasses = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementClass, false);
+				IList<EnvDTE.CodeClass> entityList = new List<EnvDTE.CodeClass>();
+				foreach(EnvDTE.CodeClass entity in allClasses)
+				{
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Attributes, vsCMElement.vsCMElementAttribute, false);
+					 if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								 .Any(att => att.FullName == EntityAttributeFullName))
+					{
+						entityList.Add(entity);
+					}
+					else
+					{
+						System.Diagnostics.Debug.WriteLine("//Skipped, no [Entity] attribute:" + entity.Name); 
+					}
+				}
+				return entityList;
+			}
+
+
+			public bool PropertyOnEntityHasAttribute(EnvDTE.CodeClass entity, string attributeName)
+            {
+				bool has = false;
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Members, vsCMElement.vsCMElementProperty, false);
+				foreach(EnvDTE.CodeProperty property in allProperties)
+				{
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+					if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								 .Any(att => att.FullName == RequestFieldAttributeFullName))
+					{
+						has = true;
+						break;
+					}
+				}
+				
+				return has;
+            }
+
+			public Dictionary<string, IList<EnvDTE.CodeProperty>> GetRequestListForEntity(EnvDTE.CodeClass entity)
+            {
+				Dictionary<string, IList<EnvDTE.CodeProperty>> requestList = new Dictionary<string, IList<EnvDTE.CodeProperty>>();
+
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Members, vsCMElement.vsCMElementProperty, false);
+				foreach(EnvDTE.CodeProperty property in allProperties)
+				{
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+	
+					foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+                    {
+						if(attribute.FullName == RequestFieldAttributeFullName)
+                        {
+							if(!requestList.ContainsKey(GetRequestNameFromAttribute(attribute)))
+                            {
+								IList<EnvDTE.CodeProperty> propertyList = new List<EnvDTE.CodeProperty>();
+								propertyList.Add(property);
+								requestList.Add(GetRequestNameFromAttribute(attribute), propertyList);
+							}
+							else
+                            {
+								requestList[GetRequestNameFromAttribute(attribute)].Add(property);
+                            }
+                        }
+                    }
+				}
+
+				return requestList;
+            }
+
+			protected string GetRequestNameFromAttribute(EnvDTE.CodeAttribute attribute)
+            {
+				string requestName = "";
+				var parts = attribute.Value.Split(',');
+				if(parts.Length >= 1)
+                {
+					requestName = parts[0];
+                }
+				else
+                {
+					throw new Exception("Request name in invalid format or empty");
+                }
+				return requestName.Trim('"');
+            }
+
+			public string GetText(CodeAttribute attribute)
+			{
+				return attribute.StartPoint.CreateEditPoint().GetText(attribute.EndPoint);
+			} 
+
+			public IList<EnvDTE.CodeProperty> GetPropertiesWithSpecificAttribute(EnvDTE.CodeClass entity, string attributeName)
+            {
+				IList<EnvDTE.CodeProperty> validPropertyList = new List<EnvDTE.CodeProperty>();
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(entity.Members, vsCMElement.vsCMElementProperty, false);
+				foreach(EnvDTE.CodeProperty property in allProperties)
+				{
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, false);
+					if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								 .Any(att => att.FullName == attributeName))
+					{
+						validPropertyList.Add(property);
+						
+					}
+				}
+
+				return validPropertyList;
+            }
+	}
+#>

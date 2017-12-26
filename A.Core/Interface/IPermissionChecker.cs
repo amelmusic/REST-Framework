@@ -1,4 +1,5 @@
-﻿using System;
+﻿using A.Core.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,5 +23,18 @@ namespace A.Core.Interface
         /// </summary>
         /// <param name="permission"></param>
         void ThrowExceptionIfNotAllowed(string permission);
+
+        /// <summary>
+        /// Returns true if allowed
+        /// </summary>
+        /// <param name="permission"></param>
+        /// <returns></returns>
+        bool IsAllowed(PermissionCheckRequest permission);
+
+        /// <summary>
+        /// Throws exception if permission not allowed
+        /// </summary>
+        /// <param name="permission"></param>
+        void ThrowExceptionIfNotAllowed(PermissionCheckRequest permission);
     }
 }

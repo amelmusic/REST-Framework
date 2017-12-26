@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Autofac;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace A.Core.Interface
     /// </summary>
     public interface IActionContext
     {
-        IUnityContainer CurrentContainer { get; set; }
+        ILifetimeScope CurrentContainer { get; set; }
         Dictionary<string,object> Data { get; set; }
     }
 }

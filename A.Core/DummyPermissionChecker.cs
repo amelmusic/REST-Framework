@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using A.Core.Model;
 
 namespace A.Core
 {
@@ -15,7 +16,17 @@ namespace A.Core
             return true;
         }
 
+        public bool IsAllowed(PermissionCheckRequest permission)
+        {
+            return true;
+        }
+
         public void ThrowExceptionIfNotAllowed(string permission)
+        {
+            
+        }
+
+        public void ThrowExceptionIfNotAllowed(PermissionCheckRequest permission)
         {
             
         }

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
     /// <summary>
     /// Base class for all States of the State Machine.
@@ -42,10 +42,20 @@ namespace $rootnamespace$.Core
         {
             trigger.UpdateEntity(this.StateMachine.CurrentEntity);
         }
+
+        public virtual async Task OnEntryAsync(TriggerBase trigger)
+        {
+            trigger.UpdateEntity(this.StateMachine.CurrentEntity);
+        }
         /// <summary>
         /// Is executed when the state machine leaves this state.
         /// </summary>
         public virtual void OnExit(TriggerBase trigger)
+        {
+
+        }
+
+        public virtual async Task OnExitAsync(TriggerBase trigger)
         {
 
         }

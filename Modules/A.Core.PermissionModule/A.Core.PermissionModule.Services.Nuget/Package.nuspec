@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>A.Core.PermissionModule</id>
+    <version>0.0.7</version>
+    <authors>Amel Musić</authors>
+    <owners>Amel Musić</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Permission module for A.Core framework</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>REST T4 A.Core Security Permission</tags>
+	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
+    <dependencies>
+	  <dependency id="A.Core" version="0.0.7" />
+	  <dependency id="Autofac" version="4.6.1"  />
+	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1" />
+	  <dependency id="AutoMapper" version="6.1.1" />
+	  <dependency id="Castle.Core" version="4.0.0" />
+	  <dependency id="EntityFramework" version="6.1.3" />
+	  <dependency id="Foundatio" version="4.2.1183" />
+	  <dependency id="log4net" version="2.0.8" />
+	  <dependency id="Newtonsoft.Json" version="10.0.3" />
+	  <dependency id="Nito.AsyncEx" version="3.0.1" />
+	  <dependency id="System.Linq.Dynamic" version="1.0.7" />
+	  <dependency id="Z.EntityFramework.Plus.EF6" version="1.7.5" />
+    </dependencies>
+  </metadata>
+</package>

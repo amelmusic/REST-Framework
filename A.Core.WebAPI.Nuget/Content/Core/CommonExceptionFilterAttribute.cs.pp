@@ -1,4 +1,4 @@
-﻿using A.Core.Validation;
+using A.Core.Validation;
 using log4net;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Filters;
 
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //REPLACED
 {
     public class CommonExceptionFilterAttribute : ExceptionFilterAttribute
     {

@@ -1,0 +1,134 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.Xml.Serialization" #>
+<#@ import namespace="System.Xml" #>
+
+<#+
+
+public class InterfaceMetaData
+{
+    public string InterfaceType { get; set; }
+    public string ClientName { get; set; }
+    public string DefaultServiceImplementation { get; set; }
+}
+public class InterfaceFromModelTemplate : TextTransformation
+{
+	public string DefaultInterfaceBehaviourAttribute = "A.Core.Attributes.DefaultInterfaceBehaviourAttribute";
+	AutomationHelper VisualStudioHelper {get; set;}
+	IEnumerable<EnvDTE.CodeClass> ClassList {get; set;}
+	EnvDTE.CodeClass Class {get; set;}
+
+	public InterfaceFromModelTemplate(IEnumerable<EnvDTE.CodeClass> classList, AutomationHelper helper)
+	{
+		VisualStudioHelper = helper;
+		ClassList = classList;
+		
+	}
+
+	public bool IsValidForCreatingInterface(EnvDTE.CodeClass @class)
+    {
+		bool isExisting = false;
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(@class.Attributes, vsCMElement.vsCMElementAttribute, false);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == DefaultInterfaceBehaviourAttribute)
+            {
+				isExisting = true;
+				break;
+            }
+        }
+		return isExisting;
+    }
+
+	public InterfaceMetaData GetMetaData()
+    {
+		InterfaceMetaData metadata = new InterfaceMetaData();
+		var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(Class.Attributes, vsCMElement.vsCMElementAttribute, false);
+		foreach(EnvDTE.CodeAttribute attribute in allAttributes)
+        {
+			if(attribute.FullName == DefaultInterfaceBehaviourAttribute)
+            {
+				var val = attribute.Value;
+				//ContractSelfDefaultInterfaceBehaviourEnum.ReadService, DefaultImplementationEnum.EntityFramework, "contractselfi"
+				var parts = val.Split(',');
+				metadata.InterfaceType = parts[0].Trim();
+				metadata.DefaultServiceImplementation = parts[1].Trim();
+				metadata.ClientName = parts[2].Trim();
+            }
+        }
+
+		return metadata;
+    }
+
+
+    public override string TransformText()
+    {
+		WriteLine("//Creating interfaces from model..." + ClassList.Count());
+		//we will first create for each state new class and state machine
+
+		foreach(var @class in ClassList)
+        {
+			Class = @class; //we will now proceed rendering based on this interface
+			var metadata = GetMetaData();
+#>
+<#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.ReadService")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>Service : IReadService<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.ReadServiceAsync")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>ServiceAsync : IReadServiceAsync<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.CRUDService")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>Service : ICRUDService<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>InsertRequest, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>UpdateRequest>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+ 
+            if (metadata.InterfaceType == "DefaultInterfaceBehaviourEnum.CRUDServiceAsync")
+            {
+#>
+		[DefaultServiceBehaviour(<#= metadata.DefaultServiceImplementation #>, <#= metadata.ClientName #>)]
+		public partial interface I<#= Class.Name #>ServiceAsync : ICRUDServiceAsync<<#= Class.Namespace.Name #>.<#= Class.Name #>, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>SearchObject, <#= Class.Namespace.Name #>.SearchObjects.<#= Class.Name #>AdditionalSearchRequestData, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>InsertRequest, <#= Class.Namespace.Name #>.Requests.<#= Class.Name #>UpdateRequest>
+		{
+		
+		}
+<#+ 
+            }
+#>
+<#+
+            
+        }
+		return this.GenerationEnvironment.ToString();
+    }
+}
+#>

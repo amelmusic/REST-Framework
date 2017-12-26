@@ -10,9 +10,12 @@ using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper.Internal;
 using A.Core;
+using A.Core.Interceptors;
+using Autofac.Extras.DynamicProxy;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
+
     public partial class BaseEFBasedCRUDService<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate, TDBContext, TDbEntity> : BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity>, ICRUDService<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate>
         where TEntity : class, new()
         where TDbEntity : class, new()
@@ -28,25 +31,16 @@ namespace $rootnamespace$.Core
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TInsert, TDbEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                                || context.SourceType.IsClass && !context.IsSourceValueNull)
-                                || (context.SourceType.IsValueType
-                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                    (src, dest, srcVal) => { return srcVal != null; }));
                 cfg.CreateMap<TUpdate, TDbEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                               || context.SourceType.IsClass && !context.IsSourceValueNull)
-                               || (context.SourceType.IsValueType
-                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                     (src, dest, srcVal) => { return srcVal != null; }));
             });
+
 
             Mapper = config.CreateMapper();
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
-
+        [Transaction]
         public virtual TEntity Insert(TInsert request, bool saveChanges = true)
         {
             TDbEntity entity = CreateNewInstance();
@@ -68,9 +62,7 @@ namespace $rootnamespace$.Core
             return GlobalMapper.Mapper.Map<TEntity>(entity);
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
-
+        [Transaction]
         public virtual TEntity Update(object id, TUpdate request, bool saveChanges = true)
         {
             var entity = GetByIdInternal(id);
@@ -96,7 +88,7 @@ namespace $rootnamespace$.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
@@ -111,7 +103,7 @@ namespace $rootnamespace$.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);

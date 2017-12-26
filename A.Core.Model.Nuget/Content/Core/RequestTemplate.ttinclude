@@ -86,7 +86,11 @@ public partial class <#= ClassName #>
 							WriteLine(string.Format("[{0}({1})]", attr.FullName, attr.Value));
                         }
 					}
-					WriteLine(string.Format("public {0} {1}", property.Type.CodeType.FullName, property.Name) + " { get; set; }");
+
+					string propertyName = property.Type.CodeType.Name.ToLower();
+					string nullableIfNeeded = propertyName == "string" || propertyName == "byte[]" || propertyName == "nullable" || propertyName.EndsWith("?") ? "" : "?";
+
+					WriteLine(string.Format("public {0}{2} {1}", property.Type.CodeType.FullName, property.Name, nullableIfNeeded) + " { get; set; }");
 			}
 			PopIndent();
         }

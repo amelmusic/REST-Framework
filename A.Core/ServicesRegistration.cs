@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+
 using Foundatio.Caching;
 using System.Diagnostics;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using A.Core.Interceptors;
 
 namespace A.Core
 {
@@ -19,15 +22,31 @@ namespace A.Core
 
         public int Priority { get; set; }
 
-        public void Register(ref UnityContainer container)
+        public void Register(ref ContainerBuilder container)
         {
             //Debugger.Launch();
-            container.RegisterType<IPermissionChecker, DummyPermissionChecker>(new HierarchicalLifetimeManager());
+            container.RegisterType<DummyPermissionChecker>()
+                .As<IPermissionChecker>()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .EnableClassInterceptors();
+
+            container.RegisterType<A.Core.ActionContext>()
+                    .As<A.Core.Interface.IActionContext>()
+                    .InstancePerLifetimeScope()
+                    .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                    .EnableClassInterceptors();
+
             InMemoryCacheClient client = new InMemoryCacheClient()
             {
                 MaxItems = 250
             };
             container.RegisterInstance<ICacheClient>(client);
+
+            container.Register(c => new LogInterceptorProxy()).PropertiesAutowired();
+            container.Register(c => new TransactionInterceptorProxy()).PropertiesAutowired();
+            container.Register(c => new CacheInterceptorProxy(c.Resolve<ICacheClient>(), c.Resolve<IActionContext>()));
+            
         }
     }
 }

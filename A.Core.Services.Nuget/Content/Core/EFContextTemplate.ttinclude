@@ -100,11 +100,14 @@ public class EFContextTemplate : TextTransformation
 
 	public void GenerateContextClassMaps()
 	{
-		var classMapList = GetClassMapList();
-		foreach(var entity in classMapList)
+		if(Config.PassConnectionStringInContextConstructor == true)
 		{
-			WriteLine(string.Format(@"modelBuilder.Configurations.Add(new {0}());", entity.FullName));
-		}
+			var classMapList = GetClassMapList();
+			foreach(var entity in classMapList)
+			{
+				WriteLine(string.Format(@"modelBuilder.Configurations.Add(new {0}());", entity.FullName));
+			}
+        }
 	}
 
 
@@ -113,12 +116,104 @@ public class EFContextTemplate : TextTransformation
 #>
 public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 {
-		
+		partial void OnContextCreation(<#=Config.ContextName#> context);
+		<#+ if(Config.PassConnectionStringInContextConstructor == true) { #>
 		public <#=Config.ContextName#>()
             : base("<#=Config.ContextName#>")
         {
             this.Configuration.LazyLoadingEnabled = false;
+			OnContextCreation(this);
         }
+		<#+ } #>
+
+		<#+ if(Config.PassConnectionStringInContextConstructor == false) { #>
+		public <#=Config.ContextName#>()
+            : base()
+        {
+            this.Configuration.LazyLoadingEnabled = false;
+			OnContextCreation(this);
+        }
+		<#+ } #>
+
+		private static Dictionary<Type, EntitySetBase> _mappingCache =
+    new Dictionary<Type, EntitySetBase>();
+
+        private string GetTableName(Type type)
+        {
+            EntitySetBase es = GetEntitySet(type);
+
+            return string.Format("[{0}].[{1}]",
+                es.MetadataProperties["Schema"].Value,
+                es.MetadataProperties["Table"].Value);
+        }
+
+        private string GetPrimaryKeyName(Type type)
+        {
+            EntitySetBase es = GetEntitySet(type);
+
+            return es.ElementType.KeyMembers[0].Name;
+        }
+
+        private bool HasIsDeletedColumn(Type type)
+        {
+            EntitySetBase es = GetEntitySet(type);
+
+            return es.ElementType.Members.Contains("IsDeleted");
+        }
+
+        private EntitySetBase GetEntitySet(Type type)
+        {
+            if (!_mappingCache.ContainsKey(type))
+            {
+                ObjectContext octx = ((IObjectContextAdapter)this).ObjectContext;
+
+                string typeName = ObjectContext.GetObjectType(type).Name;
+
+                var es = octx.MetadataWorkspace
+                                .GetItemCollection(DataSpace.SSpace)
+                                .GetItems<EntityContainer>()
+                                .SelectMany(c => c.BaseEntitySets
+                                                .Where(e => e.Name == typeName))
+                                .FirstOrDefault();
+
+                if (es == null)
+                    throw new ArgumentException("Entity type not found in GetTableName", typeName);
+
+                _mappingCache.Add(type, es);
+            }
+
+            return _mappingCache[type];
+        }
+
+		public virtual void ManageSoftDelete()
+		{
+			var entries = ChangeTracker.Entries();
+
+			foreach(var entry in entries)
+			{
+				if (entry.State == EntityState.Deleted)
+				{
+					Type entryEntityType = entry.Entity.GetType();
+
+					string tableName = GetTableName(entryEntityType);
+					string primaryKeyName = GetPrimaryKeyName(entryEntityType);
+					bool hasIsDeletedColumn = HasIsDeletedColumn(entryEntityType);
+
+					if (hasIsDeletedColumn)
+					{
+						string sql =
+						string.Format(
+						"UPDATE {0} SET IsDeleted = 1 WHERE {1} = @id",
+							tableName, primaryKeyName);
+
+						Database.ExecuteSqlCommand(
+							sql,
+							new System.Data.SqlClient.SqlParameter("@id", entry.OriginalValues[primaryKeyName]));
+						entry.State = EntityState.Detached;
+					}
+				}
+			}
+		}
 
 		public virtual bool ExistsInContext<TEntity>(TEntity entity)
 			where TEntity : class
@@ -130,6 +225,7 @@ public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 	    {
 	        try
 	        {
+				ManageSoftDelete();
                 return base.SaveChanges();
             }
 	        catch (System.Data.Entity.Validation.DbEntityValidationException e)
@@ -155,6 +251,7 @@ public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 	    {
             try
             {
+				ManageSoftDelete();
                 return await base.SaveChangesAsync();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException e)
@@ -185,8 +282,10 @@ public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 		GenerateContextDbSets();
 	#>
 
+	partial void OnModelCreatingPartial(System.Data.Entity.DbModelBuilder modelBuilder);
 	protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
         {
+		OnModelCreatingPartial(modelBuilder);
 			base.OnModelCreating(modelBuilder);
 		<#+
 			GenerateContextClassMaps();
@@ -219,9 +318,13 @@ public partial class <#=Config.ContextName#>Registration : A.Core.Interface.ISer
 		{
 			Priority = 0; //This is root. Add new class with higher priority
 		}
-		public void Register(ref Microsoft.Practices.Unity.UnityContainer container)
+		public void Register(ref Autofac.ContainerBuilder container)
 		{
-			container.RegisterType<<#=Config.ContextName#>, <#=Config.ContextName#>>(new HierarchicalLifetimeManager());
+			container.RegisterType<<#=Config.ContextName#>>()
+                .As<<#=Config.ContextName#>>()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .EnableClassInterceptors();
 		}
 	}
 

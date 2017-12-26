@@ -11,7 +11,7 @@ using A.Core.Model;
 using AutoMapper;
 using AutoMapper.Internal;
 using AutoMapper.QueryableExtensions;
-using Microsoft.Practices.Unity;
+
 using A.Core;
 
 namespace A.Core.Services.Core
@@ -24,14 +24,14 @@ namespace A.Core.Services.Core
     /// <typeparam name="TSearchAdditionalData"></typeparam>
     /// <typeparam name="TDBContext"></typeparam>
     /// <typeparam name="TDbEntity"></typeparam>
-    public partial class BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity> : IReadService<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity> : BaseService, IReadService<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TDbEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        [Dependency]
+        
         public virtual Lazy<IActionContext> ActionContext { get; set; }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace A.Core.Services.Core
             return entity;
         }
 
-        [Dependency]
+        
         public TDBContext Context { get; set; }
 
         public BaseEFBasedReadService()
@@ -80,12 +80,28 @@ namespace A.Core.Services.Core
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if (tmpEntity.CreatedDate == DateTime.MinValue)
+                if (tmpEntity.CreatedOn == DateTime.MinValue)
                 {
-                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                    tmpEntity.CreatedOn = DateTime.UtcNow;
                 }
 
-                tmpEntity.ModifiedDate = DateTime.UtcNow;
+                tmpEntity.ModifiedOn = DateTime.UtcNow;
+            }
+
+            if (entity is BaseEntityWithDateAndUserTokens)
+            {
+                object userIdObj;
+                if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
+                {
+                    string userId = userIdObj.ToString();
+                    var tmpEntity = entity as BaseEntityWithDateAndUserTokens;
+                    if (string.IsNullOrWhiteSpace(tmpEntity.CreatedById))
+                    {
+                        tmpEntity.CreatedById = userId;
+                    }
+
+                    tmpEntity.ModifiedById = userId;
+                }
             }
 
             var validationResult = Validate(entity);
@@ -99,7 +115,7 @@ namespace A.Core.Services.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(entity, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(entity, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);

@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper.Internal;
-
+using A.Core.Interceptors;
+using Autofac.Extras.DynamicProxy;
 
 namespace A.Core.Services.Core
 {
+
     public partial class BaseEFBasedCRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate, TDBContext> : BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext>, ICRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
@@ -23,28 +25,20 @@ namespace A.Core.Services.Core
         public static IMapper Mapper { get; set; }
         static BaseEFBasedCRUDServiceAsync()
         {
+
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                                || context.SourceType.IsClass && !context.IsSourceValueNull)
-                                || (context.SourceType.IsValueType
-                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                    (src, dest, srcVal) => { return srcVal != null; }));
                 cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                               || context.SourceType.IsClass && !context.IsSourceValueNull)
-                               || (context.SourceType.IsValueType
-                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                     (src, dest, srcVal) => { return srcVal != null; }));
             });
+
 
             Mapper = config.CreateMapper();
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptorAsync(AspectPriority = 1)]
-
+        [Transaction]
         public virtual async Task<TEntity> InsertAsync(TInsert request, bool saveChanges = true)
         {
             TEntity entity = CreateNewInstance();
@@ -66,9 +60,7 @@ namespace A.Core.Services.Core
             return entity;
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptorAsync(AspectPriority = 1)]
-
+        [Transaction]
         public virtual async Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true)
         {
             var entity = await GetAsync(id);
@@ -94,7 +86,7 @@ namespace A.Core.Services.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
@@ -109,7 +101,7 @@ namespace A.Core.Services.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);

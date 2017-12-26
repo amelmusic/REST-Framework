@@ -1,6 +1,6 @@
 using A.Core.Interface;
 using A.Core.Model;
-using Microsoft.Practices.Unity;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,20 +11,22 @@ using System.Threading.Tasks;
 using System.Linq.Dynamic;
 using System.Linq.Expressions;
 using A.Core.Interceptors;
+using Autofac.Extras.DynamicProxy;
+using A.Core.Validation;
+using System.Diagnostics;
 
 namespace A.Core.Services.Core
 {
     /// <summary>
     /// Base implementation for IReadService and ICRUDService
     /// </summary>
-    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : BaseService, IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        [Dependency]
-        public Lazy<IActionContext> ActionContext { get; set; }
+        public virtual Lazy<IActionContext> ActionContext { get; set; }
 
         /// <summary>
         /// If true, all gets will go to Get method. This is suitable when we need to implement multi tenant scenarios and have filter in one place.
@@ -51,8 +53,7 @@ namespace A.Core.Services.Core
             return entity;
         }
 
-        [Dependency]
-        public TDBContext Context { get; set; }
+        public virtual TDBContext Context { get; set; }
 
         public BaseEFBasedReadServiceAsync()
         {
@@ -72,12 +73,27 @@ namespace A.Core.Services.Core
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if (tmpEntity.CreatedDate == DateTime.MinValue)
+                if (tmpEntity.CreatedOn == DateTime.MinValue)
                 {
-                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                    tmpEntity.CreatedOn = DateTime.UtcNow;
                 }
 
-                tmpEntity.ModifiedDate = DateTime.UtcNow;
+                tmpEntity.ModifiedOn = DateTime.UtcNow;
+            }
+            if(entity is BaseEntityWithDateAndUserTokens)
+            {
+                object userIdObj;
+                if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
+                {
+                    string userId = userIdObj.ToString();
+                    var tmpEntity = entity as BaseEntityWithDateAndUserTokens;
+                    if (string.IsNullOrWhiteSpace(tmpEntity.CreatedById))
+                    {
+                        tmpEntity.CreatedById = userId;
+                    }
+
+                    tmpEntity.ModifiedById = userId;
+                }
             }
 
             var validationResult = await ValidateAsync(entity);
@@ -92,7 +108,7 @@ namespace A.Core.Services.Core
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
             var context = new ValidationContext(entity, serviceProvider: null, items: null);
-            var validationResults = new List<ValidationResult>();
+            var validationResults = new List<System.ComponentModel.DataAnnotations.ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(entity, context, validationResults, true);
             if (!isValid)
@@ -210,8 +226,8 @@ namespace A.Core.Services.Core
             }
         }
 
-        
-        [TransactionInterceptorAsync(AspectPriority = 1)]
+
+        [Transaction]
         public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
@@ -231,7 +247,6 @@ namespace A.Core.Services.Core
             return result;
         }
 
-
         protected virtual async Task<long> GetCountAsync(IQueryable<TEntity> query)
         {
             return await query.LongCountAsync();
@@ -247,8 +262,9 @@ namespace A.Core.Services.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public bool BeginTransaction()
+        //[LogInterceptor(AspectPriority = 0)]
+        
+        public virtual bool BeginTransaction()
         {
             object transactionStarted = false;
             bool exists = this.ActionContext.Value.Data.TryGetValue("CORE_TRANSACTION_STARTED", out transactionStarted);
@@ -265,8 +281,8 @@ namespace A.Core.Services.Core
 
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void CommitTransaction()
+        //[LogInterceptor(AspectPriority = 0)]
+        public virtual void CommitTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {
@@ -275,8 +291,8 @@ namespace A.Core.Services.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void RollbackTransaction()
+        //[LogInterceptor(AspectPriority = 0)]
+        public virtual void RollbackTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {
@@ -285,8 +301,8 @@ namespace A.Core.Services.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void DisposeTransaction()
+        //[LogInterceptor(AspectPriority = 0)]
+        public virtual void DisposeTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {

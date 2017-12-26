@@ -634,19 +634,19 @@ public class EFBasedServiceTemplate : TextTransformation
 		var firstParameter =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>().First();
 		WriteLine(string.Format(
 				@"
-					public virtual {0} Delete({1} {2})
+					public virtual async {0} DeleteAsync({1} {2})
 					{{
-						var entity = Get({2});
+						var entity = await GetByIdInternalAsync(id);
 						if(entity != null)
 						{{
 							Entity.Attach(entity);
 							Context.Entry(entity).State = EntityState.Deleted;
-							Context.SaveChanges();
-							return entity;
+							await Context.SaveChangesAsync();
+							return true;
 						}}
 						else
 						{{
-							return null;
+							return false;
 						}}
 					}}
 				", method.Type.AsFullName, firstParameter.Type.AsFullName, firstParameter.Name));

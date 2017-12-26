@@ -10,8 +10,10 @@ using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper.Internal;
 using A.Core;
+using A.Core.Interceptors;
+using Autofac.Extras.DynamicProxy;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
     public partial class BaseEFBasedCRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate, TDBContext, TDbEntity> : BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity>, ICRUDServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate>
         where TEntity : class, new()
@@ -20,31 +22,47 @@ namespace $rootnamespace$.Core
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
+        class IgnoreNullSourceValues : IMemberValueResolver<TUpdate, TDbEntity, object, object>
+        {
+            public object Resolve(object source, object destination, object sourceMember, object destinationMember, ResolutionContext context)
+            {
+                return sourceMember ?? destinationMember;
+            }
+
+            public object Resolve(TUpdate source, TDbEntity destination, object sourceMember, object destMember, ResolutionContext context)
+            {
+                return sourceMember ?? destMember;
+            }
+        }
+
         // ReSharper disable once StaticMemberInGenericType
         public static IMapper Mapper { get; set; }
         static BaseEFBasedCRUDServiceAsync()
         {
+
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.ForAllPropertyMaps(pm => !pm.HasSource(),
+                        (pm, opt) => opt.UseDestinationValue());
+                cfg.CreateMap<long?, long>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<int?, int>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<short?, short>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<byte?, byte>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<bool?, bool>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
+
+
                 cfg.CreateMap<TInsert, TDbEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                                || context.SourceType.IsClass && !context.IsSourceValueNull)
-                                || (context.SourceType.IsValueType
-                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                    (src, dest, srcVal) => { return srcVal != null; }));
                 cfg.CreateMap<TUpdate, TDbEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                               || context.SourceType.IsClass && !context.IsSourceValueNull)
-                               || (context.SourceType.IsValueType
-                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                     (src, dest, srcVal, dstVal, ctx) => { return srcVal != null; }));
             });
+
 
             Mapper = config.CreateMapper();
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptorAsync(AspectPriority = 1)]
+        [Transaction]
 
         public virtual async Task<TEntity> InsertAsync(TInsert request, bool saveChanges = true)
         {
@@ -71,13 +89,11 @@ namespace $rootnamespace$.Core
 
         public virtual async Task BeforeInsertInternal(TInsert request, TDbEntity internalEntity)
         {
-            
+
             return;
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptorAsync(AspectPriority = 1)]
-
+        [Transaction]
         public virtual async Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true)
         {
             var entity = await GetByIdInternalAsync(id);
@@ -110,7 +126,7 @@ namespace $rootnamespace$.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
@@ -125,7 +141,7 @@ namespace $rootnamespace$.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);

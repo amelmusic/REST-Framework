@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 using A.Core.Model;
 using System.Data.Entity;
-using Microsoft.Practices.Unity;
+
 using System.Linq.Dynamic;
 using System.ComponentModel.DataAnnotations;
+using A.Core.Interceptors;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
     /// <summary>
     /// Base implementation for IReadService and ICRUDService
     /// </summary>
-    public partial class BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : IReadService<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext> : BaseService, IReadService<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        [Dependency]
         public virtual Lazy<IActionContext> ActionContext { get; set; }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace $rootnamespace$.Core
             return entity;
         }
 
-        [Dependency]
+        
         public TDBContext Context { get; set; }
 
         public BaseEFBasedReadService()
@@ -71,12 +71,28 @@ namespace $rootnamespace$.Core
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if(tmpEntity.CreatedDate == DateTime.MinValue)
+                if(tmpEntity.CreatedOn == DateTime.MinValue)
                 {
-                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                    tmpEntity.CreatedOn = DateTime.UtcNow;
                 }
                 
-                tmpEntity.ModifiedDate = DateTime.UtcNow;
+                tmpEntity.ModifiedOn = DateTime.UtcNow;
+            }
+
+            if (entity is BaseEntityWithDateAndUserTokens)
+            {
+                object userIdObj;
+                if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
+                {
+                    string userId = userIdObj.ToString();
+                    var tmpEntity = entity as BaseEntityWithDateAndUserTokens;
+                    if (string.IsNullOrWhiteSpace(tmpEntity.CreatedById))
+                    {
+                        tmpEntity.CreatedById = userId;
+                    }
+
+                    tmpEntity.ModifiedById = userId;
+                }
             }
 
             var validationResult = Validate(entity);
@@ -206,6 +222,7 @@ namespace $rootnamespace$.Core
             }
         }
 
+        [Transaction]
         public virtual PagedResult<TEntity> GetPage(TSearchObject search)
         {
             if (search == null)

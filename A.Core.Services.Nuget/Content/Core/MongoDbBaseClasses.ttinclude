@@ -27,7 +27,7 @@ public class MongoDbBaseClasses : TextTransformation
         private static object syncLock = new Object();
         private static MongoDB.Driver.IMongoDatabase dataBase = null;
 
-        [Dependency]
+        
         public Lazy<IActionContext> ActionContext { get; set; }
         public virtual int DefaultPageSize { get; set; }
         public virtual string DatabaseName { get; set; }

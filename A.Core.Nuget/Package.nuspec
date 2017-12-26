@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>A.Core</id>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,15 +12,16 @@
     <tags>REST T4 A.Core</tags>
 	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
     <dependencies>
-	  <dependency id="CommonServiceLocator" version="1.3"  />
-	  <dependency id="log4net" version="2.0.5"  />
-	  <dependency id="PostSharp" version="4.2.27"  />
-	  <dependency id="Unity" version="4.0.1"  />
-	  <dependency id="Unity.Interception" version="4.0.1"  />
+	  <dependency id="Autofac" version="4.6.1" />
+	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1" />
+	  <dependency id="AutoMapper" version="6.1.1" />
+	  <dependency id="Castle.Core" version="4.0.0" />
 	  <dependency id="Foundatio" version="4.2.1183" />
-	  <dependency id="Newtonsoft.Json" version="9.0.1" />
+	  <dependency id="log4net" version="2.0.8" />
+	  <dependency id="Newtonsoft.Json" version="10.0.3" />
     </dependencies>
   </metadata>
 </package>
 
   
+

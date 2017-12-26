@@ -20,7 +20,17 @@ public class ServiceRegistrationTemplate : TextTransformation
 	{
 		foreach(var i in InterfaceList)
 		{
-			WriteLine(string.Format(@"container.RegisterType<{0}, {1}>(new HierarchicalLifetimeManager());", i.FullName, i.Name.Substring(1)));
+			//WriteLine(string.Format(@"container.RegisterType<{0}, {1}>(new HierarchicalLifetimeManager());", i.FullName, i.Name.Substring(1)));
+
+			WriteLine(string.Format(@"container.RegisterType<{1}>()
+                .As<{0}>()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .EnableClassInterceptors(new Castle.DynamicProxy.ProxyGenerationOptions() {{ Hook = new A.Core.Interceptors.ForceVirtualMethodsHook()}})
+				.InterceptedBy(typeof(A.Core.Interceptors.LogInterceptorProxy))
+                .InterceptedBy(typeof(A.Core.Interceptors.CacheInterceptorProxy))
+                .InterceptedBy(typeof(A.Core.Interceptors.TransactionInterceptorProxy));", i.FullName, i.Name.Substring(1)));
+
 			/*WriteLine(string.Format(@"container.RegisterType<{0}, {1}>(new HierarchicalLifetimeManager()).Configure<Microsoft.Practices.Unity.InterceptionExtension.Interception>()
     .SetDefaultInterceptorFor<{0}>(new Microsoft.Practices.Unity.InterceptionExtension.InterfaceInterceptor());", i.FullName, i.Name.TrimStart('I')));*/
 		}
@@ -30,6 +40,7 @@ public class ServiceRegistrationTemplate : TextTransformation
     public override string TransformText()
     {
 #>
+
 public partial class ServicesRegistration : A.Core.Interface.IServicesRegistration
 {
 	public int Priority {get; set; }
@@ -37,7 +48,7 @@ public partial class ServicesRegistration : A.Core.Interface.IServicesRegistrati
 	{
 		Priority = 0; //This is root, If you want to override this. Add new class with higher priority
 	}
-	public void Register(ref Microsoft.Practices.Unity.UnityContainer container)
+	public void Register(ref Autofac.ContainerBuilder container)
 	{
 	<#+
 			GenerateServicesRegistration();        

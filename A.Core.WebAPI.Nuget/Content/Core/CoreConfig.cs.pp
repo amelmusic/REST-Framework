@@ -1,6 +1,4 @@
-﻿using A.Core.Interface;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.InterceptionExtension;
+using A.Core.Interface;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -15,24 +13,25 @@ using AutoMapper;
 //using System.Web.Http.Cors;
 using Owin;
 using A.Core;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Autofac.Integration.WebApi;
+using System.Web.Http.Dependencies;
+using AutoMapper.Configuration;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //REPLACED
 {
     /// <summary>
     /// Handles Core configuration. NOTE: Call this from GLOBAL.asax
     /// </summary>
     public class CoreConfig
     {
-        public static UnityContainer Container { get; set; }
-        public static UnityResolver Resolver { get; set; }
+        public static ContainerBuilder Container { get; set; }
 
         static CoreConfig()
         {
-            Container = new UnityContainer();
-            Resolver = new UnityResolver(Container);
-            
-
-            Container.AddNewExtension<Interception>();
+            Container = new ContainerBuilder();
+            //Container.RegisterApiControllers(Assembly.GetExecutingAssembly());
         }
         private static List<IServicesRegistration> servicesRegistrationList = new List<IServicesRegistration>();
         private static List<Profile> profileList = new List<Profile>();
@@ -102,7 +101,8 @@ namespace $rootnamespace$.Core
             formatters.Remove(formatters.XmlFormatter);
 
             log4net.Config.XmlConfigurator.Configure();   
-            config.DependencyResolver = Resolver;
+
+          
 
             config.Filters.Add(new ActionContextAttribute());
             config.Filters.Add(new LogFilterAttribute());
@@ -118,8 +118,17 @@ namespace $rootnamespace$.Core
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.None;
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 
-            Container.RegisterType<A.Core.Interface.IActionContext, A.Core.ActionContext>(new HierarchicalLifetimeManager());
-            Container.RegisterInstance<IUnityContainer>(Container);
+            Container.RegisterType<A.Core.ActionContext>()
+                .As<A.Core.Interface.IActionContext>()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .EnableClassInterceptors();
+
+            
+            Container.RegisterInstance<ContainerBuilder>(Container);
+            Container.RegisterApiControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
+
+            config.DependencyResolver = new AutofacWebApiDependencyResolver(Container.Build());
         }
     }
 }

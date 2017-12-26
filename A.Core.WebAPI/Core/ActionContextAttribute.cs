@@ -1,4 +1,5 @@
 using A.Core.Interface;
+using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +20,11 @@ namespace A.Core.WebAPI.Core
             {
                 throw new ApplicationException("Container must be initialized!");
             }
-            UnityResolver resolver = container as UnityResolver;
-            if(resolver == null)
-            {
-                throw new ApplicationException("Resolver must be initialized!");
-            }
+
+            ILifetimeScope resolver = (container as Autofac.Integration.WebApi.AutofacWebApiDependencyScope).LifetimeScope as ILifetimeScope;
+
             var coreActionContext = container.GetService(typeof(IActionContext)) as IActionContext;
-            coreActionContext.CurrentContainer = resolver.Container;
+            coreActionContext.CurrentContainer = resolver;
             
             var requestId = Guid.NewGuid().ToString();
             PopulateFromClaimsPrincipal(actionContext, coreActionContext);
@@ -46,7 +45,7 @@ namespace A.Core.WebAPI.Core
             if (userFromClaim != null)
             {
                 var idClaimName = userFromClaim.Identity.Name;
-                var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier || x.Type == "sub");
                 if (idClaim != null)
                 {
                     coreActionContext.Data["UserId"] = idClaim.Value.ToString();

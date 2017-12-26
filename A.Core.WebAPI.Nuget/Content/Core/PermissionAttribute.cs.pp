@@ -1,4 +1,4 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
 using log4net;
 using Newtonsoft.Json;
 using System;
@@ -10,14 +10,22 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http.Filters;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //REPLACED
 {
     public class PermissionAttribute : ActionFilterAttribute
     {
         public string Permission { get; set; }
+        public string OperationType { get; set; }
+
         public PermissionAttribute(string permission)
         {
             Permission = permission;
+        }
+
+        public PermissionAttribute(string permission, string operationType)
+        {
+            Permission = permission;
+            OperationType = operationType;
         }
 
         public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
@@ -29,11 +37,7 @@ namespace $rootnamespace$.Core
                 {
                     throw new ApplicationException("Container must be initialized!");
                 }
-                UnityResolver resolver = container as UnityResolver;
-                if (resolver == null)
-                {
-                    throw new ApplicationException("Resolver must be initialized!");
-                }
+
                 var permissionChecker = container.GetService(typeof(IPermissionChecker)) as IPermissionChecker;
 
                 bool isAllowed = permissionChecker.IsAllowed(Permission);

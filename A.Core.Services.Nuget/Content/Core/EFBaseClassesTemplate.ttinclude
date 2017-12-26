@@ -30,7 +30,7 @@ public class EFBaseClassesTemplate : TextTransformation
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        [Dependency]
+        
         public Lazy<IActionContext> ActionContext { get; set; }
 
         public virtual int DefaultPageSize { get; set; }
@@ -52,7 +52,7 @@ public class EFBaseClassesTemplate : TextTransformation
             return entity;
         }
 
-        [Dependency]
+        
         public TDBContext Context { get; set; }
 
         public BaseEFBasedReadService()

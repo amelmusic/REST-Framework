@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
@@ -9,19 +9,18 @@ using System.Threading.Tasks;
 using A.Core.Interceptors;
 using A.Core.Interface;
 using A.Core.Model;
-using Microsoft.Practices.Unity;
 using A.Core;
+using Autofac.Extras.DynamicProxy;
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
-    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity> : IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
+    public partial class BaseEFBasedReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData, TDBContext, TDbEntity> : BaseService, IReadServiceAsync<TEntity, TSearchObject, TSearchAdditionalData>
         where TEntity : class, new()
         where TDbEntity : class, new()
         where TSearchAdditionalData : BaseAdditionalSearchRequestData, new()
         where TDBContext : DbContext, new()
         where TSearchObject : BaseSearchObject<TSearchAdditionalData>, new()
     {
-        [Dependency]
         public Lazy<IActionContext> ActionContext { get; set; }
 
         /// <summary>
@@ -49,7 +48,6 @@ namespace $rootnamespace$.Core
             return entity;
         }
 
-        [Dependency]
         public TDBContext Context { get; set; }
 
         public BaseEFBasedReadServiceAsync()
@@ -70,12 +68,28 @@ namespace $rootnamespace$.Core
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
-                if (tmpEntity.CreatedDate == DateTime.MinValue)
+                if (tmpEntity.CreatedOn == DateTime.MinValue)
                 {
-                    tmpEntity.CreatedDate = DateTime.UtcNow;
+                    tmpEntity.CreatedOn = DateTime.UtcNow;
                 }
 
-                tmpEntity.ModifiedDate = DateTime.UtcNow;
+                tmpEntity.ModifiedOn = DateTime.UtcNow;
+            }
+
+            if (entity is BaseEntityWithDateAndUserTokens)
+            {
+                object userIdObj;
+                if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
+                {
+                    string userId = userIdObj.ToString();
+                    var tmpEntity = entity as BaseEntityWithDateAndUserTokens;
+                    if (string.IsNullOrWhiteSpace(tmpEntity.CreatedById))
+                    {
+                        tmpEntity.CreatedById = userId;
+                    }
+
+                    tmpEntity.ModifiedById = userId;
+                }
             }
 
             var validationResult = await ValidateAsync(entity);
@@ -216,7 +230,7 @@ namespace $rootnamespace$.Core
         }
 
 
-        [TransactionInterceptorAsync(AspectPriority = 1)]
+        [Transaction]
         public virtual async Task<PagedResult<TEntity>> GetPageAsync(TSearchObject search)
         {
             if (search == null)
@@ -257,8 +271,8 @@ namespace $rootnamespace$.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public bool BeginTransaction()
+        [Log]
+        public virtual bool BeginTransaction()
         {
             object transactionStarted = false;
             bool exists = this.ActionContext.Value.Data.TryGetValue("CORE_TRANSACTION_STARTED", out transactionStarted);
@@ -275,8 +289,8 @@ namespace $rootnamespace$.Core
 
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void CommitTransaction()
+        [Log]
+        public virtual void CommitTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {
@@ -285,8 +299,8 @@ namespace $rootnamespace$.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void RollbackTransaction()
+        [Log]
+        public virtual void RollbackTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {
@@ -295,8 +309,8 @@ namespace $rootnamespace$.Core
             }
         }
 
-        [LogInterceptor(AspectPriority = 0)]
-        public void DisposeTransaction()
+        [Log]
+        public virtual void DisposeTransaction()
         {
             if (this.Context.Database.CurrentTransaction != null)
             {

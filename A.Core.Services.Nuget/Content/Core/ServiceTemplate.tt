@@ -22,7 +22,6 @@
 
 #region A_Core generated code
 using System.Linq;
-using Microsoft.Practices.Unity;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System;
@@ -32,6 +31,11 @@ using AutoMapper.Internal;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using A.Core.Validation;
+using Autofac;
+using Autofac.Extras.DynamicProxy;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 
 //<#= ServiceTemplateConfig.InterfacesProjectList[0] #>
 <#

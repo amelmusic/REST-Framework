@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper.Internal;
+using A.Core.Interceptors;
+using Autofac.Extras.DynamicProxy;
 
-
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //DD
 {
     public partial class BaseEFBasedCRUDService<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate, TDBContext> : BaseEFBasedReadService<TEntity, TSearchObject, TSearchAdditionalData, TDBContext>, ICRUDService<TEntity, TSearchObject, TSearchAdditionalData, TInsert, TUpdate>
         where TEntity : class, new()
@@ -23,29 +24,21 @@ namespace $rootnamespace$.Core
         public static IMapper Mapper { get; set; }
         static BaseEFBasedCRUDService()
         {
-            
+
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                                || context.SourceType.IsClass && !context.IsSourceValueNull)
-                                || (context.SourceType.IsValueType
-                                   && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                    (src, dest, srcVal) => { return srcVal != null; }));
                 cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                    context => ((context.PropertyMap.DestinationPropertyType.IsNullableType() && !context.IsSourceValueNull)
-                               || context.SourceType.IsClass && !context.IsSourceValueNull)
-                               || (context.SourceType.IsValueType
-                                  && !context.IsSourceValueNull && !context.SourceValue.Equals(Activator.CreateInstance(context.SourceType))
-                               )));
+                     (src, dest, srcVal) => { return srcVal != null; }));
             });
+
 
             Mapper = config.CreateMapper();
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
-        
+        [Transaction]
+
         public virtual TEntity Insert(TInsert request, bool saveChanges = true)
         {
             TEntity entity = CreateNewInstance();
@@ -67,13 +60,12 @@ namespace $rootnamespace$.Core
             return entity;
         }
 
-        [A.Core.Interceptors.LogInterceptor(AspectPriority = 0)]
-        [A.Core.Interceptors.TransactionInterceptor(AspectPriority = 1)]
+        [Transaction]
 
         public virtual TEntity Update(object id, TUpdate request, bool saveChanges = true)
         {
             var entity = Get(id);
-            if(entity != null)
+            if (entity != null)
             {
                 Mapper.Map<TUpdate, TEntity>(request, entity);
                 var validationResult = ValidateUpdate(request, entity);
@@ -95,7 +87,7 @@ namespace $rootnamespace$.Core
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
 
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
@@ -109,14 +101,14 @@ namespace $rootnamespace$.Core
         public virtual A.Core.Validation.ValidationResult ValidateUpdate(TUpdate request, TEntity entity)
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();
-            
-            var context = new ValidationContext(request, serviceProvider: null, items: null);
+
+            var context = new System.ComponentModel.DataAnnotations.ValidationContext(request, serviceProvider: null, items: null);
             var validationResults = new List<ValidationResult>();
 
             bool isValid = Validator.TryValidateObject(request, context, validationResults, true);
-            if(!isValid)
+            if (!isValid)
             {
-                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage}); });
+                validationResults.ForEach(x => { result.ResultList.Add(new A.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return result;
         }

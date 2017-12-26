@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +17,6 @@ namespace A.Core.Interface
         /// <summary>
         /// Contains registration for services
         /// </summary>
-        void Register(ref UnityContainer container);
+        void Register(ref ContainerBuilder container);
     }
 }

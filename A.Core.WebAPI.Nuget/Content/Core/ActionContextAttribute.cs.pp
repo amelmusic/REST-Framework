@@ -1,4 +1,5 @@
-﻿using A.Core.Interface;
+using A.Core.Interface;
+using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Security.Claims;
 using System.Web.Http.Filters;
 
 
-namespace $rootnamespace$.Core
+namespace $rootnamespace$.Core //REPLACED
 {
     public class ActionContextAttribute : ActionFilterAttribute
     {
@@ -19,18 +20,16 @@ namespace $rootnamespace$.Core
             {
                 throw new ApplicationException("Container must be initialized!");
             }
-            UnityResolver resolver = container as UnityResolver;
-            if(resolver == null)
-            {
-                throw new ApplicationException("Resolver must be initialized!");
-            }
+
+            ILifetimeScope resolver = (container as Autofac.Integration.WebApi.AutofacWebApiDependencyScope).LifetimeScope as ILifetimeScope;
+
             var coreActionContext = container.GetService(typeof(IActionContext)) as IActionContext;
-            coreActionContext.CurrentContainer = resolver.Container;
+            coreActionContext.CurrentContainer = resolver;
             
             var requestId = Guid.NewGuid().ToString();
             PopulateFromClaimsPrincipal(actionContext, coreActionContext);
             log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
-           
+
             actionContext.Request.Properties.Add(new KeyValuePair<string, object>("RequestId", requestId));
             
             //coreActionContext.CurrentContainer = container.
@@ -39,13 +38,14 @@ namespace $rootnamespace$.Core
 
         private void PopulateFromClaimsPrincipal(System.Web.Http.Controllers.HttpActionContext actionContext, IActionContext coreActionContext)
         {
-
+            
             List<string> roleList = new List<string>();
             var userFromClaim = actionContext.RequestContext.Principal as ClaimsPrincipal;
+
             if (userFromClaim != null)
             {
                 var idClaimName = userFromClaim.Identity.Name;
-                var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+                var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier || x.Type == "sub");
                 if (idClaim != null)
                 {
                     coreActionContext.Data["UserId"] = idClaim.Value.ToString();
@@ -54,8 +54,10 @@ namespace $rootnamespace$.Core
                 }
                 else
                 {
+#if DEBUG
                     coreActionContext.Data.Add("UserId", "8E023B32-C436-495D-B81E-2E942CFA1F18"); //NOTE: this is for test only...
-                    log4net.LogicalThreadContext.Properties["UserName"] = "8E023B32-C436-495D-B81E-2E942CFA1F18"; //get this from OAuth token
+                    log4net.LogicalThreadContext.Properties["UserName"] = "-1"; //get this from OAuth token
+#endif
                 }
                 var roleClaims = userFromClaim.Claims.Where(x => x.Type == ClaimTypes.Role || x.Type == "role");
                 foreach (var claim in roleClaims)
