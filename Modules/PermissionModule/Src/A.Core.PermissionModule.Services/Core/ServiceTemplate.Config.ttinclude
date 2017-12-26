@@ -1,0 +1,41 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<# 
+	ServiceTemplateConfig ServiceTemplateConfig = new ServiceTemplateConfig(VisualStudioHelper);
+#>
+
+<#+ 
+	public class ServiceTemplateConfig
+	{
+		public ServiceTemplateConfig(AutomationHelper helper)
+        {
+			VisualStudioHelper = helper;
+			InterfacesProjectList = new List<string>();
+			ModelProjectList = new List<string>();
+
+			InterfacesProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Interfaces"));
+			ModelProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Model"));
+			ContextName = "Context";
+			DatabaseName = "MongoDb";
+			ConnectionStringName = "MongoDb";
+			DefaultNamespaceForDatabaseModel = ""; //can be for example: Database. NOTE: Please add . at the end //Database.
+			BaseContextName = "System.Data.Entity.DbContext"; //"Database.Context";//NOTE: We can inherit existing context if we are using mappedTo property on entity
+        }
+		public AutomationHelper VisualStudioHelper  { get; set; }
+		public string ContextName  { get; set; }
+		public string DatabaseName { get; set; }
+		public string ConnectionStringName { get; set; }
+		public string DefaultNamespaceForDatabaseModel  { get; set; }
+		public string BaseContextName  { get; set; }
+
+		public IList<string> InterfacesProjectList {get; set;}
+		public IList<string> ModelProjectList {get; set;}
+	}
+#>

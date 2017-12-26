@@ -14,7 +14,7 @@ cd ..
 cd A.Core.WebAPI.Nuget
 nuget pack
 cd ..
-cd Modules\A.Core.PermissionModule\A.Core.PermissionModule.Services.Nuget
+cd Modules\PermissionModule\Src\A.Core.PermissionModule.Services.Nuget
 nuget pack
 cd ..
 cd ..
