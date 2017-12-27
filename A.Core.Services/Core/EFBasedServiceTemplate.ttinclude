@@ -16,6 +16,7 @@ public class EFBasedServiceTemplate : TextTransformation
 	public string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
 	public string KeyAttributeFullName = "System.ComponentModel.DataAnnotations.KeyAttribute";
 	public string EntityAttributeName = "A.Core.Attributes.EntityAttribute";
+	public string HistoryAttributeName = "A.Core.Attributes.HistoryAttribute";
 
 	public EFBasedServiceTemplate(string contextName, AutomationHelper helper, IList<CodeInterface> interfaceList, ServiceHelper serviceHelper )
     {
@@ -84,9 +85,10 @@ public class EFBasedServiceTemplate : TextTransformation
 						string genericArgs = i.FullName.Substring(i.FullName.IndexOf('<'));
 						string firstArgument = genericArgs.Split('<', '>')[1];
 						string entityName = firstArgument.Split(',')[0];
+
 						
 						//var entityFromBaseClass = VisualStudioHelper.CodeModel.FindClass(entityName);
-						var EntityFromModel = VisualStudioHelper.CodeModel.FindCodeType(entityName);
+						EntityFromModel = VisualStudioHelper.CodeModel.FindCodeType(entityName);
 						string mappedTo = null;
 						var allAttributes = EntityFromModel.Attributes;//VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(EntityFromModel.Attributes, vsCMElement.vsCMElementAttribute, false);//.OfType<EnvDTE.CodeAttribute>();
 						foreach(EnvDTE.CodeAttribute attr in allAttributes)
@@ -98,7 +100,36 @@ public class EFBasedServiceTemplate : TextTransformation
                                 {
 									mappedTo = Helper.ServiceTemplateConfig.DefaultNamespaceForDatabaseModel + values[1].Trim().Trim('"');
                                 }
-								break; 
+							} 
+							else if (attr.FullName == HistoryAttributeName)
+                            {
+								string[] values = attr.Value.Split(',');
+								HistoryType = values[0];
+								if (values.Length >= 2) 
+								{
+									HistoryEntityName = values[1];
+                                }
+								if(values.Length >= 3)
+								{
+									HistoryParentTableIdName = values[2];
+                                }
+                            }
+						}
+
+						var allPropertiesOnEntityFromModel = VisualStudioHelper.CodeModel.GetAllCodeElementsOfTypeNonRecursive(((EnvDTE80.CodeClass2)EntityFromModel).Members, EnvDTE.vsCMElement.vsCMElementProperty);//.OfType<EnvDTE.CodeProperty>();
+						foreach(EnvDTE.CodeProperty property in allPropertiesOnEntityFromModel)
+						{
+							string propertyName = property.Name;
+							var allAttributesFromModel = property.Attributes;
+							foreach(EnvDTE.CodeAttribute attr in allAttributesFromModel)
+							{
+								if(attr.FullName == KeyAttributeFullName)
+								{
+									//keyLoaded = true;
+									KeyPropertyName = property.Name;
+									KeyPropertyType = property.Type.AsFullName;
+									break;
+								}
 							}
 						}
 
@@ -131,7 +162,13 @@ public class EFBasedServiceTemplate : TextTransformation
 	public IList<CodeInterface> InterfaceList {get; set;}
 	public ServiceHelper Helper {get; set;}
     public string MappedToName { get; set; }
-
+	public string HistoryType { get; set; }
+	public string HistoryEntityName { get; set; }
+	public string HistoryParentTableIdName { get; set; }
+	public string KeyPropertyName { get; set; }
+	public string KeyPropertyType { get; set; }
+	public EnvDTE.CodeType EntityFromModel {get; set;}
+						
 	public bool IsOperatorExisting(EnvDTE.CodeProperty property, string operatorName)
     {
 		bool isExisting = false;
@@ -154,6 +191,115 @@ public class EFBasedServiceTemplate : TextTransformation
                     }
 		return isExisting;
     }
+
+	public void GenerateHistory() 
+	{
+		if (!string.IsNullOrWhiteSpace(HistoryType))
+		{
+			if (HistoryType == "HistoryType.SeparateTable") 
+            {
+				GenerateSeparateTableHistory();
+            }
+			else if (HistoryType == "HistoryType.SameTable")
+            {
+				GenerateSameTableHistory();
+            }
+        }
+    }
+
+	public void GenerateSeparateTableHistory()
+    {
+		string historyEntityName = Helper.ServiceTemplateConfig.DefaultNamespaceForDatabaseModel +  HistoryEntityName.Trim().Trim('"');
+		string entityName = EntityFromModel.FullName;
+		if(MappedToName != null)
+        {
+			entityName = MappedToName.Trim('"');
+        }
+		WriteLine(@"public override async Task SaveAsync({1} entity)
+        {{
+            await base.SaveAsync(entity);
+
+            await SaveHistory(entity);
+        }}
+
+        protected virtual async Task SaveHistory({1} entity)
+        {{
+            var historySet = Context.Set<{0}>();
+            var history = new {0}();
+            GlobalMapper.DefaultMapper.Map<{1}, {0}>(entity, history);
+            history.Id = default({4});
+            history.{2} = entity.{3};
+            historySet.Add(history);
+
+            await SaveChangesAsync();
+        }}",historyEntityName, entityName, HistoryParentTableIdName.Trim().Trim('"'), KeyPropertyName, KeyPropertyType);
+	}
+
+	public void GenerateSameTableHistory()
+    {
+		string entityName = EntityFromModel.FullName;
+		if(MappedToName != null)
+        {
+			entityName = MappedToName.Trim('"');
+        }
+
+		WriteLine(@"public override async Task SaveAsync({0} entity)
+        {{
+            bool isNew = entity.{1} == default({2});
+            if (isNew)
+            {{
+                entity.ValidFrom = DateTime.UtcNow;
+                entity.IsActive = true;
+                await base.SaveAsync(entity);
+                entity.ActiveId = entity.{1};
+                await this.SaveChangesAsync();
+            }}
+            else
+            {{
+                if (!entity.ActiveId.HasValue || entity.IsActive == false)
+                {{
+                    throw new ApplicationException($""ActiveId for {{entity.{1}}} not found or IsActive value is false!"");
+                }}
+
+                {0} newEntity = null;
+                Context.Entry(entity).State = EntityState.Detached;
+
+                newEntity = this.Clone(entity);
+                newEntity.{1} = default({2});
+                newEntity.PreviousId = entity.{1};
+                newEntity.ValidTo = null;
+                newEntity.ValidFrom = DateTime.UtcNow;
+
+                Entity.Add(newEntity);
+                await base.SaveAsync(newEntity);
+                
+
+                var allRows = Entity.Where(x => x.ActiveId == entity.ActiveId).ToList();
+                allRows.ForEach(x =>
+                {{
+                    Entity.Attach(x);
+                    if (!x.ValidTo.HasValue && x.{1} != newEntity.{1})
+                    {{
+                        x.ValidTo = DateTime.UtcNow;
+                    }}
+
+                    x.ActiveId = newEntity.{1};
+                    x.IsActive = x.{1} == newEntity.{1};
+                }});
+
+                await this.SaveChangesAsync();
+				Context.Entry(newEntity).State = EntityState.Detached;
+				entity.{1} = newEntity.{1};
+                entity.ValidFrom = newEntity.ValidFrom;
+                entity.ValidTo = newEntity.ValidTo;
+                entity.IsActive = newEntity.IsActive;
+                entity.PreviousId = newEntity.PreviousId;
+				entity.ActiveId = newEntity.ActiveId;
+            }}
+            
+        }}", entityName, KeyPropertyName, KeyPropertyType);
+    }
+
 
 	public void GenerateIncludeList()
 	{
@@ -674,12 +820,19 @@ public class EFBasedServiceTemplate : TextTransformation
 			BaseInterface = baseInterface;
 			BaseInterfacesForCurrentEntity = null;
 			MappedToName = null;
+			EntityFromModel = null;
+			KeyPropertyName = null;
+			KeyPropertyType = null;
+			HistoryEntityName = null;
+			HistoryParentTableIdName = null;
+			HistoryType = null;
 						
 #>
 public partial class <#= ClassName #> : <#= GetBaseClassName()#>, <#=Entity.FullName#>
 {
 
 	<#+
+			GenerateHistory();
 
 			GenerateAddFilterFromDesigner();
 

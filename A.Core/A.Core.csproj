@@ -93,6 +93,7 @@
     <Compile Include="Attributes\EntityAttribute.cs" />
     <Compile Include="Attributes\FilterAttribute.cs" />
     <Compile Include="Attributes\DefaultMethodBehaviourAttribute.cs" />
+    <Compile Include="Attributes\HistoryAttribute.cs" />
     <Compile Include="Attributes\RequestFieldAttribute.cs" />
     <Compile Include="Attributes\LazyLoadingAttribute.cs" />
     <Compile Include="Attributes\StateMachineAttribute.cs" />

@@ -73,7 +73,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="Permission.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

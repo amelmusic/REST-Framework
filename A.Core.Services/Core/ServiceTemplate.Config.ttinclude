@@ -22,11 +22,17 @@
 
 			InterfacesProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Interfaces"));
 			ModelProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("Services", "Model"));
-			ContextName = "CustomerContext";
+			/*EXAMPLE of custom context
+			ContextName = "ProductContext";
 			DatabaseName = "MongoDb";
 			ConnectionStringName = "MongoDb";
 			DefaultNamespaceForDatabaseModel = "Database."; //can be for example: Database. NOTE: Please add . at the end //Database.
-			BaseContextName = "Database.CustomerContext"; //"Database.Context";//NOTE: We can inherit existing context if we are using mappedTo property on entity
+			BaseContextName = "Database.ProductContext"; //"Database.Context";//NOTE: We can inherit existing context if we are using mappedTo property on entity*/
+			ContextName = "Context";
+			DatabaseName = "MongoDb";
+			ConnectionStringName = "MongoDb";
+			DefaultNamespaceForDatabaseModel = ""; //can be for example: Database. NOTE: Please add . at the end //Database.
+			BaseContextName = "System.Data.Entity.DbContext"; //"Database.Context";//NOTE: We can inherit existing context if we are using mappedTo property on entity
 			PassConnectionStringInContextConstructor = false;
         }
 		public AutomationHelper VisualStudioHelper  { get; set; }

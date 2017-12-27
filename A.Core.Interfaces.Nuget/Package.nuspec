@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>A.Core.Interfaces</id>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
 	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
     <dependencies>
 		<dependency id="log4net" version="2.0.8"/>
-		<dependency id="A.Core" version="0.0.7" />
+		<dependency id="A.Core" version="0.0.8" />
     </dependencies>
   </metadata>
 </package>

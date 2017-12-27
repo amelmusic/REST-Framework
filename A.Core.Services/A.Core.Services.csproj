@@ -109,7 +109,6 @@
     <Compile Include="Core\StateBase.cs" />
     <Compile Include="Core\StateMachineBase.cs" />
     <Compile Include="Core\TriggerBase.cs" />
-    <Compile Include="PermissionServiceAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

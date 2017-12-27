@@ -70,6 +70,11 @@ namespace $rootnamespace$.Core //DD
 
         public virtual async Task SaveAsync(TEntity entity)
         {
+            await SaveInternalAsync(entity);
+        }
+
+        protected virtual async Task SaveInternalAsync(TEntity entity)
+        {
             if (entity is BaseEntityWithDateTokens)
             {
                 var tmpEntity = entity as BaseEntityWithDateTokens;
@@ -80,7 +85,8 @@ namespace $rootnamespace$.Core //DD
 
                 tmpEntity.ModifiedOn = DateTime.UtcNow;
             }
-            if(entity is BaseEntityWithDateAndUserTokens)
+
+            if (entity is BaseEntityWithDateAndUserTokens)
             {
                 object userIdObj;
                 if (ActionContext.Value.Data.TryGetValue("UserId", out userIdObj))
@@ -101,8 +107,10 @@ namespace $rootnamespace$.Core //DD
             {
                 throw new A.Core.Validation.ValidationException(validationResult);
             }
+
             await this.SaveChangesAsync();
         }
+
         public virtual async Task<A.Core.Validation.ValidationResult> ValidateAsync(object entity)
         {
             A.Core.Validation.ValidationResult result = new A.Core.Validation.ValidationResult();

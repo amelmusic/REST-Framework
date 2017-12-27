@@ -51,7 +51,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterfaceTemplate.tt</DependentUpon>
     </Compile>
-    <Compile Include="IPermissionService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

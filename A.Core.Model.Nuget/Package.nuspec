@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>A.Core.Model</id>
-    <version>0.0.7</version>
+    <version>0.0.8</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -15,7 +15,7 @@
 		<dependency id="EntityFramework" version="6.1.3" />
 		<dependency id="log4net" version="2.0.8"  />
 		<dependency id="Newtonsoft.Json" version="10.0.3"  />
-		<dependency id="A.Core" version="0.0.7" />
+		<dependency id="A.Core" version="0.0.8" />
     </dependencies>
   </metadata>
 </package>
