@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file contains job definitions in schema version 2.0 format -->
+
+<job-scheduling-data xmlns="http://quartznet.sourceforge.net/JobSchedulingData" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+
+  <processing-directives>
+    <overwrite-existing-data>true</overwrite-existing-data>
+  </processing-directives>
+  <!--<schedule>
+    <job>
+      <name>lookupUpdateJob</name>
+      <group>lookupUpdateGroup</group>
+      <description>Lookup update quartz job</description>
+      <job-type>Submission.Server.Core.LookupUpdateJob, Submission.Server.Core</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+    <trigger>
+      <cron>
+        <name>UpdateLookupsTrigger</name>
+        <group>sampleSimpleGroup</group>
+        <description>Trigger to fire lookup update</description>
+        <job-name>lookupUpdateJob</job-name>
+        <job-group>lookupUpdateGroup</job-group>
+        <misfire-instruction>SmartPolicy</misfire-instruction>
+                
+        <cron-expression>0 18 15 ? * * *</cron-expression>
+        
+        --><!--Every day at midnight--><!--
+        --><!--<cron-expression>0 0 0 ? * * *</cron-expression>--><!--
+      </cron>
+    </trigger>
+  </schedule>-->
+  <schedule>
+
+    <job>
+      <name>heartbeatJobName</name>
+      <group>all</group>
+      <description>Heartbeat job - used for testing</description>
+      <job-type>A.Core.Scheduler.Jobs.HeartbeatJob, A.Core.Scheduler</job-type>
+      <durable>true</durable>
+      <recover>false</recover>
+    </job>
+
+
+    <trigger>
+      <simple>
+        <name>UpdateLookupsTrigger</name>
+        <group>all</group>
+        <description>Trigger to fire lookup update</description>
+        <job-name>heartbeatJobName</job-name>
+        <job-group>all</job-group>
+        <misfire-instruction>SmartPolicy</misfire-instruction>
+        <repeat-count>-1</repeat-count>
+        <repeat-interval>5000</repeat-interval>
+      </simple>
+    </trigger>
+
+  </schedule>
+  
+</job-scheduling-data>

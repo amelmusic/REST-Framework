@@ -20,6 +20,17 @@ namespace A.Core.Validation
         public string Key { get; set; }
         public string Description { get; set; }
         public ValidationResultLevelEnum Level { get; set; }
+        public bool AllowChaining { get; set; }
+
+        public ValidationResultItem Then(string message, ValidationResultLevelEnum level = ValidationResultLevelEnum.Error, string key = null, string subkey = null)
+        {
+            if (AllowChaining)
+            {
+                Description = message;
+                Level = level;
+            }
+            return this;
+        }
     }
 
     public enum ValidationResultLevelEnum

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>A.Core.Scheduler</id>
+    <version>0.0.8</version>
+    <authors>Amel Musić</authors>
+    <owners>Amel Musić</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Core framework - Setup for Quartz.net scheduler, TopShelf, Autofac and A.Core.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>REST T4 A.Core</tags>
+	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
+    <dependencies>
+	  <dependency id="A.Core" version="0.0.8" />
+	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1" />
+	  <dependency id="Autofac.Extras.Quartz" version="4.0.0" />
+	  <dependency id="Quartz" version="3.0.2" />
+	  <dependency id="Quartz.Jobs" version="3.0.2" />
+	  <dependency id="Quartz.Plugins" version="3.0.2" />
+	  <dependency id="Topshelf" version="4.0.3" />
+	  <dependency id="Topshelf.Autofac" version="3.1.1" />
+	  <dependency id="Topshelf.Log4Net" version="4.0.3" />
+    </dependencies>
+  </metadata>
+</package>
+
+

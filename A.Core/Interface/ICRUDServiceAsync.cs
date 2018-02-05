@@ -33,5 +33,8 @@ namespace A.Core.Interface
         /// <param name="request"></param>
         [DefaultMethodBehaviour(BehaviourEnum.Update)]
         Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true);
+
+        [DefaultMethodBehaviour(BehaviourEnum.Patch)]
+        Task<TEntity> PatchAsync(object id, TUpdate request, bool saveChanges = true);
     }
 }

@@ -42,6 +42,13 @@ namespace $rootnamespace$.Core //REPLACED
             List<string> roleList = new List<string>();
             var userFromClaim = actionContext.RequestContext.Principal as ClaimsPrincipal;
 
+            var authorizationHeader = actionContext.Request.Headers.Authorization;
+            var languageHeader = actionContext.Request.Headers.AcceptLanguage;
+            var firstLanguage = languageHeader?.ToList()?.FirstOrDefault();
+            coreActionContext.Data["AuthorizationToken"] = authorizationHeader?.Parameter;
+            coreActionContext.Data["AuthorizationTokenScheme"] = authorizationHeader?.Scheme;
+            coreActionContext.Data["Language"] = firstLanguage;
+
             if (userFromClaim != null)
             {
                 var idClaimName = userFromClaim.Identity.Name;
@@ -65,6 +72,9 @@ namespace $rootnamespace$.Core //REPLACED
                     roleList.Add(claim.Value);
                 }
                 coreActionContext.Data.Add("RoleList", roleList.ToArray());
+
+
+                coreActionContext.Data.Add("SYS_CLAIMS", userFromClaim.Claims.ToArray());
             }
 
         }

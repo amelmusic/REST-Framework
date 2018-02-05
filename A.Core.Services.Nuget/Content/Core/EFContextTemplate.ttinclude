@@ -116,6 +116,11 @@ public class EFContextTemplate : TextTransformation
 #>
 public partial class <#=Config.ContextName#> : <#= Config.BaseContextName #>
 {
+		static <#=Config.ContextName#>()
+        {
+            System.Data.Entity.Infrastructure.Interception.DbInterception.Add(new FtsInterceptor());
+        }
+
 		partial void OnContextCreation(<#=Config.ContextName#> context);
 		<#+ if(Config.PassConnectionStringInContextConstructor == true) { #>
 		public <#=Config.ContextName#>()

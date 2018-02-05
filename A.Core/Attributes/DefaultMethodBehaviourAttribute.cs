@@ -24,6 +24,7 @@ namespace A.Core.Attributes
         Get = 2,
         Insert = 10,
         Update = 11,
+        Patch = 12,
         StateMachineInsert = 20,
         StateMachineUpdate = 21,
         StateMachineInsertWithoutServiceImpl = 22,

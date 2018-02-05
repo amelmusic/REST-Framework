@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A.Core.Model", "A.Core.Model\A.Core.Model.csproj", "{ACB45707-E0F1-48F5-877D-D9CC8CDD15BB}"
 EndProject
@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A62CEC
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A.Core.Scheduler", "A.Core.Scheduler\A.Core.Scheduler.csproj", "{1A556E18-A7FB-4228-9E63-6AC9C76E2C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,8 +48,15 @@ Global
 		{E8D30C17-40A2-4C57-8C47-C80364FB7C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8D30C17-40A2-4C57-8C47-C80364FB7C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8D30C17-40A2-4C57-8C47-C80364FB7C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A556E18-A7FB-4228-9E63-6AC9C76E2C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A556E18-A7FB-4228-9E63-6AC9C76E2C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A556E18-A7FB-4228-9E63-6AC9C76E2C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A556E18-A7FB-4228-9E63-6AC9C76E2C1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48B090FC-F1BE-47BB-B82E-91C39AFCF609}
 	EndGlobalSection
 EndGlobal

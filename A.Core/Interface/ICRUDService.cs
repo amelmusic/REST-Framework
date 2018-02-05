@@ -28,5 +28,12 @@ namespace A.Core.Interface
         /// <param name="request"></param>
         [DefaultMethodBehaviour(BehaviourEnum.Update)]
         TEntity Update(object id, TUpdate request, bool saveChanges = true);
+
+        /// <summary>
+        /// Patches model by given request
+        /// </summary>
+        /// <param name="request"></param>
+        [DefaultMethodBehaviour(BehaviourEnum.Patch)]
+        TEntity Patch(object id, TUpdate request, bool saveChanges = true);
     }
 }

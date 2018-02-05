@@ -99,6 +99,7 @@
     <Compile Include="Attributes\StateMachineAttribute.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="DummyPermissionChecker.cs" />
+    <Compile Include="Extensions\ObjectExtension.cs" />
     <Compile Include="GlobalMapper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interceptors\BaseAttributeBasedInterceptorProxy.cs" />
@@ -131,6 +132,7 @@
     <Compile Include="Validation\UserException.cs" />
     <Compile Include="Validation\ValidationException.cs" />
     <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="Validation\ValidationResultExt.cs" />
     <Compile Include="Validation\ValidationResultItem.cs" />
   </ItemGroup>
   <ItemGroup>

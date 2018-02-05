@@ -12,6 +12,7 @@ namespace A.Core.Interceptors
 {
     public abstract class BaseInterceptorProxy : IInterceptor
     {
+        private static object _lock = new object();
         protected static Dictionary<string, ILog> mLoggerList = new Dictionary<string, ILog>();
         protected abstract Dictionary<MethodInfo, bool> CachedDictAccess { get; }
 
@@ -25,8 +26,14 @@ namespace A.Core.Interceptors
             }
             else
             {
-                log = log4net.LogManager.GetLogger(loggerName);
-                mLoggerList.Add(loggerName, log);
+                lock (_lock)
+                {
+                    if (mLoggerList.ContainsKey(loggerName))
+                    {
+                        log = log4net.LogManager.GetLogger(loggerName);
+                        mLoggerList.Add(loggerName, log);
+                    }
+                }
             }
 
             return log;
@@ -56,9 +63,16 @@ namespace A.Core.Interceptors
             {
                 if (!HasInvalidArguments(invocation))
                 {
-                    //CachedAccess.Add(invocation.Method);
-                    CachedDictAccess.Add(invocation.Method, true);
-                    intercept = true;
+                    lock (_lock)
+                    {
+                        if (!CachedDictAccess.ContainsKey(invocation.Method))
+                        {
+                            //CachedAccess.Add(invocation.Method);
+                            CachedDictAccess.Add(invocation.Method, true);
+                            intercept = true;
+                        }
+                    }
+                    
                 }
                 else
                 {

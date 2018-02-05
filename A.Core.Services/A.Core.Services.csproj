@@ -101,6 +101,8 @@
     <Compile Include="Core\BaseMongoDbBasedReadServiceAsync.cs" />
     <Compile Include="Core\BaseMongoDbBasedReadService.cs" />
     <Compile Include="Core\BaseService.cs" />
+    <None Include="Core\FtsInterceptor.cs.pp" />
+    <Compile Include="Core\FtsInterceptor.cs" />
     <Compile Include="Core\ServiceTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

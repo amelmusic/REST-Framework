@@ -21,19 +21,40 @@ namespace $rootnamespace$.Core //DD
     {
         // ReSharper disable once StaticMemberInGenericType
         public static IMapper Mapper { get; set; }
+        // ReSharper disable once StaticMemberInGenericType
+        public static IMapper AllFieldsMapper { get; set; }
+
         static BaseMongoDbBasedCRUDServiceAsync()
         {
 
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.ForAllPropertyMaps(pm => !pm.HasSource(),
+                    (pm, opt) => opt.UseDestinationValue());
+                cfg.CreateMap<long?, long>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<int?, int>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<short?, short>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<byte?, byte>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<bool?, bool>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
+
+
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
                     (src, dest, srcVal) => { return srcVal != null; }));
                 cfg.CreateMap<TUpdate, TEntity>().ForAllMembers(opt => opt.Condition(
-                     (src, dest, srcVal) => { return srcVal != null; }));
+                    (src, dest, srcVal, dstVal, ctx) => { return srcVal != null; }));
             });
 
 
             Mapper = config.CreateMapper();
+
+            var configAllFields = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TInsert, TEntity>();
+                cfg.CreateMap<TUpdate, TEntity>();
+            });
+
+            AllFieldsMapper = configAllFields.CreateMapper();
         }
 
 
@@ -43,7 +64,7 @@ namespace $rootnamespace$.Core //DD
             TEntity entity = CreateNewInstance();
             if (entity != null)
             {
-                Mapper.Map<TInsert, TEntity>(request, entity);
+                MapInsert(request, entity);
                 var validationResult = await ValidateInsertAsync(request, entity);
                 if (validationResult.HasErrors)
                 {
@@ -57,13 +78,18 @@ namespace $rootnamespace$.Core //DD
             return entity;
         }
 
+        protected virtual void MapInsert(TInsert request, TEntity entity)
+        {
+            Mapper.Map<TInsert, TEntity>(request, entity);
+        }
+
         [Transaction]
         public async Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true)
         {
             TEntity entity = await GetAsync(id);
             if (entity != null)
             {
-                Mapper.Map<TUpdate, TEntity>(request, entity);
+                MapUpdate(request, entity);
                 var validationResult = await ValidateUpdateAsync(request, entity);
                 if (validationResult.HasErrors)
                 {
@@ -75,6 +101,35 @@ namespace $rootnamespace$.Core //DD
                 }
             }
             return entity;
+        }
+
+        protected virtual void MapUpdate(TUpdate request, TEntity entity)
+        {
+            AllFieldsMapper.Map<TUpdate, TEntity>(request, entity);
+        }
+
+        public virtual async Task<TEntity> PatchAsync(object id, TUpdate request, bool saveChanges = true)
+        {
+            TEntity entity = await GetAsync(id);
+            if (entity != null)
+            {
+                MapPatch(request, entity);
+                var validationResult = await ValidateUpdateAsync(request, entity);
+                if (validationResult.HasErrors)
+                {
+                    throw new A.Core.Validation.ValidationException(validationResult);
+                }
+                if (saveChanges)
+                {
+                    await SaveAsync(entity);
+                }
+            }
+            return entity;
+        }
+
+        protected virtual void MapPatch(TUpdate request, TEntity entity)
+        {
+            Mapper.Map<TUpdate, TEntity>(request, entity);
         }
 
         public virtual Task<A.Core.Validation.ValidationResult> ValidateInsertAsync(TInsert request, TEntity entity)
