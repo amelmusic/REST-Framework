@@ -28,7 +28,7 @@ namespace A.Core.Interceptors
             {
                 lock (_lock)
                 {
-                    if (mLoggerList.ContainsKey(loggerName))
+                    if (!mLoggerList.ContainsKey(loggerName))
                     {
                         log = log4net.LogManager.GetLogger(loggerName);
                         mLoggerList.Add(loggerName, log);

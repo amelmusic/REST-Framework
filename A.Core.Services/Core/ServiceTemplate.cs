@@ -38,7 +38,7 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 using A.Core;
-
+using A.Core.Services.Core;
 //A.Core.Interfaces
 using A.Core.Model;
 using A.Core.Model.Requests;

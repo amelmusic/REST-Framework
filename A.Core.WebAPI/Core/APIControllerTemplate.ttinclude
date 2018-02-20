@@ -585,11 +585,11 @@ public class APIControllerTemplate : TextTransformation
 					{{
 						await additionalDownloadData.PushStreamFunction(responseStream);
 					}});
-
+					var convertedNameBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.ASCII, System.Text.Encoding.UTF8.GetBytes(additionalDownloadData.FileName));
 					resp.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(additionalDownloadData.DispositionType);
-					resp.Content.Headers.ContentDisposition.FileName = additionalDownloadData.FileName;
+					resp.Content.Headers.ContentDisposition.FileName = System.Text.Encoding.ASCII.GetString(convertedNameBytes);
 					resp.Content.Headers.ContentType = new MediaTypeHeaderValue(additionalDownloadData.ContentType);
-			
+					resp.Content.Headers.Add(""Access-Control-Expose-Headers"", ""content-disposition"");
 					return resp;
 
 				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name, "View")));
@@ -615,11 +615,11 @@ public class APIControllerTemplate : TextTransformation
 					{{
 						await additionalDownloadData.PushStreamFunction(responseStream);
 					}});
-
+					var convertedNameBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.ASCII, System.Text.Encoding.UTF8.GetBytes(additionalDownloadData.FileName));
 					resp.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(additionalDownloadData.DispositionType);
-					resp.Content.Headers.ContentDisposition.FileName = additionalDownloadData.FileName;
+					resp.Content.Headers.ContentDisposition.FileName = System.Text.Encoding.ASCII.GetString(convertedNameBytes);
 					resp.Content.Headers.ContentType = new MediaTypeHeaderValue(additionalDownloadData.ContentType);
-			
+					resp.Content.Headers.Add(""Access-Control-Expose-Headers"", ""content-disposition"");
 					return resp;
 
 				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name, "View")));
@@ -695,7 +695,7 @@ public partial class <#= ControllerName #>Controller : <#= GetBaseClassName()#>
 					//render update by Id method
 					GenerateUpdate(method, addMethodNameToRoute);
 				 }
-				 else if(((method.Name == "Patch" || method.Name == "PatcheAsync")&& method.FullName.Contains("ICRUDService"))
+				 else if(((method.Name == "Patch" || method.Name == "PatchAsync")&& method.FullName.Contains("ICRUDService"))
 					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Patch")))
 				 {
 					 bool addMethodNameToRoute = (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"

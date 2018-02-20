@@ -11,18 +11,22 @@ namespace A.Core.Services.Core
     /// </summary>
     public class StateBase
     {
+        public bool IsConditional { get; set; }
+
+        public TriggerBase ConditionTrigger { get; set; }
+
         /// <summary>
         /// Creates a new instance of this state with a reference to the state machine.
         /// </summary>
-        public StateBase(StateMachineBase machine)
+        public StateBase()
         {
-            this.StateMachine = machine;
+            //this.StateMachine = machine;
             this.Initialize();
         }
         /// <summary>
         /// The state machine this state belongs to.
         /// </summary>
-        public StateMachineBase StateMachine { get; private set; }
+        public StateMachineBase StateMachine { get; protected set; }
 
         /// <summary>
         /// Every state must have uniqueId

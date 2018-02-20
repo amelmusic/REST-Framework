@@ -39,6 +39,7 @@ namespace $rootnamespace$.Core //DD
                 cfg.CreateMap<byte?, byte>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<bool?, bool>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
+                cfg.CreateMap<DateTime?, DateTime>().ConvertUsing((src, dest) => src ?? dest);
 
 
                 cfg.CreateMap<TInsert, TDbEntity>().ForAllMembers(opt => opt.Condition(
@@ -65,8 +66,8 @@ namespace $rootnamespace$.Core //DD
             TDbEntity entity = CreateNewInstance();
             if (entity != null)
             {
-                MapInsert(request, entity);
                 var validationResult = ValidateInsert(request, entity);
+                MapInsert(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);
@@ -92,8 +93,8 @@ namespace $rootnamespace$.Core //DD
             var entity = GetByIdInternal(id);
             if (entity != null)
             {
-                MapUpdate(request, entity);
                 var validationResult = ValidateUpdate(request, entity);
+                MapUpdate(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);
@@ -118,8 +119,8 @@ namespace $rootnamespace$.Core //DD
             var entity = GetByIdInternal(id);
             if (entity != null)
             {
-                MapPatch(request, entity);
                 var validationResult = ValidateUpdate(request, entity);
+                MapPatch(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);

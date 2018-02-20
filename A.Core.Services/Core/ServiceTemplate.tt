@@ -37,7 +37,7 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
 using A.Core;
-
+using <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString() #>.Core;
 //<#= ServiceTemplateConfig.InterfacesProjectList[0] #>
 <#
 	foreach(var modelProject in ServiceTemplateConfig.ModelProjectList)
@@ -52,7 +52,8 @@ using <#= modelProject #>.Requests;
 
 <# ServiceHelper helper = new ServiceHelper(VisualStudioHelper, ServiceTemplateConfig); #>
 <# 
-
+	System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+	watch.Start();
 	string @namespace = VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString();
 	//write namespace and add all classes to it
 	PopIndent();
@@ -63,15 +64,19 @@ using <#= modelProject #>.Requests;
 
 	ServiceRegistrationTemplate registrationTemplate = new ServiceRegistrationTemplate(interfaceList);
 	WriteLine(registrationTemplate.TransformText());
-
+	//WriteLine("//Finished service registration: " + watch.ElapsedMilliseconds);
+	watch.Restart();
 	var eFBasedInterfaceList = helper.GetInterfaceList("DefaultImplementationEnum.EntityFramework");
 	if(eFBasedInterfaceList.Count > 0)
     {
 		EFContextTemplate contextTemplate = new EFContextTemplate(ServiceTemplateConfig, VisualStudioHelper);
 		WriteLine(contextTemplate.TransformText());
-
+		//WriteLine("//Finished EF context: " + watch.ElapsedMilliseconds);
+		watch.Restart();
 		EFBasedServiceTemplate template = new EFBasedServiceTemplate(ServiceTemplateConfig.ContextName, VisualStudioHelper,eFBasedInterfaceList, helper);
 		WriteLine(template.TransformText());
+		//WriteLine("//Finished EF service: " + watch.ElapsedMilliseconds);
+		watch.Restart();
     }
 
 	var mongoDbBasedInterfaceList = helper.GetInterfaceList("DefaultImplementationEnum.MongoDB");
@@ -82,9 +87,12 @@ using <#= modelProject #>.Requests;
     }
 	
 	
+	
+	watch.Restart();
 	StateMachineTemplate stateMachineTemplate = new StateMachineTemplate(interfaceList, ServiceTemplateConfig, VisualStudioHelper);
 	WriteLine(stateMachineTemplate.TransformText());
 
+	//WriteLine("//Finished state machines: " + watch.ElapsedMilliseconds);
 	ProfileTemplate profileTemplate = new ProfileTemplate(ServiceTemplateConfig, VisualStudioHelper);
 	WriteLine(profileTemplate.TransformText());
 

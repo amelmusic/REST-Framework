@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>A.Core.Scheduler</id>
-    <version>0.0.8</version>
+    <version>1.0.0</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,7 +12,7 @@
     <tags>REST T4 A.Core</tags>
 	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
     <dependencies>
-	  <dependency id="A.Core" version="0.0.8" />
+	  <dependency id="A.Core" version="1.0.0" />
 	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1" />
 	  <dependency id="Autofac.Extras.Quartz" version="4.0.0" />
 	  <dependency id="Quartz" version="3.0.2" />

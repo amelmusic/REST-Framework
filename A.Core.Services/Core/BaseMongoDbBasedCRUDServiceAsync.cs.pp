@@ -37,7 +37,7 @@ namespace $rootnamespace$.Core //DD
                 cfg.CreateMap<byte?, byte>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<bool?, bool>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
-
+                cfg.CreateMap<DateTime?, DateTime>().ConvertUsing((src, dest) => src ?? dest);
 
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
                     (src, dest, srcVal) => { return srcVal != null; }));
@@ -84,7 +84,7 @@ namespace $rootnamespace$.Core //DD
         }
 
         [Transaction]
-        public async Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true)
+        public virtual async Task<TEntity> UpdateAsync(object id, TUpdate request, bool saveChanges = true)
         {
             TEntity entity = await GetAsync(id);
             if (entity != null)

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>A.Core.WebAPI</id>
-    <version>0.0.8</version>
+    <version>1.0.0</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -36,7 +36,7 @@
 	  <dependency id="Nito.AsyncEx" version="3.0.1" />
 	  <dependency id="Swashbuckle" version="5.6.0" />
 	  <dependency id="Swashbuckle.Core" version="5.6.0" />
-	  <dependency id="A.Core" version="0.0.8" />
+	  <dependency id="A.Core" version="1.0.0" />
     </dependencies>
   </metadata>
 </package>

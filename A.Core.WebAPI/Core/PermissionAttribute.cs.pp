@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.Filters;
+using A.Core.Model;
 
 namespace $rootnamespace$.Core //REPLACED
 {
@@ -40,10 +41,10 @@ namespace $rootnamespace$.Core //REPLACED
 
                 var permissionChecker = container.GetService(typeof(IPermissionChecker)) as IPermissionChecker;
 
-                bool isAllowed = permissionChecker.IsAllowed(Permission);
-                if(!isAllowed)
+                bool isAllowed = permissionChecker.IsAllowed(new PermissionCheckRequest() { OperationType = OperationType, Permission = Permission });
+                if (!isAllowed)
                 {
-                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Action not allowed");
+                    actionContext.Response = actionContext.Request.CreateErrorResponse(HttpStatusCode.Forbidden, $"Action not allowed: {Permission} | {OperationType}");
                 }
                 else
                 {

@@ -39,7 +39,7 @@ namespace A.Core.Services.Core
                 cfg.CreateMap<byte?, byte>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<bool?, bool>().ConvertUsing((src, dest) => src ?? dest);
                 cfg.CreateMap<decimal?, decimal>().ConvertUsing((src, dest) => src ?? dest);
-
+                cfg.CreateMap<DateTime?, DateTime>().ConvertUsing((src, dest) => src ?? dest);
 
                 cfg.CreateMap<TInsert, TEntity>().ForAllMembers(opt => opt.Condition(
                     (src, dest, srcVal) => { return srcVal != null; }));
@@ -65,8 +65,8 @@ namespace A.Core.Services.Core
             TEntity entity = CreateNewInstance();
             if (entity != null)
             {
-                MapInsert(request, entity);
                 var validationResult = await ValidateInsertAsync(request, entity);
+                MapInsert(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);
@@ -92,8 +92,8 @@ namespace A.Core.Services.Core
             var entity = await GetAsync(id);
             if (entity != null)
             {
-                MapUpdate(request, entity);
                 var validationResult = await ValidateUpdateAsync(request, entity);
+                MapUpdate(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);
@@ -119,8 +119,8 @@ namespace A.Core.Services.Core
             var entity = await GetAsync(id);
             if (entity != null)
             {
-                MapPatch(request, entity);
                 var validationResult = await ValidateUpdateAsync(request, entity);
+                MapPatch(request, entity);
                 if (validationResult.HasErrors)
                 {
                     throw new A.Core.Validation.ValidationException(validationResult);

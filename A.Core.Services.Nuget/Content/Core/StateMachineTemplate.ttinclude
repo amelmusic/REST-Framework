@@ -10,117 +10,135 @@
 <#@ import namespace="System.Xml" #>
 
 <#+
-        [XmlRoot(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class ArrayOfExtensiblePropertyInstance
-        {
-            [XmlAttribute(AttributeName = "xsi", Namespace = "http://www.w3.org/2000/xmlns/")]
-            public string Xsi { get; set; }
-            [XmlAttribute(AttributeName = "xsd", Namespace = "http://www.w3.org/2000/xmlns/")]
-            public string Xsd { get; set; }
-        }
+        [XmlRoot(ElementName="StereoType", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class StereoType {
+		[XmlElement(ElementName="StereoTypeName", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public string StereoTypeName { get; set; }
+		[XmlElement(ElementName="BaseModelElementTypeFullName", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public string BaseModelElementTypeFullName { get; set; }
+		[XmlElement(ElementName="DefinedProperties", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public string DefinedProperties { get; set; }
+	}
 
-        [XmlRoot(ElementName = "stateMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class StateMoniker
-        {
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-        }
+	[XmlRoot(ElementName="ArrayOfStereoType", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class ArrayOfStereoType {
+		[XmlElement(ElementName="StereoType", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public List<StereoType> StereoType { get; set; }
+		[XmlAttribute(AttributeName="xsi", Namespace="http://www.w3.org/2000/xmlns/")]
+		public string Xsi { get; set; }
+		[XmlAttribute(AttributeName="xsd", Namespace="http://www.w3.org/2000/xmlns/")]
+		public string Xsd { get; set; }
+	}
 
-        [XmlRoot(ElementName = "flow", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class Flow
-        {
-            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
-            [XmlElement(ElementName = "stateMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public StateMoniker StateMoniker { get; set; }
-			[XmlAttribute(AttributeName = "guard")]
-            public string Guard { get; set; }
-            [XmlAttribute(AttributeName = "eventAndGuardLabel")]
-            public string EventAndGuardLabel { get; set; }
-            [XmlAttribute(AttributeName = "effectLabel")]
-            public string EffectLabel { get; set; }
-            [XmlAttribute(AttributeName = "eventGuardEffectLabel")]
-            public string EventGuardEffectLabel { get; set; }
-            [XmlElement(ElementName = "endPointMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public EndPointMoniker EndPointMoniker { get; set; }
-        }
+	[XmlRoot(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class ArrayOfExtensiblePropertyInstance {
+		[XmlAttribute(AttributeName="xsi", Namespace="http://www.w3.org/2000/xmlns/")]
+		public string Xsi { get; set; }
+		[XmlAttribute(AttributeName="xsd", Namespace="http://www.w3.org/2000/xmlns/")]
+		public string Xsd { get; set; }
+	}
 
-        [XmlRoot(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class FlowTo
-        {
-            [XmlElement(ElementName = "flow", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public List<Flow> Flow { get; set; }
-        }
+	[XmlRoot(ElementName="stateMoniker", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class StateMoniker {
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+	}
 
-        [XmlRoot(ElementName = "startPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class StartPoint
-        {
-            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
-            [XmlElement(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public FlowTo FlowTo { get; set; }
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-        }
+	[XmlRoot(ElementName="flow", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class Flow {
+		[XmlElement(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+		[XmlElement(ElementName="stateMoniker", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public StateMoniker StateMoniker { get; set; }
+		[XmlAttribute(AttributeName="guard")]
+		public string Guard { get; set; }
+		[XmlAttribute(AttributeName="effect")]
+		public string Effect { get; set; }
+		[XmlAttribute(AttributeName="eventAndGuardLabel")]
+		public string EventAndGuardLabel { get; set; }
+		[XmlAttribute(AttributeName="effectLabel")]
+		public string EffectLabel { get; set; }
+		[XmlAttribute(AttributeName="eventGuardEffectLabel")]
+		public string EventGuardEffectLabel { get; set; }
+		[XmlElement(ElementName="conditionStateMoniker", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ConditionStateMoniker ConditionStateMoniker { get; set; }
+	}
 
-        [XmlRoot(ElementName = "state", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class State
-        {
-            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
-            [XmlElement(ElementName = "flowTo", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public FlowTo FlowTo { get; set; }
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-            [XmlAttribute(AttributeName = "entryActionLabel")]
-            public string EntryActionLabel { get; set; }
-            [XmlAttribute(AttributeName = "exitActionLabel")]
-            public string ExitActionLabel { get; set; }
-        }
+	[XmlRoot(ElementName="flowTo", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class FlowTo {
+		[XmlElement(ElementName="flow", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public List<Flow> Flow { get; set; }
+	}
 
-        [XmlRoot(ElementName = "endPointMoniker", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class EndPointMoniker
-        {
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-        }
+	[XmlRoot(ElementName="startPoint", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class StartPoint {
+		[XmlElement(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+		[XmlElement(ElementName="flowTo", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public FlowTo FlowTo { get; set; }
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+	}
 
-        [XmlRoot(ElementName = "endPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class EndPoint
-        {
-            [XmlElement(ElementName = "ArrayOfExtensiblePropertyInstance", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-        }
+	[XmlRoot(ElementName="state", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class State {
+		[XmlElement(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+		[XmlElement(ElementName="flowTo", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public FlowTo FlowTo { get; set; }
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+		[XmlAttribute(AttributeName="entryActionLabel")]
+		public string EntryActionLabel { get; set; }
+		[XmlAttribute(AttributeName="exitActionLabel")]
+		public string ExitActionLabel { get; set; }
+	}
 
-        [XmlRoot(ElementName = "flowElements", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class FlowElements
-        {
-            [XmlElement(ElementName = "startPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public StartPoint StartPoint { get; set; }
-            [XmlElement(ElementName = "state", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public List<State> State { get; set; }
-            [XmlElement(ElementName = "endPoint", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public EndPoint EndPoint { get; set; }
-        }
+	[XmlRoot(ElementName="conditionStateMoniker", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class ConditionStateMoniker {
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+	}
 
-        [XmlRoot(ElementName = "stateGraph", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-        public class StateGraph
-        {
-            [XmlElement(ElementName = "flowElements", Namespace = "http://www.tangiblearchitect.com/dsltools/State")]
-            public FlowElements FlowElements { get; set; }
-            [XmlAttribute(AttributeName = "dm0", Namespace = "http://www.w3.org/2000/xmlns/")]
-            public string Dm0 { get; set; }
-            [XmlAttribute(AttributeName = "dslVersion")]
-            public string DslVersion { get; set; }
-            [XmlAttribute(AttributeName = "name")]
-            public string Name { get; set; }
-            [XmlAttribute(AttributeName = "xmlns")]
-            public string Xmlns { get; set; }
-			[XmlAttribute(AttributeName = "description")]
-            public string Description { get; set; }
-        }
+	[XmlRoot(ElementName="conditionState", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class ConditionState {
+		[XmlElement(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+		[XmlElement(ElementName="flowTo", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public FlowTo FlowTo { get; set; }
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+	}
+
+	[XmlRoot(ElementName="flowElements", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class FlowElements {
+		[XmlElement(ElementName="startPoint", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public StartPoint StartPoint { get; set; }
+		[XmlElement(ElementName="state", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public List<State> State { get; set; }
+		[XmlElement(ElementName="conditionState", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public List<ConditionState> ConditionState { get; set; }
+	}
+
+	[XmlRoot(ElementName="stateGraph", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+	public class StateGraph {
+		[XmlElement(ElementName="ArrayOfStereoType", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfStereoType ArrayOfStereoType { get; set; }
+		[XmlElement(ElementName="ArrayOfExtensiblePropertyInstance", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public ArrayOfExtensiblePropertyInstance ArrayOfExtensiblePropertyInstance { get; set; }
+		[XmlElement(ElementName="flowElements", Namespace="http://www.tangiblearchitect.com/dsltools/State")]
+		public FlowElements FlowElements { get; set; }
+		[XmlAttribute(AttributeName="dm0", Namespace="http://www.w3.org/2000/xmlns/")]
+		public string Dm0 { get; set; }
+		[XmlAttribute(AttributeName="dslVersion")]
+		public string DslVersion { get; set; }
+		[XmlAttribute(AttributeName="name")]
+		public string Name { get; set; }
+		[XmlAttribute(AttributeName="description")]
+		public string Description { get; set; }
+		[XmlAttribute(AttributeName="xmlns")]
+		public string Xmlns { get; set; }
+	}
 
 
 public class StateMachineTemplate : TextTransformation
@@ -167,10 +185,52 @@ public class StateMachineTemplate : TextTransformation
                 }
             }
 
+			foreach (var s in sg.FlowElements.ConditionState)
+            {
+                if(s.FlowTo != null)
+                {
+                    // get all flows where s is the start point
+                    foreach (Flow f in s.FlowTo.Flow)
+                    {
+						if(!string.IsNullOrWhiteSpace(f.Guard))
+                        {
+							string name = f.Guard.Replace("/","");
+							if (!ret.Contains(name) && !string.IsNullOrEmpty(name))
+                            {
+								ret.Add(name);
+                            }
+                        }
+                    }
+                }
+            }
+
             return ret;
         }
 
 		List<string> GetGuardNamesForState(State s)
+        {
+            var ret = new List<string>();
+
+			if(s.FlowTo != null)
+			{
+				// get all flows where s is the start point
+				foreach (Flow f in s.FlowTo.Flow)
+				{
+					if(!string.IsNullOrWhiteSpace(f.Guard))
+					{
+						string name = f.Guard.Replace("/","");
+						if (!ret.Contains(name) && !string.IsNullOrEmpty(name))
+						{
+							ret.Add(name);
+						}
+					}
+				}
+			}
+
+            return ret;
+        }
+
+		List<string> GetGuardNamesForState(ConditionState s)
         {
             var ret = new List<string>();
 
@@ -276,6 +336,69 @@ public class StateMachineTemplate : TextTransformation
                         break;
                     }
                 }
+				else if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.ConditionStateMoniker != null)
+                {
+					if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+				}
+            }
+        }
+        return nextStateName;
+    }
+
+	public string GetNextStateName(ConditionState state, string flowName)
+    {
+        string nextStateName = "";
+        if(state.FlowTo != null)
+        {
+            foreach(var currentFlow in state.FlowTo.Flow)
+            {
+                if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.StateMoniker != null)
+                {
+                    if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.StateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+                }
+				else if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.ConditionStateMoniker != null)
+                {
+					if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+				}
             }
         }
         return nextStateName;
@@ -305,6 +428,23 @@ public class StateMachineTemplate : TextTransformation
                         break;
                     }
                 }
+				else if(currentFlow != null && currentFlow.EventAndGuardLabel != null
+					&& currentFlow.ConditionStateMoniker != null)
+                {
+					if(currentFlow.EventAndGuardLabel.TrimEnd('/') == flowName)
+                    {
+						if(!string.IsNullOrWhiteSpace(CurrentStateGraph.Name))
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.Remove(0, CurrentStateGraph.Name.Length + 1).TrimStart('/');
+                        }
+						else
+                        {
+							nextStateName = currentFlow.ConditionStateMoniker.Name.TrimStart('/');
+						}
+                        
+                        break;
+                    }
+				}
             }
         }
         return nextStateName;
@@ -397,6 +537,32 @@ public class StateMachineTemplate : TextTransformation
 <#+ 
                 }
 #>
+
+<#+ 
+				foreach(var state in this.CurrentStateGraph.FlowElements.ConditionState)
+                {
+#>
+				public partial class <#= stateMachineName#><#= state.Name #>State : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase 
+				{
+<#+
+					if(!string.IsNullOrWhiteSpace(GetStateMachineEnumName()))
+                    {
+#>
+					protected <#=GetStateMachineEnumName()#> mStateId = <#=GetStateMachineEnumName()#>.<#= state.Name#>;
+<#+ 
+					}
+#>
+					public <#= stateMachineName#><#= state.Name #>State(<#= stateMachineName#> machine) : base()
+					{
+						this.StateMachine = machine;
+						StateId = (int)mStateId;
+						IsConditional = true;
+					}
+				}
+<#+ 
+                }
+#>
+
 <#+ 
 						string entityName = null;
 						string shortEntityName = null;
@@ -548,6 +714,21 @@ public class StateMachineTemplate : TextTransformation
 <#+ 
                 }
 #>	
+<#+					
+				foreach(var state in this.CurrentStateGraph.FlowElements.ConditionState)
+						{
+#>		
+					container.RegisterType<<#= stateMachineName #><#= state.Name #>State>()
+							.As<<#= stateMachineName #><#= state.Name #>State>()
+							.InstancePerLifetimeScope()
+							.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+							.EnableClassInterceptors(new Castle.DynamicProxy.ProxyGenerationOptions() { Hook = new A.Core.Interceptors.ForceVirtualMethodsHook()})
+							.InterceptedBy(typeof(A.Core.Interceptors.LogInterceptorProxy))
+							.InterceptedBy(typeof(A.Core.Interceptors.CacheInterceptorProxy))
+							.InterceptedBy(typeof(A.Core.Interceptors.TransactionInterceptorProxy));
+<#+ 
+                }
+#>	
 					}
 				}
 				/// <summary>
@@ -555,6 +736,19 @@ public class StateMachineTemplate : TextTransformation
 				/// </summary>
 				public partial class <#= stateMachineName #> : <#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateMachineBase
 				{
+					
+					protected virtual void InitConditionCheckers(<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase currentState, string result)
+					{
+						<#= VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString()#>.Core.StateBase nextState = null;
+
+						<#+ foreach(var condition in this.CurrentStateGraph.FlowElements.ConditionState) { #>
+							
+							<#+ foreach(var flowTo in condition.FlowTo.Flow) { #>
+								//<#= stateMachineName #><#= condition.Name #>State
+							<#+ } #>
+						<#+ } #>
+					
+					}
 					public IPermissionChecker PermissionChecker { get; set; }
 					/// <summary>
 					/// Makes the state machine react to a trigger.
@@ -592,6 +786,35 @@ public class StateMachineTemplate : TextTransformation
 
 <#+						
 						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							else if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+								if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                        {
+                                             throw new A.Core.Validation.UserException("Action not allowed!");
+                                        }
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if (trigger is <#= stateMachineName #><#= transition#>Trigger)
+									{
+										var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(state, transition)#>State>();
+										this.TransitionToNewState(state, trigger);
+										
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.ConditionState)
 						{
 							var possibleTransitions = GetGuardNamesForState(state);
 #>
@@ -684,6 +907,35 @@ public class StateMachineTemplate : TextTransformation
 						}
 #>
 
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.ConditionState)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							else if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+								if(!GetAllowedTriggerList().Contains((<#= shortEntityName #>TriggerEnum)trigger.TriggerId))
+                                        {
+                                             throw new A.Core.Validation.UserException("Action not allowed!");
+                                        }
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if (trigger is <#= stateMachineName #><#= transition#>Trigger)
+									{
+										var state = ActionContext.CurrentContainer.Resolve<<#= stateMachineName#><#=GetNextStateName(state, transition)#>State>();
+										await this.TransitionToNewStateAsync(state, trigger);
+										
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
 					}
 
 					 public virtual System.Collections.Generic.IList<<#= shortEntityName #>TriggerEnum> GetAllowedTriggerList()
@@ -708,6 +960,29 @@ public class StateMachineTemplate : TextTransformation
 							}
 <#+						
 						foreach(var state in this.CurrentStateGraph.FlowElements.State)
+						{
+							var possibleTransitions = GetGuardNamesForState(state);
+#>
+							if (this.CurrentState is <#= stateMachineName#><#= state.Name #>State)
+							{
+<#+
+								foreach(var transition in possibleTransitions)
+								{
+#>
+									if(PermissionChecker.IsAllowed(new A.Core.Model.PermissionCheckRequest() { Permission="<#=  @interface.FullName.ToString() #>.<#= transition#>Async", OperationType = "Edit" }))
+									{
+										triggerList.Add(<#= shortEntityName #>TriggerEnum.<#= shortEntityName #><#= transition#>Request);
+									}
+<#+ 
+								}
+#>
+							}
+<#+ 
+						}
+#>
+
+<#+						
+						foreach(var state in this.CurrentStateGraph.FlowElements.ConditionState)
 						{
 							var possibleTransitions = GetGuardNamesForState(state);
 #>

@@ -5,12 +5,23 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace A.Core.Extensions
 {
     public static class ObjectExtension
     {
+        public static JsonSerializer JsonSerializerSettings { get; set; }
+
+        static ObjectExtension()
+        {
+            JsonSerializerSettings = new JsonSerializer();
+            JsonSerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            JsonSerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            JsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+        }
+
         public static IDictionary<string, string> ToKeyValue(this object metaToken)
         {
             if (metaToken == null)
@@ -18,10 +29,11 @@ namespace A.Core.Extensions
                 return null;
             }
 
+            
             JToken token = metaToken as JToken;
             if (token == null)
             {
-                return ToKeyValue(JObject.FromObject(metaToken));
+                return ToKeyValue(JObject.FromObject(metaToken, JsonSerializerSettings));
             }
 
             if (token.HasValues)

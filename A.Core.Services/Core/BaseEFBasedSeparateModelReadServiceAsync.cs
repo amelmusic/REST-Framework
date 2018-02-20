@@ -63,6 +63,11 @@ namespace A.Core.Services.Core
             }
         }
 
+        public virtual async Task SaveAsync(TDbEntity entity, object request)
+        {
+            await SaveAsync(entity);
+        }
+
         public virtual async Task SaveAsync(TDbEntity entity)
         {
             if (entity is BaseEntityWithDateTokens)

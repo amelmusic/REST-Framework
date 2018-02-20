@@ -28,7 +28,15 @@ namespace A.Core.WebAPI.Core
             
             var requestId = Guid.NewGuid().ToString();
             PopulateFromClaimsPrincipal(actionContext, coreActionContext);
-            log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
+            if (actionContext.Request.Headers.Contains("RequestId"))
+            {
+                requestId = actionContext.Request.Headers.GetValues("RequestId").FirstOrDefault();
+                log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
+            }
+            else
+            {
+                log4net.LogicalThreadContext.Properties["RequestId"] = requestId;
+            }
 
             actionContext.Request.Properties.Add(new KeyValuePair<string, object>("RequestId", requestId));
             

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using A.Core.Validation;
 
 namespace $rootnamespace$.Core //DD
 {
@@ -19,12 +20,15 @@ namespace $rootnamespace$.Core //DD
         {
             this.Initialize();
         }
+
         public object CurrentEntity { get; set; }
 
         /// <summary>
         /// Allows custom initailization code.
         /// </summary>
-        protected virtual void Initialize() { }
+        protected virtual void Initialize()
+        {
+        }
 
         /// <summary>
         /// Makes the state machine go into another state.
@@ -36,11 +40,33 @@ namespace $rootnamespace$.Core //DD
                 this.CurrentState.OnExit(causedByTrigger);
 
             this.CurrentState = newState;
-            
+
             UpdateEntityState();
+
             // enter the new state
             if (this.CurrentState != null)
+            {
                 this.CurrentState.OnEntry(causedByTrigger);
+                //on entry, conditional state will populate conditional string
+                if (this.CurrentState.IsConditional)
+                {
+                    var conditionResult = this.CurrentState.ConditionTrigger;
+
+                    if (conditionResult == null)
+                    {
+                        throw new UserException(
+                            $"{CurrentState.StateId} is conditional and it didn't populate ConditionResult in OnEntry method");
+                    }
+
+                    this.ProcessTrigger(conditionResult);
+                }
+            }
+
+        }
+
+        protected virtual StateBase GetStateFromConditionResult(StateBase currentState, string conditionResult)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -57,7 +83,22 @@ namespace $rootnamespace$.Core //DD
             UpdateEntityState();
             // enter the new state
             if (this.CurrentState != null)
+            {
                 await this.CurrentState.OnEntryAsync(causedByTrigger);
+                //on entry, conditional state will populate conditional string
+                if (this.CurrentState.IsConditional)
+                {
+                    var conditionResult = this.CurrentState.ConditionTrigger;
+
+                    if (conditionResult == null)
+                    {
+                        throw new UserException(
+                            $"{CurrentState.StateId} is conditional and it didn't populate ConditionResult in OnEntry method");
+                    }
+
+                    await this.ProcessTriggerAsync(conditionResult);
+                }
+            }
         }
 
         public virtual void UpdateEntityState()
@@ -66,6 +107,7 @@ namespace $rootnamespace$.Core //DD
         }
 
         private StateBase _CurrentState;
+
         /// <summary>
         /// Gets the state the state machine is currently in.
         /// </summary>
@@ -74,7 +116,8 @@ namespace $rootnamespace$.Core //DD
             get { return _CurrentState; }
             set
             {
-                _CurrentState = value; OnPropertyChanged("CurrentState");
+                _CurrentState = value;
+                OnPropertyChanged("CurrentState");
             }
         }
 
@@ -101,6 +144,8 @@ namespace $rootnamespace$.Core //DD
             if (this.PropertyChanged != null)
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }
