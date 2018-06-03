@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>A.Core.RESTClient</id>
+    <version>1.0.3</version>
+    <authors>Amel Musić</authors>
+    <owners>Amel Musić</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Core framework - contains base classes and T4 scripts for code generation.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>REST T4 A.Core</tags>
+	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
+    <dependencies>
+	  <dependency id="Autofac" version="4.6.1"/>
+	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1"/>
+	  <dependency id="Newtonsoft.Json" version="10.0.3"/>
+	  <dependency id="A.Core" version="1.0.0" />
+	  <dependency id="Flurl" version="2.6.0" />
+	  <dependency id="Flurl.Http" version="2.1.1" />
+    </dependencies>
+  </metadata>
+</package>
+

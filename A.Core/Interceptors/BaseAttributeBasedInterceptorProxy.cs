@@ -11,6 +11,7 @@ namespace A.Core.Interceptors
 {
     public abstract class BaseAttributeBasedInterceptorProxy<T> : BaseInterceptorProxy where T : BaseInterceptorAttribute
     {
+        private static object _lock = new object();
 
         protected override bool ShouldIntercept(IInvocation invocation)
         {
@@ -26,9 +27,16 @@ namespace A.Core.Interceptors
                 {
                     if (!HasInvalidArguments(invocation))
                     {
-                        //CachedAccess.Add(invocation.Method);
-                        CachedDictAccess.Add(invocation.Method, true);
-                        intercept = true;
+                        lock (_lock)
+                        {
+                            if (!CachedDictAccess.ContainsKey(invocation.Method))
+                            {
+                                CachedDictAccess.Add(invocation.Method, true);
+                                intercept = true;
+                            }
+                            //CachedAccess.Add(invocation.Method);
+                            
+                        }
                     }
                     else
                     {
@@ -37,11 +45,16 @@ namespace A.Core.Interceptors
                 }
                 else
                 {
-                    CachedDictAccess.Add(invocation.Method, false);
-                    intercept = false;
+                    lock (_lock)
+                    {
+                        if (!CachedDictAccess.ContainsKey(invocation.Method))
+                        {
+                            CachedDictAccess.Add(invocation.Method, false);
+                            intercept = false;
+                        }
+                        //CachedAccess.Add(invocation.Method);
+                    }
                 }
-               
-                
             }
 
             return intercept;

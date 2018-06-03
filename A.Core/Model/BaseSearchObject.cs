@@ -25,14 +25,14 @@ namespace A.Core.Model
         public string OrderBy { get; set; }
 
         public TAdditionalData AdditionalData { get; set; }
-        public bool ShouldSerializeAdditionalData()
-        {
-            bool shouldSerialize = true;
-            if(AdditionalData != null && (AdditionalData.IncludeList == null || AdditionalData.IncludeList.Count == 0))
-            {
-                shouldSerialize = false;
-            }
-            return shouldSerialize;
-        }
+        //public bool ShouldSerializeAdditionalData()
+        //{
+        //    bool shouldSerialize = true;
+        //    if(AdditionalData != null && (AdditionalData.IncludeList == null || AdditionalData.IncludeList.Count == 0))
+        //    {
+        //        shouldSerialize = false;
+        //    }
+        //    return shouldSerialize;
+        //}
     }
 }

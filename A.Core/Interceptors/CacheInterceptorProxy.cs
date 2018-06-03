@@ -16,7 +16,7 @@ namespace A.Core.Interceptors
 {
     public class CacheInterceptorProxy : BaseAttributeBasedInterceptorProxy<CacheAttribute>
     {
-
+        private static object _lock = new object();
         protected static Dictionary<MethodInfo, CacheInterceptorContext> MethodList 
             = new Dictionary<MethodInfo, CacheInterceptorContext>();
 
@@ -163,35 +163,46 @@ namespace A.Core.Interceptors
             CacheInterceptorContext context;
             if (!MethodList.TryGetValue(invocation.Method, out context))
             {
-                context = new CacheInterceptorContext();
-                context.MethodName = invocation.Method.Name;
-                context.ClassName = invocation.TargetType.FullName;
-                context.CacheAttr = invocation.Method.GetCustomAttribute<CacheAttribute>();
+                lock (_lock)
+                {
+                    context = new CacheInterceptorContext();
+                    context.MethodName = invocation.Method.Name;
+                    context.ClassName = invocation.TargetType.FullName;
+                    context.CacheAttr = invocation.Method.GetCustomAttribute<CacheAttribute>();
+
+                    var methodType = invocation.Method.ReturnType;
+                    if (methodType.IsGenericType)
+                    {
+                        context.GetFromCacheMethodInfo = typeof(ICacheClient).GetMethod("GetAsync")
+                            .MakeGenericMethod(new Type[] { methodType.GetGenericArguments()[0] });
+
+                        var task = Task.FromResult<object>(null);
+
+                        Type taskReturnType = (context.GetFromCacheMethodInfo).ReturnType; //e.g. Task<int>
+
+                        var type = taskReturnType.GetGenericArguments()[0].GetGenericArguments()[0]; //get the result type, e.g. int
+
+                        var convert_method = this.GetType().GetMethod("Convert").MakeGenericMethod(type); //Get the closed version of the Convert method, e.g. Convert<int>
+                        context.CreateNewInstanceMethodInfo = convert_method;
+
+                    }
+                    else
+                    {
+                        context.GetFromCacheMethodInfo = typeof(ICacheClient).GetMethod("GetAsync")
+                            .MakeGenericMethod(new Type[] { methodType });
+                    }
+
+                    if (MethodList.ContainsKey(invocation.Method))
+                    {
+                        MethodList[invocation.Method] = context;
+                    }
+                    else
+                    {
+                        MethodList.Add(invocation.Method, context);
+                    }
+                    
+                }
                 
-                var methodType = invocation.Method.ReturnType;
-                if(methodType.IsGenericType)
-                {
-                    context.GetFromCacheMethodInfo = typeof(ICacheClient).GetMethod("GetAsync")
-                                            .MakeGenericMethod(new Type[] { methodType.GetGenericArguments()[0] });
-
-                    var task = Task.FromResult<object>(null);
-
-                    Type taskReturnType = (context.GetFromCacheMethodInfo).ReturnType; //e.g. Task<int>
-
-                    var type = taskReturnType.GetGenericArguments()[0].GetGenericArguments()[0]; //get the result type, e.g. int
-
-                    var convert_method = this.GetType().GetMethod("Convert").MakeGenericMethod(type); //Get the closed version of the Convert method, e.g. Convert<int>
-                    context.CreateNewInstanceMethodInfo = convert_method;
-
-                }
-                else
-                {
-                    context.GetFromCacheMethodInfo = typeof(ICacheClient).GetMethod("GetAsync")
-                                            .MakeGenericMethod(new Type[] { methodType });
-                }
-
-
-                MethodList.Add(invocation.Method, context);
             }
 
             return context;

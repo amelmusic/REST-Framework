@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>A.Core.Scheduler</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Amel Musić</authors>
     <owners>Amel Musić</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

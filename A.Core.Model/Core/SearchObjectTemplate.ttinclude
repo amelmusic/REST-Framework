@@ -139,6 +139,12 @@ public class SearchObjectTemplate : TextTransformation
 						WriteLine(string.Format("public virtual {0}{2} {1}OrNull", property.Type.AsFullName, property.Name, nullableIfNeeded) + " { get; set; }");
 						WriteLine("\r\n");
                     }
+					if(IsOperatorExisting(property,"FilterEnum.Null"))
+                    {
+						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.Null, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));
+						WriteLine(string.Format("public virtual {0}{2} {1}IsNull", "bool", property.Name, "?") + " { get; set; }");
+						WriteLine("\r\n");
+                    }
 					if(IsOperatorExisting(property,"FilterEnum.NotEqual"))
                     {
 						WriteLine(string.Format("[{0}.Filter({0}.FilterEnum.NotEqual, {1})]", this.ModelHelperInstance.CoreAttributesNamespace, IsCodeOnServiceGenerationEnabled(property).ToString().ToLower()));

@@ -1,0 +1,31 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+<# 
+	APITemplateConfig APITemplateConfig = new APITemplateConfig(VisualStudioHelper);
+#>
+
+<#+ 
+	public class APITemplateConfig
+	{
+		public APITemplateConfig(AutomationHelper helper)
+        {
+			VisualStudioHelper = helper;
+			InterfacesProjectList = new List<string>();
+
+			InterfacesProjectList.Add(VisualStudioHelper.CurrentProject.Name.Replace("RESTClient", "Interfaces"));
+			//InterfacesProjectList.Add("A.Core");
+			EndpointsURLSettingsKey = "Properties.Settings.Default." + VisualStudioHelper.CurrentProject.Name.Replace(".","") + "EndpointURLSetting";
+        }
+
+		public AutomationHelper VisualStudioHelper  { get; set; }
+		public string EndpointsURLSettingsKey {get; set;}
+		public IList<string> InterfacesProjectList {get; set;}
+	}
+#>

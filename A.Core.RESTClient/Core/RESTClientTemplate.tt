@@ -1,0 +1,160 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE" #>
+<#@ import namespace="EnvDTE" #>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="EnvDTE80" #>
+<#@ include file="VisualStudioHelper.ttinclude" #>
+<#@ include file="APITemplate.Config.ttinclude" #>
+<#@ include file="APIControllerTemplate.ttinclude" #>
+
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+
+
+<# 
+APIHelper helper = new APIHelper(VisualStudioHelper, APITemplateConfig);
+string @namespace = VisualStudioHelper.CurrentProject.Properties.Item("DefaultNamespace").Value.ToString();
+#>
+#region A_Core generated code
+
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
+using A.Core.Extensions;
+using A.Core.Interface;
+using Flurl.Http;
+using <#= @namespace #>.Core;
+using A.Core.Model;
+using Autofac;
+using System.Reflection;
+<# 
+
+//write namespace and add all classes to it
+WriteLine(string.Format(@"namespace {0} 
+{{ ", @namespace));
+foreach(var i in helper.GetInterfaceList())
+{
+			string clientName = helper.GetClientName((EnvDTE80.CodeInterface2)i);
+			APIControllerTemplate template = new APIControllerTemplate(i, clientName, VisualStudioHelper, @namespace, APITemplateConfig);
+			WriteLine(template.TransformText());
+			
+}
+//end of namespace
+WriteLine("}");
+#>
+
+namespace <#= @namespace #>.RESTClient
+{
+public class RESTClientRegistration : IServicesRegistration
+    {
+        public void Register(ref ContainerBuilder container)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+
+            container.RegisterAssemblyTypes(assembly)
+                .Where(t => t.Name.EndsWith("RESTClient"))
+                .AsImplementedInterfaces().PropertiesAutowired();
+        }
+
+        public int Priority { get; set; } = 0;
+    }
+}
+
+#endregion
+<#+ 
+	public class APIHelper
+	{
+        public string DefaultServiceBehaviourAttribute = "A.Core.Attributes.DefaultServiceBehaviourAttribute";
+		public APIHelper(AutomationHelper helper, APITemplateConfig config)
+        {
+			VisualStudioHelper = helper;
+			APITemplateConfig = config;
+        }
+		public AutomationHelper VisualStudioHelper { get; set; }
+		public APITemplateConfig APITemplateConfig { get; set; }
+
+		public IList<EnvDTE.CodeInterface> GetInterfaceList()
+        {
+			IList<EnvDTE.CodeInterface> interfaceList = new List<EnvDTE.CodeInterface>();
+			IList<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+			
+			if(APITemplateConfig.InterfacesProjectList.Count > 0)
+            {
+				foreach(var projectName in APITemplateConfig.InterfacesProjectList)
+                {
+					var project = VisualStudioHelper.GetProject(projectName);
+					projectList.Add(project);
+                }
+            }
+
+			foreach(var project in projectList)
+            {
+				var allInterfaces = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(project.CodeModel.CodeElements, EnvDTE.vsCMElement.vsCMElementInterface, false);
+				System.Diagnostics.Debug.WriteLine("//Getting all interfaces:" ); 
+				foreach(EnvDTE80.CodeInterface2 entity in allInterfaces)
+				{
+					System.Diagnostics.Debug.WriteLine("//Interface: " +entity.FullName); 
+					if(!string.IsNullOrWhiteSpace(GetClientName(entity)))
+                    {
+						interfaceList.Add(entity);
+                    }
+				}
+            }
+
+			return interfaceList;
+        }
+
+		public string GetClientName(EnvDTE80.CodeInterface2 entity)
+        {
+			foreach(var part in entity.Parts)
+            {
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(((EnvDTE80.CodeInterface2)part).Attributes, vsCMElement.vsCMElementAttribute, false);
+					 if (allAttributes.OfType<EnvDTE.CodeAttribute>()
+								 .Any(att => att.FullName == DefaultServiceBehaviourAttribute))
+					{
+						foreach(var attr in allAttributes)
+                        {
+							if(attr.FullName == DefaultServiceBehaviourAttribute)
+                            {
+								string clientName = GetClientNameFromAttribute((EnvDTE.CodeAttribute)attr);
+								if(!string.IsNullOrWhiteSpace(clientName))
+                                {
+									return clientName;
+									break;
+                                }
+                            }
+                        }
+						
+					}
+            }
+			
+			return "";
+        }
+		protected string GetClientNameFromAttribute(EnvDTE.CodeAttribute attribute)
+            {
+				string requestName = "";
+				var parts = attribute.Value.Split(',');
+				if(parts.Length >= 1)
+                {
+					requestName = parts[1].Trim().Trim('"');;
+                }
+				else
+                {
+					throw new Exception("Request name in invalid format or empty");
+                }
+				return requestName.Trim('"');
+            }
+		
+	}
+#>

@@ -1,0 +1,730 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+
+
+<#+
+public class APIControllerTemplate : TextTransformation
+{
+	public APIControllerTemplate(EnvDTE.CodeInterface entity, string controllerName, AutomationHelper helper, string @namespace, APITemplateConfig config)
+    {
+		APITemplateConfig = config;
+		Entity = entity;
+		ControllerName =  controllerName;
+		VisualStudioHelper = helper;
+		Namespace = @namespace;
+		ServiceName = Entity.Name.Substring(1);
+		EndpointsURLSettingsKey = APITemplateConfig.EndpointsURLSettingsKey;//;
+    }
+
+	public string GetBaseClassName()
+    {
+		return  Namespace + ".Core.BaseService";
+    }
+
+	public AutomationHelper VisualStudioHelper { get; set; }
+
+	public APITemplateConfig APITemplateConfig {get; set;}
+    public string ControllerName {get; set;}
+	public string ServiceName {get; set;}
+    public EnvDTE.CodeInterface Entity { get; set; }
+	public string Namespace {get; set;}
+    public string EndpointsURLSettingsKey { get; set; }
+
+	private string ToLowerFirstCharacter(string str)
+    {
+		return str.Substring(0, 1).ToLower() + str.Substring(1);
+    }
+
+	private string GeneratePermissionFilter(string methodName, string operationType)
+    {
+		return "";
+    }
+
+	public void GenerateGetById(EnvDTE.CodeFunction method)
+	 {
+		
+		string codeTypeName = method.Type.AsFullName;
+		if(codeTypeName.StartsWith("System.Threading.Tasks.Task"))
+        {
+			codeTypeName = codeTypeName.Remove(0, codeTypeName.IndexOf('<') + 1);
+			codeTypeName = codeTypeName.Substring(0, codeTypeName.Length  - 1);
+        }
+
+		//WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(codeTypeName);
+		if(codeType != null)
+		{
+				//Find property that is marked as [Key] or named Id
+				string primaryKeyType = null;
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+				foreach(var property in allProperties)
+                {
+					//WriteLine("//Property: " + property.Name);
+					if(property.Name == "Id")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+					foreach(var attr in allAttributes)
+					{
+						if(attr.Name == "Key")
+						{
+							primaryKeyType = property.Type.AsFullName;
+						}
+					}	
+                }
+				string additionalDataName = null;
+				string additionalData = null;
+				var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					if(prm.Type.AsFullName.Contains("Additional"))
+					{
+						additionalDataName = string.Format(", {0} additionalData", prm.Type.AsFullName);
+						additionalData = ", additionalData";
+						break;
+					}
+				}
+
+				bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+								//WriteLine("//Async: " + isAsync + "KeyType: " + primaryKeyType);
+				if(isAsync)
+                {
+					string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+					returnType = returnType.Remove(returnType.LastIndexOf('>'));
+					WriteLine(@"
+					public virtual async Task<{0}> GetAsync(object id{1})
+					{{
+						var baseUrl = {2} + $""/{3}/{{id}}"";
+						var result = await baseUrl.GetAsync<{0}>(ActionContext.Value{4});
+						return result;
+					}}", returnType, additionalDataName, EndpointsURLSettingsKey, ControllerName, additionalData);
+                }
+				else
+                {
+					WriteLine(@"
+					public virtual {0} Get(object id{1})
+					{{
+						var baseUrl = {2} + $""/{3}/{{id}}"";
+						var result = baseUrl.GetAsync<{0}>(ActionContext.Value{4}).Result;
+						return result;
+					}}", method.Type.AsFullName, additionalDataName, EndpointsURLSettingsKey, ControllerName, additionalData);
+                }
+		}
+	 }
+
+	 public void GenerateGet(EnvDTE.CodeFunction method, bool addRoute = false)
+	 {
+		//WriteLine("//Generating template for Get for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					typeAndNameParamListString.Append(string.Format("{0} {1},", prm.Type.AsFullName, prm.Name));
+					paramListString.Append(string.Format("{0},", prm.Name));
+
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+			
+			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+			string methodNameForRoute = method.Name.EndsWith("Async") ? method.Name.Substring(0, method.Name.Length - 5) : method.Name;
+			if(isAsync)
+            {
+				string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+				returnType = returnType.Remove(returnType.LastIndexOf('>'));
+				WriteLine(@"
+				public virtual async Task<{1}> {5}({0})
+					{{
+						var baseUrl = {3} + $""/{4}{6}"";
+						var result = await baseUrl.GetAsync<{1}>(ActionContext.Value, {2});
+						return result;
+					}}", typeAndNameParamString, returnType, paramString, EndpointsURLSettingsKey, ControllerName, method.Name, addRoute?"/"+ToLowerFirstCharacter(methodNameForRoute):"");
+            }
+			else
+            {
+				WriteLine(@"
+				public virtual {1} {5}({0})
+					{{
+						var baseUrl = {3} + $""/{4}{6}"";
+						var result = baseUrl.GetAsync<{1}>(ActionContext.Value, {2}).Result;
+						return result;
+					}}", typeAndNameParamString, method.Type.AsFullName, paramString, EndpointsURLSettingsKey, ControllerName, method.Name, addRoute?"/"+ToLowerFirstCharacter(methodNameForRoute):"");
+            }
+			
+		}
+	 }
+
+	 public void GenerateInsert(EnvDTE.CodeFunction method)
+	 {
+		//WriteLine("//Generating template for Insert for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					typeAndNameParamListString.Append(string.Format("{0} {1},", prm.Type.AsFullName, prm.Name));
+					if(prm.Name != "saveChanges")
+					{
+						paramListString.Append(string.Format("{0},", prm.Name));
+					}
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+			string additionalRouteName = "";
+            if (method.Name != "Insert" && method.Name != "InsertAsync")
+            {
+				additionalRouteName = string.Format("/{0}", method.Name.Replace("Async", "")).ToLower();
+            }
+			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+			if(isAsync)
+            {
+				string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+				returnType = returnType.Remove(returnType.LastIndexOf('>'));
+
+				WriteLine(@"
+				public virtual async Task<{2}> {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}{6}"";
+					var result =
+						await baseUrl.PostAsync<{2}>(ActionContext.Value, queryString: null, model: {3});
+
+					return result;
+				}}", method.Name,typeAndNameParamString, returnType, paramString, EndpointsURLSettingsKey, ControllerName, additionalRouteName);
+
+				/*WriteLine(string.Format(
+				@"
+				[Route({5})]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpPost]
+                {4}
+				public async System.Threading.Tasks.Task<HttpResponseMessage>  {0}({1})
+				{{
+					var result = await Service.{0}({3});					 
+					var response = Request.CreateResponse<{2}>(HttpStatusCode.Created, result);
+					return response;
+				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name, "Edit"), additionalRouteName));*/
+            }
+			else
+            {
+				WriteLine(@"
+				public virtual {2} {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}{6}"";
+					var result =
+						baseUrl.PostAsync<{2}>(ActionContext.Value, queryString: null, model: {3}).Result;
+
+					return result;
+				}}", method.Name,typeAndNameParamString, method.Type.AsFullName, paramString, EndpointsURLSettingsKey, ControllerName, additionalRouteName);
+            }
+		}
+	}
+
+	 private static readonly List<string> _primitiveTypes = new List<string> {
+            "System.Boolean",
+            "System.Byte",
+            "System.SByte",
+            "System.Int16",
+            "System.UInt16",
+            "System.Int32",
+            "System.UInt16",
+            "System.Int64",
+            "System.UInt16",
+            "System.IntPtr",
+            "System.UIntPtr",
+            "System.Char",
+            "System.Double",
+            "System.Single",
+			"System.String",
+			"System.Guid",
+			"System.Object"
+        };
+
+	 public void GenerateUpdate(EnvDTE.CodeFunction method, bool addMethodNameToRoute)
+	 {
+		string methodNameTmp = method.Name;
+		string codeTypeName = method.Type.AsFullName;
+
+		if(codeTypeName.StartsWith("System.Threading.Tasks.Task"))
+        {
+			codeTypeName = codeTypeName.Remove(0, codeTypeName.IndexOf('<') + 1);
+			codeTypeName = codeTypeName.Substring(0, codeTypeName.Length  - 1);
+        }
+
+		//WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(codeTypeName);
+
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+			
+			//Find property that is marked as [Key] or named Id
+			string primaryKeyType = null;
+			string primaryKeyName = null;
+			var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+			foreach(var property in allProperties)
+            {
+				if(property.Name == "Id")
+				{
+					primaryKeyType = property.Type.AsFullName;
+				}
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+				foreach(var attr in allAttributes)
+				{
+					if(attr.Name == "Key")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+				}	
+            }
+
+			bool isFirstParameter = true;
+			int paramsCount = 0;
+			bool isFirstParameterPrimaryKey = false;
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					bool isPrimitive =  _primitiveTypes.Any(primitiveType => prm.Type.AsFullName == primitiveType);
+					paramsCount++;
+					typeAndNameParamListString.Append(string.Format("{2}{0} {1},", prm.Type.AsFullName, prm.Name, isFirstParameter?"":""));
+					if(prm.Name == "saveChanges")
+						{
+							continue;
+						}
+					paramListString.Append(string.Format("{0},", prm.Name));
+					if(isFirstParameter)
+					{
+						if(isPrimitive)
+						{
+							isFirstParameterPrimaryKey = true;
+                        }
+						else
+						{
+							isFirstParameterPrimaryKey = false;
+                        }
+                    }
+					isFirstParameter = false;
+
+				}
+
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',').Replace("id,","");
+			if(paramString == "") {
+				paramString = "null";
+            }
+			string methodNameInRouteIfNeeded = "";
+			string idInRoutePart = primaryKeyType == null || paramsCount == 0 || !isFirstParameterPrimaryKey ? "" : "{id}";
+			if(addMethodNameToRoute)
+            {
+				string methodNameForRoute = method.Name.EndsWith("Async") ? method.Name.Substring(0, method.Name.Length - 5) : method.Name;
+				if(idInRoutePart == "")
+                {
+					methodNameInRouteIfNeeded = string.Format("{0}", ToLowerFirstCharacter(methodNameForRoute));
+                }
+				else
+                {
+					methodNameInRouteIfNeeded = string.Format("/{0}", ToLowerFirstCharacter(methodNameForRoute));
+				}
+            }
+			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+			
+			if(isAsync)
+            {
+				string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+				returnType = returnType.Remove(returnType.LastIndexOf('>'));
+
+				WriteLine(@"
+				public virtual async Task<{2}> {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}/{6}{7}"";
+					var result =
+						await baseUrl.PutAsync<{2}>(ActionContext.Value, queryString: null, model: {3});
+
+					return result;
+				}}", method.Name,typeAndNameParamString, returnType, paramString, EndpointsURLSettingsKey, ControllerName, idInRoutePart, methodNameInRouteIfNeeded);
+
+
+				/*WriteLine(string.Format(
+				@"
+				[Route(""{6}{4}"")]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpPut]
+				{5}
+				public async System.Threading.Tasks.Task<HttpResponseMessage>  {0}({1})
+				{{
+					var result = await Service.{0}({3});					 
+					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
+					return response;
+				}}", method.Name, typeAndNameParamString, returnType, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name, "Edit"), idInRoutePart));*/
+            }
+			else
+            {
+				WriteLine(@"
+				public virtual {2} {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}/{6}{7}"";
+					var result =
+						baseUrl.PutAsync<{2}>(ActionContext.Value, queryString: null, model: {3}).Result;
+
+					return result;
+				}}", method.Name,typeAndNameParamString, method.Type.AsFullName, paramString, EndpointsURLSettingsKey, ControllerName, idInRoutePart, methodNameInRouteIfNeeded);
+
+            }
+		}
+	 }
+
+	 public void GeneratePatch(EnvDTE.CodeFunction method, bool addMethodNameToRoute)
+	 {
+		string methodNameTmp = method.Name;
+		string codeTypeName = method.Type.AsFullName;
+
+		if(codeTypeName.StartsWith("System.Threading.Tasks.Task"))
+        {
+			codeTypeName = codeTypeName.Remove(0, codeTypeName.IndexOf('<') + 1);
+			codeTypeName = codeTypeName.Substring(0, codeTypeName.Length  - 1);
+        }
+
+		//WriteLine("//Generating template for GetById for: " + method.Name + ", amel" + codeTypeName);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(codeTypeName);
+
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+			
+			//Find property that is marked as [Key] or named Id
+			string primaryKeyType = null;
+			string primaryKeyName = null;
+			var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+			foreach(var property in allProperties)
+            {
+				if(property.Name == "Id")
+				{
+					primaryKeyType = property.Type.AsFullName;
+				}
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+				foreach(var attr in allAttributes)
+				{
+					if(attr.Name == "Key")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+				}	
+            }
+
+			bool isFirstParameter = true;
+			int paramsCount = 0;
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					paramsCount++;					
+					typeAndNameParamListString.Append(string.Format("{2}{0} {1},", prm.Type.AsFullName, prm.Name, isFirstParameter?"":""));
+					if(prm.Name == "saveChanges")
+						{
+							continue;
+						}
+					paramListString.Append(string.Format("{0},", prm.Name));
+					isFirstParameter = false;
+
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',').Replace("id,","");
+			string methodNameInRouteIfNeeded = "";
+			string idInRoutePart = primaryKeyType == null || paramsCount == 0 ? "" : "{id}";
+			if(addMethodNameToRoute)
+            {
+				string methodNameForRoute = method.Name.EndsWith("Async") ? method.Name.Substring(0, method.Name.Length - 5) : method.Name;
+				if(idInRoutePart == "")
+                {
+					methodNameInRouteIfNeeded = string.Format("{0}", ToLowerFirstCharacter(methodNameForRoute));
+                }
+				else
+                {
+					methodNameInRouteIfNeeded = string.Format("/{0}", ToLowerFirstCharacter(methodNameForRoute));
+				}
+            }
+			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+			
+			if(isAsync)
+            {
+				string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+				returnType = returnType.Remove(returnType.LastIndexOf('>'));
+
+				WriteLine(@"
+				public virtual async Task<{2}> {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}/{6}{7}"";
+					var result =
+						await baseUrl.PatchAsync<{2}>(ActionContext.Value, queryString: null, model: {3});
+
+					return result;
+				}}", method.Name,typeAndNameParamString, returnType, paramString, EndpointsURLSettingsKey, ControllerName, idInRoutePart, methodNameInRouteIfNeeded);
+
+
+				/*WriteLine(string.Format(
+				@"
+				[Route(""{6}{4}"")]
+				[System.Web.Http.Description.ResponseType(typeof({2}))]
+				[System.Web.Http.HttpPut]
+				{5}
+				public async System.Threading.Tasks.Task<HttpResponseMessage>  {0}({1})
+				{{
+					var result = await Service.{0}({3});					 
+					var response = Request.CreateResponse<{2}>(HttpStatusCode.OK, result);
+					return response;
+				}}", method.Name, typeAndNameParamString, returnType, paramString, methodNameInRouteIfNeeded, GeneratePermissionFilter(method.Name, "Edit"), idInRoutePart));*/
+            }
+			else
+            {
+				WriteLine(@"
+				public virtual {2} {0}({1})
+				{{
+					var baseUrl = {4} + $""/{5}/{6}{7}"";
+					var result =
+						baseUrl.PatchAsync<{2}>(ActionContext.Value, queryString: null, model: {3}).Result;
+
+					return result;
+				}}", method.Name,typeAndNameParamString, method.Type.AsFullName, paramString, EndpointsURLSettingsKey, ControllerName, idInRoutePart, methodNameInRouteIfNeeded);
+
+            }
+		}
+	 }
+
+	 public void GenerateDelete(EnvDTE.CodeFunction method)
+	 {
+		//WriteLine("//Generating template for Delete for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+				//Find property that is marked as [Key] or named Id
+				string primaryKeyType = null;
+				var allProperties = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(codeType.Members, EnvDTE.vsCMElement.vsCMElementProperty, true).OfType<EnvDTE.CodeProperty>();
+				foreach(var property in allProperties)
+                {
+				WriteLine("//Getting property for Delete: " + property.Name);	
+					if(property.Name == "Id")
+					{
+						primaryKeyType = property.Type.AsFullName;
+					}
+					var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(property.Attributes, vsCMElement.vsCMElementAttribute, true);			
+					foreach(var attr in allAttributes)
+					{
+						if(attr.Name == "Key")
+						{
+							primaryKeyType = property.Type.AsFullName;
+						}
+					}	
+                }
+
+				var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				primaryKeyType = allParameters.First().Type.AsFullName;
+				
+				bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+				if(isAsync)
+                {
+					string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+					returnType = returnType.Remove(returnType.LastIndexOf('>'));
+
+					WriteLine(@"
+					public virtual async Task<{0}> {2}({1} id)
+					{{
+						var baseUrl = {3} + $""/{4}/"" + id;
+						var result =
+							await baseUrl.DeleteAsync<{0}>(ActionContext.Value, queryString: null);
+
+						return result;
+					}}", returnType, primaryKeyType, method.Name, EndpointsURLSettingsKey, ControllerName);
+
+					/*WriteLine(string.Format(
+					@"
+					[Route(""{{id}}"")]
+					[System.Web.Http.Description.ResponseType(typeof({2}))]
+					[System.Web.Http.HttpDelete]
+                    {3}
+					public async System.Threading.Tasks.Task<System.Web.Http.IHttpActionResult>  {1}({0} id)
+					{{
+						var result = await Service.{1}(id);
+						if(result == null)
+						{{
+							return NotFound();
+						}}
+						else
+						{{
+							return Ok(result);
+						}}
+					}}", primaryKeyType, method.Name,returnType, GeneratePermissionFilter(method.Name, "Delete")));*/
+                }
+				else
+                {
+					WriteLine(@"
+					public virtual {0} {2}({1} id)
+					{{
+						var baseUrl = {3} + $""/{4}/"" + id.ToString();
+						var result =
+							baseUrl.DeleteAsync<{0}>(ActionContext.Value, queryString: null).Result;
+
+						return result;
+					}}", method.Type.AsFullName, primaryKeyType, method.Name, EndpointsURLSettingsKey, ControllerName);
+                }
+		}
+	 }
+
+	public void GenerateDownload(EnvDTE.CodeFunction method)
+	 {
+		//WriteLine("//Generating template for Insert for: " + method.Name);	
+		var codeType = VisualStudioHelper.CodeModel.FindCodeType(method.Type.AsFullName);
+		if(codeType != null)
+		{
+			StringBuilder typeAndNameParamListString = new StringBuilder();
+			StringBuilder paramListString = new StringBuilder();
+
+			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
+				foreach(var prm in allParameters)
+				{
+					typeAndNameParamListString.Append(string.Format("{0} {1},", prm.Type.AsFullName, prm.Name));
+					paramListString.Append(string.Format("{0},", prm.Name));
+				}
+			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
+			string paramString = paramListString.ToString().TrimEnd(',');
+
+			bool isAsync = method.Type.AsFullName.StartsWith("System.Threading.Tasks.Task<");
+			if(isAsync)
+            {
+				string returnType = method.Type.AsFullName.Remove(0, method.Type.AsFullName.IndexOf('<') + 1);
+				returnType = returnType.Remove(returnType.LastIndexOf('>'));
+
+				WriteLine(@"
+					public virtual async Task<DownloadRequest> {0}({1})
+					{{
+						var baseUrl = {3} + $""/{4}/{0}"";
+						var result =
+							await baseUrl.DownloadAsync<DownloadRequest>(ActionContext.Value, queryString: {2});
+
+						return result;
+					}}", method.Name, typeAndNameParamString, paramString, EndpointsURLSettingsKey, ControllerName);
+            }
+			else
+            {
+				WriteLine(@"
+					public virtual async Task<DownloadRequest> {0}({1})
+					{{
+						var baseUrl = {3} + $""/{4}/{0}"";
+						var result =
+							baseUrl.DownloadAsync<DownloadRequest>(ActionContext.Value, queryString: {2});
+
+						return result;
+					}}", method.Name, typeAndNameParamString, paramString, EndpointsURLSettingsKey, ControllerName);
+            }
+		}
+	}
+
+    public override string TransformText()
+    {
+#>
+
+public partial class <#= ServiceName #>RESTClient : <#= GetBaseClassName()#>, <#= Entity.FullName#>
+{
+	
+	<#+
+			System.Diagnostics.Debug.WriteLine("//Getting all methods for:" + Entity.FullName ); 
+			
+			string DefaultMethodBehaviourAttribute = "A.Core.Attributes.DefaultMethodBehaviourAttribute";
+			var methods = VisualStudioHelper.CodeModel.GetAllMethodsOnInterface((EnvDTE80.CodeInterface2)Entity);
+			foreach(var method in methods)
+			{
+				//WriteLine("//metoda: " + method.Name + ", " + method.FullName);
+				EnvDTE.CodeAttribute defaultMethodBehaviour = null;
+				var allAttributes = VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Attributes, vsCMElement.vsCMElementAttribute, false).OfType<EnvDTE.CodeAttribute>();
+				foreach(var attr in allAttributes)
+                {
+					if(attr.FullName == DefaultMethodBehaviourAttribute)
+					{
+						defaultMethodBehaviour = attr;
+						break; 
+					}
+					//WriteLine("//" + attr.Name + "|" + attr.Value);
+                }
+				
+				if(((method.Name == "Get" || method.Name == "GetAsync") && method.FullName.Contains("IReadService"))
+					 || (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.GetById"))
+				 {
+					//render get by Id method
+					GenerateGetById(method);
+				 }
+				else if((method.Name == "GetPage" || method.Name == "GetPageAsync") && method.FullName.Contains("IReadService"))
+				 {
+					//render get by Id method
+					GenerateGet(method);
+				 }
+				 else if(defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Get" && !method.FullName.Contains("IReadService"))
+				 {
+					//render get by Id method
+					GenerateGet(method, true);
+				 }
+				 else if(((method.Name == "Insert" || method.Name == "InsertAsync") && method.FullName.Contains("ICRUDService"))
+					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Insert"
+															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineInsert"
+															|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineInsertWithoutServiceImpl")))
+				 {
+					//render get by Id method
+					GenerateInsert(method);
+				 }
+				 else if(((method.Name == "Update" || method.Name == "UpdateAsync")&& method.FullName.Contains("ICRUDService"))
+					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Update"
+															 || defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
+													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")))
+				 {
+					 bool addMethodNameToRoute = (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
+													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")
+													|| (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Update" && !method.FullName.Contains("ICRUDService")));
+					 
+					//render update by Id method
+					GenerateUpdate(method, addMethodNameToRoute);
+				 }
+				 else if(((method.Name == "Patch" || method.Name == "PatchAsync")&& method.FullName.Contains("ICRUDService"))
+					 || (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Patch")))
+				 {
+					 bool addMethodNameToRoute = (defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdate"
+													|| defaultMethodBehaviour.Value == "BehaviourEnum.StateMachineUpdateWithoutServiceImpl")
+													|| (defaultMethodBehaviour != null && defaultMethodBehaviour.Value == "BehaviourEnum.Patch" && !method.FullName.Contains("ICRUDService")));
+					 
+					//render update by Id method
+					GeneratePatch(method, addMethodNameToRoute);
+				 }
+				 else if(defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Delete" || defaultMethodBehaviour.Value == "BehaviourEnum.DeleteWithoutServiceImpl"))
+				 {
+					//render get by Id method
+					GenerateDelete(method);
+				 }
+				 else if(defaultMethodBehaviour != null && (defaultMethodBehaviour.Value == "BehaviourEnum.Download"))
+				 {
+					GenerateDownload(method);
+                 }
+			}
+			
+        
+	#>
+
+}
+<#+
+		return this.GenerationEnvironment.ToString();
+    }
+
+}
+#>

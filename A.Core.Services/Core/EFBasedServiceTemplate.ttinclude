@@ -515,6 +515,15 @@ public class EFBasedServiceTemplate : TextTransformation
 							}}
 							", property.Name, filter);
 						}
+						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.Null"))
+						{
+							string filter = string.Format("\tquery = query.Where(x => x.{0} == null);\r\n", property.Name.Substring(0,property.Name.Length - 6), property.Name);
+							filterBuilder.AppendFormat(@"if(search.{0} == true)
+							{{
+								{1}
+							}}
+							", property.Name, filter);
+						}
 						if(IsOperatorExisting(property,"A.Core.Attributes.FilterEnum.NotEqual"))
 						{
 							string filter = string.Format("query = query.Where(x => x.{0} != search.{1});\r\n", property.Name.Substring(0,property.Name.Length - 2), property.Name);

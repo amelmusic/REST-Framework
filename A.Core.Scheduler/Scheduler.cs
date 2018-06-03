@@ -41,10 +41,9 @@ namespace A.Core.Scheduler
                 });
 
                 var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());  //11
-                Environment.ExitCode = exitCode;
 
-                s_log.Info("Shutting down...");
-                log4net.LogManager.Shutdown();
+
+                Environment.Exit(exitCode);
                 //return 0;
             }
             catch (Exception ex)

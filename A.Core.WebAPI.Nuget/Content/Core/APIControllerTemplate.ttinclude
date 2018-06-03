@@ -251,26 +251,6 @@ public class APIControllerTemplate : TextTransformation
 		}
 	}
 
-	 private static readonly List<string> _primitiveTypes = new List<string> {
-            "System.Boolean",
-            "System.Byte",
-            "System.SByte",
-            "System.Int16",
-            "System.UInt16",
-            "System.Int32",
-            "System.UInt16",
-            "System.Int64",
-            "System.UInt16",
-            "System.IntPtr",
-            "System.UIntPtr",
-            "System.Char",
-            "System.Double",
-            "System.Single",
-			"System.String",
-			"System.Guid",
-			"System.Object"
-        };
-
 	 public void GenerateUpdate(EnvDTE.CodeFunction method, bool addMethodNameToRoute)
 	 {
 		string methodNameTmp = method.Name;
@@ -312,37 +292,23 @@ public class APIControllerTemplate : TextTransformation
 
 			bool isFirstParameter = true;
 			int paramsCount = 0;
-			bool isFirstParameterPrimaryKey = false;
 			var allParameters =  VisualStudioHelper.CodeModel.GetAllCodeElementsOfType(method.Parameters, vsCMElement.vsCMElementParameter, true).OfType<EnvDTE.CodeParameter>();
 				foreach(var prm in allParameters)
 				{
-					bool isPrimitive =  _primitiveTypes.Any(primitiveType => prm.Type.AsFullName == primitiveType);
-					
 					paramsCount++;
 					if(prm.Name == "saveChanges")
 						{
 							continue;
 						}
-					typeAndNameParamListString.Append(string.Format("{2}{0} {1},", isFirstParameter && isPrimitive && primaryKeyType != null ? primaryKeyType : prm.Type.AsFullName, prm.Name, isFirstParameter && isPrimitive?"[FromUri]":"[FromBody]"));
+					typeAndNameParamListString.Append(string.Format("{2}{0} {1},", isFirstParameter && primaryKeyType != null ? primaryKeyType : prm.Type.AsFullName, prm.Name, isFirstParameter?"[FromUri]":"[FromBody]"));
 					paramListString.Append(string.Format("{0},", prm.Name));
-					if(isFirstParameter)
-					{
-						if(isPrimitive)
-						{
-							isFirstParameterPrimaryKey = true;
-                        }
-						else
-						{
-							isFirstParameterPrimaryKey = false;
-                        }
-                    }
 					isFirstParameter = false;
 
 				}
 			string typeAndNameParamString = typeAndNameParamListString.ToString().TrimEnd(',');
 			string paramString = paramListString.ToString().TrimEnd(',');
 			string methodNameInRouteIfNeeded = "";
-			string idInRoutePart = primaryKeyType == null || paramsCount == 0 || !isFirstParameterPrimaryKey ? "" : "{id}";
+			string idInRoutePart = primaryKeyType == null || paramsCount == 0 ? "" : "{id}";
 			if(addMethodNameToRoute)
             {
 				string methodNameForRoute = method.Name.EndsWith("Async") ? method.Name.Substring(0, method.Name.Length - 5) : method.Name;
@@ -619,11 +585,11 @@ public class APIControllerTemplate : TextTransformation
 					{{
 						await additionalDownloadData.PushStreamFunction(responseStream);
 					}});
-
+					var convertedNameBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.ASCII, System.Text.Encoding.UTF8.GetBytes(additionalDownloadData.FileName));
 					resp.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(additionalDownloadData.DispositionType);
-					resp.Content.Headers.ContentDisposition.FileName = additionalDownloadData.FileName;
+					resp.Content.Headers.ContentDisposition.FileName = System.Text.Encoding.ASCII.GetString(convertedNameBytes);
 					resp.Content.Headers.ContentType = new MediaTypeHeaderValue(additionalDownloadData.ContentType);
-			
+					resp.Content.Headers.Add(""Access-Control-Expose-Headers"", ""content-disposition"");
 					return resp;
 
 				}}", method.Name, typeAndNameParamString, returnType, paramString, GeneratePermissionFilter(method.Name, "View")));
@@ -649,11 +615,11 @@ public class APIControllerTemplate : TextTransformation
 					{{
 						await additionalDownloadData.PushStreamFunction(responseStream);
 					}});
-
+					var convertedNameBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.ASCII, System.Text.Encoding.UTF8.GetBytes(additionalDownloadData.FileName));
 					resp.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(additionalDownloadData.DispositionType);
-					resp.Content.Headers.ContentDisposition.FileName = additionalDownloadData.FileName;
+					resp.Content.Headers.ContentDisposition.FileName = System.Text.Encoding.ASCII.GetString(convertedNameBytes);
 					resp.Content.Headers.ContentType = new MediaTypeHeaderValue(additionalDownloadData.ContentType);
-			
+					resp.Content.Headers.Add(""Access-Control-Expose-Headers"", ""content-disposition"");
 					return resp;
 
 				}}", method.Name, typeAndNameParamString, method.Type.AsFullName, paramString, GeneratePermissionFilter(method.Name, "View")));

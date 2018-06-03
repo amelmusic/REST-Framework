@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>A.Core.Scripting</id>
+    <version>1.0.0</version>
+    <authors>Amel Musić</authors>
+    <owners>Amel Musić</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Core framework - Setup for Scripting.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>REST T4 A.Core</tags>
+	<projectUrl>https://github.com/amelmusic/REST-Framework</projectUrl>
+    <dependencies>
+	  <dependency id="A.Core" version="1.0.0" />
+	  <dependency id="System.Runtime.Loader" version="4.0.0" />
+	  <dependency id="Autofac" version="4.6.1" />
+	  <dependency id="Autofac.Extras.DynamicProxy" version="4.2.1" />
+	  <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="2.7.0" />
+    </dependencies>
+  </metadata>
+</package>
+
+
