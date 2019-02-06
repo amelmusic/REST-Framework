@@ -10,6 +10,7 @@ using A.Core.Extensions;
 using A.Core.Interface;
 using A.Core.Model;
 using A.Core.Validation;
+using Flurl;
 using Flurl.Http;
 using Flurl.Http.Content;
 using Flurl.Util;
@@ -18,7 +19,7 @@ namespace $rootnamespace$.Core //REPLACED
 {
     public static class FlurlExtension
     {
-        public static IFlurlRequest WithStandardHeaders(this string url, IActionContext context)
+        public static IFlurlRequest WithStandardHeaders(this Url url, IActionContext context)
         {
             context.Data.TryGetValue("AuthorizationToken", out var token);
             context.Data.TryGetValue("Language", out var language);
@@ -30,29 +31,32 @@ namespace $rootnamespace$.Core //REPLACED
             return request;
         }
 
-        public static string ToQueryStringInternal(string url, object model)
+        public static Url ToQueryStringInternal(string url, object model)
         {
-            if (model != null && !url.EndsWith("?"))
-            {
-                url += "?"; //append querystring delmiter
-            }
+            //if (model != null && !url.EndsWith("?"))
+            //{
+            //    url += "?"; //append querystring delmiter
+            //}
 
+            Url tmpUrl = new Url(url);
             var nameValueCollection = model?.ToKeyValue();
             if (nameValueCollection != null)
             {
-                StringBuilder stringBuilder = new StringBuilder();
+                //StringBuilder stringBuilder = new StringBuilder();
                 foreach (KeyValuePair<string, string> nameValue in nameValueCollection)
                 {
-                    if (stringBuilder.Length > 0)
-                        stringBuilder.Append('&');
-                    stringBuilder.Append(nameValue.Key);
-                    stringBuilder.Append('=');
-                    stringBuilder.Append(nameValue.Value);
+                    //if (stringBuilder.Length > 0)
+                    //    stringBuilder.Append('&');
+                    //stringBuilder.Append(nameValue.Key);
+                    //stringBuilder.Append('=');
+                    //stringBuilder.Append(nameValue.Value);
+                    tmpUrl.SetQueryParam(nameValue.Key, nameValue.Value);
                 }
-                url += stringBuilder.ToString();
+                //url += stringBuilder.ToString();
+
             }
 
-            return url;
+            return tmpUrl;
         }
 
         public static async Task<T> GetAsync<T>(this string url, IActionContext context, object queryString = null)

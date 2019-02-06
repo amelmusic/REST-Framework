@@ -59,7 +59,7 @@ namespace A.Core.Extensions
             }
 
             var value = jValue?.Type == JTokenType.Date ?
-                jValue?.ToString("o", CultureInfo.InvariantCulture) :
+                jValue?.ToString("u", CultureInfo.InvariantCulture) :
                 jValue?.ToString(CultureInfo.InvariantCulture);
 
             return new Dictionary<string, string> { { token.Path, value } };

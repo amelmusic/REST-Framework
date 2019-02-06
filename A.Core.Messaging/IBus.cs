@@ -17,6 +17,6 @@ namespace A.Core.Messaging
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        Task Publish(dynamic message);
+        Task Publish(dynamic message, string topic = null);
     }
 }

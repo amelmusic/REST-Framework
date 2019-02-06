@@ -17,9 +17,16 @@ namespace A.Core.Messaging
         }
 
         [Log]
-        public virtual async Task Publish(dynamic message)
+        public virtual async Task Publish(dynamic message, string topic = null)
         {
-            await RabbitMQBus.PublishAsync(message);
+            if (!string.IsNullOrWhiteSpace(topic))
+            {
+                await RabbitMQBus.PublishAsync(message, topic);
+            }
+            else
+            {
+                await RabbitMQBus.PublishAsync(message);
+            }
         }
     }
 }
