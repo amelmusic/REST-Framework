@@ -144,8 +144,22 @@ namespace A.Core.Interceptors
 
         protected virtual async Task InterceptInternalAsyncAfter(Task task, IInvocation invocation, object context = null)
         {
-            await task.ConfigureAwait(false);
-            // do the logging here, as continuation work for Task...
+            try
+            {
+                await task.ConfigureAwait(false);
+                // do the logging here, as continuation work for Task...
+            }
+            catch (AggregateException aex)
+            {
+                OnException(invocation, aex.InnerException);
+                throw aex.InnerException;
+            }
+            catch (Exception ex)
+            {
+                OnException(invocation, ex);
+                throw ex;
+            }
+            
         }
 
         protected virtual async Task<T> InterceptInternalAsyncAfter<T>(Task<T> task, IInvocation invocation, object context = null)
@@ -153,7 +167,7 @@ namespace A.Core.Interceptors
 
             try
             {
-                T result = await task.ConfigureAwait(false);
+                T result = await task;
                 // do the logging here, as continuation work for Task<T>...
                 return result;
             }
@@ -161,6 +175,11 @@ namespace A.Core.Interceptors
             {
                 OnException(invocation, aex.InnerException);
                 throw aex.InnerException;
+            }
+            catch (Exception ex)
+            {
+                OnException(invocation, ex);
+                throw ex;
             }
         }
 

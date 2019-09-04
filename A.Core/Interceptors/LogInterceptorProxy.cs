@@ -3,6 +3,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -38,16 +39,18 @@ namespace A.Core.Interceptors
             base.InterceptAsync(invocation);
         }
 
-        protected override async Task InterceptInternalAsyncAfter(Task task, IInvocation invocation, object context = null)
-        {
-            await base.InterceptInternalAsyncAfter(task, invocation);
-        }
+        //NOTE: This isn't needed anymore
+        //protected override async Task InterceptInternalAsyncAfter(Task task, IInvocation invocation, object context = null)
+        //{
+        //    await task.ConfigureAwait(false);
+        //}
 
-        protected override async Task<T> InterceptInternalAsyncAfter<T>(Task<T> task, IInvocation invocation, object context = null)
-        {
-            var result = await base.InterceptInternalAsyncAfter(task, invocation);
-            return result;
-        }
+        //protected override async Task<T> InterceptInternalAsyncAfter<T>(Task<T> task, IInvocation invocation, object context = null)
+        //{
+        //    var result = await base.InterceptInternalAsyncAfter(task, invocation);
+            
+        //    return result;
+        //}
 
         protected override bool OnException(IInvocation invocation, Exception ex)
         {

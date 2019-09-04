@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <ApplicationIcon />
+    <StartupObject />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\X.Core.Interfaces.Generators\X.Core.Interfaces.Generators.csproj" />
+    <ProjectReference Include="..\X.Core.Model\X.Core.Model.csproj" />
+    <ProjectReference Include="..\X.Core\X.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Project>
+	<Import Project="version.props" />
+  <PropertyGroup Label="Metadata">
+    <Authors>Amel Musić</Authors>
+    <Company>Amel Musić</Company>
+    <Copyright>Copyright © Amel Musić</Copyright>
+    <LicenseExpression>MS-PL</LicenseExpression>
+    <PackageProjectUrl>https://github.com/amelmusic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/amelmusic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>7.3</LangVersion>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>
+   
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/$(Configuration)/</PackageOutputPath>
+    <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
+  </PropertyGroup>
+
+</Project>

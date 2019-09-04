@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>X.Core.Generator</id>
+        <version>7.0.0</version>
+        <title>X.Core.Generator</title>
+        <authors>Amel Musić</authors>
+        <owners>Amel Musić</owners>
+        <licenseUrl>https://github.com/louthy/language-ext/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/louthy/language-ext</projectUrl>
+        <iconUrl>https://raw.githubusercontent.com/louthy/language-ext/master/backers-images/lang-ext-thumb.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Design and build-time code-gen for lenses and immutable With functions</description>
+        <copyright>Copyright (c) Paul Louth. All rights reserved.</copyright>
+        <tags>C#, Functional, Language Extension, Lenses, Records, Monad, Option, Either, Reader, Writer, State, List, Set, Map, Queue, Memo, Memoization, Immutable, Lambda, Pattern Matching, Tuple</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.6.1">
+                <!--<dependency id="X.CodeGeneration.Roslyn" version="0.6.0" exclude="Build,Analyzers" />-->
+                <dependency id="X.CodeGeneration.Roslyn.BuildTime" version="$(XCodeGenerationVersion)" />
+            </group>
+            <group targetFramework=".NETStandard2.0">
+                <dependency id="X.CodeGeneration.Roslyn.BuildTime" version="$(XCodeGenerationVersion)" />
+            </group>
+        </dependencies>
+    </metadata>
+    <!--<files>
+        <file src="build\*" target="build\" />
+        <file src="lib\net461\X.Core.Generator.dll" target="lib\net461\X.Core.Generator.dll" />
+        <file src="lib\net461\X.Core.Generator.xml" target="lib\net461\X.Core.Generator.xml" />
+        <file src="lib\netstandard2.0\X.Core.Generator.dll" target="lib\netstandard2.0\X.Core.Generator.dll" />
+        <file src="lib\netstandard2.0\X.Core.Generator.xml" target="lib\netstandard2.0\X.Core.Generator.xml" />
+    </files>-->
+</package>

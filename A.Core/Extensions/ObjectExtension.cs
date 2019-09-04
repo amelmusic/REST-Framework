@@ -33,7 +33,17 @@ namespace A.Core.Extensions
             JToken token = metaToken as JToken;
             if (token == null)
             {
-                return ToKeyValue(JObject.FromObject(metaToken, JsonSerializerSettings));
+                try
+                {
+                    return ToKeyValue(JObject.FromObject(metaToken, JsonSerializerSettings));
+                }
+                catch (System.ArgumentException ex)
+                {
+                    var dict = new Dictionary<string, string>();
+                    dict.Add("id", metaToken.ToString());
+                    return dict;
+                }
+                
             }
 
             if (token.HasValues)
@@ -58,9 +68,31 @@ namespace A.Core.Extensions
                 return null;
             }
 
-            var value = jValue?.Type == JTokenType.Date ?
-                jValue?.ToString("u", CultureInfo.InvariantCulture) :
-                jValue?.ToString(CultureInfo.InvariantCulture);
+            string value = null;
+            if (jValue?.Type == JTokenType.Date && jValue != null)
+            {
+                var date = jValue.ToString("o");
+                var parsed = DateTime.Parse(date);
+                if (parsed.Kind == DateTimeKind.Local)
+                {
+                    value = parsed.ToUniversalTime().ToString("u");
+                }
+                else if (parsed.Kind == DateTimeKind.Unspecified)
+                {
+                    value = parsed.ToUniversalTime().ToString("u");
+                }
+                else
+                {
+                    value = parsed.ToString("u");
+                }
+            }
+            else
+            {
+                value = jValue?.ToString(CultureInfo.InvariantCulture);
+            }
+            //var value = jValue?.Type == JTokenType.Date ?
+            //    jValue?.ToString("u", CultureInfo.InvariantCulture) :
+            //    jValue?.ToString(CultureInfo.InvariantCulture);
 
             return new Dictionary<string, string> { { token.Path, value } };
         }
