@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json.schemastore.org/template", // https://github.com/dotnet/templating/wiki/Reference-for-template.json
+  "author": "Amel Musić",
+  "classifications": [ "X.Core" ], // Use command 'dotnet new' to see list of other classifications
+  "name": "X.Core API template", // Name that is displayed when running 'dotnet new' command
+  "identity": "X.Core.Template.API", // Unique name for this template
+  "shortName": "xapi", // Alternative shortname, i.e. 'dotnet new mygamestartup'
+  "tags": {
+    "language": "C#", // Specify that this template is in C#.
+    "type": "project"
+  },
+  "sourceName": "ApiTemplate", // Will replace the string 'MyStartup' with the value provided via -n.
+  "preferNameDirectory": true, // If -n is not specified, will use name of the current directory
+  "symbols": {
+    "db": { // If code or config contains {{Database_Name}} value will be replaced with parameter --db <value_here>
+      "type": "parameter",
+	  "isRequired": "false",
+      "datatype": "string",
+      "replaces": "{{Database_Name}}",
+      "defaultValue": "ApiTemplate",
+      "description": "The database name attached to this project."
+    },
+	"auth": {
+		"type": "parameter",
+		"dataType":"bool",
+		"defaultValue": "true",
+		"description": "Enable auth for this project."
+		}
+  }
+}

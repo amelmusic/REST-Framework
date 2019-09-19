@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="X.Core.Generator" Version="0.1.47" />
+    <PackageReference Include="X.Core.Root" Version="0.1.47" />
+    <PackageReference Include="X.Core.Services" Version="0.1.47" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiTemplate.Interfaces\ApiTemplate.Interfaces.csproj" />
+    <ProjectReference Include="..\ApiTemplate.Model\ApiTemplate.Model.csproj" />
+  </ItemGroup>
+
+</Project>

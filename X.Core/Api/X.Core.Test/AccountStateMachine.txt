@@ -1,0 +1,25 @@
+﻿initial,
+backlog,
+doing:
+    entry/ create branch
+    exit/ submit PR,
+review:
+    exit/ merge PR to develop,
+QA,
+done,
+final;
+
+initial -> backlog: insert;
+backlog -> doing: pull;
+
+doing -> review: functionality built;
+
+review -> doing: code quality not ok;
+review -> QA: code quality ok;
+review -> QA: not acceptable;
+
+QA -> doing: not acceptable;
+QA -> done: ok but issues found;
+QA -> done: okie dokie;
+
+done -> final: finish him;

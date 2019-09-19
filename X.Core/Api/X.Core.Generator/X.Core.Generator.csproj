@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461;netcoreapp2.2</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <OutputType>library</OutputType>
+    <NoWarn>1701;1702;1705;IDE1006;CS1591;CS1573;CS1712;CS1570;CS1711;CS1572;CS1587</NoWarn>
+    <Version>$(PackageVersion)</Version>
+    <!--<EnableDefaultCompileItems>false</EnableDefaultCompileItems>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="X.CodeGeneration.Roslyn" Version="$(XCodeGenerationVersion)" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Include="**\*.cs" />
+    <EmbeddedResource Include="**\*.resx" />
+  </ItemGroup>-->
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)bin\Debug\netstandard2.0\X.Core.Generator.dll" DestinationFolder="$(MSBuildThisFileDirectory)tools\" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)bin\Debug\netstandard2.0\X.Core.Generator.deps.json" DestinationFolder="$(MSBuildThisFileDirectory)tools\" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)bin\Debug\netstandard2.0\X.Core.Generator.pdb" DestinationFolder="$(MSBuildThisFileDirectory)tools\" />
+  </Target>
+  <ItemGroup>
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="build\**" Pack="True" PackagePath="build\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tools\**" Pack="True" PackagePath="tools\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="tools\" />
+  </ItemGroup>
+  
+</Project>

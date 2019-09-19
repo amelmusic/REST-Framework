@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>X.Core.ApiTemplates</id>
+    <version>0.1.0</version>
+    <title>X.Core platform API template</title>
+    <authors>Amel Musić</authors>
+    <description>Project templates with batteries included, providing the minimum amount of code required to get you started.</description>
+    <tags>.NET API Swagger Amel</tags>
+    <copyright>Copyright © Amel Musić. All rights Reserved</copyright>
+    <language>en-GB</language>
+    <iconUrl>https://raw.githubusercontent.com/Dotnet-Boxed/Templates/master/Images/Icon-256x256.png</iconUrl>
+    <projectUrl>https://github.com/Dotnet-Boxed/Templates</projectUrl>
+    <licenseUrl>https://github.com/Dotnet-Boxed/Templates/blob/master/LICENSE</licenseUrl>
+    <releaseNotes>https://github.com/amelmusic/REST-Framework</releaseNotes>
+    <packageTypes>
+      <packageType name="Template" />
+    </packageTypes>
+  </metadata>
+  <files>
+    <file src="**" exclude="**\bin\**\*;**\obj\**\*;**\*.user;**\*.lock.json" />
+  </files>
+</package>

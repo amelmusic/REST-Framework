@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>X.Core.Model.Package</id>
+    <version>61.0.0</version>
+    <authors>Amel</authors>
+    <owners>Amel</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Code generator for [StronglyTypedId]-marked types. Automatically creates backing code for strongly typed IDs. This package references all required and recommended (analyzers) packages. See project site for installation instructions and more details.</description>
+    <dependencies>
+      <dependency id="X.CodeGeneration.Roslyn.BuildTime" version="0.6.0" />
+	   <dependency id="X.Core.Model.Generators" version="60.0.0" />
+    </dependencies>
+  </metadata>
+    <files>
+    <file src="tools\*" target="tools\" />
+    <file src="build\*" target="build\" />
+    <file src="lib\*" target="lib\netcoreapp2.2\" />
+  </files>
+</package>
+
