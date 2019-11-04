@@ -88,7 +88,7 @@ namespace X.Core.Generator
 
 
                 cancellationToken.ThrowIfCancellationRequested();
-                var className = classDeclarationSyntax.Identifier.ValueText.TrimStart('I')
+                var className = classDeclarationSyntax.Identifier.ValueText.Substring(1)
                     .Replace("Service", "");
 
                 var controllerName = className + "Controller";
@@ -110,6 +110,14 @@ namespace X.Core.Generator
 
                 var behaviour = GetDistinctArgumentValues(classDeclarationSyntax, "Service", "Behaviour")?.FirstOrDefault();
                 behaviour = behaviour ?? "EntityBehaviourEnum.Empty";
+
+                //NOTE: FOR NOW WE WONT CHANGE CONTROLLER NAME!!!!
+                var resourceName = GetDistinctArgumentValues(classDeclarationSyntax, "Service", "ResourceName")?.FirstOrDefault();
+                if (resourceName == null)
+                {
+                    resourceName = className;
+                }
+
                 if (behaviour == "EntityBehaviourEnum.Empty")
                 {
                     controller = controller.AddBaseListTypes(
@@ -162,23 +170,23 @@ namespace X.Core.Generator
                     if (behaviour == "BehaviourEnum.GetById")
                     {
                         // generate method getbyid
-                        BuildMethod(builder, method, "[HttpGet]", "[FromRoute]", "[FromQuery]");
+                        BuildMethod(builder, method, "[HttpGet]", "[FromRoute]", "[FromQuery]", behaviour);
                     }
                     else if (behaviour == "BehaviourEnum.Get")
                     {
-                        BuildMethod(builder, method, "[HttpGet]", "[FromQuery]", "[FromQuery]");
+                        BuildMethod(builder, method, "[HttpGet]", "[FromQuery]", "[FromQuery]", behaviour);
                     }
                     else if (behaviour == "BehaviourEnum.Insert")
                     {
-                        BuildMethod(builder, method, "[HttpPost]", "[FromBody]","");
+                        BuildMethod(builder, method, "[HttpPost]", "[FromBody]","", behaviour);
                     }
                     else if (behaviour == "BehaviourEnum.Update")
                     {
-                        BuildMethod(builder, method, "[HttpPut]", "[FromRoute]", "[FromBody]");
+                        BuildMethod(builder, method, "[HttpPut]", "[FromRoute]", "[FromBody]", behaviour);
                     }
                     else if (behaviour == "BehaviourEnum.Delete")
                     {
-                        BuildMethod(builder, method, "[HttpDelete]", "[FromRoute]", "[FromBody]");
+                        BuildMethod(builder, method, "[HttpDelete]", "[FromRoute]", "[FromBody]", behaviour);
                     }
                 }
             }
@@ -195,26 +203,29 @@ namespace X.Core.Generator
             return controller;
         }
 
-        protected virtual void BuildMethod(StringBuilder builder, MethodDeclarationSyntax method, string httpRequestType, string firstParamSource, string additionalParamsSource)
+        protected virtual void BuildMethod(StringBuilder builder, MethodDeclarationSyntax method, string httpRequestType, string firstParamSource, string additionalParamsSource, string behaviour)
         {
+            string friendlyMethodName = method.Identifier.ValueText;
+            if (friendlyMethodName.EndsWith("Async"))
+            {
+                friendlyMethodName = friendlyMethodName.Substring(0, friendlyMethodName.IndexOf("Async", StringComparison.Ordinal));
+            }
             String route = "";
             String firstParameterIdentifier = "";
             if (firstParamSource == "[FromRoute]")
             {
                 firstParameterIdentifier = method.ParameterList.Parameters.FirstOrDefault()?.Identifier.ValueText ?? firstParameterIdentifier;
-
-                if (!method.Identifier.ValueText.Equals("Update", StringComparison.InvariantCultureIgnoreCase))
+                if (behaviour == "BehaviourEnum.Delete")
                 {
-                    if (method.ParameterList.Parameters.Count > 1)
-                    {
-                        route = $"[Route(\"{method.Identifier.ValueText}/{{{firstParameterIdentifier}}}\")]";
-                    }
-                    else
-                    {
-                        route = $"[Route(\"{method.Identifier.ValueText}\")]";
-                    }
-                    
-                    //httpRequestType = $"[HttpPut(\"{method.Identifier.ValueText}\")]";
+                    route = $"[Route(\"{{{firstParameterIdentifier}}}\")]";
+                }
+                else if (behaviour == "BehaviourEnum.GetById" && friendlyMethodName == "Get")
+                {
+                    route = $"[Route(\"{{{firstParameterIdentifier}}}\")]";
+                }
+                else if (!friendlyMethodName.Equals("Update", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    route = $"[Route(\"{{{firstParameterIdentifier}}}/{friendlyMethodName}\")]";
                 }
                 else
                 {
@@ -224,10 +235,13 @@ namespace X.Core.Generator
                     }
                     else
                     {
-                        route = $"[Route(\"{method.Identifier.ValueText}/{{{firstParameterIdentifier}}}\")]";
+                        route = $"[Route(\"{{{firstParameterIdentifier}}}/{friendlyMethodName}\")]";
                     }
-                        
                 }
+            }
+            else if (firstParamSource == "[FromQuery]")
+            {
+                route = $"[Route(\"{friendlyMethodName}\")]";
             }
             
             builder.AppendLine(

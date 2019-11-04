@@ -1,0 +1,13 @@
+﻿initial,
+inprogress,
+done,
+failed,
+final;
+
+initial -> inprogress: insert;
+inprogress -> done: finish;
+
+inprogress -> failed: error;
+
+done -> final: delete;
+failed -> final: delete;

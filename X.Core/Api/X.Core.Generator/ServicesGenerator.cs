@@ -406,7 +406,7 @@ namespace X.Core.Generator
 
                     foreach (var stateMachineTransition in transitionDestinationsWithAction)
                     {
-                        stateMachineBuilder.AppendLine($".OnEntryFrom(_{stateMachineTransition.ActionName}Trigger,On{stateMachineTransition.ActionName}To{stateDefinition.StateName})");
+                        stateMachineBuilder.AppendLine($".OnEntryFrom({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{stateMachineTransition.ActionName},On{stateMachineTransition.ActionName}To{stateDefinition.StateName})");
                         //.OnEntryFrom(_{stateMachineTransition.ActionName}Trigger,On{stateMachineTransition.ActionName})
                         //stateMachineBuilder.AppendLine($".Permit({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{stateMachineTransition.ActionName}, {classDeclarationSyntax.Identifier.ValueText}StateMachineEnum.{stateMachineTransition.ToState})");
                     }
@@ -414,7 +414,7 @@ namespace X.Core.Generator
                 }
 
 
-                stateMachineBuilder.AppendLine("_configured = true; }");
+                stateMachineBuilder.AppendLine("OnConfigureStateMachine(); /*Partial*/ _configured = true; }  partial void OnConfigureStateMachine();");
 
                 StringBuilder stateMachineActionsBuilder = new StringBuilder();
 
@@ -426,7 +426,7 @@ namespace X.Core.Generator
                     {
                         //insert method
                         stateMachineActionsBuilder.AppendLine(
-                            $@"public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
+                            $@"[X.Core.Interceptors.Transaction] public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
                             {{
                                 //insert
                                 var entity = CreateNewInstance();
@@ -444,7 +444,7 @@ namespace X.Core.Generator
                     else if (transition.Equals("delete", StringComparison.InvariantCultureIgnoreCase))
                     {
                         stateMachineActionsBuilder.AppendLine(
-                            $@"public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({keyType} id, {classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
+                            $@"[X.Core.Interceptors.Transaction] public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({keyType} id, {classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
                             {{
                                 var entity = await GetByIdInternalAsync(id);
                                 ConfigureStateMachine();
@@ -461,7 +461,7 @@ namespace X.Core.Generator
                     else
                     {
                         stateMachineActionsBuilder.AppendLine(
-                            $@"public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({keyType} id, {classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
+                            $@"[X.Core.Interceptors.Transaction] public virtual async Task<{classDeclarationSyntax.Identifier.ValueText}> {transition}({keyType} id, {classDeclarationSyntax.Identifier.ValueText}{transition}Request request)
                             {{
                                 var entity = await GetByIdInternalAsync(id);
                                 ConfigureStateMachine();
@@ -476,6 +476,19 @@ namespace X.Core.Generator
                             }}");
                     }
                 }
+
+                stateMachineActionsBuilder.AppendLine(
+                    $@"public virtual async Task<List<{classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum>> AllowedActionsAsync({keyType} id)
+                            {{
+                                ConfigureStateMachine();
+                                var entity = await GetByIdInternalAsync(id);
+                                var status = entity != null ? ({classDeclarationSyntax.Identifier.ValueText}StateMachineEnum)entity.{propertyName} : {classDeclarationSyntax.Identifier.ValueText}StateMachineEnum.Initial;
+                                await _machine.Init(status, entity);
+
+                                var triggers = this._machine.CurrentState.Triggers.Select(x => x.Trigger).ToList();
+
+                                return triggers;
+                            }}");
 
                 stateMachineBuilder.Append(stateMachineActionsBuilder.ToString());
                 SyntaxTree tree = CSharpSyntaxTree.ParseText(stateMachineBuilder.ToString());

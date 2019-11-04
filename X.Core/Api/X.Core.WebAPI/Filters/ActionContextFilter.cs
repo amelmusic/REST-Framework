@@ -61,13 +61,13 @@ namespace X.Core.WebAPI.Filters
                     coreActionContext.Data["UserName"] = idClaim.Value.ToString();
                     log4net.LogicalThreadContext.Properties["UserName"] = idClaim.Value.ToString();
                 } 
-                else
-                {
-#if DEBUG
-                    coreActionContext.Data.Add("UserName", "8E023B32-C436-495D-B81E-2E942CFA1F18"); //NOTE: this is for test only...
-                    log4net.LogicalThreadContext.Properties["UserName"] = "-1"; //get this from OAuth token
-#endif
-                }
+//                else
+//                {
+//#if DEBUG
+//                    coreActionContext.Data.Add("UserName", "8E023B32-C436-495D-B81E-2E942CFA1F18"); //NOTE: this is for test only...
+//                    log4net.LogicalThreadContext.Properties["UserName"] = "-1"; //get this from OAuth token
+//#endif
+//                }
                 var roleClaims = userFromClaim.Claims.Where(x => x.Type == ClaimTypes.Role || x.Type == "role");
                 foreach (var claim in roleClaims)
                 {

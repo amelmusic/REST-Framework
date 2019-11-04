@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiTemplate.Services.Database
 {
-    public partial class ApiTemplate : DbContext
+    public partial class ApiTemplateContext : DbContext
     {
-        public ApiTemplate()
+        public ApiTemplateContext()
         {
         }
 
-        public ApiTemplate(DbContextOptions<ApiTemplate> options)
+        public ApiTemplateContext(DbContextOptions<ApiTemplateContext> options)
             : base(options)
         {
         }

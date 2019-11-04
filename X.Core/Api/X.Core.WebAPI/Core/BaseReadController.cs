@@ -20,9 +20,9 @@ namespace X.Core.WebAPI.Core
 
         [Route("{id}")]
         [HttpGet]
-        public virtual Task<TModel> GetAsync(TKey id)
+        public virtual Task<TModel> GetAsync(TKey id, [FromQuery]TAdditionalSearchData additionalSearchData)
         {
-            return _service.GetAsync(id);
+            return _service.GetAsync(id, additionalSearchData);
         }
 
         [Route("")]

@@ -256,6 +256,7 @@ namespace X.Core.Generator
 
         protected virtual PropertyDeclarationSyntax CreatePropertyForSearchObject(string propertyType, string propertyName, string argumentValue)
         {
+            //Debugger.Launch();
             TypeSyntax type = null;
             var isList = (propertyName.EndsWith("List")
                           || propertyName.EndsWith("ListOrNull")
@@ -268,8 +269,8 @@ namespace X.Core.Generator
                     SyntaxFactory.TypeArgumentList(
                         SyntaxFactory.SingletonSeparatedList<TypeSyntax>(
                             SyntaxFactory.ParseTypeName(propertyType))));
-            }
-            else if (propertyType.Contains("string"))
+            }            
+            else if (propertyType.Contains("string") || propertyType.Contains("?"))
             {
                 type = SyntaxFactory.ParseTypeName(propertyType);
             }

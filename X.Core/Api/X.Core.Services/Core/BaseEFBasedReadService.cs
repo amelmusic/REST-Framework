@@ -128,8 +128,23 @@ namespace X.Core.Services.Core
         {
             if (additionalData != null && additionalData.IncludeList.Count > 0)
             {
-                //TODO: Implement lazy loading
-                throw new ApplicationException("Not yet supported :(");
+                var propertyList =
+                    typeof(TEntity).GetProperties().Where(x => x.GetCustomAttributes(typeof(KeyAttribute), true).Count() > 0);
+                if (propertyList.Count() != 1)
+                {
+                    throw new System.Exception(
+                        string.Format(
+                            "KeyAttribute not found, or found multiple times on: {0}. Please override this implementation",
+                            typeof(TEntity)));
+                }
+
+                var queryString = $"{propertyList.First().Name} == @0";
+                var query = Entity.AsQueryable()
+                    .Where(queryString, id);
+                AddInclude(additionalData, ref query);
+
+                var item = await query.SingleOrDefaultAsync();
+                return await GetByIdInternalMappedAsync(item, additionalData);
             }
             else
             {

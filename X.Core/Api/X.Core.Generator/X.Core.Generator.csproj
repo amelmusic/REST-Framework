@@ -9,6 +9,10 @@
     <!--<EnableDefaultCompileItems>false</EnableDefaultCompileItems>-->
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="X.CodeGeneration.Roslyn" Version="$(XCodeGenerationVersion)" />
   </ItemGroup>

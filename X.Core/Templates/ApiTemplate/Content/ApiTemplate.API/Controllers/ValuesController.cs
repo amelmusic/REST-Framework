@@ -10,7 +10,7 @@ namespace ApiTemplate.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize()]
+    [Authorize()]
     public class ValuesController : ControllerBase
     {
         protected X.Core.Services.Core.StateMachine.StateMachine<XCoreHelloStateMachineEnum, XCoreHelloStateMachineTriggerEnum> _machine
@@ -29,7 +29,7 @@ namespace ApiTemplate.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            throw new Exception("AMEL");
+            //throw new Exception("AMEL");
             return new string[] { "value1", "value2" };
         }
         

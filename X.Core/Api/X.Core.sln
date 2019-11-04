@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{4E6B1E23-8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "X.Core.Test", "X.Core.Test\X.Core.Test.csproj", "{19869B7E-2DFC-4AF0-8175-7B6DAE44B23C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X.Core.RESTClient", "X.Core.RESTClient\X.Core.RESTClient.csproj", "{8438F761-D2DA-4CB8-83B3-14058E888EB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{19869B7E-2DFC-4AF0-8175-7B6DAE44B23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19869B7E-2DFC-4AF0-8175-7B6DAE44B23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19869B7E-2DFC-4AF0-8175-7B6DAE44B23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8438F761-D2DA-4CB8-83B3-14058E888EB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8438F761-D2DA-4CB8-83B3-14058E888EB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8438F761-D2DA-4CB8-83B3-14058E888EB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8438F761-D2DA-4CB8-83B3-14058E888EB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\X.Core.Attributes\X.Core.Attributes.csproj" />
     <ProjectReference Include="..\X.Core.Services\X.Core.Services.csproj" />
     <ProjectReference Include="..\X.Core\X.Core.csproj" />

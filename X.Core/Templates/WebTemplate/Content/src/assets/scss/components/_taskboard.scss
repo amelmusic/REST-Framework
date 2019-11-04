@@ -1,0 +1,19 @@
+/*=========|Task Board|=========*/
+.taskboard-wrapper {
+   .taskboard-title {
+      min-height:24px;
+   }
+   .taskboard-content {
+      height: calc(100% - 24px);
+      min-height: 150px;
+      .icon {
+         color:$mat-card-icon-color;
+         font-size:20px;
+      }
+      .mat-icon-button {
+         width:2.125rem;
+         height:2.125rem;
+         line-height:30px;
+      }
+   }
+}

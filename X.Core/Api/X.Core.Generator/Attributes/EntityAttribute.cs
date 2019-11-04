@@ -9,6 +9,7 @@ namespace X.Core.Generator.Attributes
         public string MapTo { get; set; }
         public EntityBehaviourEnum Behaviour { get; set; }
         public ServiceTypeEnum ServiceType { get; set; }
+        public string ResourceName { get; set; } //key name for permissions and rest controller
     }
 
     public enum EntityBehaviourEnum

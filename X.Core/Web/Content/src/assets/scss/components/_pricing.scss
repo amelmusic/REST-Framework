@@ -1,0 +1,58 @@
+/*========|Pricing|=========*/
+.pricing-wrapper {
+   .mat-list-item-content {
+       justify-content: center;
+   }
+   button {
+       margin-top: 1.5rem;
+   }
+   .mat-card {
+       transition: all 0.5s ease-in-out 0s;
+       &:hover {
+           transform: scale(1.05);
+           button {
+               background-color: $my-primary;
+               color: $light-color;
+           }
+       }
+   }
+}
+
+.pricing1-wrapper {
+   .pricing-list {
+      border: 2px solid transparent;
+      &:hover {
+         transition: all .5s ease-in-out;
+         border: 2px solid $my-primary;
+      }
+      .pricing-title {
+         .old-price {
+            text-decoration-line:line-through;
+            opacity:0.5;            
+         }
+      }
+      .mat-list-item {
+         .list-icon {
+            font-size:7px;
+            height:8px;
+            width:10px;
+            display: flex;
+            align-self: start;
+            padding-top: 7px;
+         }
+         height:auto!important;
+         padding: 0.25rem 0;
+         .mat-list-item-content {
+            padding:0px;
+         }
+      }   
+   }
+   .faq-title{
+      font-size: 2rem;
+   }
+   .pricing-list{
+      sub{
+         line-height: 1.9;
+      }
+   }
+}

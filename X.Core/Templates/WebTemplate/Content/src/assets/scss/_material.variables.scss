@@ -1,0 +1,104 @@
+// 1.0    Material Variables
+
+@import '~@angular/material/theming/';
+
+$primary: mat-palette($mat-blue,800);
+$accent:  mat-palette($mat-cyan,700);
+$warn: mat-palette($mat-red,600);
+$success: mat-palette($mat-green,600);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
+@include mat-core();
+
+$dark-primary: mat-palette($mat-blue,900);
+$dark-accent:  mat-palette($mat-teal,600);
+$dark-success:  mat-palette($mat-green,800);
+$dark-warn: mat-palette($mat-pink,400);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$dark-background: map-get($dark-theme, background);
+$dark-foreground: map-get($dark-theme, foreground);
+
+// Default Theme
+@include angular-material-theme($theme);
+// Dark Theme
+.app-dark {  
+  @include angular-material-theme($dark-theme);
+}
+
+// Create your Sass color vars (will be available in all the project)
+$my-primary: mat-color($primary);
+$my-accent: mat-color($accent);
+$my-warn: mat-color($warn);
+$my-success: mat-color($success);
+
+$my-dark-primary: mat-color($dark-primary);
+$my-dark-accent: mat-color($dark-accent);
+$my-dark-warn: mat-color($dark-warn);
+$my-dark-success: mat-color($dark-success);
+
+   //custom-variables
+$light-color:#ffffff;
+
+// .primary-color{
+//   color: $my-primary;
+// }
+.app-dark{
+   .primary-bg{
+      background: $my-dark-primary !important;
+      // color:$light-color !important;
+   }
+   .primary-text{
+      color: $my-dark-primary !important;
+   }
+   .success-bg{
+      background: $my-dark-success !important;
+      // color:$light-color !important;
+   }
+   .success-text{
+      color: $my-dark-success !important;
+   }
+   .warn-bg{
+      background: $my-dark-warn !important;
+      // color:$light-color !important;
+   }
+   .warn-text{
+      color: $my-dark-warn !important;
+   }
+   .accent-text{
+      color: $my-dark-accent !important;
+   }
+   .accent-bg{
+      background: $my-dark-accent !important;
+      // color:$light-color !important;
+   }
+}
+.primary-bg{
+   background: $my-primary !important;
+   color:$light-color !important;
+}
+.primary-text{
+   color: $my-primary !important;
+}
+.success-bg{
+   background: $my-success !important;
+   color:$light-color !important;
+}
+.success-text{
+   color: $my-success !important;
+}
+.warn-bg{
+   background: $my-warn !important;
+   color:$light-color !important;
+}
+.warn-text{
+   color: $my-warn !important;
+}
+.accent-text{
+   color: $my-accent !important;
+}
+.accent-bg{
+   background: $my-accent !important;
+   color:$light-color !important;
+}

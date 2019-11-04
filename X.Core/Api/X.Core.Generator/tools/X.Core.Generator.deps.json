@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "X.Core.Generator/0.1.47": {
+      "X.Core.Generator/0.1.61": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
           "X.CodeGeneration.Roslyn": "0.8.0"
@@ -234,7 +234,7 @@
     }
   },
   "libraries": {
-    "X.Core.Generator/0.1.47": {
+    "X.Core.Generator/0.1.61": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

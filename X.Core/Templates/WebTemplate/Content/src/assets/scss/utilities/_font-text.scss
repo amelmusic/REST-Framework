@@ -1,0 +1,99 @@
+/*============|Font Text|===========*/
+//TextAlignment
+.text-justify {
+    text-align: justify !important;
+}
+.text-nowrap {
+    white-space: nowrap !important;
+}
+.text-right {
+    text-align: right !important;
+}
+.text-center {
+    text-align: center !important;
+}
+.text-left {
+    text-align: left !important;
+}
+//Text transform classes
+.text-lowercase {
+    text-transform: lowercase !important;
+}
+.text-uppercase {
+    text-transform: uppercase !important;
+}
+.text-capitalize {
+    text-transform: capitalize !important;
+}
+// Text sizes
+.gene-text-xs {
+    font-size: 50% !important;
+}
+.gene-text-sm {
+    font-size: 70% !important;
+}
+.gene-text-md {
+    font-size: 80% !important;
+}
+.gene-text-lg {
+    font-size: 110% !important;
+}
+.gene-text-xl {
+    font-size: 120% !important;
+}
+@media(max-width:1279px){
+   .gene-text-xs {
+      font-size: 60% !important;
+   }
+   .gene-text-sm {
+      font-size: 80% !important;
+   }
+   .gene-text-md {
+      font-size: 90% !important;
+   }
+   .gene-text-lg {
+      font-size: 115% !important;
+   }
+   .gene-text-xl {
+      font-size: 125% !important;
+   }
+}
+@media(max-width:959px){
+   .gene-text-xs {
+      font-size: 70% !important;
+   }
+   .gene-text-sm {
+      font-size: 90% !important;
+   }
+   .gene-text-md {
+      font-size: 95% !important;
+   }
+   .gene-text-lg {
+      font-size: 120% !important;
+   }
+   .gene-text-xl {
+      font-size: 130% !important;
+   }
+}
+//Font weight
+.font-normal {
+    font-weight: normal!important;
+}
+.font-bold {
+    font-weight: 700!important;
+}
+.text-inverse{
+    color: $light-color !important;
+}
+.mat-white {
+    background: $light-color;
+}
+@include text-emphasis-variant('.mat-text-muted', mat-color($foreground, secondary-text));
+@include text-emphasis-variant('.mat-text-default', mat-color($foreground, base));
+@include text-emphasis-variant('.mat-text-primary', mat-color($primary));
+@include text-emphasis-variant('.mat-text-warn', mat-color($warn));
+@include text-emphasis-variant('.mat-text-accent', mat-color($accent));
+.app-dark {
+    @include text-emphasis-variant('.mat-text-muted', mat-color($dark-foreground, secondary-text));
+    @include text-emphasis-variant('.mat-text-default', mat-color($dark-foreground, base));
+}

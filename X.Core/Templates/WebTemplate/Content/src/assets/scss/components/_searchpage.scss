@@ -1,0 +1,27 @@
+/*=========|Search Page|=========*/
+.search-wrapper {
+   .search-title{
+      span {
+         text-decoration:underline;
+         font-style:italic;
+      }
+   }
+   .search-content .mat-icon {
+      width:16px;
+      vertical-align: middle;
+   }
+   .meta-post{
+      font-size:0.897rem;
+      letter-spacing: 0.5px;
+   }
+}
+@media(max-width:400px){
+   .search-wrapper{
+      .search-list-wrap{
+         padding: 0;
+      }
+      .search-form-wrap{
+         padding: 1rem !important;
+      }
+   }
+}

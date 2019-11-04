@@ -17,19 +17,7 @@ namespace X.Core.Interface
         /// </summary>
         /// <param name="permission"></param>
         /// <returns></returns>
-        bool IsAllowed(string permission);
-        /// <summary>
-        /// Throws exception if permission not allowed
-        /// </summary>
-        /// <param name="permission"></param>
-        void ThrowExceptionIfNotAllowed(string permission);
-
-        /// <summary>
-        /// Returns true if allowed
-        /// </summary>
-        /// <param name="permission"></param>
-        /// <returns></returns>
-        bool IsAllowed(PermissionCheckRequest permission);
+        Task<bool> IsAllowed(PermissionCheckRequest permission);
 
         /// <summary>
         /// Throws exception if permission not allowed

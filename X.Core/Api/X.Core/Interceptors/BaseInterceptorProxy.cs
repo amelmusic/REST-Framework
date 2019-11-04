@@ -19,7 +19,7 @@ namespace X.Core.Interceptors
         protected ILog GetLogger(IInvocation invocation)
         {
             ILog log = null;
-            string loggerName = invocation.TargetType.FullName;
+            string loggerName = invocation.TargetType.AssemblyQualifiedName;
             if (mLoggerList.ContainsKey(loggerName))
             {
                 log = mLoggerList[loggerName];

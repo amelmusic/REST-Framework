@@ -1,0 +1,12 @@
+<div mat-dialog-title>
+    <h3>{{ data.header | translate }}</h3>
+    <i class="modal-close-icon" (click)="close()"></i>
+</div>
+<div mat-dialog-content>
+    <p>{{ data.content | translate }}</p>
+    <p *ngIf="data.description">{{ data.description | translate }}</p>
+</div>
+<div mat-dialog-actions >
+    <button type="button" class="new-sec-btn" (click)="dialogRef.close()">{{ 'CORE.CANCEL' | translate }}</button>
+    <button type="button" class="new-btn" (click)="dialogRef.close(true)">{{ 'CORE.YES' | translate }}</button>
+</div>

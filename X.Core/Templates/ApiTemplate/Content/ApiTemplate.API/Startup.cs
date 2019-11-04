@@ -19,6 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using X.Core;
 using X.Core.Interceptors;
@@ -60,7 +62,15 @@ namespace ApiTemplate.API
             {
                 x.Filters.Add<ErrorFilter>();
                 x.Filters.Add<ActionContextFilter>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                //x.UseGeneralRoutePrefix("ApiTemplate"); //same as module name when scaffolded
+            }).AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            })
+            .AddApplicationPart(typeof(PermissionCheckController).Assembly)
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSwaggerGen(c =>
             {
@@ -83,7 +93,7 @@ namespace ApiTemplate.API
             });
             
             var connection = Configuration.GetConnectionString("ApiTemplate");
-            services.AddDbContext<Services.Database.ApiTemplate>(options => options.UseSqlServer(connection));
+            services.AddDbContext<Services.Database.ApiTemplateContext>(options => options.UseSqlServer(connection));
             var builder = new ContainerBuilder();
 
             services.AddXCore(builder);

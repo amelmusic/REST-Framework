@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using X.Core.Generator.Attributes;
+using X.Core.Services.Core.StateMachine;
 using X.Core.Test.SearchObjects;
 
 [assembly: WebAPIGenerator(InterfacesPath = "../X.Core.Test"
@@ -35,6 +36,16 @@ namespace X.Core.Test
     {
         [MethodBehaviour(Behaviour = BehaviourEnum.Get)]
         Task<List<Channels>> Active(ChannelsSearchObject searchAmel);
+
+        [MethodBehaviour(Behaviour = BehaviourEnum.GetById)]
+        Task<List<Channels>> GetActive(int id);
+
+
+        [MethodBehaviour(Behaviour = BehaviourEnum.Delete)]
+        Task<List<Channels>> Delete(int id);
+
+        [MethodBehaviour(Behaviour = BehaviourEnum.Update)]
+        Task<List<Channels>> UpdateAll(int id);
     }
 
     [ModelGenerator(Behaviour = EntityBehaviourEnum.Read)]
@@ -63,6 +74,26 @@ namespace X.Core.Test
     partial class ChannelsService
     {
         public Task<List<Channels>> Active(ChannelsSearchObject searchAmel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Channels>> GetActive(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Channels>> Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Channels>> UpdateAll(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Task OnInsertToBacklog(TriggerRequest<ChannelsStateMachineTriggerEnum> arg)
         {
             throw new NotImplementedException();
         }

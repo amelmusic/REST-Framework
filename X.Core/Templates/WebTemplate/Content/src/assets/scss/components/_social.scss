@@ -1,0 +1,28 @@
+/*======|Social Icons|=======*/
+$social-bg:#000000;
+$social-color:#fff;
+.social-icons {
+    ul li {
+        margin-right: 1.5rem;
+    }
+    i {
+        background-color: $social-bg;
+        color: $social-color;
+        padding: 2px;
+        vertical-align: middle;
+        border-radius: 3px;
+    }
+}
+.social-stats {
+    padding: 1.35rem 0.625rem;
+}
+[dir="rtl"] {
+    .social-icons ul li {
+        margin-left: 1.5rem;
+        margin-right: 0;
+    }
+    i {
+        margin-left: 0.5rem;
+        margin-right: 0;
+    }
+}

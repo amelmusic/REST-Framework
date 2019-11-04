@@ -135,6 +135,9 @@ namespace X.Core.Generator
                     }
                 }
 
+                stateMachineActionsBuilder.AppendLine(
+                    $@"[MethodBehaviour(Behaviour = BehaviourEnum.GetById)]Task<List<{classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum>> AllowedActionsAsync({keyType} id);");
+
                 SyntaxTree tree = CSharpSyntaxTree.ParseText(stateMachineActionsBuilder.ToString());
                 var newCodeRoot = (CompilationUnitSyntax)tree.GetRoot();
                 service = service.AddMembers(newCodeRoot.Members.ToArray());
@@ -153,12 +156,6 @@ namespace X.Core.Generator
             var results = SyntaxFactory.List<MemberDeclarationSyntax>();
             //var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName("Services")).NormalizeWhitespace();
             var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName(_interfacesNamespace)).NormalizeWhitespace();
-
-            //service = service.AddBaseListTypes(
-            //    SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName("X.Core.Services.Core.BaseService")));
-
-            //results = results.Add(service);
-            //Debugger.Launch();
 
             var classes = GetClassesWithSpecificAttribute(root, "ModelGenerator");
             //foreach class generate new service
@@ -179,6 +176,12 @@ namespace X.Core.Generator
                 service = service.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.PartialKeyword));
 
                 var behaviour = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "Behaviour")?.FirstOrDefault();
+                var resourceName = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "ResourceName")?.FirstOrDefault();
+
+                if (resourceName == null)
+                {
+                    resourceName = className;
+                }
 
                 if (behaviour == "EntityBehaviourEnum.Empty")
                 {
@@ -201,6 +204,7 @@ namespace X.Core.Generator
                         SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Interface.ICRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest>")));
                 }
 
+
                 service = service.WithAttributeLists(
                     SyntaxFactory.SingletonList<AttributeListSyntax>(
                         SyntaxFactory.AttributeList(
@@ -209,12 +213,23 @@ namespace X.Core.Generator
                                         SyntaxFactory.IdentifierName("Service"))
                                     .WithArgumentList(
                                         SyntaxFactory.AttributeArgumentList(
-                                            SyntaxFactory.SingletonSeparatedList<AttributeArgumentSyntax>(
-                                                SyntaxFactory.AttributeArgument(
+                                            SyntaxFactory.SeparatedList<AttributeArgumentSyntax>(
+                                                new SyntaxNodeOrToken[]
+                                                {
+                                                    SyntaxFactory.AttributeArgument(
                                                         SyntaxFactory.ParseExpression(behaviour))
-                                                    .WithNameEquals(
-                                                        SyntaxFactory.NameEquals(
-                                                            SyntaxFactory.IdentifierName("Behaviour"))))))))));
+                                                        .WithNameEquals(
+                                                            SyntaxFactory.NameEquals(
+                                                                SyntaxFactory.IdentifierName("Behaviour"))),
+                                                    SyntaxFactory.Token(SyntaxKind.CommaToken),
+                                                    SyntaxFactory.AttributeArgument(
+                                                            SyntaxFactory.LiteralExpression(
+                                                                SyntaxKind.StringLiteralExpression,
+                                                                SyntaxFactory.Literal(resourceName)))
+                                                        .WithNameEquals(
+                                                            SyntaxFactory.NameEquals(
+                                                                SyntaxFactory.IdentifierName("ResourceName")))
+                                                })))))));
 
                 service = service.AddAttributeLists(SyntaxFactory.AttributeList(
                     SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(

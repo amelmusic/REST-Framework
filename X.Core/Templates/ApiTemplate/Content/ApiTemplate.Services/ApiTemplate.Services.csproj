@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="X.Core.Generator" Version="0.1.47" />
-    <PackageReference Include="X.Core.Root" Version="0.1.47" />
-    <PackageReference Include="X.Core.Services" Version="0.1.47" />
+    <PackageReference Include="X.Core.Generator" Version="0.1.61" />
+    <PackageReference Include="X.Core.Root" Version="0.1.61" />
+    <PackageReference Include="X.Core.Services" Version="0.1.61" />
   </ItemGroup>
 
   <ItemGroup>
