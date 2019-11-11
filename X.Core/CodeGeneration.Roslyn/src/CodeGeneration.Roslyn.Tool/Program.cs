@@ -72,7 +72,7 @@ namespace CodeGeneration.Roslyn.Generate
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine($"{e.GetType().Name}: {e.Message}");
+                Console.Error.WriteLine($"{e.GetType().Name}:::: {e.Message}");
                 Console.Error.WriteLine(e.ToString());
                 return 3;
             }
