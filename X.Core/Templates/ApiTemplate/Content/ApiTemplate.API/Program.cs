@@ -22,7 +22,7 @@ namespace ApiTemplate.API
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-                    if (hostingContext.HostingEnvironment.IsDevelopment())
+                    if (hostingContext.HostingEnvironment.EnvironmentName == "Development")
                     {
                         logging.AddDebug();
                         logging.AddConsole();

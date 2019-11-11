@@ -1,12 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="X.Core.Generator" Version="0.1.61" />
-    <PackageReference Include="X.Core.Root" Version="0.1.61" />
+    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
   </ItemGroup>
 
   <ItemGroup>

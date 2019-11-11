@@ -12,12 +12,18 @@
   "sourceName": "ApiTemplate", // Will replace the string 'MyStartup' with the value provided via -n.
   "preferNameDirectory": true, // If -n is not specified, will use name of the current directory
   "symbols": {
-    "db": { // If code or config contains {{Database_Name}} value will be replaced with parameter --db <value_here>
+    "dbcontext": { // If code or config contains {{Database_Name}} value will be replaced with parameter --db <value_here>
       "type": "parameter",
-	  "isRequired": "false",
+	  "isRequired": "true",
       "datatype": "string",
-      "replaces": "{{Database_Name}}",
-      "defaultValue": "ApiTemplate",
+      "replaces": "ApiTemplateContext",
+      "description": "The EF DB Context name attached to this project."
+    },
+	"dbname": { // If code or config contains {{Database_Name}} value will be replaced with parameter --db <value_here>
+      "type": "parameter",
+	  "isRequired": "true",
+      "datatype": "string",
+      "replaces": "ApiTemplateDatabase",
       "description": "The database name attached to this project."
     },
 	"auth": {

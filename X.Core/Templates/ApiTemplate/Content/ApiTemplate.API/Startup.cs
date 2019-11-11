@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ApiTemplate.Model;
 using ApiTemplate.Services;
@@ -17,8 +18,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -43,6 +46,7 @@ namespace ApiTemplate.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             var authUrl = Configuration["Auth:Url"];
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -62,34 +66,59 @@ namespace ApiTemplate.API
             {
                 x.Filters.Add<ErrorFilter>();
                 x.Filters.Add<ActionContextFilter>();
+                x.Filters.Add<PermissionFilter>();
                 //x.UseGeneralRoutePrefix("ApiTemplate"); //same as module name when scaffolded
-            }).AddJsonOptions(options => {
+            })
+            .AddNewtonsoftJson(options =>
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
             })
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.IgnoreNullValues = true;
+            //    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            //    //TODO: THIS WILL BE USABLE WHEN WE HAVE REFERENCE LOOP HANDLING
+            //})
             .AddApplicationPart(typeof(PermissionCheckController).Assembly)
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "ApiTemplate API", Version = "v1" });
-                
-                //NOTE: We only ask for roles here, since permissions are bound to that
-                c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiTemplate API", Version = "v1" });
+
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Flow = "implicit",
-                    AuthorizationUrl = authUrl + "/connect/authorize",
-                    Scopes = new Dictionary<string, string> {
-                        { "roles", "Access to protected resources" }
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Implicit = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri(authUrl + "/connect/authorize"),
+                            Scopes = new Dictionary<string, string> {
+                                            { "roles", "Access to protected resources" }
+                                        }
+                        }
                     }
                 });
 
-                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                {
-                    { "oauth2", new[] { "roles"} }
-                });
+                //c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                //{
+                //    { "oauth2", new[] { "roles"} }
+                //});
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                            },
+                            new[] { "roles" }
+                        }
+                    });
             });
             
             var connection = Configuration.GetConnectionString("ApiTemplate");
@@ -110,15 +139,13 @@ namespace ApiTemplate.API
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowAnyHeader());
 
-            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
@@ -138,7 +165,18 @@ namespace ApiTemplate.API
             });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }

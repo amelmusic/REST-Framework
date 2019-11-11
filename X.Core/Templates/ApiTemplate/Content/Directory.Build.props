@@ -18,9 +18,13 @@
    
     <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
     <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
+    <XCoreNugetVersion>0.1.63</XCoreNugetVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 </Project>

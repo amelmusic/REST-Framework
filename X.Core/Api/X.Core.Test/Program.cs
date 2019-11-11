@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using X.Core.Generator;
 using X.Core.Generator.Attributes;
 using X.Core.Services.Core.StateMachine;
 using X.Core.Test.SearchObjects;
@@ -59,7 +60,7 @@ namespace X.Core.Test
         [Filter(Filter = FilterEnum.GreatherThanOrEqual)] 
         public string Name { get; set; }
 
-
+        [Filter(Filter =FilterEnum.Equal)]
         public int AccountId { get; set; }
 
         //private ChannelsSearchObject c;

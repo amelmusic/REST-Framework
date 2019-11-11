@@ -17,7 +17,7 @@
     <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>
    
     <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/$(Configuration)/</PackageOutputPath>
-    <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
+    <RoslynNugetVersion>3.1.0</RoslynNugetVersion>
   </PropertyGroup>
 
 </Project>
