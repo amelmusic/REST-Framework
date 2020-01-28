@@ -45,8 +45,9 @@ export class TranslateExtService {
   }
 
   getLanguages(): any[] {
-      return [{ name: 'English', value: 'en' },
-      { name: 'Bosanski', value: 'bs' }]
+      return [{ name: 'English', value: 'en', img:"assets/img/en.png" },
+      { name: 'Bosanski', value: 'bs', img:"assets/img/ba.png" },
+      { name: 'German', value: 'de', img:"assets/img/german.png" }]
   }
 
 }

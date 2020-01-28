@@ -11,5 +11,11 @@ namespace X.Core.Test.Database
         
         public string Name { get; set; }
         public int AccountId { get; set; }
+
+        public decimal? UserId
+        {
+            get;
+            set;
+        }
     }
 }

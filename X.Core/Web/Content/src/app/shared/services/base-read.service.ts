@@ -59,4 +59,12 @@ export abstract class BaseReadService extends BaseService {
     return await this.httpContextService.get(url, additionalData);
   }
 
+  async checkPermission(request: any) {
+    if (!request) {
+      throw new Error("Request must be populated!");
+    }
+    let url = this.getBasePathAbsolute() + "/" + "PermissionCheck/Check";
+    return await this.httpContextService.get(url, request);
+  }
+
 }

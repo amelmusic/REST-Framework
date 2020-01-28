@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {FieldType} from '@ngx-formly/material';
 import { AutoCompleteComponent } from '../../auto-complete/auto-complete.component';
+import { MatInput } from '@angular/material';
 
 @Component({
     selector: 'app-formly-autocomplete',
@@ -17,7 +18,7 @@ export class FormlyAutocompleteComponent extends FieldType implements OnInit {
     nameField = 'name';
 
     @ViewChild('autoCompleteComponent', { static: true }) public autoCompleteComponent: AutoCompleteComponent;
-
+    @ViewChild(MatInput, { static: true }) formFieldControl: MatInput;
 
     ngOnInit() {
         this.idField = this.to.idField || this.idField;

@@ -1,0 +1,67 @@
+body .xcore-header-toolbar.mat-toolbar {
+   background: $header-bg-color;
+}
+
+.xcore-ham-icon {
+   margin-right: 1rem;
+}
+.xcore-header-toolbar{
+   &.mat-toolbar-row, &.mat-toolbar-single-row{
+      height:75px;
+   }
+    .mat-button, .mat-icon-button, .mat-raised-button,.mat-input-element{
+        color: $header-font-color;
+    }
+}
+mat-sidenav.sidebar-panel .sub-menu {
+    padding-top: 0;
+    overflow: hidden;
+    -webkit-transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    -moz-transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    -webkit-transition-property: max-height;
+    -moz-transition-property: max-height;
+    transition-property: max-height;
+}
+mat-sidenav.sidebar-panel .sub-menu a {
+    margin-left: 30px;
+}
+mat-sidenav .sidebar-panel .navigation .open>.mat-list-item-content>.sub-menu {
+    max-height: 1000px;
+}
+.sub-menu {
+    padding-top: 0;
+    overflow: hidden;
+    max-height: 0;
+    -webkit-transition: .5s cubic-bezier(.35, 0, .25, 1);
+    -moz-transition: .5s cubic-bezier(.35, 0, .25, 1);
+    transition: .5s cubic-bezier(.35, 0, .25, 1);
+    -webkit-transition-property: max-height;
+    -moz-transition-property: max-height;
+    transition-property: max-height;
+}
+.relative {
+    position: relative;
+}
+
+
+.icons-wrap a{
+   display: -webkit-inline-box !important;
+   display: -ms-inline-flexbox !important;
+   display: inline-flex !important;
+}
+
+//language popup
+.xcore-lang-popup{
+   .language-title{
+      margin-top: -8px;
+      width: 100%;
+   }
+   .lang-wrap{
+      margin:0.25rem;
+   }
+}
+//header toolbar
+body .xcore-header-toolbar {
+   padding: 0 1.5rem;
+}

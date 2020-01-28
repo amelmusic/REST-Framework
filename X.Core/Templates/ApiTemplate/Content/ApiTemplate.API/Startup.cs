@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ApiTemplate.Interfaces;
 using ApiTemplate.Model;
 using ApiTemplate.Services;
 using Autofac;
@@ -56,12 +57,11 @@ namespace ApiTemplate.API
                     options.RequireHttpsMetadata = false;
                     // name of the API resource
                     //options.Audience = "api1";
-                    options.Audience = $"{authUrl}/resources";
+                    options.Audience = $"roles"; //TODO: Change this to your needs
                 });
 
             services.AddCors();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(x =>
             {
                 x.Filters.Add<ErrorFilter>();
@@ -71,6 +71,7 @@ namespace ApiTemplate.API
             })
             .AddNewtonsoftJson(options =>
             {
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
@@ -105,10 +106,6 @@ namespace ApiTemplate.API
                     }
                 });
 
-                //c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                //{
-                //    { "oauth2", new[] { "roles"} }
-                //});
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
                         {
@@ -123,13 +120,23 @@ namespace ApiTemplate.API
             
             var connection = Configuration.GetConnectionString("ApiTemplate");
             services.AddDbContext<Services.Database.ApiTemplateContext>(options => options.UseSqlServer(connection));
+
             var builder = new ContainerBuilder();
 
             services.AddXCore(builder);
 
             //we need reference so that ioc can work by default
-            XCoreHelloServicesRunner servicesRunner = null;
+            ApiTemplateServicesRunner servicesRunner = null;
 
+
+            builder.RegisterType<SetupService>()
+            .As<ISetupService>()
+            .InstancePerLifetimeScope()
+            .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+            .EnableClassInterceptors()
+            .InterceptedBy(typeof(LogInterceptorProxy))
+            .InterceptedBy(typeof(CacheInterceptorProxy))
+            .InterceptedBy(typeof(TransactionInterceptorProxy));
 
             // Create the IServiceProvider based on the container.
             _container = builder.Build();

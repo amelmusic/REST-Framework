@@ -4,7 +4,7 @@
         "No": "Ne",
         "Error": "Greška prilikom komunikacije sa serverom"
     },
-    "action": {
+    "Action": {
         "save": "Sačuvaj",
         "cancel": "Odustani"
     },

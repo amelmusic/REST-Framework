@@ -1,6 +1,39 @@
 {  
-    "App": "xcorewebapp",
+    "App": "common",
     "Views": {
-       "CountryList": "Countries"
+       "CountryList": "Countries",
+       "TemplateList": "Templates",
+       "TemplateDetails": "Template details",
+       "EmailList": "Emails",
+       "AspNetUsersList": "Users",
+       "AspNetUsersDetails": "User details",
+       "SearchFilterDescriptionTitle": "Amel"
+    },
+    "Common": {
+        "SearchFilterDescriptionTitle": "Something"
+    },
+    "General": {
+        "SearchFilterDescriptionTitle": "Search",
+        "SearchFilterDescription": "Please specify criteria and press enter or click on search button"
+    },
+    "Template": {
+        "descriptionGTE": "Description",
+        "templateTypeId": "Template type",
+        "description": "Description",
+        "code": "Code",
+        "content": "Content"
+    },
+    "TemplateType": {
+        "Description": "Description"
+    },
+    "AspNetUsers":{
+        "fts": "Search",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "userName": "Username",
+        "email": "Email",
+        "phoneNumber": "Phone number",
+        "emailConfirmed": "Email confirmed",
+        "password": "Password"
     }
 }

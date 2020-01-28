@@ -13,6 +13,11 @@ namespace X.Core.Services.Core.StateMachine
 
         public Object Entity { get; set; }
 
+        /// <summary>
+        /// If true, caller of the state machine should not perform additional insert or update
+        /// </summary>
+        public bool HandledEntityPersistence { get; set; }
+
         public StateConfiguration<TState, TTrigger> CurrentState { get; private set; }
 
         public List<StateConfiguration<TState, TTrigger>> States { get; set; } = new List<StateConfiguration<TState, TTrigger>>();
@@ -82,6 +87,7 @@ namespace X.Core.Services.Core.StateMachine
             }
 
             Map(request);
+            
         }
     }
 }

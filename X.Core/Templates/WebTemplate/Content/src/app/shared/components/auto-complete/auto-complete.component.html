@@ -1,17 +1,14 @@
-<mat-form-field>
-    <input matInput style="width:100%" [readonly]="_readonly" type="text" #searchBoxElement [formControl]="searchBox" [matAutocomplete]="matAutocomplete" (keydown.f7)="openDialog()">
-    <mat-progress-spinner *ngIf="isLoading" [diameter]="15" [strokeWidth]="2" mode="indeterminate"></mat-progress-spinner>
-    <mat-autocomplete #matAutocomplete="matAutocomplete"  [displayWith]="displayWith">
-        <mat-option [ngClass]="optionalCssClassProp()" *ngFor="let option of filteredOptions" [value]="option" (onSelectionChange)="onSelectionChange($event)">
-            <span *ngIf="!viewTemplate">{{ option[_name] }}</span>
-            <span *ngIf="viewTemplate">
-        <ng-container
-            *ngTemplateOutlet="viewTemplate; context: {item: option}">
-        </ng-container>
-      </span>
-        </mat-option>
-    </mat-autocomplete>
-    <mat-icon ngClass="hand" matSuffix (click)="openDialog()">list</mat-icon>
-</mat-form-field>
-
-
+<input class="pointer" matInput style="width:100%" [readonly]="_readonly" type="text" #searchBoxElement
+    [formControl]="searchBox" [matAutocomplete]="matAutocomplete" (keydown.f7)="openDialog()">
+<mat-progress-spinner *ngIf="isLoading" [diameter]="15" [strokeWidth]="2" mode="indeterminate"></mat-progress-spinner>
+<mat-autocomplete #matAutocomplete="matAutocomplete" [displayWith]="displayWith">
+    <mat-option [ngClass]="optionalCssClassProp()" *ngFor="let option of filteredOptions" [value]="option"
+        (onSelectionChange)="onSelectionChange($event)">
+        <span *ngIf="!viewTemplate">{{ option[_name] }}</span>
+        <span *ngIf="viewTemplate">
+            <ng-container *ngTemplateOutlet="viewTemplate; context: {item: option}">
+            </ng-container>
+        </span>
+    </mat-option>
+</mat-autocomplete>
+<mat-icon matSuffix (click)="openDialog()">keyboard</mat-icon>

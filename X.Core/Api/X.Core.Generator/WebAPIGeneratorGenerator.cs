@@ -72,7 +72,7 @@ namespace X.Core.Generator
         {
             var results = SyntaxFactory.List<MemberDeclarationSyntax>();
             //var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName("Services")).NormalizeWhitespace();
-            var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName(_webAPINamespace)).NormalizeWhitespace();
+            var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName($"{_webAPINamespace}.Controllers")).NormalizeWhitespace();
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Microsoft.AspNetCore.Mvc")));
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(_modelNamespace)));
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(_modelNamespace + ".Requests")));
@@ -83,13 +83,19 @@ namespace X.Core.Generator
 
             foreach (var classDeclarationSyntax in interfaces)
             {
+                var internalFlag = GetDistinctArgumentValues(classDeclarationSyntax, "Service", "Internal")?.FirstOrDefault();
+                if (internalFlag != null && internalFlag.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
                 var allWithSameName = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>().Where(x =>
                     x.Identifier.ValueText == classDeclarationSyntax.Identifier.ValueText).ToList();
 
 
                 cancellationToken.ThrowIfCancellationRequested();
                 var className = classDeclarationSyntax.Identifier.ValueText.Substring(1)
-                    .Replace("Service", "");
+                    .Substring(0, classDeclarationSyntax.Identifier.ValueText.Length - 8);
+                    //.Replace("Service", "");
 
                 var controllerName = className + "Controller";
 
@@ -137,6 +143,11 @@ namespace X.Core.Generator
                 {
                     controller = controller.AddBaseListTypes(
                         SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.WebAPI.Core.BaseCRUDController<{keyType}, {_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest>")));
+                }
+                else if (behaviour == "EntityBehaviourEnum.CRUDAsUpload")
+                {
+                    controller = controller.AddBaseListTypes(
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.WebAPI.Core.BaseCRUDUploadController<{keyType}, {_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest>")));
                 }
 
                 //X.Core.WebAPI.Core.BaseCRUDController<int, Model.User, Model.SearchObjects.UserSearchObject, Model.SearchObjects.UserAdditionalSearchRequestData, UserUpsertRequest, UserUpsertRequest>
@@ -187,6 +198,14 @@ namespace X.Core.Generator
                     else if (behaviour == "BehaviourEnum.Delete")
                     {
                         BuildMethod(builder, method, "[HttpDelete]", "[FromRoute]", "[FromBody]", behaviour);
+                    }
+                    else if (behaviour == "BehaviourEnum.Download")
+                    {
+                        BuildMethod(builder, method, "[HttpGet]", "[FromRoute]", "[FromQuery]", behaviour);
+                    }
+                    else if (behaviour == "BehaviourEnum.DownloadAsPost")
+                    {
+                        BuildMethod(builder, method, "[HttpPost]", "[FromBody]", "[FromBody]", behaviour);
                     }
                 }
             }
@@ -243,10 +262,24 @@ namespace X.Core.Generator
             {
                 route = $"[Route(\"{friendlyMethodName}\")]";
             }
-            
-            builder.AppendLine(
-                $@"{route}{httpRequestType} public async {method.ReturnType.ToString()} {method.Identifier.ValueText}(");
-            
+
+            if (behaviour == "BehaviourEnum.DownloadAsPost")
+            {
+                route = $"[Route(\"{friendlyMethodName}\")]";
+            }
+
+            if (behaviour == "BehaviourEnum.Download" || behaviour == "BehaviourEnum.DownloadAsPost")
+            {
+                builder.AppendLine(
+                    $@"{route}{httpRequestType} public async System.Threading.Tasks.Task<IActionResult> {method.Identifier.ValueText}(");
+            }
+            else
+            {
+                builder.AppendLine(
+                    $@"{route}{httpRequestType} public async {method.ReturnType.ToString()} {method.Identifier.ValueText}(");
+
+
+            }
 
             foreach (var parameter in method.ParameterList.Parameters)
             {
@@ -255,18 +288,30 @@ namespace X.Core.Generator
             }
 
             builder.Remove(builder.Length - 1, 1); //remove trailing comma
-
-            builder.AppendLine($@") {{
+            if(behaviour == "BehaviourEnum.Download" || behaviour == "BehaviourEnum.DownloadAsPost")
+            {
+                builder.AppendLine($@") {{
+                           var additionalDownloadData = await _mainService.{method.Identifier.ValueText}(");
+            } 
+            else
+            {
+                builder.AppendLine($@") {{
                            return await _mainService.{method.Identifier.ValueText}(");
+
+            }
             foreach (var parameter in method.ParameterList.Parameters)
             {
                 builder.Append($"{parameter.Identifier.ValueText},");
             }
-
+            
             builder.Remove(builder.Length - 1, 1); //remove trailing comma
 
-            builder.AppendLine($@");
-                        }}");
+            builder.AppendLine($@");");
+            if (behaviour == "BehaviourEnum.Download" || behaviour == "BehaviourEnum.DownloadAsPost")
+            {
+                builder.AppendLine($@"return File(additionalDownloadData.Stream, additionalDownloadData.ContentType, additionalDownloadData.FileName, true);");
+            }
+            builder.AppendLine($@"}}");
         }
 
         protected virtual ClassDeclarationSyntax GenerateConstructorMethods(string controllerName,
@@ -274,7 +319,7 @@ namespace X.Core.Generator
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(
-                $"private readonly {_interfacesNamespace}.{classDeclarationSyntax.Identifier.ValueText} _mainService;");
+                $"protected readonly {_interfacesNamespace}.{classDeclarationSyntax.Identifier.ValueText} _mainService;");
 
             builder.AppendLine(
                 $"public {controllerName} ({_interfacesNamespace}.{classDeclarationSyntax.Identifier.ValueText} service) : base(service)" +

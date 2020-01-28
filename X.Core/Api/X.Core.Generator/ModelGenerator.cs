@@ -16,7 +16,7 @@ namespace X.Core.Generator
     /// <summary>
     /// Serves as entry point for generating requests, search objects etc
     /// </summary>
-    public class ModelGenerator : ICodeGenerator
+    public class ModelGenerator : BaseGenerator, ICodeGenerator
     {
         private readonly AttributeData _attributeData;
         private EntityBehaviourEnum _behaviour;
@@ -70,7 +70,8 @@ namespace X.Core.Generator
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("X.Core.Model")));
             //Debugger.Launch();
             var distinctArgValues = GetDistinctArgumentValues(applyToClass, "RequestField", "RequestName");
-            if (_behaviour == EntityBehaviourEnum.CRUD)
+            if (_behaviour == EntityBehaviourEnum.CRUD
+                || _behaviour == EntityBehaviourEnum.CRUDAsUpload)
             {
                 if (!distinctArgValues.Contains("\"Insert\""))
                 {
@@ -109,12 +110,14 @@ namespace X.Core.Generator
                     //var list = prop.AttributeLists.SelectMany(x => x.Attributes)
                     //    .Where(x => x.Name.ToFullString() != "RequestField"
                     //                && x.Name.ToFullString() != "Filter").ToList();
-                    
+                    //Debugger.Launch();
                     //prop = prop.WithAttributeLists(newAttributes);
-                    
-
+                    var existingType = prop.Type.ToString();
+                    var type = GetTypedConstantKind(existingType);
+                    var newType = type == TypedConstantKind.Type ? existingType : existingType + "?";
+                    var newProp = prop.WithType(SyntaxFactory.ParseTypeName(newType));
                     //prop.AttributeLists.First().Attributes.AddRange(list.ToArray());
-                    classDeclaration = classDeclaration.AddMembers(prop);
+                    classDeclaration = classDeclaration.AddMembers(newProp);
                     // Create a Property: (public int Quantity { get; set; })
                     //var propertyDeclaration = SyntaxFactory.PropertyDeclaration(SyntaxFactory.ParseTypeName("int"), "Quantity")
                     //    .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
@@ -151,101 +154,151 @@ namespace X.Core.Generator
                 SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Model.BaseSearchObject<{applyToClass.Identifier.ValueText}AdditionalSearchRequestData>")));
             //Debugger.Launch();
             var properties = GetPropertiesWithSpecificAttribute(applyToClass, "Filter");
-
+            
+            //Debugger.Launch();
             foreach (var propertyDeclarationSyntax in properties)
             {
                 //we will regenerate here
                 var attrs = GetAttributes(propertyDeclarationSyntax, "Filter");
 
-                var attrValue = GetAttributeArgumentValue(attrs.First(), "Filter");
+                var attrValueTmp = GetAttributeArgumentValue(attrs.First(), "Filter");
+                var attrValue = attrValueTmp.Replace("\"", "").Split('|').ToList();
+                attrValue = attrValue.Select(x => x.Trim()).ToList();
                 var propertyType = propertyDeclarationSyntax.Type.ToFullString();
                 var propertyName = propertyDeclarationSyntax.Identifier.ValueText;
-
+                bool filterAdded = false;
                 if (attrValue.Contains("FilterEnum.Equal"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName, "Equal");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.List"))
                 {
                     var propertyList = CreatePropertyForSearchObject(propertyType, propertyName + "List", "List");
                     classDeclaration = classDeclaration.AddMembers(propertyList);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.NotEqual"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "NE", "NotEqual");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.GreatherThan"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "GT", "GreatherThan");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.GreatherThanOrEqual"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "GTE", "GreatherThanOrEqual");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.LowerThan"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "LT", "LowerThan");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.LowerThanOrEqual"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "LTE", "LowerThanOrEqual");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.EqualOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "OrNull", "EqualOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.NotEqualOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "NEOrNull", "NotEqualOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.GreatherThanOrEqualOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "GTEOrNull", "GreatherThanOrEqualOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.LowerThanOrEqualOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "LTEOrNull", "LowerThanOrEqualOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.Null"))
                 {
                     var property = CreatePropertyForSearchObject("bool", propertyName + "Null", "Null");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.GreatherThanOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "GTOrNull", "GreatherThanOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.LowerThanOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "LTOrNull", "LowerThanOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.ListOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "ListOrNull", "ListOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.ListNotEqualOrNull"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "ListNEOrNull", "ListNotEqualOrNull");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
                 if (attrValue.Contains("FilterEnum.ListNotEqual"))
                 {
                     var property = CreatePropertyForSearchObject(propertyType, propertyName + "ListNE", "ListNotEqual");
                     classDeclaration = classDeclaration.AddMembers(property);
+                    filterAdded = true;
                 }
+            }
+           
+            var keyProp = GetPropertiesWithSpecificAttribute(applyToClass, "Key").FirstOrDefault();
+            if (keyProp != null)
+            {
+                var attrs = GetAttributes(keyProp, "Filter");
+                string attrValue = null;
+                if (attrs.Count > 0)
+                {
+                    attrValue = GetAttributeArgumentValue(attrs.First(), "Filter");
+                }
+               
+                var propertyType = keyProp.Type.ToFullString();
+                var propertyName = keyProp.Identifier.ValueText;
+
+                if (attrValue == null || !attrValue.Contains("FilterEnum.List"))
+                {
+                    var propertyList = CreatePropertyForSearchObject(propertyType, propertyName + "List", "List");
+                    classDeclaration = classDeclaration.AddMembers(propertyList);
+                }
+
+                if (attrValue == null || !attrValue.Contains("FilterEnum.Equal"))
+                {
+                    var property = CreatePropertyForSearchObject(propertyType, propertyName, "Equal");
+                    classDeclaration = classDeclaration.AddMembers(property);
+                }
+            }
+            else
+            {
+                throw new ApplicationException($"Model: {applyToClass.Identifier.ValueText} doesn't have Key attribute");
             }
 
             @namespace = @namespace.AddMembers(classDeclaration);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -9,6 +10,21 @@ namespace X.Core.Generator
 {
     public class BaseGenerator
     {
+        public TypedConstantKind GetTypedConstantKind(string type)
+        {
+            Debug.Assert(type != null);
+            if (type.EndsWith("?"))
+            {
+                return TypedConstantKind.Type;
+            }
+            switch (type.ToLower())
+            {
+                case "string":
+                    return TypedConstantKind.Type;
+                default:
+                    return TypedConstantKind.Primitive;
+            }
+        }
         protected IList<ClassDeclarationSyntax> GetClassesWithSpecificAttribute(SyntaxNode document, string attributeName)
         {
             var filteredProps = document.DescendantNodes()

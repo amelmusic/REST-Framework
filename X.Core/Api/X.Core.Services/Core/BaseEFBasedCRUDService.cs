@@ -87,7 +87,7 @@ namespace X.Core.Services.Core
                 Context.Entry(entity).State = EntityState.Added;
                 if (saveChanges)
                 {
-                    await SaveAsync(entity);
+                    await SaveAsync(entity, request);
                 }
             }
             return Mapper.Map<TEntity>(entity);
@@ -122,7 +122,7 @@ namespace X.Core.Services.Core
                 Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 if (saveChanges)
                 {
-                    await SaveAsync(entity);
+                    await SaveAsync(entity, request);
                 }
             }
             return Mapper.Map<TEntity>(entity);
@@ -195,6 +195,23 @@ namespace X.Core.Services.Core
                 validationResults.ForEach(x => { result.ResultList.Add(new X.Core.Validation.ValidationResultItem() { Key = x.MemberNames.FirstOrDefault(), Description = x.ErrorMessage }); });
             }
             return await Task.FromResult(result);
+        }
+
+        /// <summary>
+        /// Removes given object. It will fail if object is not existing.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="saveChanges"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteAsync(object id, bool saveChanges = true)
+        {
+            var entity = await GetByIdInternalAsync(id);
+            Entity.Remove(entity);
+            if (saveChanges)
+            {
+                await SaveChangesAsync();
+            }
+            return true;
         }
     }
 }

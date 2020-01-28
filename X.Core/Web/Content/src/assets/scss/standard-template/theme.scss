@@ -1,0 +1,13 @@
+@import "material.variables";
+// @import "mixins/bi-app/bi-app-ltr";
+@import "app.variables";
+@import "mixins";
+@import "core";
+// @import "material";
+
+
+@import "utilities/space";
+
+.app {
+    overflow-y: hidden;
+ }

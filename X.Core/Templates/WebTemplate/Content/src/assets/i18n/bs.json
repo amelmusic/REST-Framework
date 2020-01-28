@@ -1,5 +1,5 @@
 {  
-    "App": "xcorewebapp",
+    "App": "common",
     "Views": {
        "CountryList": "Zemlje"
     }

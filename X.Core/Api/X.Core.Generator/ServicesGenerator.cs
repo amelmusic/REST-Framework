@@ -148,6 +148,11 @@ namespace X.Core.Generator
                     service = service.AddBaseListTypes(
                         SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
                 }
+                else if (behaviour == "EntityBehaviourEnum.CRUDAsUpload")
+                {
+                    service = service.AddBaseListTypes(
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
+                }
 
                 service = service.AddBaseListTypes(
                     SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"{_interfacesNamespace}.I{className}Service")));
@@ -200,7 +205,10 @@ namespace X.Core.Generator
                 //we will regenerate here
                 var attrs = GetAttributes(propertyDeclarationSyntax, "Filter");
 
-                var attrValue = GetAttributeArgumentValue(attrs.First(), "Filter");
+                var attrValueTmp = GetAttributeArgumentValue(attrs.First(), "Filter");
+                var attrValue = attrValueTmp.Replace("\"", "").Split('|').ToList();
+                attrValue = attrValue.Select(x => x.Trim()).ToList();
+
                 var propertyType = propertyDeclarationSyntax.Type.ToFullString().Trim();
                 var propertyName = propertyDeclarationSyntax.Identifier.ValueText;
 
@@ -306,6 +314,32 @@ namespace X.Core.Generator
                 if (attrValue.Contains("FilterEnum.ListNotEqual"))
                 {
                     str.AppendLine($"if (search.{propertyName}ListNE.Count > 0) {{query = query.Where(x => !search.{propertyName}ListNE.Contains(x.{propertyName})); }}");
+                }
+            }
+
+            var keyProp = GetPropertiesWithSpecificAttribute(modelClass, "Key").FirstOrDefault();
+            if (keyProp != null)
+            {
+                var attrs = GetAttributes(keyProp, "Filter");
+                string attrValue = null;
+                if (attrs.Count > 0)
+                {
+                    attrValue = GetAttributeArgumentValue(attrs.First(), "Filter");
+                }
+
+                var propertyType = keyProp.Type.ToFullString();
+                var propertyName = keyProp.Identifier.ValueText;
+
+                if (attrValue == null || !attrValue.Contains("FilterEnum.List"))
+                {
+                    str.AppendLine($"if (search.{propertyName}List.Count > 0) {{query = query.Where(x => search.{propertyName}List.Contains(x.{propertyName})); }}");
+                }
+
+                if (attrValue == null || !attrValue.Contains("FilterEnum.Equal"))
+                {
+                    str.AppendLine(propertyType.Equals("string", StringComparison.OrdinalIgnoreCase)
+                        ? $"if (!string.IsNullOrWhiteSpace(search.{propertyName})) {{query = query.Where(x => x.{propertyName} == search.{propertyName}); }}"
+                        : $"if (search.{propertyName}.HasValue) {{query = query.Where(x => x.{propertyName} == search.{propertyName}); }}");
                 }
             }
             //End
@@ -434,8 +468,10 @@ namespace X.Core.Generator
                                 await _machine.Init({classDeclarationSyntax.Identifier.ValueText}StateMachineEnum.Initial, entity);
                                 await _machine.Fire({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{transition}, request);
                                 entity.{propertyName} = ({propertyType})_machine.CurrentState.State;
-                                Entity.Attach(entity);
-                                Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                                if (!_machine.HandledEntityPersistence) {{
+                                    Entity.Attach(entity);
+                                    Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                                }}
                                 await SaveAsync(entity);
                                 var model = Mapper.Map<{classDeclarationSyntax.Identifier.ValueText}>(entity);
                                 return model;
@@ -451,9 +487,12 @@ namespace X.Core.Generator
                                 await _machine.Init(({classDeclarationSyntax.Identifier.ValueText}StateMachineEnum)entity.{propertyName}, entity);
                                 await _machine.Fire({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{transition}, request);
                                 entity.{propertyName} = ({propertyType})_machine.CurrentState.State;
-                                Entity.Attach(entity);
-                                Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
-                                await SaveAsync(entity);
+                                if (!_machine.HandledEntityPersistence) {{
+                                    Entity.Attach(entity);
+                                    Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Deleted;
+                                }}
+                               
+                                await SaveAsync(entity, request);
                                 var model = Mapper.Map<{classDeclarationSyntax.Identifier.ValueText}>(entity);
                                 return model;
                             }}");
@@ -467,11 +506,11 @@ namespace X.Core.Generator
                                 ConfigureStateMachine();
                                 await _machine.Init(({classDeclarationSyntax.Identifier.ValueText}StateMachineEnum)entity.{propertyName}, entity);
                                 await _machine.Fire({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{transition}, request);
-                                entity.{propertyName} = ({propertyType})_machine.CurrentState.State;
-                                Entity.Attach(entity);
-                                Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                                await SaveAsync(entity);
-                                var model = Mapper.Map<{classDeclarationSyntax.Identifier.ValueText}>(entity);
+                                var machineEntity = this._machine.Entity as {_entityFrameworkContextNamespace}.{classDeclarationSyntax.Identifier.ValueText};
+                                machineEntity.{propertyName} = ({propertyType})_machine.CurrentState.State;
+                                
+                                await SaveAsync(machineEntity, request);
+                                var model = Mapper.Map<{classDeclarationSyntax.Identifier.ValueText}>(machineEntity);
                                 return model;
                             }}");
                     }

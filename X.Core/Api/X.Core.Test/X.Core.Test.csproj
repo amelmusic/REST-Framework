@@ -7,9 +7,9 @@
 
   <ItemGroup>
     <PackageReference Include="Stateless" Version="4.2.1" />
-    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.11.0">
+    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.23.0">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 

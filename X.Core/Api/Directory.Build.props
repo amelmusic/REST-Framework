@@ -5,13 +5,13 @@
     <Company>Amel Musić</Company>
     <Copyright>Copyright © Amel Musić</Copyright>
     <LicenseExpression>MS-PL</LicenseExpression>
-    <PackageProjectUrl>https://github.com/amelmusic</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/amelmusic</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/amelmusic/REST-Framework</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/amelmusic/REST-Framework</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>

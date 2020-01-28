@@ -14,14 +14,15 @@ namespace X.Core.Validation
         /// <param name="validationResult"></param>
         /// <param name="isError"></param>
         /// <param name="message"></param>
-        public static void Error(this ValidationResult validationResult, bool isError, string message)
+        public static void Error(this ValidationResult validationResult, bool isError, string message, string key = null)
         {
             if (isError)
             {
                 validationResult.ResultList.Add(new ValidationResultItem()
                 {
                     Description = message,
-                    Level = ValidationResultLevelEnum.Error
+                    Level = ValidationResultLevelEnum.Error,
+                    Key = key
                 });
             }
         }

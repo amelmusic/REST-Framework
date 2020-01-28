@@ -58,8 +58,8 @@ namespace X.Core.WebAPI.Filters
                 var idClaim = userFromClaim.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier || x.Type == "sub");
                 if (idClaim != null)
                 {
-                    coreActionContext.Data["UserName"] = idClaim.Value.ToString();
-                    log4net.LogicalThreadContext.Properties["UserName"] = idClaim.Value.ToString();
+                    coreActionContext.Data["UserId"] = idClaim.Value.ToString();
+                    log4net.LogicalThreadContext.Properties["UserId"] = idClaim.Value.ToString();
                 } 
 //                else
 //                {

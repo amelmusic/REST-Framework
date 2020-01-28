@@ -200,19 +200,11 @@ namespace X.Core.RESTClient.Core
                 {
                     download.FileName = content.Headers.ContentDisposition.FileName.StripQuotes();
                     download.ContentType = content.Headers.ContentType.MediaType;
-                    download.DispositionType = content.Headers.ContentDisposition.DispositionType;
+                    download.ContentDisposition = content.Headers.ContentDisposition.DispositionType;
                 }
 
 
-                download.PushStreamFunction = async (stream) =>
-                {
-                    using (var downloadStream = await httpResponseMessage.Content.ReadAsStreamAsync())
-                    using (var reader = new StreamContent(downloadStream))
-                    using (stream) //this has to be called in order to signal caller that we have finished
-                    {
-                        await reader.CopyToAsync(stream);
-                    }
-                };
+                download.Stream = await httpResponseMessage.Content.ReadAsStreamAsync();
                 return download;
             }
             catch (FlurlHttpException ex)

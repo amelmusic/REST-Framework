@@ -22,7 +22,8 @@ namespace X.Core.WebAPI.Filters
         }
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.RouteData.Values["controller"]?.Equals("PermissionChecker") == true
+            if ((context.RouteData.Values["controller"]?.Equals("PermissionChecker") == true
+                || context.RouteData.Values["controller"]?.Equals("PermissionCheck") == true)
                 && context.RouteData.Values["action"]?.Equals("Check") == true)
             {
                 await base.OnActionExecutionAsync(context, next);
@@ -55,7 +56,7 @@ namespace X.Core.WebAPI.Filters
                 {
                     IActionContext actionContext = context.HttpContext.RequestServices.GetService(typeof(IActionContext)) as IActionContext;
 
-                    var isAuthorized = actionContext.Data.ContainsKey("UserName");
+                    var isAuthorized = actionContext.Data.ContainsKey("UserId");
                     if (!isAuthorized)
                     {
                         _logger.Log(LogLevel.Warning, $"User not authorized");

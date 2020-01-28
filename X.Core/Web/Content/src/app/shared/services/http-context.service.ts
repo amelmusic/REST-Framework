@@ -29,7 +29,7 @@ export class HttpContextService {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
-  public async get(url, model) {
+  public async get(url, model = null) {
     let queryParams = '';
     if (model) {
       if (url.indexOf('?')  !== -1) {
@@ -147,7 +147,7 @@ export class HttpContextService {
     return Promise.reject(error);
   }
 
-  public async uploadAsPut(url, file) {
+  public async uploadAsPut(url, model) {
     const headers = new HttpHeaders();
     const accessToken = this.oauthService.getAccessToken();
 
@@ -161,15 +161,43 @@ export class HttpContextService {
     }
 
     const formData: FormData = new FormData();
-    formData.append('uploadFile', file, file.name);
+    Object.keys(model).forEach(key => formData.append(key, model[key]));
+
 
     return this.http.put(url, formData, options)
         .toPromise()
         .catch(this.handleError.bind(this));
   }
 
-  public async downloadFile(url, model, fileName = null) {
-    const ref = this.snackBarService.open(this.translateService.instant('Common.RunningReport'), null, {
+  public async uploadAsPost(url, model) {
+    let headers = new HttpHeaders();
+    const accessToken = this.oauthService.getAccessToken();
+    headers = headers.append('Accept-Language', localStorage.getItem('core.language'));
+
+    if (accessToken) {
+      headers = headers.append('Authorization', 'Bearer ' + accessToken);
+    }
+
+    const options = {
+      headers: headers
+    }
+
+    const formData: FormData = new FormData();
+    Object.keys(model).forEach(key => {
+      console.log(key);
+      formData.append(key, model[key]);
+    });
+
+
+    return this.http.post(url, formData, options)
+        .toPromise()
+        .catch(this.handleError.bind(this));
+  }
+
+  
+
+  public async downloadFile(url, model = null, fileName = null) {
+    const ref = this.snackBarService.open(this.translateService.instant('Common.Downloading'), null, {
       duration: 0
     });
     let queryParams = '';
@@ -185,27 +213,31 @@ export class HttpContextService {
     }
     url += queryParams;
 
-    const headers = new HttpHeaders();
-    headers.append('Accept-Language', localStorage.getItem('core.language'));
-    headers.append('responseType', 'blob');
+    let headers = new HttpHeaders();
     const accessToken = this.oauthService.getAccessToken();
 
     if (accessToken) {
-      headers.append('Authorization', 'Bearer ' + accessToken);
+      headers = headers.append('Authorization', 'Bearer ' + accessToken);
     }
+
+    headers = headers.append('Accept-Language', localStorage.getItem('core.language'));
+    headers = headers.append('responseType', 'blob');
 
     const options:any = {
-      headers: headers
+      headers: headers,
+      responseType: 'blob',
+      observe: 'response'
     }
+
+
+
     //TODO: Check response type / download on HttpClient
     // options.responseType = ResponseContentType.Blob;
-
+    
     const data = await this.http.get(url, options)
         .toPromise()
         .catch(this.handleError.bind(this));
 
-    const fileDownloadTag = document.createElement('a');
-    document.body.appendChild(fileDownloadTag);
 
     //TODO THIS AS WELL
     // if (navigator.appVersion.toString().indexOf('.NET') > 0) { // for IE browser
@@ -218,6 +250,7 @@ export class HttpContextService {
     // }
 
     ref.dismiss();
+    return data;
   }
 
   public async downloadFilePost(url, model, fileName = null) {

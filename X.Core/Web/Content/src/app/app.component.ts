@@ -7,13 +7,12 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { map, take, delay, withLatestFrom, finalize, tap } from 'rxjs/operators';
 
 @Component({
-  	selector: 'gene-app',
-   template:`<router-outlet></router-outlet>
-   			<ngx-loading-bar  [value]="(delayedProgress$|async) || 0"></ngx-loading-bar>`,
+  	selector: 'xcore-app',
+   template:`<router-outlet></router-outlet>`,
    encapsulation: ViewEncapsulation.None
 })
 
-export class GeneAppComponent {
+export class XCoreAppComponent {
 
    delayedProgress$ = this.loader.progress$.pipe(
       delay(2000),
@@ -22,11 +21,12 @@ export class GeneAppComponent {
     );
 
    constructor(translate: TranslateService, translateExtService: TranslateExtService, private oauthService: OAuthService, public loader: LoadingBarService) {
-      translate.addLangs(['bs', 'en']);
+      const langs = translateExtService.getLanguages().map(x => x.value);
+      translate.addLangs(langs);
       if (localStorage.getItem('core.language')) {
          translateExtService.setLocale(localStorage.getItem('core.language'));
        } else {
-         translateExtService.setLocale('bs');
+         translateExtService.setLocale('en');
        }
 
       this.auth();

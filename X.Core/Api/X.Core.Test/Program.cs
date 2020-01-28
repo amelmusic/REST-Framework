@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using X.Core.Generator;
 using X.Core.Generator.Attributes;
 using X.Core.Services.Core.StateMachine;
 using X.Core.Test.SearchObjects;
+using X.Core.Extensions;
+using X.Core.Validation;
+using X.Core.Model;
 
 [assembly: WebAPIGenerator(InterfacesPath = "../X.Core.Test"
     , InterfacesNamespace = "X.Core.Test"
@@ -47,12 +51,16 @@ namespace X.Core.Test
 
         [MethodBehaviour(Behaviour = BehaviourEnum.Update)]
         Task<List<Channels>> UpdateAll(int id);
+
+        [MethodBehaviour(Behaviour = BehaviourEnum.Download)]
+        Task<DownloadRequest> Download(int id);
     }
 
-    [ModelGenerator(Behaviour = EntityBehaviourEnum.Read)]
+    [ModelGenerator(Behaviour = EntityBehaviourEnum.Read, Internal = false)]
     [StateMachineModelGenerator(StateMachineDefinitionPath = "AccountStateMachine.txt", PropertyName = "AccountId")]
     public partial class Channels
     {
+        [Filter(Filter = FilterEnum.GreatherThanOrEqual | FilterEnum.List)]
         [Key]
         public int Id { get; set; }
         [Required]
@@ -60,8 +68,13 @@ namespace X.Core.Test
         [Filter(Filter = FilterEnum.GreatherThanOrEqual)] 
         public string Name { get; set; }
 
+        [RequestField(RequestName = "Update")]
         [Filter(Filter =FilterEnum.Equal)]
         public int AccountId { get; set; }
+
+        [RequestField(RequestName = "Update")]
+        [Filter(Filter = FilterEnum.Equal)]
+        public decimal? UserId { get; set; }
 
         //private ChannelsSearchObject c;
     }
@@ -75,6 +88,11 @@ namespace X.Core.Test
     partial class ChannelsService
     {
         public Task<List<Channels>> Active(ChannelsSearchObject searchAmel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DownloadRequest> Download(int id)
         {
             throw new NotImplementedException();
         }
@@ -94,9 +112,21 @@ namespace X.Core.Test
             throw new NotImplementedException();
         }
 
-        private Task OnInsertToBacklog(TriggerRequest<ChannelsStateMachineTriggerEnum> arg)
+        private async Task OnInsertToBacklog(TriggerRequest<ChannelsStateMachineTriggerEnum> arg)
         {
-            throw new NotImplementedException();
+            return;
         }
+
+        public override async Task<Validation.ValidationResult> ValidateAsync(object entity)
+        {
+            var validate = await base.ValidateAsync(entity);
+            var e = entity as Database.Channels;
+            
+            var notunique = !Entity.Unique(() => e.Id, () => e.Name);
+            validate.Error(notunique, "Not UNIQUE");
+
+            return validate;
+        }
+
     }
 }

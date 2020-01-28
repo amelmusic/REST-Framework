@@ -37,5 +37,6 @@ namespace X.Core.Interface
 
         //[DefaultMethodBehaviour(BehaviourEnum.Patch)]
         Task<TEntity> PatchAsync(object id, TUpdate request, bool saveChanges = true);
+        Task<bool> DeleteAsync(object id, bool saveChanges = true);
     }
 }

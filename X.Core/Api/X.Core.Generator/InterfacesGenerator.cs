@@ -177,6 +177,28 @@ namespace X.Core.Generator
 
                 var behaviour = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "Behaviour")?.FirstOrDefault();
                 var resourceName = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "ResourceName")?.FirstOrDefault();
+                var internalFlag = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "Internal")?.FirstOrDefault();
+                
+                var internalFlagArg = SyntaxFactory.AttributeArgument(
+                                           SyntaxFactory.LiteralExpression(
+                                               SyntaxKind.FalseLiteralExpression))
+                                       .WithNameEquals(
+                                           SyntaxFactory.NameEquals(
+                                               SyntaxFactory.IdentifierName("Internal")));
+
+               
+                if (internalFlag != null && internalFlag.Equals("true", StringComparison.OrdinalIgnoreCase)){
+                    internalFlagArg = SyntaxFactory.AttributeArgument(
+                                           SyntaxFactory.LiteralExpression(
+                                               SyntaxKind.TrueLiteralExpression))
+                                       .WithNameEquals(
+                                           SyntaxFactory.NameEquals(
+                                               SyntaxFactory.IdentifierName("Internal")));
+                }
+
+
+
+               
 
                 if (resourceName == null)
                 {
@@ -203,6 +225,11 @@ namespace X.Core.Generator
                     service = service.AddBaseListTypes(
                         SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Interface.ICRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest>")));
                 }
+                else if (behaviour == "EntityBehaviourEnum.CRUDAsUpload")
+                {
+                    service = service.AddBaseListTypes(
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Interface.ICRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest>")));
+                }
 
 
                 service = service.WithAttributeLists(
@@ -228,7 +255,9 @@ namespace X.Core.Generator
                                                                 SyntaxFactory.Literal(resourceName)))
                                                         .WithNameEquals(
                                                             SyntaxFactory.NameEquals(
-                                                                SyntaxFactory.IdentifierName("ResourceName")))
+                                                                SyntaxFactory.IdentifierName("ResourceName"))),
+                                                    SyntaxFactory.Token(SyntaxKind.CommaToken),
+                                                    internalFlagArg
                                                 })))))));
 
                 service = service.AddAttributeLists(SyntaxFactory.AttributeList(

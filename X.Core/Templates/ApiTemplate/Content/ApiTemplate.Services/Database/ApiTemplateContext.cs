@@ -16,6 +16,8 @@ namespace ApiTemplate.Services.Database
         {
         }
 
+
+
         public virtual DbSet<XCoreHello> XCoreHello { get; set; }
     }
 }

@@ -15,4 +15,17 @@ namespace X.Core
         }
         public Dictionary<string, object> Data { get; set; }
     }
+
+    public static class ActionContextExt
+    {
+        public static string UserId(this IActionContext context)
+        {
+            if (context.Data.TryGetValue("UserId", out object id))
+            {
+                return id.ToString();
+            }
+            return null;
+        }
+    }
+
 }

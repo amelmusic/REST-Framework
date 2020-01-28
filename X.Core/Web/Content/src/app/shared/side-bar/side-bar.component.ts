@@ -13,7 +13,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 
 export class SideBarComponent implements OnInit {
 
-	@Input() menuList : any;
+	menuList : any = [];
   @Input() verticalMenuStatus : boolean;
 
 	constructor( public translate: TranslateService, 
@@ -21,7 +21,8 @@ export class SideBarComponent implements OnInit {
                 public coreService: CoreService,
                 public menuItems: MenuItems, private oauthService: OAuthService) { }
 
-	ngOnInit() {
+	async ngOnInit() {
+    await this.getMenuItems();
 	}
 
    public get name() {
@@ -29,9 +30,12 @@ export class SideBarComponent implements OnInit {
       if (!claims) {
         return null;
       }
-      return claims.given_name + ' ' + claims.family_name;
+      return `${claims.given_name} ${claims.family_name}`;
    }
 
+   async getMenuItems() {
+     this.menuList = await this.menuItems.getAll();
+   }
 	//render to the crm page
 	onClick(){
 

@@ -7,10 +7,10 @@
   "targets": {
     ".NETStandard,Version=v2.0": {},
     ".NETStandard,Version=v2.0/": {
-      "X.Core.Generator/0.1.63": {
+      "X.Core.Generator/0.1.78": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
-          "X.CodeGeneration.Roslyn": "0.11.0"
+          "X.CodeGeneration.Roslyn": "0.23.0"
         },
         "runtime": {
           "X.Core.Generator.dll": {}
@@ -211,30 +211,30 @@
           }
         }
       },
-      "X.CodeGeneration.Roslyn/0.11.0": {
+      "X.CodeGeneration.Roslyn/0.23.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "3.1.0",
-          "X.CodeGeneration.Roslyn.Attributes": "0.11.0"
+          "X.CodeGeneration.Roslyn.Attributes": "0.23.0"
         },
         "runtime": {
           "lib/netstandard2.0/CodeGeneration.Roslyn.dll": {
-            "assemblyVersion": "0.11.0.0",
-            "fileVersion": "0.11.0.4035"
+            "assemblyVersion": "0.23.0.0",
+            "fileVersion": "0.23.0.8214"
           }
         }
       },
-      "X.CodeGeneration.Roslyn.Attributes/0.11.0": {
+      "X.CodeGeneration.Roslyn.Attributes/0.23.0": {
         "runtime": {
           "lib/netstandard2.0/CodeGeneration.Roslyn.Attributes.dll": {
-            "assemblyVersion": "0.11.0.0",
-            "fileVersion": "0.11.0.4035"
+            "assemblyVersion": "0.23.0.0",
+            "fileVersion": "0.23.0.8214"
           }
         }
       }
     }
   },
   "libraries": {
-    "X.Core.Generator/0.1.63": {
+    "X.Core.Generator/0.1.78": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -330,19 +330,19 @@
       "path": "system.threading.tasks.extensions/4.5.2",
       "hashPath": "system.threading.tasks.extensions.4.5.2.nupkg.sha512"
     },
-    "X.CodeGeneration.Roslyn/0.11.0": {
+    "X.CodeGeneration.Roslyn/0.23.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6I1KZA/VjShwHp/Y+G0SO22eI2dgdXddDUQdKFrOf8TH+Lc2rQ6xQQghZ/oo/4ivFhweT2a18fxwuZzKCAAEZw==",
-      "path": "x.codegeneration.roslyn/0.11.0",
-      "hashPath": "x.codegeneration.roslyn.0.11.0.nupkg.sha512"
+      "sha512": "sha512-rqT30hWGmyIhrraqCzaYf/UK6TOaJkftlOJPqeyKQNj4z8dwtpjAUUWW281q0uqDyEteoU7yUJ6oIzV29iFz4Q==",
+      "path": "x.codegeneration.roslyn/0.23.0",
+      "hashPath": "x.codegeneration.roslyn.0.23.0.nupkg.sha512"
     },
-    "X.CodeGeneration.Roslyn.Attributes/0.11.0": {
+    "X.CodeGeneration.Roslyn.Attributes/0.23.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-EISz/dfoscBPkNfEuX2bzKO6gP+yW/uBtIhPnK68abrL6IpCLv96Bi3B/h4MJz6KKj2ZKaYY0tJ/8iHaL9MSTg==",
-      "path": "x.codegeneration.roslyn.attributes/0.11.0",
-      "hashPath": "x.codegeneration.roslyn.attributes.0.11.0.nupkg.sha512"
+      "sha512": "sha512-mhPCVEZnL/JVTyEjVekOuhJksGID6QVnj4BEFtTrTo7FRb7I6h4QX71U9ku5C0CqfxSRtje8tJx+J9EkZG3vtA==",
+      "path": "x.codegeneration.roslyn.attributes/0.23.0",
+      "hashPath": "x.codegeneration.roslyn.attributes.0.23.0.nupkg.sha512"
     }
   }
 }

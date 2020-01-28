@@ -42,16 +42,23 @@
     "clientId": {
       "type": "parameter",
       "dataType": "string",
-      "defaultValue": "xcoreuiclient",
+      "defaultValue": "XCore",
       "description": "Client id for oauth2 config",
       "replaces": "xcoreuiclient"
     },
     "issuer": {
       "type": "parameter",
       "dataType": "string",
-      "defaultValue": "http://localhost/Core360.IdentityManager.Identity/oauth",
+      "defaultValue": "http://localhost:4999",
       "description": "Issuer for oauth2 config",
-      "replaces": "http://localhost/Core360.IdentityManager.Identity/oauth"
+      "replaces": "http://localhost:4999"
+    },
+	"port": {
+      "type": "parameter",
+      "dataType": "string",
+      "defaultValue": "4200",
+      "description": "Port of the app",
+      "replaces": "4200"
     },
     "api": {
       "type": "parameter",
@@ -59,6 +66,13 @@
       "defaultValue": "https://localhost:5001/api",
       "description": "API base url",
       "replaces": "https://localhost:5001/api"
+    },
+    "language": {
+      "type": "parameter",
+      "dataType": "string",
+      "defaultValue": "translateExtService.setLocale('en');",
+      "description": "Default language",
+      "replaces": "translateExtService.setLocale('en');"
     }
   }
 }

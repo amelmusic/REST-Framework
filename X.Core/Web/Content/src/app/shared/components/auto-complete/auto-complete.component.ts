@@ -17,10 +17,12 @@ import {
 } from '@angular/core';
 import {FormBuilder, FormControl, NgControl} from '@angular/forms';
 import {MatAutocomplete, MatDialog, MatFormFieldControl} from '@angular/material';
-import 'rxjs/add/operator/debounceTime';
-import {Subject} from 'rxjs/Subject';
+
 import {FocusMonitor} from '@angular/cdk/a11y';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
 
 
 @Component({
@@ -208,7 +210,7 @@ export class AutoCompleteComponent implements MatFormFieldControl<any>, OnInit, 
     }
 
     async ngOnInit() {
-        this.searchBox.valueChanges.debounceTime(300).subscribe(async (value) => {
+        this.searchBox.valueChanges.pipe(debounceTime(300)).subscribe(async (value) => {
             this.isLoading = true;
             if (value !== this.searchValue && typeof value === 'string' && !this.disabled) {
                 this.filteredOptions = await this.getByFilter(null, value, this._controlName);

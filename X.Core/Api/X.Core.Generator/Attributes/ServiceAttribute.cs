@@ -8,5 +8,7 @@ namespace X.Core.Generator.Attributes
     {
         public EntityBehaviourEnum Behaviour { get; set; }
         public string ResourceName { get; set; }
+
+        public bool Internal { get; set; }
     }
 }

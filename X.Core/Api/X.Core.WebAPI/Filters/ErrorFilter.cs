@@ -31,6 +31,17 @@ namespace X.Core.WebAPI.Filters
                 context.ModelState.AddModelError("ERROR", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
+            else if (context.Exception is ValidationException)
+            {
+                var validation = context.Exception as ValidationException;
+                validation.ValidationResult.ResultList.Where(x => x.Level == ValidationResultLevelEnum.Error)
+                    .ToList().ForEach(x =>
+                    {
+                        context.ModelState.AddModelError(x.Key, x.Description);
+                    });
+                
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
             else
             {
                 context.ModelState.AddModelError("ERROR", "Greška na serveru");

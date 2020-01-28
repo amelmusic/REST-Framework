@@ -16,8 +16,8 @@ export class XCoreErrorHandlerService implements ErrorHandler {
         alert('Url ' + error.rejection.url + 'is not found or API is unavailable!');
       } else if (error && error.rejection && error.rejection.error && error.rejection.status === 400) {
         let message = this.translateService.instant('Common.Error');
-        if (error.rejection.error.ERROR && error.rejection.error.ERROR[0]) {
-          message = error.rejection.error.ERROR[0];
+        if (error.rejection.error.error && error.rejection.error.error[0]) {
+          message = error.rejection.error.error[0];
         }
         this.snackBarService.open(message, null, {
           duration: 5000

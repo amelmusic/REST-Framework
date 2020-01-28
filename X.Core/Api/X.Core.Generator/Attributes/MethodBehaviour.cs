@@ -25,6 +25,7 @@ namespace X.Core.Generator.Attributes
         DeleteWithoutServiceImpl = 30,
         Delete = 31,
         Download = 50,
+        DownloadAsPost = 51,
         Custom1 = 100,
         Custom2 = 101,
         Custom3 = 102,

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Gene": {
+    "XCore": {
       "root": "e2e",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,30 +17,19 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              { "glob": "**/*", "input": "node_modules/tinymce/skins", "output": "/tinymce/skins/" },
+              { "glob": "**/*", "input": "node_modules/tinymce/themes", "output": "/tinymce/themes/" },
+              { "glob": "**/*", "input": "node_modules/tinymce/plugins", "output": "/tinymce/plugins/" }
             ],
             "styles": [
               "src/assets/scss/style.scss",
               "node_modules/videogular2/fonts/videogular.css",
-              "node_modules/angular-instantsearch/bundles/instantsearch.min.css",
-              "node_modules/angular-instantsearch/bundles/instantsearch-theme-algolia.min.css",
-              "node_modules/ngx-toastr/toastr.css",
               "node_modules/quill/dist/quill.snow.css",
-              "node_modules/leaflet/dist/leaflet.css",
               "node_modules/angular-calendar/css/angular-calendar.css",
-              "node_modules/@swimlane/ngx-datatable/release/index.css",
-              "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
-              "node_modules/@swimlane/ngx-datatable/assets/icons.css",
-              "node_modules/nvd3/build/nv.d3.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/cryptocoins-icons/webfont/cryptocoins.css",
               "src/assets/fonts/data-table/icons.css",
-              "node_modules/dragula/dist/dragula.css",
-				      "node_modules/angular-tree-component/dist/angular-tree-component.css",
-              "node_modules/nouislider/distribute/nouislider.min.css",
-              "node_modules/slick-carousel/slick/slick.scss",
-              "node_modules/slick-carousel/slick/slick-theme.scss",
-              "node_modules/ngx-bar-rating/themes/br-default-theme.css"
+              "node_modules/dragula/dist/dragula.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -48,7 +37,8 @@
               "node_modules/hammerjs/hammer.js",
               "node_modules/sortablejs/Sortable.js",
               "node_modules/chart.js/dist/Chart.bundle.min.js",
-              "node_modules/easy-pie-chart/dist/easypiechart.js"
+              "node_modules/easy-pie-chart/dist/easypiechart.js",
+              "node_modules/tinymce/tinymce.min.js"
             ]
           },
           "configurations": {
@@ -74,18 +64,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Gene:build"
+            "browserTarget": "XCore:build",
+            "port": 4200
           },
           "configurations": {
             "production": {
-              "browserTarget": "Gene:build:production"
+              "browserTarget": "XCore:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Gene:build"
+            "browserTarget": "XCore:build"
           }
         },
         "test": {
@@ -108,14 +99,11 @@
               "node_modules/videogular2/fonts/videogular.css",
               "node_modules/angular-instantsearch/bundles/instantsearch.min.css",
               "node_modules/angular-instantsearch/bundles/instantsearch-theme-algolia.min.css",
-              "node_modules/ngx-toastr/toastr.css",
               "node_modules/quill/dist/quill.snow.css",
-              "node_modules/leaflet/dist/leaflet.css",
               "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/@swimlane/ngx-datatable/release/index.css",
               "node_modules/@swimlane/ngx-datatable/release/themes/material.css",
               "node_modules/@swimlane/ngx-datatable/assets/icons.css",
-              "node_modules/nvd3/build/nv.d3.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/cryptocoins-icons/webfont/cryptocoins.css",
               "src/assets/fonts/data-table/icons.css",
@@ -143,7 +131,7 @@
         }
       }
     },
-    "Gene-e2e": {
+    "XCore-e2e": {
       "root": "",
       "sourceRoot": "e2e",
       "projectType": "application",
@@ -152,7 +140,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "Gene:serve"
+            "devServerTarget": "XCore:serve"
           }
         },
         "lint": {
@@ -167,7 +155,7 @@
       }
     }
   },
-  "defaultProject": "Gene",
+  "defaultProject": "XCore",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ms",
