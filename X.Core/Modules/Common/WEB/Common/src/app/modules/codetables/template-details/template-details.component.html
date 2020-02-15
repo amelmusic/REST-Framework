@@ -1,0 +1,38 @@
+
+
+
+<form autocomplete="off" [formGroup]="form" #formControl="ngForm" (ngSubmit)="submit($event)">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{ 'Views.TemplateDetails' | translate }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <ms-spinner [isLoading]="loading"></ms-spinner>
+            
+             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            
+        </mat-card-content>
+        <mat-card-actions class="pull-right">
+            <ng-container *ngFor="let action of actions">
+                <button [disabled]="loading" [color]="action.color" *ngIf="action.visible && !action.override"
+                    mat-raised-button
+                    (click)="formControl.onSubmit({$event: $event, action: action.name})">{{ action.name | translate }}</button>
+            </ng-container>
+        </mat-card-actions>
+    </mat-card>
+</form>
+<!-- 
+<editor [init]="{
+    base_url: '/tinymce',
+    height: 500,
+    menubar: true,
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar:
+      'undo redo | formatselect | bold italic backcolor | \
+      alignleft aligncenter alignright alignjustify | \
+      bullist numlist outdent indent | removeformat | help'
+  }"></editor> -->

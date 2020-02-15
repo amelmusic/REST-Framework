@@ -131,7 +131,7 @@ namespace CodeGeneration.Roslyn.Engine
                     string sourceHash = Convert.ToBase64String(hasher.ComputeHash(Encoding.UTF8.GetBytes(inputSyntaxTree.FilePath)), 0, 6).Replace('/', '-');
                     Logger.Info($"File \"{inputSyntaxTree.FilePath}\" hashed to {sourceHash}");
                     string outputFilePath = Path.Combine(this.IntermediateOutputDirectory, Path.GetFileNameWithoutExtension(inputSyntaxTree.FilePath) + $".{sourceHash}.generated.cs");
-
+                    
 
                     // Code generation is relatively fast, but it's not free.
                     // So skip files that haven't changed since we last generated them.

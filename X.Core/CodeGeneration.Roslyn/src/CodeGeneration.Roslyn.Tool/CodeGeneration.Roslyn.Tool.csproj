@@ -4,15 +4,15 @@
     <PackageType>DotnetCliTool</PackageType>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>dotnet-codegen</AssemblyName>
+    <AssemblyName>dotnet-codegenx</AssemblyName>
     <Description>The dotnet code generation tool that works with the CodeGeneration.Roslyn nuget package.</Description>
     <CodeAnalysisRuleSet>CodeGeneration.Roslyn.Tool.ruleset</CodeAnalysisRuleSet>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <PackageId>x-dotnet-codegen</PackageId>
+    <PackageId>dotnet-codegenx</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Amel Musić</Authors>
     <Company>Amel Musić</Company>
-    <Product>x-dotnet-codegen</Product>
+    <Product>dotnet-codegenx</Product>
     <Copyright>Copyright © Amel Musić</Copyright>
   </PropertyGroup>
 

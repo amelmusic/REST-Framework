@@ -1,0 +1,14 @@
+{
+    "Common": {
+        "Yes": "Da",
+        "No": "Ne",
+        "Error": "Greška prilikom komunikacije sa serverom"
+    },
+    "Action": {
+        "save": "Sačuvaj",
+        "cancel": "Odustani"
+    },
+    "General": {
+        "Search": "Pretraga"
+    }
+}

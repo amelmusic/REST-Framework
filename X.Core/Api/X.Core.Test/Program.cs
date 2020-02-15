@@ -32,7 +32,7 @@ namespace X.Core.Test
         static void Main(string[] args)
         {
             Bug b = new Bug("mr");
-            var res = b.ToJson();
+            var res = b.ToJson(); 
             Console.WriteLine("Hello World!");
         }
     }

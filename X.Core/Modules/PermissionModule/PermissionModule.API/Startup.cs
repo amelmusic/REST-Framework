@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using PermissionModule.Model;
 using PermissionModule.Services;
@@ -17,8 +18,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
@@ -43,6 +46,7 @@ namespace PermissionModule.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             var authUrl = Configuration["Auth:Url"];
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -52,7 +56,7 @@ namespace PermissionModule.API
                     options.RequireHttpsMetadata = false;
                     // name of the API resource
                     //options.Audience = "api1";
-                    options.Audience = $"{authUrl}/resources";
+                    options.Audience = $"roles";
                 });
 
             services.AddCors();
@@ -60,47 +64,81 @@ namespace PermissionModule.API
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc(x =>
             {
-                //x.UseGeneralRoutePrefix("PerissionModulePrefix");
                 x.Filters.Add<ErrorFilter>();
                 x.Filters.Add<ActionContextFilter>();
                 x.Filters.Add<PermissionFilter>();
-            }).AddJsonOptions(options => {
+                //x.UseGeneralRoutePrefix("PermissionModule", this.GetType().Assembly); //same as module name when scaffolded
+            })
+            .AddNewtonsoftJson(options =>
+            {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            })
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.IgnoreNullValues = true;
+            //    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            //    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            //    //TODO: THIS WILL BE USABLE WHEN WE HAVE REFERENCE LOOP HANDLING
+            //})
+            .AddApplicationPart(typeof(PermissionCheckController).Assembly)
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "PermissionModule API", Version = "v1" });
-                
-                //NOTE: We only ask for roles here, since permissions are bound to that
-                c.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PermissionModule API", Version = "v1" });
+
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Flow = "implicit",
-                    AuthorizationUrl = authUrl + "/connect/authorize",
-                    Scopes = new Dictionary<string, string> {
-                        { "roles", "Access to protected resources" }
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Implicit = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = new Uri(authUrl + "/connect/authorize"),
+                            Scopes = new Dictionary<string, string> {
+                                            { "roles", "Access to protected resources" }
+                                        }
+                        }
                     }
                 });
 
-                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                {
-                    { "oauth2", new[] { "roles"} }
-                });
+                //c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                //{
+                //    { "oauth2", new[] { "roles"} }
+                //});
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                            },
+                            new[] { "roles" }
+                        }
+                    });
             });
             
             var connection = Configuration.GetConnectionString("PermissionModule");
             services.AddDbContext<Services.Database.PermissionModuleContext>(options => options.UseSqlServer(connection));
-            services.AddTransient<IPermissionChecker, PermissionChecker>();
             var builder = new ContainerBuilder();
 
             services.AddXCore(builder);
-            
+
             //we need reference so that ioc can work by default
             XCoreHelloServicesRunner servicesRunner = null;
 
+            //We need this line 
+            builder.RegisterType<PermissionChecker>()
+               .As<IPermissionChecker>()
+               .InstancePerLifetimeScope()
+               .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+               .EnableClassInterceptors()
+               .InterceptedBy(typeof(LogInterceptorProxy))
+               .InterceptedBy(typeof(CacheInterceptorProxy))
+               .InterceptedBy(typeof(TransactionInterceptorProxy));
 
             // Create the IServiceProvider based on the container.
             _container = builder.Build();
@@ -110,15 +148,13 @@ namespace PermissionModule.API
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
+                .AllowAnyHeader());
 
-            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
@@ -138,7 +174,18 @@ namespace PermissionModule.API
             });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }

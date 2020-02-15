@@ -1,0 +1,9 @@
+{  
+    "App": "common",
+    "Views": {
+       "CountryList": "Länder"
+    },
+    "Country": {
+        "code": "Lander code"
+    }
+}

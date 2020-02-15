@@ -12,12 +12,19 @@
 
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>
    
-    <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/$(Configuration)/</PackageOutputPath>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
     <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
+    <XCoreNugetVersion>0.1.76</XCoreNugetVersion>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
 </Project>

@@ -7,7 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="Stateless" Version="4.2.1" />
-    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.23.0">
+    <!--<DotNetCliToolReference Include="dotnet-codegen-x" Version="*" />-->
+    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

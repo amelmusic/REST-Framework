@@ -19,11 +19,11 @@
       <DefineConstantsItems Include="$(DefineConstants)" />
     </ItemGroup>
     <PropertyGroup>
-      <GenerateCodeFromAttributesToolPathOverride Condition="'$(GenerateCodeFromAttributesToolPathOverride)' == ''">codegen</GenerateCodeFromAttributesToolPathOverride>
-      <_CodeGenToolOutputBasePath>$(IntermediateOutputPath)$(MSBuildProjectFile).x-dotnet-codegen</_CodeGenToolOutputBasePath>
+      <GenerateCodeFromAttributesToolPathOverride Condition="'$(GenerateCodeFromAttributesToolPathOverride)' == ''">codegenx</GenerateCodeFromAttributesToolPathOverride>
+      <_CodeGenToolOutputBasePath>$(IntermediateOutputPath)$(MSBuildProjectFile).dotnet-codegenx</_CodeGenToolOutputBasePath>
       <_CodeGenToolResponseFileFullPath>$(_CodeGenToolOutputBasePath).rsp</_CodeGenToolResponseFileFullPath>
       <_CodeGenToolGeneratedFileListFullPath>$(_CodeGenToolOutputBasePath).GeneratedFileList.txt</_CodeGenToolGeneratedFileListFullPath>
-      <_CodeGenToolWarningText>x-dotnet-codegen: Failed to generate the list of generated files. The tool didn't run successfully. Please check https://github.com/AArnott/CodeGeneration.Roslyn for usage instructions.</_CodeGenToolWarningText>
+      <_CodeGenToolWarningText>dotnet-codegenx: Failed to generate the list of generated files. The tool didn't run successfully. Please check https://github.com/AArnott/CodeGeneration.Roslyn for usage instructions.</_CodeGenToolWarningText>
       <_CodeGenToolResponseFileLines>
 @(ReferencePath->'-r%0d%0a%(Identity)', '%0d%0a')
 @(DefineConstantsItems->'-d%0d%0a%(Identity)', '%0d%0a')

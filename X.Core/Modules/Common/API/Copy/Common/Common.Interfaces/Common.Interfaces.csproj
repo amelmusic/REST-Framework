@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Model\Common.Model.csproj" />
+  </ItemGroup>
+
+</Project>

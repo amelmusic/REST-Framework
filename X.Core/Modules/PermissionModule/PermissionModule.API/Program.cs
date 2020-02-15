@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace PermissionModule.API
@@ -14,7 +16,30 @@ namespace PermissionModule.API
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var seed = args.Contains("/seed");
+            if (seed)
+            {
+                args = args.Except(new[] { "/seed" }).ToArray();
+            }
+
+            var host = CreateWebHostBuilder(args).Build();
+
+            if (seed)
+            {
+                using (var scope = host.Services.CreateScope())
+                {
+                    using (var appContext = scope.ServiceProvider.GetRequiredService<Services.Database.PermissionModuleContext>())
+                    {
+                        appContext.Database.Migrate();
+                    }
+                }
+            }
+            else
+            {
+                host.Run();
+            }
+
+           
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
@@ -22,7 +47,7 @@ namespace PermissionModule.API
                 .UseStartup<Startup>()
                 .ConfigureLogging((hostingContext, logging) =>
                 {
-                    if (hostingContext.HostingEnvironment.IsDevelopment())
+                    if (hostingContext.HostingEnvironment.EnvironmentName == "Development")
                     {
                         logging.AddDebug();
                         logging.AddConsole();

@@ -44,7 +44,7 @@ namespace PermissionModule.Services
         public Lazy<IPermissionService> PermissionService { get; set; }
 
         [Log]
-        [Cache(ExpirationType.ExpiresIn, "00:03:00", isUserContextAware: true)]
+        //[Cache(ExpirationType.ExpiresIn, "00:03:00", isUserContextAware: true)]
         public virtual async Task<PermissionCheckResult> IsAllowed(Model.Requests.PermissionCheckRequest request)
         {
             PermissionCheckResult isAllowed = null;

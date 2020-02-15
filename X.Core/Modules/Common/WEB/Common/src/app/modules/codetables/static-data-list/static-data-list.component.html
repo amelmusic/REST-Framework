@@ -1,0 +1,99 @@
+
+
+    <div class="container-list" (keydown.control.backspace)="clear()" (keyup.enter)="search(true)" tabindex="0">
+        
+        <mat-card>
+            <mat-card-content>
+                <div class="row">
+                    <div class="col col-sm-10">
+                        <div>
+                            <form autocomplete="off" [formGroup]="form">
+                                <formly-form [form]="form" [fields]="fields" [model]="searchObject"></formly-form>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col col-sm-2 text-center">
+                        <button (click)="search(true)" mat-mini-fab color="primary" aria-label="Search">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                        <button (click)="details({id: 'new'})" mat-mini-fab aria-label="Add">
+                                <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        
+     
+    <mat-card *ngIf="isFilterDescriptionShown">
+        <ms-spinner [isLoading]="isLoading"></ms-spinner>
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon role="img" aria-hidden="true">find_in_page</mat-icon>
+            </div>
+            <mat-card-title>{{'General.SearchFilterDescriptionTitle' | translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p class="search-filter-description-info-panel">
+                {{'General.SearchFilterDescription' | translate}}
+            </p>
+        </mat-card-content>
+    </mat-card>
+    <mat-card [hidden]="isFilterDescriptionShown || searchResult?.resultList?.length > 0">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon role="img" aria-hidden="true">cloud_off</mat-icon>
+            </div>
+            <mat-card-title>{{'General.SearchNoResultTitle' | translate}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                {{'General.SearchNoResultDescription' | translate}}
+            </p>
+        </mat-card-content>
+    </mat-card>
+ <mat-card [hidden]="isFilterDescriptionShown || searchResult?.resultList?.length === 0">
+        <mat-card-content>
+            <ms-spinner [isLoading]="isLoading"></ms-spinner>
+            <div class="row">
+                <div class="col col-sm-12">
+                    <table mat-table matSort [dataSource]="searchResult?.resultList">
+                        
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'StaticData.name' | translate }} </th>
+                                <td mat-cell *matCellDef="let element" appCellLocalizer="{{'StaticData.name' | translate }}"> {{element.name }} </td>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="code">
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'StaticData.code' | translate }} </th>
+                                <td mat-cell *matCellDef="let element" appCellLocalizer="{{'StaticData.code' | translate }}"> {{element.code }} </td>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="parentCode">
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'StaticData.parentCode' | translate }} </th>
+                                <td mat-cell *matCellDef="let element" appCellLocalizer="{{'StaticData.parentCode' | translate }}"> {{element.parentCode }} </td>
+                            </ng-container>
+                        
+                            <ng-container matColumnDef="language">
+                                <th mat-header-cell mat-sort-header *matHeaderCellDef> {{'StaticData.language' | translate }} </th>
+                                <td mat-cell *matCellDef="let element" appCellLocalizer="{{'StaticData.language' | translate }}"> {{element.language }} </td>
+                            </ng-container>
+                        
+                        
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row (click)="details(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator [length]="searchResult?.count" [pageIndex]="searchObject?.page"
+                        [pageSize]="searchObject?.pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    
+    
+    
+    </div>
+    
+
+

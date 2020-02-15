@@ -16,9 +16,9 @@ namespace X.Core.RESTClient.Core
 
         public IActionContext ActionContext { get; set; }
 
-        public RESTClient(string resourceName, IActionContext actionContext, IConfiguration configuration)
+        public RESTClient(string moduleName, string resourceName, IActionContext actionContext, IConfiguration configuration)
         {
-            var key = "RESTModules." + this.GetType().Name;
+            var key = "RESTModules:" + moduleName;
             var absolutePath = configuration[key];
 
             if (string.IsNullOrWhiteSpace(absolutePath))

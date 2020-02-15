@@ -1,0 +1,21 @@
+<div>
+	<button mat-button [matMenuTriggerFor]="menu_activator">
+	  <img style="border-radius: 50%" width="24" height="24" [src]="selectImage">
+	</button>
+   <mat-menu #menu_activator>
+      <div class="xcore-lang-popu1p">
+         <div  fxLayout="row wrap" class="pad-all-xs">
+            <mat-list>
+               <mat-list-item *ngFor="let language of languages">
+                  <img mat-list-icon class="mrgn-r-xs" width="25" height="14" src="{{language.img}}">
+                  <p mat-line>
+                        <a class="pad-all-xs xcore-block" href="javascript:void(0)" (click)="setLang(language.value)">
+                             <span>{{language.name}}</span>
+                        </a>
+                     </p>
+               </mat-list-item>
+               </mat-list>
+         </div>
+      </div>
+   </mat-menu>
+</div>

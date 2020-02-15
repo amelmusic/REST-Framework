@@ -12,7 +12,7 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>
    

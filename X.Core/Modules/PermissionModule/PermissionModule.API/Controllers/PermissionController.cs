@@ -7,7 +7,7 @@ using PermissionModule.Interfaces;
 using PermissionModule.Model;
 using PermissionModule.Model.Requests;
 
-namespace PermissionModule.API
+namespace PermissionModule.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

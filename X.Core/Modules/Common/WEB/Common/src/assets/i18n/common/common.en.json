@@ -1,0 +1,17 @@
+{
+    "Common": {
+        "Yes": "Yes",
+        "No": "No",
+        "Error": "Error while communicating with server",
+        "FilterTitle": "Opala man"
+    },
+    "Action": {
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "General": {
+        "Search": "Search",
+        "SearchFilterDescriptionTitle": "Search",
+        "SearchFilterDescription": "Please specify criteria and press enter or click on search button"
+    }
+}

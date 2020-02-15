@@ -10,20 +10,13 @@ namespace PermissionModule.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize()]
+    //[Authorize()]
     public class ValuesController : ControllerBase
     {
-        protected X.Core.Services.Core.StateMachine.StateMachine<XCoreHelloStateMachineEnum, XCoreHelloStateMachineTriggerEnum> _machine
-        {
-            get;
-            set;
-        }
 
-        public ValuesController(
-            X.Core.Services.Core.StateMachine.StateMachine<XCoreHelloStateMachineEnum, XCoreHelloStateMachineTriggerEnum
-            > machine)
+        public ValuesController()
         {
-            _machine = machine;
+
         }
         // GET api/values
         [HttpGet]

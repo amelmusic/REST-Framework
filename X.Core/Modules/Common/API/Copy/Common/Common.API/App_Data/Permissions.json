@@ -1,0 +1,11 @@
+﻿[
+  {
+    "path": "customers.*",
+    "roles": [ "admin", "manager" ],
+    "isAllowed": "true"
+  },
+  {
+    "path": "*",
+    "isAllowed": "true"
+  }
+]

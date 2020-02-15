@@ -17,6 +17,7 @@ namespace CodeGeneration.Roslyn.Generate
         private static int Main(string[] args)
         {
             //Debugger.Launch();
+
             IReadOnlyList<string> compile = Array.Empty<string>();
             IReadOnlyList<string> refs = Array.Empty<string>();
             IReadOnlyList<string> preprocessorSymbols = Array.Empty<string>();

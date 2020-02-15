@@ -1,14 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="X.Core.Generator" Version="0.1.60" />
-    <PackageReference Include="X.Core.Root" Version="0.1.60" />
-    <PackageReference Include="X.Core.Services" Version="0.1.60" />
+    <Compile Remove="Migrations\20200104134526_Init.cs" />
+    <Compile Remove="Migrations\20200104134526_Init.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Services" Version="$(XCoreNugetVersion)" />
   </ItemGroup>
 
   <ItemGroup>

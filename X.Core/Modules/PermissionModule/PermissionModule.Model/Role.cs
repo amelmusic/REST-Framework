@@ -16,9 +16,10 @@ namespace PermissionModule.Model
             RoleRelationsRole = new HashSet<RoleRelations>();
         }
 
+        [Filter(Filter = FilterEnum.List | FilterEnum.Equal)]
         [Key]
         public int Id { get; set; }
-        [Filter(Filter = FilterEnum.List | FilterEnum.Equal)]
+        [Filter(Filter = FilterEnum.List | FilterEnum.Equal | FilterEnum.GreatherThanOrEqual)]
         [Required]
         [StringLength(50)]
         public string Name { get; set; }

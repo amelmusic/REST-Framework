@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PermissionModule.Interfaces\PermissionModule.Interfaces.csproj" />
+    <ProjectReference Include="..\PermissionModule.Model\PermissionModule.Model.csproj" />
+    <ProjectReference Include="..\PermissionModule.Services\PermissionModule.Services.csproj" />
+  </ItemGroup>
+
+</Project>

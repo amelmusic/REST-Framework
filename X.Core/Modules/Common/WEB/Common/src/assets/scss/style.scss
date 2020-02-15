@@ -1,0 +1,35 @@
+
+
+@import "material.variables";
+// @import "mixins/bi-app/bi-app-ltr";
+@import "app.variables";
+@import "mixins";
+@import "core";
+// @import "material";
+
+@import "utilities/space";
+
+.app {
+   overflow-y: hidden;
+}
+
+.text-center {
+   button {
+      margin: 5px;
+   }
+}
+
+.container-list {
+   outline: none;
+}
+button {
+   outline: none !important;
+}
+
+.search-filter-description-info-panel {
+   min-height: 150px;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+   
+}

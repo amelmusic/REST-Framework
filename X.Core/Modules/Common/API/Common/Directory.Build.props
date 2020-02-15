@@ -1,0 +1,35 @@
+﻿<Project>
+  <Import Project="version.props" />
+  <PropertyGroup Label="Metadata">
+    <Authors>Amel Musić</Authors>
+    <Company>Amel Musić</Company>
+    <Copyright>Copyright © Amel Musić</Copyright>
+    <LicenseExpression>MS-PL</LicenseExpression>
+    <PackageProjectUrl>https://github.com/amelmusic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/amelmusic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <WarningsAsErrors Condition=" '$(Configuration)' == Release ">false</WarningsAsErrors>
+   
+    <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
+    <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
+    <XCoreNugetVersion>0.1.72</XCoreNugetVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <!--Version metadata is updated to match the package's one
+        by SetPackageVersionInProps target in .csproj-->
+    <DotNetCliToolReference Include="dotnet-codegen-x" Version="0.23.0" />
+  </ItemGroup>
+</Project>

@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <VersionPrefix>0.1.78</VersionPrefix>
+    <VersionPrefix>0.1.80</VersionPrefix>
     <PackageVersion Condition="'$(VersionSuffix)' == ''">$(VersionPrefix)</PackageVersion>
     <PackageVersion Condition="'$(VersionSuffix)' != ''">$(VersionPrefix)-$(VersionSuffix)</PackageVersion>
     <XCodeGenerationVersion>0.9.2</XCodeGenerationVersion>

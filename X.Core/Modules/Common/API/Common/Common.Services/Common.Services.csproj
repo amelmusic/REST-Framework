@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Compile Remove="Migrations\20191229160907_Init.cs" />
+    <Compile Remove="Migrations\20191229160907_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191229161930_Init.cs" />
+    <Compile Remove="Migrations\20191229161930_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191229202848_Init.cs" />
+    <Compile Remove="Migrations\20191229202848_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191229212518_Init.cs" />
+    <Compile Remove="Migrations\20191229212518_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191229215814_Init.cs" />
+    <Compile Remove="Migrations\20191229215814_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191229223405_Init.cs" />
+    <Compile Remove="Migrations\20191229223405_Init.Designer.cs" />
+    <Compile Remove="Migrations\20191230205946_Init.cs" />
+    <Compile Remove="Migrations\20191230205946_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200101130137_Init.cs" />
+    <Compile Remove="Migrations\20200101130137_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200101130809_Init.cs" />
+    <Compile Remove="Migrations\20200101130809_Init.Designer.cs" />
+    <Compile Remove="Migrations\20200101222920_Init.cs" />
+    <Compile Remove="Migrations\20200101222920_Init.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Antiforgery" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="PermissionModule.All" Version="0.1.1" />
+    <PackageReference Include="RazorLight" Version="2.0.0-beta4" />
+    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Services" Version="$(XCoreNugetVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Interfaces\Common.Interfaces.csproj" />
+    <ProjectReference Include="..\Common.Model\Common.Model.csproj" />
+  </ItemGroup>
+
+</Project>

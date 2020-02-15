@@ -124,6 +124,8 @@ namespace PermissionModule.Services.Database
 
                 entity.Property(e => e.ModifiedById).IsUnicode(false);
             });
+            OnModelCreatingPartial(modelBuilder);
         }
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

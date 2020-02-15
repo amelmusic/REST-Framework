@@ -41,7 +41,7 @@ namespace PermissionModule.Services
                                 ORDER BY Level
                                 OPTION (MAXRECURSION 1000)
                                     ";
-            var result = Context.RoleRelations.FromSql(rawSqlString).AsNoTracking().ToList();
+            var result = Context.RoleRelations.FromSqlRaw(rawSqlString).AsNoTracking().ToList();
 
             foreach (var item in result)
             {
@@ -81,7 +81,7 @@ namespace PermissionModule.Services
                                 ORDER BY Level
                                 OPTION (MAXRECURSION 1000)
                                     ";
-            var result = Context.RoleRelations.FromSql(rawSqlString).AsNoTracking().ToList();
+            var result = Context.RoleRelations.FromSqlRaw(rawSqlString).AsNoTracking().ToList();
 
             foreach (var item in result)
             {

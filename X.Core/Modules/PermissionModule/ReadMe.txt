@@ -3,7 +3,7 @@ First, if needed change port. By default if will be 5001
 
 Database:
 	If you already have database, you can easily scaffold it usind db scaffold command:
-	Scaffold-DbContext 'Data Source=localhost;Initial Catalog=Core360_IdentityManager; Integrated Security = true' Microsoft.EntityFrameworkCore.SqlServer -Context PermissionModuleContext -DataAnnotations -Force -Tables permission.Permission, permission.PermissionGroup, permission.Role, permission.RolePermission, permission.RoleRelations, permission.RoleType
+	Scaffold-DbContext 'Data Source=localhost;Initial Catalog=Users; Integrated Security = true' Microsoft.EntityFrameworkCore.SqlServer -Context UsersContext -OutputDir Database -DataAnnotations -Force
 	Please set inside Package Manager Console as startup project [PermissionModule].Services project
 
 	To enable migrations, you can use EF core migration commands through nuget package manager console:
