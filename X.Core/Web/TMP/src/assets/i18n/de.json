@@ -1,9 +1,0 @@
-{  
-    "App": "xcorewebapp",
-    "Views": {
-       "CountryList": "Länder"
-    },
-    "Country": {
-        "code": "Lander code"
-    }
-}
