@@ -1,0 +1,19 @@
+.taskboard-wrapper{
+   .separator-line{
+      border-right:1px solid rgba(0, 0, 0, 0.12);
+   }
+}
+@media screen and (max-width:959px){
+   .taskboard-wrapper{
+      .taskboard-col:nth-child(2) .separator-line{
+         border-right-width:0;
+      }
+   }
+}
+@media screen and (max-width:599px){
+   .taskboard-wrapper{
+      .separator-line{
+         border-right-width:0;
+      }
+   }
+}

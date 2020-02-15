@@ -1,0 +1,12 @@
+<mat-card class="description-wrap pad-y-md mrgn-x-none">
+   <div class="gene-sec-title">
+      <h2>{{'Description'|translate}}</h2>
+   </div>
+   <div class="gene-sec-content mrgn">
+      <p class="font-bold mrgn-b-sm">{{courseDetail.description.title}}</p>
+      <p>{{courseDetail.description.content}}</p>
+      <ul class="mrgn-b-none pad-l-md pad-r-none">
+         <li *ngFor = "let feature of courseDetail.description.features">{{feature}}</li>
+      </ul>
+   </div>
+</mat-card>

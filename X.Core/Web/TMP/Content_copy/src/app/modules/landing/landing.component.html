@@ -1,0 +1,123 @@
+  
+<section id="heading" class="mat-typography" [ngStyle.lt-md]="{'margin-top': '30px', 'margin-bottom': '30px'}">
+  <div class="container">	
+		<div class="heading-section" fxLayout="column" fxLayoutAlign="center center">
+    		<div [class.animated]="isHeading" [class.fadeInLeft]="isHeading">
+	        <h1 [ngStyle.xs]="{'font-size': '32px'}" [ngStyle.sm]="{'font-size': '42px'}">This is the expansion title</h1>
+	        </div>
+	        <div [class.animated]="isSubheading" [class.fadeInRight]="isSubheading">
+	        <h2 [ngStyle.xs]="{'font-size': '18px'}" [ngStyle.sm]="{'font-size': '22px'}">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</h2>
+            </div>
+            <p>
+                Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.
+            </p>
+	        <div fxLayout="row" [class.animated]="isHeadingBtn" [class.fadeIn]="isHeadingBtn" [class.heading-btn]="isHeadingBtn">
+        		<a class="heading-button-left" mat-flat-button color="accent">Action</a>
+	    	</div>
+	    </div>
+   </div>
+</section>
+
+
+<section [class.animated]="isHeadingBtn" [class.fadeIn]="isHeadingBtn" id="about" class="mat-typography " [ngStyle.lt-md]="{'margin-top': '50px', 'margin-bottom': '50px'}">
+    <div class="container">
+        <div class="about-section about-heading" fxLayout="column" fxLayoutAlign="center center">
+          <div>
+          <h2 [ngStyle.lt-md]="{'margin-bottom': '15px'}">About</h2>
+          </div>
+          <div>
+          <h3 [ngStyle.xs]="{'font-size': '18px'}" [ngStyle.sm]="{'font-size': '22px'}">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</h3>
+          </div>
+      </div>
+
+      <div  fxLayout="row" fxLayout.lt-md="column" fxLayoutWrap="nowrap" fxLayoutGap="30px">
+          <div fxFlex="25">
+                <div fxLayout="column" fxLayoutAlign="center center" [ngStyle.xs]="{'padding': '0 60px'}">
+                  <div>
+                    <i [ngStyle.lt-md]="{'font-size': '48px'}" class="material-icons">build</i>
+                  </div>
+                  <span fxFlex="30px"></span>
+                  <h2 class="about-text">This is the expansion title</h2>
+                  <span fxFlex="10px"></span>
+                  <p class="about-text">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</p>
+                </div>
+            </div>
+
+            <div fxFlex="25">
+                <div fxLayout="column" fxLayoutAlign="center center" [ngStyle.lt-md]="{'padding': '0 60px'}">
+                  <div>
+                    <i [ngStyle.lt-md]="{'font-size': '48px'}" class="material-icons">alarm</i>
+                  </div>
+                  <span fxFlex="30px"></span>
+                  <h2 class="about-text">This is the expansion title</h2>
+                  <span fxFlex="10px"></span>
+                  <p class="about-text">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</p>
+                </div>
+            </div>
+
+            <div fxFlex="25">
+                <div fxLayout="column" fxLayoutAlign="center center" [ngStyle.xs]="{'padding': '0 60px'}">
+                  <div>
+                    <i [ngStyle.lt-md]="{'font-size': '48px'}" class="material-icons">stars</i>
+                  </div>
+                  <span fxFlex="30px"></span>
+                  <h2 class="about-text">This is the expansion title</h2>
+                  <span fxFlex="10px"></span>
+
+                  <p class="about-text">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</p>
+                </div>
+            </div>
+
+            <div fxFlex="25">
+                <div fxLayout="column" fxLayoutAlign="center center" [ngStyle.xs]="{'padding': '0 60px'}">
+                  <div>
+                    <i [ngStyle.lt-md]="{'font-size': '48px'}" class="material-icons">settings</i>
+                  </div>
+                  <span fxFlex="30px"></span>
+                  <h2 class="about-text">This is the expansion title</h2>
+                  <span fxFlex="10px"></span>
+
+                  <p class="about-text">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</p>
+                </div>     
+            </div>
+      </div>
+    </div>
+</section>
+
+
+<section id="portfolio" [class.animated]="isHeadingBtn" [class.fadeIn]="isHeadingBtn"  [ngStyle.lt-md]="{'margin-top': '30px', 'margin-bottom': '30px'}">
+    <div class="container portfolio-card">
+
+      <div class="portfolio-section portfolio-heading mat-typography" fxLayout="column" fxLayoutAlign="center center">
+          <div>
+          <h2 [ngStyle.lt-md]="{'margin-bottom': '15px'}">Portfolio</h2>
+          </div>
+          <div>
+          <h3 [ngStyle.xs]="{'font-size': '18px'}" [ngStyle.sm]="{'font-size': '22px'}">Lorem ipsum dolor sit amet conse ctetur adipi sicing elit. Doloribus numquam quis.</h3>
+          </div>
+      </div>
+      
+      <div class="portfolio-row" fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="nowrap" fxLayoutGap="30px" fxLayoutGap.sm="8px">
+        <div *ngFor="let project of projectList" fxFlex="33.33" >
+            <mat-card class="example-card">
+                <mat-card-header>
+                  <div mat-card-avatar class="example-header-image"></div>
+                  <mat-card-title>{{project.title}}</mat-card-title>
+                  <mat-card-subtitle>{{project.subtitle}}</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image [src]="project.image" alt="Photo of a Shiba Inu">
+                <mat-card-content>
+                  <p>
+                    {{project.content}}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-button>LIKE</button>
+                  <button mat-button>SHARE</button>
+                </mat-card-actions>
+              </mat-card>
+        </div>
+      </div>
+
+    </div>
+</section>

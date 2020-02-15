@@ -1,0 +1,13 @@
+/*=========|Editor|==========*/
+.ql-container {
+    background-color: $light-color;
+}
+.ql-toolbar.ql-snow {
+    padding: 15px;
+    background-color: $light-color;
+}
+@media(min-width:1280px) {
+    body .ql-container .ql-editor {
+        min-height: 400px;
+    }
+}

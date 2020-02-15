@@ -1,0 +1,98 @@
+<ais-instantsearch
+   [config]="{
+   appId: 'latency',
+   apiKey: '6be0576ff61c053d5f9a3225e2a90f76',
+   indexName: 'ikea'
+   }">
+   <div class="ecommerce-wrap {{shopShowType}}-wrap">
+      <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full">
+         <div fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-sm="70" fxFlex.gt-md="75">
+            <div class="utilities-wrap" fxLayout="row wrap" fxLayoutAlign="end stretch">
+               <div fxFlex.gt-md="calc(100% - 155px)" fxFlex.gt-xs="calc(100% - 155px)" fxFlex="calc(100% - 155px)">
+                  <div class="sec-title mrgn-all-md">
+                     <h3 class="mrgn-b-none">{{'Shop'|translate}} {{shopShowType|translate}}</h3>
+                  </div>
+               </div>
+               <div fxFlex.gt-md="118px" fxFlex.gt-xs="130px" fxFlex="130px">
+                  <mat-card class="switcher-wrap pad-x-sm pad-y-sm" fxLayoutAlign="space-between stretch">
+                     <i class="material-icons inline-block grid-icon" (click)="itemsShowType('grid')">apps</i>
+                     <mat-divider [vertical]="true"></mat-divider>
+                     <i class="material-icons inline-block mrgn-r-none mrgn-l-xs list-icon" (click)="itemsShowType('list')">list</i>
+                  </mat-card>
+               </div>
+            </div>
+            <div>
+               <ais-hits [transformItems]="transformHits">
+                  <ng-template let-hits="hits">
+                     <ng-container *ngIf="(hits && hits.length>0); else errorBlock">
+                        <ng-container *ngIf="shopShowType == 'grid' ; else elseBlock">
+                           <ms-shop-grid fxLayout="row wrap" fxLayoutAlign="start stretch" [shopGridData]="hits" (addToCart)="addToCart($event)"></ms-shop-grid>
+                        </ng-container>
+                        <ng-template #elseBlock>
+                           <ms-shop-list fxLayout="row wrap" fxLayoutAlign="start stretch" [shopGridData]="hits" (addToCart)="addToCart($event)"></ms-shop-list>
+                        </ng-template>
+                     </ng-container>
+                     <ng-template #errorBlock>
+                        <div class="mrgn-all-md">
+                           No Product Found.
+                        </div>
+                     </ng-template>
+                  </ng-template>
+               </ais-hits>
+            </div>
+         </div>
+         <div fxFlex="100" fxFlex.gt-xs="100" fxFlex.gt-sm="30" fxFlex.gt-md="25">
+            <div class="widgets-sidebar-wrap" fxLayout="column">
+               <div class="search-wrap">
+                  <mat-card>
+                     <ais-search-box placeholder="Search a product"></ais-search-box>
+                  </mat-card>
+               </div>
+               <div class="category-wrap">
+                  <mat-card>
+                     <ais-panel header="{{'CATEGORY'|translate}}">
+                        <ais-refinement-list
+                           attribute="materials"
+                           operator="or"
+                           limit="10">
+                        </ais-refinement-list>
+                     </ais-panel>
+                  </mat-card>
+               </div>
+               <div class="colors-wrap">
+                  <mat-card>
+                     <ais-panel header="{{'COLOR'|translate}}">
+                        <ais-refinement-list
+                           attribute="colors"
+                           operator="or"
+                           limit="10">
+                        </ais-refinement-list>
+                     </ais-panel>
+                  </mat-card>
+               </div>
+               <div class="price-wrap">
+                  <mat-card>
+                     <ais-panel header="{{'PRICE'|translate}}">
+                        <ais-range-slider attribute="price" [pips]="true" [tooltips]="true" [min]="0"></ais-range-slider>
+                     </ais-panel>
+                  </mat-card>
+               </div>
+               <div class="rating-wrap">
+                  <mat-card>
+                     <ais-panel header="{{'RATING'|translate}}"></ais-panel>
+                     <ais-rating-menu attribute="rating" andUpLabel=""></ais-rating-menu>
+                  </mat-card>
+               </div>
+               <div class="clear-filter">
+                  <mat-card>
+                     <ais-clear-refinements buttonLabel="Clear all filters"></ais-clear-refinements>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="ecom-pagination-wrap pad-y-lg">
+      <ais-pagination></ais-pagination>
+   </div>
+</ais-instantsearch>

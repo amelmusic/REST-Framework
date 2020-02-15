@@ -1,0 +1,9 @@
+$active-cell-color:#fff; 
+
+
+
+.datatable-body-cell.sort-active.active{
+   .datatable-body-cell-label{
+   color: $active-cell-color;   
+   }
+}

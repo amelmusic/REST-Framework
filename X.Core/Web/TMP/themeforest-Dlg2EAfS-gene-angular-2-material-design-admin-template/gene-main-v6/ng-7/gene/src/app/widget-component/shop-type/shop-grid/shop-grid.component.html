@@ -1,0 +1,25 @@
+<div *ngFor="let shop of shopGridData" fxFlex.gt-md="33.333" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100">
+	<mat-card class="product-item">
+		<mat-card-content>
+			<div>
+				<div class="image-wrap mrgn-b-md text-center">
+               <img src="{{shop.image}}" width="200" height="200">	
+               <span class="new-tag">New</span>					
+				</div>	
+            <div class="content-wrap">
+               <span class="inline-block gene-text-lg font-bold mrgn-b-xs warn-text">{{shop.price|currency}}</span>
+               <h4 class="mrgn-b-none">{{shop.name}}</h4>
+               <p>{{shop.type}}</p>
+               <div class="button-wrap text-right">
+                  <div *ngIf="!ifItemExistInCart(shop)">
+                     <button mat-raised-button class="success-bg mrgn-r-none" (click)="addTOCart(shop)">Add To Cart</button>
+                  </div>
+                  <div *ngIf="ifItemExistInCart(shop)">
+                     <button mat-raised-button class="success-bg mrgn-r-none" (click)="viewCart()">View Cart</button>
+                  </div>	
+               </div>
+            </div>
+			</div>         
+		</mat-card-content>
+	</mat-card>
+</div>

@@ -1,0 +1,14 @@
+<div class="gene-card-content">
+   <div fxLayout="row" fxLayoutAlign="start center">
+      <div fxLayout="column">
+         <div class="gene-relative gene-easy-pie"><span class="gene-absolute font-bold">{{saleCardContent.percent}}%</span>
+            <easy-pie-chart [percent]="saleCardContent.percent" [options]="saleCardContent.options"></easy-pie-chart>
+         </div>
+      </div>
+      <div class="mrgn-l-md">
+         <h3>{{saleCardContent.sold_out}}</h3>
+         <h3>{{saleCardContent.price}}</h3>
+         <p class="{{saleCardContent.text_color}} gene-text-xl">{{saleCardContent.status}}</p>
+      </div>
+   </div>
+</div>

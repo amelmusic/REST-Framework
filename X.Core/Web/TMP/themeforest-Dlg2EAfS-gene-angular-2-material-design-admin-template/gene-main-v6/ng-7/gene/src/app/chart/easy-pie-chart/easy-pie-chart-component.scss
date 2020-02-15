@@ -1,0 +1,22 @@
+.gene-easy-page .gene-absolute {
+    font-weight: bold;
+    left: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 45%;
+}
+@media(max-width:580px){
+    canvas{
+        width: 100%;
+    }
+}
+pre{
+overflow-x: auto;
+}
+@media(max-width:599px){
+   .set-chart-resp canvas{
+      width: 200px !important;
+      height: 200px !important;
+   }
+}

@@ -1,0 +1,67 @@
+<div class="courses-signin">
+   <div class="banner-image-wrap courses-bg-img">
+      <div class="banner-content-wrap height-full bg-warn-overlay">
+         <div fxLayout="row wrap" fxLayoutAlign="center center" class="height-full">
+            <div fxFlex.gt-sm="75" fxFlex.gt-xs="75" fxFlex="90">
+               <h2 class="text-inverse">Learn With Your Convenience</h2>
+               <h4 class="text-inverse">Learn any Course anywhere anytime from our 200 courses starting from $60 USD.</h4>
+               <div class="search wrap">
+                  <form class="search-form">
+                     <mat-form-field>
+                        <input class="text-inverse" matInput placeholder="Find Your Course">
+                     </mat-form-field>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div fxLayout="row wrap" fxLayoutAlign="center center" class="height-full">
+      <div fxFlex.gt-sm="75" fxFlex.gt-xs="75" fxFlex="100">
+         <div class="bg-white shop-by-category section-gap pad-y-lg">
+            <div fxLayout="row wrap" fxLayoutAlign="none">
+               <div fxFlex.gt-md="50" fxFlex="100">
+                  <mat-card>
+                     <h2 class="mrgn-b-md">{{'User Sign In'|translate}}</h2>
+                     <form>
+                        <div class="mrgn-b-md">
+                           <mat-form-field class="full-wid">
+                              <input matInput type="email" placeholder="Email" required>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-md">
+                           <mat-form-field class="full-wid">
+                              <input matInput type="password" placeholder="Password" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" class="mrgn-b-md" fxLayoutAlign="start center">
+                           <mat-checkbox  fxFlex.gt-xs="50" fxFlex="100">Remember Me</mat-checkbox>
+                           <a class="mrgn-b-md" fxFlex.gt-xs="50" fxFlex="100" class="text-right" [routerLink]="['/session/forgot-passwordV2']">Forgot Password?</a>
+                        </div>
+                        <button color="warn" class="button-lg mrgn-b-md" mat-raised-button (click)="signIn()">Sign In</button>
+                        <p>Don't have an account? <a [routerLink]="['/session/registerV2']" class="primary-text">Click here to create one</a></p>
+                     </form>
+                  </mat-card>
+               </div>
+               <div fxFlex.gt-md="50" fxFlex="100">
+                  <mat-card>
+                     <h2>{{'Guest Checkout'|translate}}</h2>
+                     <p>Proceed to checkout and create an account later.</p>
+                     <button color="warn" class="button-lg" mat-raised-button (click)="continueAsGuest()">Continue
+                     as Guest</button>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+         <ng-template #elseBlock>
+            <div class="section-gap-lg text-center">
+               <div class="mb-4">
+                  <img src="assets/images/empty-cart.png" height="128" width="128" alt="cart-empty">
+               </div>
+               <h4> Your Shopping Bag is empty.</h4>
+               <a href="javascript:void(0)" class="primary-color" [routerLink]="['/']">Go for Shopping</a>
+            </div>
+         </ng-template>
+      </div>
+   </div>
+</div>

@@ -1,0 +1,65 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Input'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p>Inputs are the basic input component of Material 2</p>
+      <form>
+         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput placeholder="Company (disabled)" disabled value="Google">
+               </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput placeholder="First name">
+               </mat-form-field>
+            </div>
+         </div>
+         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput placeholder="Long Last Name That Will Be Truncated">
+               </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <textarea matInput placeholder="Address">1600 Amphitheatre Pkwy</textarea>
+               </mat-form-field>
+            </div>
+         </div>
+         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <textarea matInput placeholder="Address 2"></textarea>
+               </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput placeholder="City">
+               </mat-form-field>
+            </div>
+         </div>
+         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput placeholder="State">
+               </mat-form-field>
+            </div>
+            <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+               <mat-form-field class="full-wid">
+                  <input matInput #postalCode maxlength="5" placeholder="Postal Code" value="94043">
+                  <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+               </mat-form-field>
+            </div>
+         </div>
+      </form>
+   </div>
+</mat-card>

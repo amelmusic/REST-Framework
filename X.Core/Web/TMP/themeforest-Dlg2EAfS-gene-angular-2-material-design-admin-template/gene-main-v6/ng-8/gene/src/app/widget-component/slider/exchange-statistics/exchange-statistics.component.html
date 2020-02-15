@@ -1,0 +1,33 @@
+<ngx-slick-carousel [config]="exchangeStatisticConfig">
+   <div class="gene-card-content" ngxSlickItem *ngFor="let content of exchangeStatistic">
+      <div>
+         <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div class="crypto-icon-wrap inline-block" fxFlex.gt-sm="calc(100% - 180px)" fxFlex.gt-xs="100" fxFlex="100">
+               <span class="cc {{content.icon1}} {{content.icon1_color}} mrgn-b-md"></span>
+               <span class="cc {{content.icon2}} {{content.icon2_Color}} mrgn-b-md"></span>
+            </div>
+            <div  fxFlex.gt-sm="180px" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="crypto-text-wrap mrgn-b-sm">
+                  <span class="inline-block">{{content.icon1_name}}</span>
+                  <span class="inline-block mrgn-l-sm mrgn-r-sm">/</span>
+                  <span class="inline-block">{{content.icon2_name}}</span>
+               </div>
+               <div class="crypto-result-price">
+                  <div fxLayout="row" fxLayoutAlign="space-between start">
+                     <span class="font-bold">Price:</span> <span>{{content.price}}</span>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="space-between start"> 
+                     <span class="font-bold">
+                     Volume:
+                     </span>
+                     <span class="inline-block">{{content.volume}}<span class="gene-block success-text">{{content.percentage}}%</span></span>                           
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="chart-wrap" style="height: 100px">
+            <ms-stats-line-chart [data]="content.chartData" [label]="content.chartLabel" [color]="content.chartColor"></ms-stats-line-chart>
+         </div>
+      </div>
+   </div>
+</ngx-slick-carousel>

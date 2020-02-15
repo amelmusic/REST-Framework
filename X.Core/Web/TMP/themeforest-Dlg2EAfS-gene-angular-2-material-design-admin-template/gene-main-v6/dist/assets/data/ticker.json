@@ -1,0 +1,98 @@
+[
+   {
+      "coin1" : "BTC",
+      "coin2" : "USD",
+      "price" : "$ 3,884.95",
+      "market_cap" : "12.3%",
+      "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+  {
+      "coin1" : "BTC",
+      "coin2" : "ETH",
+      "price" : "Ξ 29.33",
+      "market_cap" : "3.3%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   },
+    {
+      "coin1" : "BTC",
+      "coin2" : "EUR",
+      "price" : "€ 3,409.48",
+      "market_cap" : "14.3%",
+      "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+    {
+      "coin1" : "ETH",
+      "coin2" : "EUR",
+      "price" : "€ 111.61",
+      "market_cap" : "7.3%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   },
+   {
+      "coin1" : "ETH",
+      "coin2" : "USD",
+      "price" : "$ 133.02",
+      "market_cap" : "1.43%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   },
+  {
+      "coin2" : "GBP",
+      "coin1" : "LTC",
+      "price" : "£ 23141.85",
+      "market_cap" : "14.3%",
+       "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+   {
+      "coin1" : "EOS",
+      "coin2" : "USD",
+      "price" : "$ 1383.65",
+      "market_cap" : "6.3%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   },
+   {
+      "coin1" : "BTC",
+      "coin2" : "GBP",
+      "price" : "£ 2,918.94",
+      "market_cap" : "13.3%",
+      "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+   {
+      "coin1" : "ETH",
+      "coin2" : "GBP",
+      "price" : "£ 99123.67",
+      "market_cap" : "21.2%",
+      "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+    {
+      "coin1" : "EUR",
+      "coin2" : "GBP",
+      "price" : "£ 218.94",
+      "market_cap" : "1.23%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   },
+   {
+      "coin1" : "BTC",
+      "coin2" : "USDT",
+      "price" : "₮ 3,869.09",
+      "market_cap" : "10.3%",
+      "icon" : "fa-arrow-up",
+      "text_color" : "success-text"
+   },
+   {
+      "coin1" : "ETH",
+      "coin2" : "USDT",
+      "price" : "₮ 131.89",
+      "market_cap" : "3.43%",
+      "icon" : "fa-arrow-down",
+      "text_color" : "warn-text"
+   }
+]

@@ -1,0 +1,23 @@
+.video-player-wrap{
+   .video-pl{
+      display: flex;
+      justify-content: center;
+      border-radius: 4px;
+      width: auto;
+      video{
+         width: 100%;
+         cursor: pointer;
+      }
+   }
+   .audio-pl{
+      height: 50px;
+   }
+   vg-controls {
+      left: 0;
+      right: 0;
+   }
+   vg-scrub-bar{
+      left: 2rem;
+      width:calc(100% - 4rem);
+   }
+}

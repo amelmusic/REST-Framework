@@ -1,0 +1,30 @@
+.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.download {
+  cursor: pointer; /* "hand" cursor */
+}
+
+div {
+  display: flex;
+}
+input {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  font: inherit;
+  text-align: left;
+}
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}

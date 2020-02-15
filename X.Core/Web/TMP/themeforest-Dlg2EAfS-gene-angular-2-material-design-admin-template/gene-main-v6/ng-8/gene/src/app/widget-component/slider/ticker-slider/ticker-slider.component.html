@@ -1,0 +1,24 @@
+<ngx-slick-carousel [config]="sliderConfig">
+  <div class="pad-x-md ticker-item-wrap" fxLayoutAlign="space-between center" ngxSlickItem *ngFor="let content of sliderContent">
+      <div>
+         <div class="price-wrap font-bold">
+            <span>{{content.price}}</span>
+         </div>
+         <span class="inline-block">
+            {{content.coin1}}
+         </span>
+         <span class="inline-block mrgn-l-sm mrgn-r-sm">
+            /
+         </span>
+         <span class="inline-block">
+            {{content.coin2}}
+         </span>
+      </div>
+      <div>
+         <span class="market-cap font-bold {{content.text_color}}">
+            <i class="fa {{content.icon}}"></i>
+            {{content.market_cap}}
+         </span>
+      </div>
+   </div>
+</ngx-slick-carousel>

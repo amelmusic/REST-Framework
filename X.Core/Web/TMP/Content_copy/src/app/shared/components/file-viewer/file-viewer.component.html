@@ -1,0 +1,12 @@
+<!-- <app-file-viewer-pdf *ngIf="fileUrl && fileInfo?.mimeType == 'application/pdf'" [displayCard]="displayCard" [fileInfo]="fileInfo" [fileUrl]="fileUrl"></app-file-viewer-pdf> -->
+<div>
+        <div class="row">
+            <div class="col-sm-1">
+                    <mat-icon style="margin-left: 10px;" class="mrgn-r-xs" matSuffix (click)="download()">file_download</mat-icon>
+            </div>
+            <div class="col-sm-10 text-center">
+                    <p style="text-align: center">{{fileInfo?.title}}</p> 
+            </div>
+        </div>
+        <img *ngIf="data" id="img" [src]="data" alt="Attached file" style="width: 100%">
+</div>

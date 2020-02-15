@@ -1,0 +1,15 @@
+<div fxLayout="row wrap" fxLayoutAlign="start">
+  	<div fxFlex="100%">
+        <ngx-datatable
+        class="material selection-cell mrgn-all-md"
+        [rows]="rows"
+        [columnMode]="'force'"
+        [columns]="columns"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="50"
+        [selected]="selected"
+        [selectionType]="'cell'">
+      </ngx-datatable>
+    </div>
+</div>

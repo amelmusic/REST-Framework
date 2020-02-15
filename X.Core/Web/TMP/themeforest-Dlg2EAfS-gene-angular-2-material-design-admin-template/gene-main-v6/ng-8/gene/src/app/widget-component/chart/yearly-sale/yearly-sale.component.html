@@ -1,0 +1,3 @@
+<div class="gene-card-content" *ngIf="showChart">
+	<canvas width="300" height="200" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barStackChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"> </canvas>
+</div>

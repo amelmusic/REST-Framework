@@ -1,0 +1,15 @@
+<div fxLayout="row wrap" fxLayoutAlign="start">
+   <mat-card fxFlex="100%" style="padding: 0;">
+      <ngx-datatable
+         class="material sorting"
+         [rows]="rows"
+         [columns]="columns"
+         [sortType]="'multi'"
+         [columnMode]="'force'"
+         [headerHeight]="50"
+         [footerHeight]="50"
+         [rowHeight]="50"
+         [scrollbarV]="true">
+      </ngx-datatable>
+   </mat-card>
+</div>

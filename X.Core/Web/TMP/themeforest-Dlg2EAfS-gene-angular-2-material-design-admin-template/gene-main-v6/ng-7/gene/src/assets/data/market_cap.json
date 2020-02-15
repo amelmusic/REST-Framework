@@ -1,0 +1,339 @@
+[
+	{
+		"sr_no" : "01",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+		"expand" : true,
+		"yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "02",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "03",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	      	"Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "04",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "05",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "06",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "07",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+     "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	},
+	{
+		"sr_no" : "08",
+		"currency" : "Bitcoin",
+		"market_cap" : "$172,12783",
+		"price" : "$12983",
+		"volume" : "$31,440,000",
+		"change" : "+ 10.86%",
+		"more" : "More",
+      "yearly" : {
+	      "chartLabel" : [
+	         "2011", "2012", "2013", "2014", "2015","2016","2017"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 5, 100, 60, 150, 25, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "weekly" : {
+	      "chartLabel" : [
+	        "Sunday", "Monday", "Tuesday","Wednesday", "Thursday","Friday","Saturday"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [60, 25, 150, 60, 100, 5, 60],
+	           "label":"Progress"
+	         }
+	      ] 
+	   },
+	   "monthly" : {
+	      "chartLabel" : [
+	      	"January", "February", "March", "April","May", "June","July"
+	      ],
+	      "chartData" : [
+	         {
+	           "data": [10, 65, 40, 150, 40, 85, 30],
+	           "label":"Progress"
+	         }
+	      ] 
+	   }
+	}
+]

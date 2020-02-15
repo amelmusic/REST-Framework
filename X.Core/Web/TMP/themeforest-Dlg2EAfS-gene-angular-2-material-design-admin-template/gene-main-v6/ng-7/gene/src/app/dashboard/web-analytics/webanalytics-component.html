@@ -1,0 +1,363 @@
+
+<div fxLayout="row wrap" fxLayoutAlign="center stretch">
+	<div fxFlex="100%" fxFlex.md="49.5%" fxFlex.sm="100%" fxFlex.gt-md>
+		<mat-card class="card-full-height">
+			<ms-pie-chart [data]="pieChartDemoData" title="Audience" textColor="#222328"></ms-pie-chart>
+		</mat-card>
+	</div>
+	<div fxFlex="100%" fxFlex.md="49.5%" fxFlex.sm="100%" fxFlex.gt-md>
+		<div fxLayout="row" class="full-wid" fxLayoutAlign="start {{card.flex}}" *ngFor="let card of saleCard">
+		<mat-card class="card-full-width">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxLayout="column">
+					   <h4>{{card.title|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+					   <mat-icon>sync</mat-icon>
+					</button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+					   <mat-icon>more_horiz</mat-icon>
+					</button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<ms-sale-card [saleCardContent]="card"></ms-sale-card>
+		</mat-card>
+      </div>
+	</div>
+	<div fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-md>
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxLayout="column">
+						<h4>{{'Grow Sales'|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content user-profile-wrap">
+				<div fxLayout="row" fxLayoutAlign="start center" class="primary-bg no-gutter user-profile-content">
+					<div fxLayout="column"> <img src="assets/img/user-12.jpg" class="img-circle"></div>
+					<div class="mrgn-l-md">
+						<h3>Emmi Michel</h3> <span>Senior Developer</span></div>
+				</div>
+				<ul class="user-profile-list list-style-none pad-t-md">
+					<li> <span>524 barrows Causway</span> </li>
+					<li> <span>loremipsum@example.org</span> </li>
+					<li> <span>123-4569-7890</span> </li>
+				</ul>
+				<div class="social-icons mrgn-b-md">
+					<ul class="gene-list list-inline">
+						<li> <a><i class="fa fa-facebook"></i>556</a> </li>
+						<li> <a><i class="fa fa-pinterest"></i>62</a> </li>
+						<li> <a><i class="fa fa-twitter"></i>108</a> </li>
+					</ul>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<button mat-button class="primary-bg">Send Message</button>
+				</div>
+			</div>
+		</mat-card>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start">
+	<div fxFlex="100" fxFlex.lg="50" fxFlex.sm="100" fxFlex.gt-md="60">
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxLayout="column">
+						<h4>{{'Browser Stack'|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+         <ms-browser-stack [barChartData]="barChartData" [barChartLabels]="barChartLabels" [barStackChartOptions]="barStackChartOptions" [barChartColors]="barChartColors" [barChartLegend]="barChartLegend" [barChartType]="barChartType"></ms-browser-stack>
+		</mat-card>
+	</div>
+	<div fxFlex="100" fxFlex.lg="50" fxFlex.sm="100" fxFlex.gt-md="40">
+		<div fxLayout="row" fxLayoutAlign="center" fxLayout="row wrap" class="height-full">
+			<div class="social-col" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="50" *ngFor="let content of socialCardContent">
+				<ms-social-card-v2 [socialCardContent]="content"></ms-social-card-v2>
+			</div>
+		</div>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+	<div fxFlex="100%" fxFlex.md="49.5%" fxFlex.sm="100%" fxFlex.gt-md>
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'Chating'|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content dash-chat">
+            <perfect-scrollbar class=" set-list-scroll">
+               <div *ngFor=" let chat of chats" [ngClass]="{'gene-sender': chat.admin }">
+                  <div fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md">
+                     <div class="dash-thumb" fxFlex.gt-sm="50px" fxFlex.gt-xs="50px" fxFlex="50px">
+                        <img class="img-circle" src="{{chat.photo}}" alt="User Image" width="50" height="50">
+                     </div>
+                     <div class="pad-wrap dash-content" fxFlex.gt-sm="calc(100% - 50px)" fxFlex.gt-xs="calc(100% - 50px)" fxFlex="100">
+                        <div class="">
+                           <div class="pad-all-md border-rad-base" [ngClass]="{'primary-bg': chat.admin === true, 'accent-bg': chat.admin=== false }">
+                              <h5 class="">{{chat.title}}</h5>
+                              <p class="margin-none">{{chat.desc}}</p>
+                           </div>
+                           <div>
+                              <h5 class="meta-post">{{chat.chatdate}} <i class="fa fa-reply mrgn-l-r-sm" aria-hidden="true"></i></h5>
+                           </div>
+                        </div>
+                     </div>
+                     <span fxFlex></span>
+                  </div>
+               </div>
+            </perfect-scrollbar>
+			</div>
+		</mat-card>
+	</div>
+	<div fxFlex="100%" fxFlex.md="49.5%" fxFlex.sm="100%" fxFlex.gt-md>
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'Message'|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content msg-wrapper">
+            <perfect-scrollbar class=" set-list-scroll">
+               <div *ngFor=" let msg of message">
+                  <div fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md gene-relative msg-wrap-list">
+                     <div class="dash-thumb gene-relative" fxFlex.gt-sm="50px" fxFlex.gt-xs="50px" fxFlex="50px">
+                        <img class="img-circle" src="{{msg.photo}}" alt="User Image" width="50" height="50">
+                        <i class="fa fa-circle gene-absolute warn-text"></i>
+                     </div>
+                     <div class="pad-wrap dash-content" fxFlex.gt-sm="calc(100% - 50px)" fxFlex.gt-xs="calc(100% - 50px)" fxFlex="100">
+                        <div class="border-rad-base">
+                           <span class="font-bold">{{msg.title}}</span>
+                           <p class="margin-none">{{msg.desc}}</p>
+                        </div>
+                        <div> 
+                           <h5 class="meta-post">{{msg.msgdate}}</h5> 
+                        </div> 
+                        <a href="javascript:void(0)" class="gene-absolute primary-text">
+                           <i class="fa fa-reply mrgn-l-r-sm" aria-hidden="true"></i>
+                        </a> 
+                     </div> 
+                     <span fxFlex></span>
+                  </div>
+               </div>
+            </perfect-scrollbar>
+			</div>
+		</mat-card>
+	</div>
+	<div fxFlex="100%" fxFlex.sm="100%" fxFlex.gt-md>
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'Ticket'|translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content">
+            <perfect-scrollbar class="set-list-scroll">
+               <div *ngFor=" let ticket of tickets" class="ticket-list-item">
+                  <div fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md gene-relative msg-wrap-list">
+                     <div class="dash-thumb gene-relative" fxFlex.gt-sm="50px" fxFlex.gt-xs="50px" fxFlex="50px"> 
+                        <img class="img-circle" src="{{ticket.photo}}" alt="User Image" width="50" height="50"> 
+                     </div>
+                     <div class="pad-wrap dash-content" fxFlex.gt-sm="calc(100% - 50px)" fxFlex.gt-xs="calc(100% - 50px)" fxFlex="100">
+                        <div class="border-rad-base">
+                           <span class="font-bold">{{ticket.title}}</span>
+                           <p class="mrgn-b-xs">{{ticket.desc}}</p>
+                        </div>
+                        <div> 
+                           <h5 class="label primary-bg border-rad-base">{{ticket.status}}</h5>
+                        </div>
+                     </div> 
+                     <span fxFlex></span> 
+                  </div>
+               </div>
+            </perfect-scrollbar>
+			</div>
+		</mat-card>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+	<div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100">
+		<mat-card class="card-full-height">
+			<div class="gene-wheather-widget" *ngFor="let info of weatherInfo">
+				<div fxLayout="row" fxLayoutAlign="start center gene-today-wheather">
+					<div fxLayout="column">
+						<h2>{{info.day}}</h2>
+						<h2>{{info.date}}</h2>
+						<h2>{{info.time}}</h2>
+					</div> <span fxFlex></span>
+					<div class="current-day  gene-relative"> <img src="{{info.image}}" alt="Wheathe icon" width="270" height="270"> <span class="current-temp gene-absolute">{{info.temperature}}</span> </div>
+					<!-- <mat-divider></mat-divider> -->
+				</div>
+				<div class="wheather-info">
+					<h5 class="mrgn-b-lg">Weather info</h5>
+					<ul class="gene-list">
+						<li><span class="info-head"></span> Wind <span class="info-data">{{info.wind}}</span></li>
+						<li><span class="info-head"></span> Sunrise <span class="info-data">{{info.sunrise}}</span></li>
+						<li><span class="info-head"></span> Humanfeel <span class="info-data">{{info.Humanfeel}}</span></li>
+						<li><span class="info-head"></span> Sunset <span class="info-data">{{info.sunset}}</span></li>
+						<li><span class="info-head"></span> Pressure <span class="info-data">{{info.pressure}}</span></li>
+					</ul>
+				</div>
+				<div class="wheather-future-day">
+					<ul class="list-inline-block gene-list">
+						<li *ngFor="let dayInfo of info.featureDayInfo">
+							<img src="{{dayInfo.weatherImage}}" alt="Wheathe icon" width="270" height="270">
+							<span class="gene-block">{{dayInfo.day}}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</mat-card>
+	</div>
+	<div fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100">
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'User Activity'|translate}}</h4>
+               </div> 
+               <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content activity-wrappper">
+				<div *ngFor=" let activity of activities">
+					<div fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md gene-relative msg-wrap-list">
+						<div class="dash-thumb gene-relative" fxFlex.gt-sm="50px" fxFlex.gt-xs="50px" fxFlex="50px">
+                     <img class="img-circle" src="{{activity.photo}}" alt="User Image" width="50" height="50">
+                  </div>
+						<div class="pad-wrap dash-content" fxFlex.gt-sm="calc(100% - 50px)" fxFlex.gt-xs="calc(100% - 50px)" fxFlex="100">
+							<div class="border-rad-base"> <span class="primary-text gene-text-xl">{{activity.title}}</span>
+								<p class="mrgn-b-xs">{{activity.desc}}</p>
+							</div>
+							<div>
+                        <h5 class="meta-post">{{activity.activitydate}}</h5>
+                     </div>
+                  </div> 
+                  <span fxFlex></span> 
+               </div>
+				</div>
+			</div>
+		</mat-card>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+	<div fxFlex.gt-md="50" fxFlex="100">
+		<div fxLayout="row wrap" class="height-full" fxLayoutAlign="start stretch">
+			<div fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-sm="50"fxFlex.gt-md="50" *ngFor="let content of serverCardContent">
+				<ms-server-card [serverCard]="content"></ms-server-card>
+			</div>
+		</div>
+	</div>
+	<div fxFlex.gt-md="50" fxFlex="100">
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'Live Chart Support'|translate}}</h4>
+               </div> 
+               <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<ms-live-chart-support [polarAreaChartData]="polarAreaChartData" [polarAreaChartLabels]="polarAreaChartLabels" [polarChartColors]="polarChartColors" [polarAreaChartType]="polarAreaChartType"></ms-live-chart-support>
+		</mat-card>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start">
+	<div fxFlex.gt-sm="100" fxFlex="100">
+		<ms-stacked-area-chart fxFlex="100%" [data]="stackedAreaChartData" [options]="stackedAreaChartOptions"></ms-stacked-area-chart>
+	</div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+	<div fxFlex.gt-sm="50" fxFlex="100">
+		<mat-card class="card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start start">
+					<div fxLayout="column">
+						<h4>{{'Mixed Chart'|translate}}</h4>
+               </div> 
+               <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<ms-mixed-chart [mixedPointChartData]="mixedPointChartData" [mixedChartLabels]="mixedChartLabels" [mixedChartOptions]="mixedChartOptions" [mixedChartColors]="mixedChartColors" [mixedChartLegend]="mixedChartLegend" [barChartType]="barChartType"></ms-mixed-chart>
+		</mat-card>
+	</div>
+	<div fxFlex.gt-sm="50" fxFlex="100">
+		<ms-line-chart title="{{'Memory Usage'|translate}}" textColor="#000" chartColor="#1565C0" [data]="lineChartDemoData"> </ms-line-chart>
+	</div>
+</div>
+<mat-menu #options="matMenu" x-position="before">
+	<button mat-menu-item>
+         <mat-icon>settings</mat-icon> Settings </button>
+	<button mat-menu-item>
+         <mat-icon>more</mat-icon> View More </button>
+	<button mat-menu-item>
+         <mat-icon>notifications_off</mat-icon> Disable notifications </button>
+	<button mat-menu-item>
+         <mat-icon>exit_to_app</mat-icon> Remove Panel </button>
+</mat-menu>

@@ -1,0 +1,251 @@
+/*==========|Dashboard|=========*/
+//Common sections
+//Message widget 
+.chat-text {
+	display: inline-block;
+	margin-right: 0.5rem;
+	margin-bottom: 0;
+}
+
+.meta-post {
+	color: $meta-post-color;
+	font-weight: $meta-post-font-weight !important;
+}
+.live-chat-card{
+   .chat-list {
+      .title-wrap{
+         align-items: center;
+         justify-content: start;
+      }
+
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 1.5rem 0 0;
+      &:first-child {
+         padding-top: 0;
+      }
+      &:last-child {
+         margin-bottom: 1.6rem;
+      }
+   }
+   .receiver {
+      justify-content: flex-end !important;
+      .chat-thumbnail {
+         order: 2;
+      }
+      .chat-content {
+         order: 1;
+         padding-left: 0;
+      }
+   }
+}
+.dash-chat {
+	margin-bottom: 1rem !important;
+	.dash-thumb {
+		order: 2;
+	}
+	.dash-content {
+		order: 1;
+	}
+	.meta-post {
+		margin-top: 0.3rem;
+		display: block;
+	}
+}
+
+.gene-sender {
+	.dash-thumb {
+		order: 1;
+	}
+	.dash-content {
+		order: 2;
+	}
+}
+
+//Team list widget 
+.gene-team-list {
+	.mat-list-item-content {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+		padding: 0 !important;
+	}
+	.mat-list-item {
+		&:last-child {
+			margin-bottom: 1.7em;
+		}
+	}
+}
+
+//Traffic widget
+.gene-progess-md.mat-progress-bar {
+	height: 1.25rem;
+	margin-bottom: 1rem;
+}
+
+//Google widget
+.sebm-google-map-container {
+	width: 100%;
+	height: 300px;
+	display: flex;
+}
+
+//To do list widget
+.todos .checked {
+	text-decoration: line-through;
+}
+.todos .todolist-scroll{
+   max-height: 385px;
+   overflow-y: auto;
+}
+
+body .gene-theme-list {
+	.mat-list-item {
+		.mat-list-item-content {
+			padding-left: 0;
+			padding-right: 0;
+		}
+		margin-bottom: 1rem;
+		padding: 1rem 1.2rem;
+		border-radius: $border-radius-base;
+	}
+}
+
+//Breadcrumbs
+.gene-breadcrumbs {
+	ul.breadcrumbs {
+		padding: 0;
+	}
+}
+
+//Easy pie widget
+.gene-easy-pie {
+	span.gene-absolute {
+		right: 0;
+		top: 40%;
+		text-align: center;
+		left: 0;
+	}
+}
+
+//Userprofile widget
+div.user-profile-wrap {
+	padding-top: 0;
+	.user-profile-content {
+		padding: 2.5rem;
+	}
+	.user-profile-list {
+		span {
+			display: block;
+			margin-bottom: 0.2rem;
+		}
+	}
+}
+
+//msg-wrapper
+.msg-wrapper {
+	a.gene-absolute {
+		right: 0;
+		top: 0;
+	}
+	.dash-thumb {
+		.gene-absolute {
+			border: 1px solid $light-color;
+			border-radius: $border-radius-base;
+			bottom: 8px;
+			font-size: 0.8rem;
+			right: -6px;
+		}
+	}
+}
+
+//Activity Widget
+.activity-wrapper {
+	p {
+		margin-bottom: 0.2rem;
+	}
+}
+
+//chart line widget
+.display-dots-line-chart {
+	.nvd3 .nv-groups .nv-point {
+		stroke-opacity: 1 !important;
+		fill-opacity: 1 !important;
+		stroke-width: 6px;
+		&.hover {
+			stroke-width: 7px;
+		}
+	}
+	.nv-line {
+		stroke-width: 3.5;
+	}
+}
+
+//drag and drop
+.gene-dragula .mat-list .mat-list-item,
+.mat-nav-list .mat-list-item {
+	color: $font-color;
+}
+
+//form wiz 
+.gene-form-wizard {
+	.mat-tab-label-active {
+		@extend .primary-bg;
+	}
+}
+
+//notifications
+.notification-wrap {
+	.mat-list-base .mat-list-item {
+		height: auto;
+	}
+}
+
+//email statistics
+.center-gene-card-content{
+   height: calc(100% - 2.3rem);
+   display: flex;
+   align-items: center;
+}
+
+//Chatting/Message/Ticket
+.set-list-scroll{
+   max-height: 720px;
+   overflow: hidden;
+   overflow-y: auto;
+   margin:0 -12px;
+   padding:0 12px;
+}
+@media(max-width:1300px){
+   .set-list-scroll{
+      max-height: 600px;
+   }
+}
+.ticket-list-item{
+   padding: 0.25rem 0;
+   &:first-child{
+      padding-top: 0;
+   }
+   &:last-child{
+      padding-bottom: 0;
+   }
+}
+
+[dir="rtl"] {
+	div.user-profile-wrap {
+		.user-profile-list {
+			padding-right: 0;
+		}
+	}
+	.msg-wrapper {
+		a.gene-absolute {
+			right: inherit;
+			left: 0;
+		}
+		.dash-thumb .gene-absolute {
+			right: inherit;
+			left: -6px;
+		}
+	}
+	.chat-text {
+		margin-right: 0;
+		margin-left: 0.5rem;
+	}
+}

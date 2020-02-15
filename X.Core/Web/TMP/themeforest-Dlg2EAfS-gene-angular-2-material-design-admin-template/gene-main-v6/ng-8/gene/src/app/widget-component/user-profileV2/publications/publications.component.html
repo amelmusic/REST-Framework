@@ -1,0 +1,26 @@
+<mat-card>
+	<div class="mrgn-b-sm">
+		<div class="card-title mrgn-b-md"><h4>{{'Publications'|translate}}</h4></div>
+		<div class="mrgn-b-md" fxLayout="row wrap" *ngFor = "let publication of publicationArray">
+			<div fxFlex.xl="90px" fxFlex.lg="90px" fxFlex.md="90px"  fxFlex.sm="90px" fxFlex.xs="100">
+				<div class="mrgn-r-md mrgn-b-md">
+					<img alt="profile image" src="{{publication.image}}" width="90" height="90">
+				</div>
+			</div>
+			<div fxFlex.xl="calc(100% - 90px)" fxFlex.lg="calc(100% - 90px)" fxFlex.md="calc(100% - 90px)"  fxFlex.sm="calc(100% - 90px)" fxFlex.xs="100">
+				<div>
+					<h5>{{publication.heading}}</h5>
+					<p class="gene-text-md mrgn-b-xs">{{publication.contentType}}</p>
+				</div>
+				<div fxLayout="row wrap" fxLayoutAlign="start center">
+					<span class="pad-r-sm" fxLayoutAlign="start center" fxFlex.xs="100" fxFlex.sm="35" fxFlex.md="35" fxFlex.lg="35" fxFlex.xl="35">
+						<mat-icon class=" primary-text gene-text-lg">call_made</mat-icon><span><small>{{publication.reference}}</small></span>
+					</span>
+					<span fxLayoutAlign="start center" fxFlex.xs="100" fxFlex.sm="65" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65">
+						<mat-icon class="primary-text gene-text-lg">call_made</mat-icon><span><small>{{publication.text}}</small></span>
+					</span>
+				</div>
+			</div>		
+		</div>
+	</div>	
+</mat-card>

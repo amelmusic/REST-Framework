@@ -1,0 +1,206 @@
+<div class="pricing1-wrapper">
+   <div class="pad-b-md">
+      <div class="text-center mrgn-b-lg">
+         <h1>{{'Plans And Pricing'|translate}}</h1>
+         <div>
+            <span class="mrgn-r-sm">Monthly</span>
+            <span class="mrgn-r-sm"><mat-slide-toggle [checked]="checked" (change)="onChange($event.checked)" ></mat-slide-toggle></span>
+            <span class="mrgn-r-sm">Yearly ( get 2 month extra)</span>
+         </div>
+      </div>
+      <div fxLayout="row wrap" fxLayoutAlign="start center"> 
+         <div class="text-center" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+            <mat-card class="pricing-list card-full-height">
+               <div>
+                  <div>
+                     <div class="mrgn-b-lg">
+                        <h2>Basic</h2>
+                     </div>
+                     <div class="mrgn-b-lg">
+                        <img  width="134" height="79" class="img-responsive" src="assets/img/pricing-icon.png">
+                     </div>
+                     <div class="mrgn-b-md">Starts at</div>		
+                     <mat-card-content>
+                        <h2 class="pricing-title mrgn-b-md">FREE</h2>
+                        <p class="">Secure file sharing</p>
+                     </mat-card-content>
+                  </div>	
+                  <div>
+                     <mat-card-actions>
+                        <button mat-raised-button class="full-wid" color="primary">CREATE YOUR ACCOUNT</button>
+                     </mat-card-actions>
+                  </div>	
+               </div>	
+               <div class="text-left">
+                  <mat-list>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Desktop sync</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Mobile access</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Version history</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>SSL at-rest encryption</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>User management</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Authentication</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Desktop sync</mat-list-item>
+                  </mat-list>
+               </div>
+            </mat-card>
+         </div>
+         <div class="text-center" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+            <mat-card class="pricing-list card-full-height">
+               <div>
+                  <div class="mrgn-b-lg">
+                     <h2>Pro</h2>
+                  </div>
+                  <div class="text-center mrgn-b-lg">
+                     <img  width="134" height="79" class="img-responsive" src="assets/img/pricing-icon.png">
+                  </div>
+                  <div class="mrgn-b-md">Starts at</div>		
+                  <mat-card-content>
+                     <ng-container *ngIf = "checked == false ; else premium">
+                        <h2 class="pricing-title mrgn-b-md" fxLayoutAlign="center end">
+                           <span class="old-price mat-text-muted mrgn-r-sm font-normal">$25</span>
+                           <span class="mrgn-r-xs"><span>$</span>18</span>
+                           <sub class="font-normal gene-text-sm">/ month</sub>
+                     </h2>
+                     </ng-container>
+                     <ng-template #premium>
+                        <h2 class="pricing-title mrgn-b-md" fxLayoutAlign="center end">
+                           <span class="old-price mat-text-muted mrgn-r-sm font-normal">${{25*12}}</span>
+                           <span class="mrgn-r-xs"><span>$</span>{{18*12}}</span>
+                           <sub class="font-normal gene-text-sm">/ year</sub>
+                        </h2>
+                     </ng-template>
+                     <p>More personalization</p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                     <button mat-raised-button class="full-wid" color="primary">CREATE YOUR ACCOUNT</button>
+                  </mat-card-actions>
+               </div>	
+               <div class="text-left">
+                  <mat-list>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Custom branding</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Mobile security controls</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Standard business</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>API calls per month</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>25,000 API calls</mat-list-item>
+                  </mat-list>
+               </div>
+               <div>
+                  <mat-card-actions>
+                     <button class="full-wid" color="primary" mat-raised-button>START FREE TRIAL</button>
+                  </mat-card-actions>
+               </div>	
+            </mat-card>
+         </div>
+         <div class="text-center" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+            <mat-card class="pricing-list card-full-height">
+               <div>
+                  <div class="mrgn-b-lg">
+                     <h2>Advanced</h2>
+                  </div>
+                  <div class="mrgn-b-lg">
+                     <img  width="134" height="79" class="img-responsive" src="assets/img/pricing-icon.png">
+                  </div>
+                  <div class="mrgn-b-md">Starts at</div>	
+                  <mat-card-content>
+                     <ng-container *ngIf = "checked == false ; else business">
+                        <h2 class="pricing-title mrgn-b-md" fxLayoutAlign="center end">
+                           <span class="mat-text-muted mrgn-r-sm font-normal old-price">$75</span>
+                           <span class="mrgn-r-xs"><span>$</span>53</span>
+                           <sub class="font-normal gene-text-sm">/ month</sub>
+                        </h2>
+                     </ng-container>
+                     <ng-template #business>
+                        <h2 class="pricing-title mrgn-b-md" fxLayoutAlign="center end">
+                           <span class="mat-text-muted mrgn-r-sm font-normal old-price">${{75*12}}</span>
+                           <span class="mrgn-r-xs"><span>$</span>{{53*12}}</span>
+                           <sub class="font-normal gene-text-sm">/ year</sub>
+                        </h2>
+                     </ng-template>
+                     <p class="">Advanced Feature</p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                     <button mat-raised-button class="full-wid" color="accent">PURCHASE NOW</button>
+                  </mat-card-actions>
+               </div>
+               <div class="text-center">
+                  <span class="mrgn-b-md font-bold">
+                  <span class="gene-block mrgn-b-md">All Premium Plan Features</span>
+                  <mat-icon class="gene-text-lg">add</mat-icon></span>
+               </div>
+               <div class="text-left">
+                  <mat-list>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Workflow automations</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Unlimited integrations</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Document watermarking</mat-list-item>
+                  </mat-list>
+               </div>   
+               <div>
+                  <mat-card-actions>
+                     <button class="full-wid" color="accent" mat-raised-button>START FREE TRIAL</button>
+                  </mat-card-actions>
+               </div>		
+            </mat-card>
+         </div>
+         <div class="text-center" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="25" fxFlex.xl="25">
+            <mat-card class="pricing-list card-full-height">
+               <div>
+                  <div class="mrgn-b-lg">
+                     <h2>Enterprise</h2>
+                  </div>
+                  <div class="mrgn-b-lg">
+                     <img  width="134" height="79" class="img-responsive" src="assets/img/pricing-icon.png">
+                  </div>
+                  <div class="mrgn-b-md">Starts at</div>		
+                  <mat-card-content>
+                     <h2 class="pricing-title mrgn-b-md primary-text">$1399</h2>
+                     <p class="">Lorem ipsum dolor</p>
+                  </mat-card-content>
+                  <mat-card-actions>
+                     <button mat-raised-button class="full-wid" color="warn">GET IN TOUCH</button>
+                  </mat-card-actions>
+               </div>
+               <div class="text-center">
+                  <span class="text-center font-bold">
+                     <span class="gene-block mrgn-b-md">All Premium Plan Features</span>
+                     <mat-icon class="gene-text-lg">add</mat-icon>
+                  </span>
+               </div>
+               <div class="text-left">
+                  <mat-list>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon> Lorem ipsum dolor</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Unlimited external</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Integrations</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Security reporting</mat-list-item>
+                     <mat-list-item><mat-icon class="list-icon" mat-list-icon>fiber_manual_record</mat-icon>Password policy</mat-list-item>
+                  </mat-list>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+	<div class="text-center pad-y-lg pad-x-md">
+		<h2 class="title mrgn-b-md">{{'Get a free trial period of 15 days. Select your plan later.'|translate}}</h2>
+		<button class="mrgn-b-sm" color="primary" mat-raised-button>GET STARTED</button>
+		<p class="gene-text-md mrgn-b-none">No Credit Card Required</p>
+	</div>
+	<div class="faq-wrap pad-y-lg">
+		<div class="mrgn-b-lg text-center">
+			<h2 class="faq-title mrgn-b-md">{{'FAQ'|translate}}</h2>
+		</div>
+		<div>
+		   <div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" *ngFor = "let pricing of pricingFaq">
+               <div class="mrgn-all-md">
+                  <div class="mrgn-b-md">
+                     <h4>{{pricing.heading}}</h4>
+                  </div>
+                  <div>
+                     <p>{{pricing.content}}
+                     </p>
+                  </div>
+               </div>
+				</div>
+			</div>					
+		</div>
+	</div>			
+</div>

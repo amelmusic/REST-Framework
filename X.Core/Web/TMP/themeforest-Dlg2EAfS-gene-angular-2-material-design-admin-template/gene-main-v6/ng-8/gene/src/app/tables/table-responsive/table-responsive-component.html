@@ -1,0 +1,50 @@
+<div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+   <mat-card>
+      <div class="gene-card-title">
+         <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column">
+               <h4>{{'Table Responsive'|translate}}</h4>
+            </div> <span fxFlex></span>
+
+         </div>
+         <mat-divider></mat-divider>
+      </div>
+      <div class="gene-card-content pad-t-none">
+         <div class="table-responsive">
+            <table class="table table-hover table-middle th-fw-light mb-0">
+               <thead>
+                  <tr>
+                     <th>User Thumb</th>
+                     <th>Name</th>
+                     <th>Status</th>
+                     <th>User-Name</th>
+                     <th>User-ID</th>
+                     <th>Date Joined</th>
+
+                     <th>Ratings</th>
+                     <th>Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr *ngFor="let data of responsiveTable">
+                     <td><img src="{{data.image}}" width="50" height="50" class="img-fluid img-circle" alt="User Image"></td>
+                     <td>{{data.name}}</td>
+                     <td><span class="badge badge-success rounded">{{data.status}}</span> </td>
+                     <td>{{data.user_name}}</td>
+                     <td>{{data.user_id}}</td>
+                     <td>{{data.date_joined}}</td>
+                     <td>
+                        <ng-container *ngFor="let icons of  data.rating">
+                           <i class="{{icons}}" aria-hidden="true"></i>
+                        </ng-container>
+                     </td>
+                     <td><a href="javascript:void(0)" *ngFor="let icons of data.action">
+                        <i class="{{icons}}"></i></a>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </mat-card>
+</div>

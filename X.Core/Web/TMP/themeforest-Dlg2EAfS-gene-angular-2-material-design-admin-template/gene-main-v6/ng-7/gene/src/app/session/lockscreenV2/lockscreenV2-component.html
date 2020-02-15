@@ -1,0 +1,40 @@
+<div class="gene-lockscreenV2 pad-y-xl">
+   <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="column" fxFlex="100" fxFlex.xs="90" fxFlex.sm="80" fxFlex.md="80" fxFlex.lg="70" fxFlex.xl="60">
+         <mat-toolbar-row fxLayoutAlign="space-between" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+            <div class="mrgn-b-md">
+               <img src="assets/img/logo-sign.png">
+            </div>
+            <span class="mrgn-b-md">
+               <p class="text-center text-inverse"><button [routerLink]="['/session/registerV2']" mat-raised-button color="accent">{{'Sign Up'|translate}}</button></p>
+            </span>
+         </mat-toolbar-row>
+         <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full pad-t-xl pad-b-xl form-wrap-row">
+            <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.sm="500px" fxFlex.md="544px" fxFlex.lg="544px" fxFlex.xl="544px">
+               <mat-card class="gene-login-v2 height-full ">
+                  <div>                  
+                     <div class="login-logo text-center">
+                        <img class="img-circle" src="assets/img/user-1.jpg" alt="user" title="user"/>
+                     </div>
+                     <div fxLayout="column" fxLayoutAlign="center center" class="mrgn-b-sm text-center">
+                        <h2>{{'Johnshon Deo'|translate}}</h2>                                                    
+                        <p>{{'Welcome back to Reactify platform'|translate}}</p>
+                     </div>
+                     <form #form="ngForm" (ngSubmit)="onSubmit()" fxLayoutAlign="center start">
+                        <div fxLayout="column" fxFlex.xl="75" fxFlex.lg="75" fxFlex.md="80" fxFlex.sm="80" fxFlex.xs="100" fxLayoutAlign="start">
+                           <mat-form-field class="full-wid mrgn-b-md">
+                              <input matInput placeholder="Enter Your Password" type="password" name="password" required [(ngModel)]="password">
+                              <span matSuffix><i class="material-icons">verified_user</i></span>                              
+                           </mat-form-field>
+                           <div fxLayoutAlign="center start" class="mrgn-b-md gene-btn-wrap">
+                              <button mat-flat-button color="green-600" class="gene-btn-lg full-wid" [disabled]="!form.valid">UnLock</button>    
+                           </div>
+                        </div>
+                     </form>
+                  </div>
+               </mat-card>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

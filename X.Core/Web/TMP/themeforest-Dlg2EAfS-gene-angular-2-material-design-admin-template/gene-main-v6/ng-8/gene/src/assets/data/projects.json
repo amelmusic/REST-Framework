@@ -1,0 +1,62 @@
+[
+    {
+        "project": "Booking Shepherd App",
+        "progress": 5,
+        "color": "primary",
+        "name": "Development",
+        "team-member1": "assets/img/user-9.jpg",
+        "team-member2": "assets/img/user-2.jpg",
+        "team-member3": "assets/img/user-3.jpg",
+        "team-member4": "assets/img/user-4.jpg",
+        "team-member5": "assets/img/user-13.jpg",
+        "team-member6": "assets/img/user-12.jpg"
+    },
+    {
+        "project": "Safeguard App",
+        "progress": 46,
+        "color": "accent",
+        "name": "Requirement",
+        "team-member1": "assets/img/user-5.jpg",
+        "team-member2": "assets/img/user-6.jpg",
+        "team-member3": "assets/img/user-7.jpg",
+        "team-member4": "assets/img/user-8.jpg",
+        "team-member5": "assets/img/user-3.jpg",
+        "team-member6": "assets/img/user-7.jpg"
+    },
+    {
+        "project": "Gardening Theme",
+        "progress": 23,
+        "color": "primary",
+        "name": "Finished",
+        "team-member1": "assets/img/user-9.jpg",
+        "team-member2": "assets/img/user-10.jpg",
+        "team-member3": "assets/img/user-11.jpg",
+        "team-member4": "assets/img/user-12.jpg",
+        "team-member5": "assets/img/user-8.jpg",
+        "team-member6": "assets/img/user-3.jpg"
+    },
+    {
+        "project": "Transport Website",
+        "progress": 67,
+        "color": "warn",
+        "name": "Testing",
+        "team-member1": "assets/img/user-13.jpg",
+        "team-member2": "assets/img/user-1.jpg",
+        "team-member3": "assets/img/user-2.jpg",
+        "team-member4": "assets/img/user-3.jpg",
+        "team-member5": "assets/img/user-11.jpg",
+        "team-member6": "assets/img/user-12.jpg"
+    },
+    {
+        "project": "LongHorn Branding",
+        "progress": 12,
+        "name": "Final Review",
+        "color": "primary",
+        "team-member1": "assets/img/user-8.jpg",
+        "team-member2": "assets/img/user-5.jpg",
+        "team-member3": "assets/img/user-2.jpg",
+        "team-member4": "assets/img/user-8.jpg",
+        "team-member5": "assets/img/user-1.jpg",
+        "team-member6": "assets/img/user-3.jpg"
+    }
+]

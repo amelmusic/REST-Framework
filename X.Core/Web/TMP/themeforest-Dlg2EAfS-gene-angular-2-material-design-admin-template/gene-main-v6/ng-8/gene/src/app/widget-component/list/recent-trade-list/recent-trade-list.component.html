@@ -1,0 +1,39 @@
+<div class="gene-card-content">
+   <div class="crypto-table table-hover mrgn-b-lg">
+      <perfect-scrollbar class="crypto-table table-hover mrgn-b-lg">
+         <div class="table-responsive recent-trade-table">
+            <table mat-table [dataSource]="recentTradeList">
+               <ng-container matColumnDef="currency">
+                  <th mat-header-cell *matHeaderCellDef> Currency </th>
+                  <td mat-cell *matCellDef="let element">  <span class="cc {{element.currencyIcon}} style-icon"></span> </td>
+               </ng-container>
+               <!-- Currency Column -->
+               <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef> Status </th>
+                  <td mat-cell *matCellDef="let element"><span class="{{element.statusClass | translate}}">{{element.status}}</span></td>
+               </ng-container>
+               <!-- Status Column -->
+               <ng-container matColumnDef="price">
+                  <th mat-header-cell *matHeaderCellDef> Price </th>
+                  <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+               </ng-container>
+               <!-- Price Column -->
+               <ng-container matColumnDef="total">
+                  <th mat-header-cell *matHeaderCellDef> Total($) </th>
+                  <td mat-cell *matCellDef="let element"> ${{element.total}} </td>
+               </ng-container>
+               <!-- Total Column -->               
+               <tr mat-header-row *matHeaderRowDef="recentTradeColumns; sticky: true"></tr>
+               <tr mat-row *matRowDef="let row; columns: recentTradeColumns;"></tr>
+            </table>
+         </div>
+      </perfect-scrollbar>
+   </div>
+   <div class="stats-summary mrgn-b-sm">
+      <div>Overall Profit: <span></span><i class="fa fa-plus success-text"> $35237 </i></div>
+      <div>Overall Loss: <span></span><i class="fa fa-minus warn-text"> $200 </i></div>
+   </div>
+   <div class="button-wrap">
+      <button mat-raised-button color="primary">Download CSV</button>
+   </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="courses-detail-wrap" *ngIf = "jsonResponse.courseDetail">
+   <ms-course-detail-banner [courseDetail]="jsonResponse.courseDetail"></ms-course-detail-banner>
+   <div class="course-detail">
+      <div fxLayout="row wrap" fxLayoutAlign="center center" class="height-full">
+         <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="90" fxFlex="100">
+            <div fxLayout="row wrap" fxLayoutAlign="center start" class="height-full">
+               <div fxFlex.gt-md="70" fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="pad-x-md">
+                  <div class="course-info-wrap" *ngIf="jsonResponse.courseDetail" fxLayout="column">
+                     <ms-course-detail-learn  [courseDetail]="jsonResponse.courseDetail"></ms-course-detail-learn>
+                  </div>
+                  <div>
+                     <ms-course-detail-description [courseDetail]="jsonResponse.courseDetail"></ms-course-detail-description>
+                  </div>
+                  <div class="courses-accordion pad-y-md">
+                     <mat-accordion *ngIf=" jsonResponse.courseDetail">
+                        <div *ngFor = "let courseTopics of jsonResponse.courseDetail.topics">
+                           <ms-course-detail-overview [courseTopics]="courseTopics"></ms-course-detail-overview>
+                        </div>
+                     </mat-accordion>
+                  </div>
+                  <div class="about-instructor pad-y-md mrgn-b-md" *ngIf="jsonResponse.courseDetail">
+                     <div class="gene-sec-title">
+                        <h2>{{'About Instructor'|translate}}</h2>
+                     </div>
+                     <ms-course-detail-instructor [instructorInformation]="jsonResponse.courseDetail.instructorInformation"></ms-course-detail-instructor>
+                  </div>
+                  <mat-card class="more-courses-grid" class="mrgn-x-none">
+                     <div class="gene-sec-title">
+                        <h2>{{'More Courses from James Colt'|translate}}</h2>
+                     </div>
+                     <div fxLayout="row wrap" fxLayoutAlign="start start" class="height-full" *ngIf="jsonResponse.courseDetail">
+                        <div fxFlex.gt-sm="33" fxFlex="100" *ngFor = "let jsonResponse of jsonResponse.courseDetail.moreCourses">
+                           <div class="course-item-wrap">
+                              <ms-courses-card [course] = "jsonResponse"></ms-courses-card>
+                           </div>
+                        </div>
+                     </div>
+                  </mat-card>
+               </div>
+               <div fxFlex.gt-md="30" fxFlex.gt-sm="85" fxFlex.gt-xs="100" fxFlex="100" class="course-sidebar pad-b-xd">
+                  <div *ngIf="jsonResponse.courseDetail" fxLayout="column">
+                     <ms-course-detail-billing [billingDetails]="jsonResponse.courseDetail.billingDetails"></ms-course-detail-billing>
+                  </div>
+                  <mat-card>
+                     <div class="gene-card-header">
+                        <h4>Contrary to popular belief?</h4>
+                     </div>
+                     <div class="card-content">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                        <a href="javascript:void(0)" class="font-bold accent-text">Nulla eu augue !</a>
+                     </div>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

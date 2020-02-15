@@ -1,0 +1,14 @@
+<div fxLayout="row wrap" fxLayoutAlign="start">
+  	<div fxFlex="100%">
+      <ngx-datatable
+         class="material mrgn-all-md"
+         [rows]="rows"
+         [columns]="[{name:'Name'},{name:'Gender'},{name:'Company'}]"
+         [columnMode]="'force'"
+         [headerHeight]="50"
+         [footerHeight]="50"
+         [rowHeight]="'auto'"
+         [limit]="10">
+      </ngx-datatable>
+   </div>
+</div>

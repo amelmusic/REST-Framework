@@ -1,0 +1,133 @@
+<mat-card class="pad-y-lg pad-b-md">
+   <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+         <div class="pad-r-md">
+            <div class="dash-title font-bold"><h4>{{'Search' | translate }}</h4></div>
+         </div>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+         <div fxLayout="row wrap">
+            <div class="form-group pad-r-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(100% - 200px)" fxFlex.lg="calc(100% - 200px)" fxFlex.xl="calc(100% - 200px)">
+               <mat-form-field class="full-wid" floatLabel="never">
+                  <input matInput placeholder="Search Products">
+               </mat-form-field>
+            </div>
+            <!-- form-group -->
+            <div class="contact-btn" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="200px" fxFlex.lg="200px" fxFlex.xl="200px"> 
+               <button mat-raised-button color="primary">{{'Search' | translate }}</button>
+            </div>
+            <!-- contact-btn -->
+         </div>
+      </div>
+   </div>			
+</mat-card>	
+<div class="mrgn-all-md" fxLayoutAlign="space-between center">
+   <div class="title">
+      <h4 class="mrgn-b-none">{{'Product' | translate }} {{showType | translate}}</h4>
+   </div>
+   <!-- title -->
+   <div class="product-icon">
+      <mat-card class="mat-card switcher-wrap pad-x-sm pad-y-sm margin-none" fxLayoutAlign="space-between stretch">
+         <i class="material-icons inline-block active grid-icon" id="grid" (click)="productShowType('grid')">apps</i>
+         <mat-divider [vertical]="true"></mat-divider>
+         <i class="material-icons inline-block mrgn-r-none mrgn-l-xs list-icon" id="list" (click)="productShowType('list')">list</i>
+      </mat-card>
+   </div>
+   <!-- product-icon -->
+</div>
+<div class="filter-wrap mrgn-x-md" fxLayout="row wrap" fxLayoutGap="15px">
+   <div>
+      <mat-form-field>
+         <mat-label>Type</mat-label>
+         <mat-select>
+            <mat-option value="Men">Men</mat-option>
+            <mat-option value="Women">Women</mat-option>
+            <mat-option value="Gadgets">Gadgets</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+   <div>
+      <mat-form-field>
+         <mat-label>Recent</mat-label>
+         <mat-select>
+            <mat-option value="This Week">This Week</mat-option>
+            <mat-option value="This Month">This Month</mat-option>
+            <mat-option value="Past Month">Past Month</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+   <div>
+      <mat-form-field>
+         <mat-label>No of Items</mat-label>
+         <mat-select>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="20">20</mat-option>
+            <mat-option value="30">30</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+</div>
+<ng-container *ngIf="products && products.length >= 0; else elseBlock">
+   <ng-container *ngIf="showType == 'list';else gridtype">
+      <div fxLayout="row wrap" fxLayoutAlign="center stretch">
+         <div fxFlex.gt-md="70" fxFlex.gt-xs="80" fxFlex="100">
+            <div fxLayout="row wrap">
+               <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" *ngFor="let element of products">
+                  <div class="product-list-wrap list-wrapper">
+                     <mat-card class="product-item">
+                        <mat-card-content>
+                           <div fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="image-wrap" fxFlex.gt-md="200px" fxFlex.gt-xs="150px" fxFlex="100" fxLayoutAlign="start center">
+                                 <img src="{{element.image}}">              
+                              </div>   
+                              <div class="content-wrap pad-x-md" fxFlex.gt-md="calc(100% - 250px)" fxFlex.gt-xs="calc(100% - 250px)" fxFlex="100">
+                                 <h4>{{element.name}}</h4>
+                                 <del class="text-line">{{element.price|currency}}</del>
+                                 <span class="success-text font-bold">{{element?.discountPriceValue | currency}}</span>
+                                 <p>{{element.category}}</p>
+                                 <div class="button-wrap">
+                                    <button mat-raised-button class="success-bg">
+                                       <i class="material-icons mrgn-r-none">shopping_cart</i>
+                                    </button> 
+                                 </div>
+                              </div>
+                           </div>         
+                        </mat-card-content>
+                     </mat-card>
+                  </div>
+               </div>
+            </div>  
+         </div>
+      </div>         
+   </ng-container>
+   <ng-template #gridtype>
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="products && products.length>0">
+         <div fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let product of products; let i=index;">
+            <mat-card class="product-card">
+               <a class="p-link">
+                  <img width="626" height="800" mat-card-image [src] ="product?.image" alt="Photo of a Shiba Inu">
+               </a>
+               <div class="m-icon shop-cart">
+                  <button class="success-bg" mat-fab><i class="material-icons">shopping_cart</i></button>
+               </div>
+               <!-- m-icon -->
+               <mat-card-content class="product-content relative">
+                  <p class="category-wrap">{{product?.category}}</p>
+                  <h4><a class="title-link">{{product?.name}}</a> </h4>
+                  <div class="product-price">
+                     <div fxFlex fxLayoutAlign="start">
+                        <del class="text-line">{{product?.price | currency}}</del>
+                        <span class="success-text font-bold">{{product?.discountPriceValue | currency}}</span>
+                     </div>
+                  </div>
+                  <!--product-price-->
+               </mat-card-content>
+               <!-- product-content -->
+            </mat-card>
+         </div>
+      </div>
+   </ng-template>
+</ng-container>
+<ng-template #elseBlock>
+   <h5 class="mrgn-l-lg">No product found</h5>
+</ng-template>

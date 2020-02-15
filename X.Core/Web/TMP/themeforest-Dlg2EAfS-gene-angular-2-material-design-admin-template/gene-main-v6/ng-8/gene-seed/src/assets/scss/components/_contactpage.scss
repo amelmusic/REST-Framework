@@ -1,0 +1,46 @@
+
+/*=========|Contact Page|=========*/
+
+.contact-wrapper {
+   .contact-tab-wrapper {
+      .mat-icon {
+         color:$mat-card-icon-color;
+         font-size:18px;
+      }
+      .mat-icon-button {
+         width:2.125rem;
+         height:2.125rem;
+         line-height:30px;
+      }
+      .list-flex{
+         display:flex;
+      }
+   }
+}
+.contact-tab-wrapper .contact-links {
+   line-height: 1.2;
+}
+@media (max-width: 959px) {
+   .contact-wrapper .contact-tab-wrapper {
+      .icon {
+         opacity:0;
+         position:absolute;
+         right:0;
+         bottom:5px;
+         transition: all 0.5s ease-in-out;
+      }
+      .mat-card .mat-card:hover .icon{
+         opacity:1;
+      }  
+   } 
+   .contact-tab-wrapper .contact-item-info{
+      text-align: center;
+   }
+}
+@media (max-width: 1920px) and (min-width: 1280px) {
+   .contact-wrapper {
+      .contact-btn {
+         text-align:right;
+      }
+   }
+}

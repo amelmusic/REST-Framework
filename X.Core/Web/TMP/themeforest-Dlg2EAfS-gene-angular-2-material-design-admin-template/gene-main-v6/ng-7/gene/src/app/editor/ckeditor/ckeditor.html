@@ -1,0 +1,14 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h4>{{'Ck Editor'|translate}}</h4>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <ckeditor [(ngModel)]="ckeditorContent" [config]="config"></ckeditor>
+   </div>
+</mat-card>

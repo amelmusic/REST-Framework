@@ -1,0 +1,316 @@
+.crypto-icon-wrap{
+   .cc{
+      font-size: 3rem;
+      line-height: 2.5rem;
+   }
+}
+.crypto-duration{
+   border-radius: 5px;
+   padding: 4px 9px;
+   font-size: 0.8rem;
+}
+table.mat-table{
+   width: 100%;
+}
+//Crypto Tables heights
+.recent-trade-table{
+   max-height: 450px; //on two pages trade and crypto dashboard
+}
+.trade-history-table{
+   max-height: 300px;
+}
+.crypto-table{   
+   td.mat-cell, td.mat-footer-cell, th.mat-header-cell{
+      text-align: center;
+      &:last-of-type{
+         text-align: right;
+      }
+      &:first-of-type{
+         text-align: left;
+      }
+   }
+   .style-icon{
+      font-size: 1.5rem;
+      color:#9e9e9e;
+   }
+}
+.exchange-statistics{
+   .crypto-icon-wrap{
+      .cc{
+         display: inline-block;
+      }
+      .cc:nth-child(2){
+         margin-left: -10px;
+      }
+   }
+   .crypto-result-price {
+      width: 175px;
+   }
+}
+.quick-pay-wrap .mat-tab-label{
+   min-width: 100px;
+}
+.trade-crypto{
+   .mat-form-field-appearance-outline .mat-form-field-infix{
+      padding: 13px 0 13px 0;
+   }
+   .mat-form-field-infix{
+      border-top: 0px solid transparent;
+   }
+   .mat-select-trigger{
+      height: auto;
+      padding-bottom: 0;
+   }
+   .mat-form-field-appearance-outline .mat-form-field-outline{
+      top: 0;
+      z-index: 1;
+   }
+   .mat-form-field-appearance-outline .mat-select-arrow-wrapper{
+      transform: translate(0);
+   }
+   .mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix{
+      top: 0;    
+      padding: 0 0.5rem;
+   }
+   .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label, .mat-form-field-appearance-outline.mat-form-field-can-float .mat-input-server:focus + .mat-form-field-label-wrapper .mat-form-field-label {
+      transform: translateY(-1.09375em) scale(0.75);  
+   }
+}
+.crypto-input-prefix{
+   .mat-form-field-appearance-outline .mat-form-field-prefix, .mat-form-field-appearance-outline .mat-form-field-suffix{
+      top: 0;
+      align-self: stretch;      
+      display: flex;      
+      align-items: center;      
+      font-size: 15px;       
+      opacity: 0.7;      
+      background-color: $trade-prefix-bg;      
+      z-index: 0;      
+      margin-top: 1px;      
+      margin-bottom: 1px; 
+      min-width: 40px;
+      justify-content: center;
+   }
+   .mat-form-field-appearance-outline .mat-form-field-prefix{           
+      margin-right: 10px;     
+      margin-left: -0.75em;
+   }
+   .mat-form-field-appearance-outline .mat-form-field-suffix{           
+      margin-left: 10px;     
+      margin-right: -0.75em;
+   }
+}
+.exchange-rate-widget{
+   .mat-form-field-wrapper{
+      padding: 0;
+   }
+}
+.rotate-exchange-icon{
+   transform:rotate(90deg);
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+   color: rgba(0, 0, 0, 0.12);
+}
+body .crypto-btn{
+   min-width: auto;
+   padding: 0;
+   display: inline-block;
+   font-size: 2.5rem;
+   border-radius: 100%;
+   border: 0;
+   cursor: pointer;
+   background: none;
+}
+
+.crypto-progress-bar{
+   .mat-progress-bar-fill::after{
+      background-color:#ffffff;
+   }
+   .mat-progress-bar-buffer{
+      background-color:#CFD8DC;
+   }
+}
+
+.table-chart-wrap canvas{
+   width:150px !important;
+   height: 50px;
+   filter: drop-shadow(0px 3px 3px #716aca);
+}
+.txn-popup-wrap,.crm-list-wrap,.crm-progress-wrap {
+	.mat-list-base .mat-list-item {
+		height: auto;
+   }
+   .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content{
+      padding: 0;
+   }
+}
+body .cdk-overlay-container .txn-popup-wrap {
+   margin: -1.5rem;
+   max-width: 408px;
+}
+
+.crypto-ticker canvas{
+   width:100px;
+}
+
+
+// accounts 
+
+.table-list-wrap{
+   .mat-standard-chip{
+      border-radius: 5px;
+      min-height: 22px;
+      font-size: 12px;
+   }
+   .table-title{
+      padding:0.875rem 0rem;
+   }
+   td.mat-cell{
+    padding:14px;  
+    line-height: 1rem;
+   }
+   th.mat-header-cell {
+      padding: 14px;
+      line-height: 1rem;
+   }  
+}
+body .ticker-slider{
+   background-color: $sidebar-bg-color;
+   color: $sidebar-text-color;
+}
+.ticker-item-wrap{
+   border-left: 1px solid rgba($sidebar-text-color, 0.4);
+   border-right: 1px solid rgba($sidebar-text-color, 0.4);
+   .ticker-chart-wrap canvas{
+      width: 120px !important;
+      height: 50px !important;
+   }
+}
+.chart-wrap{
+   .stats-line-chart-wrap{
+      height: 70px;
+   }
+}
+@media (max-width:599px){
+   .ticker-slider {
+      padding-left: 0;
+      padding-right: 0;  
+   }
+   div .mat-tab-label{
+      padding:0px 8px;
+   }
+   #columnChartWithTopImages text {
+      font-size: 12px;
+   }
+}
+mat-tab-group.table-tab-list{
+   min-height:300px;
+}
+
+.coins-list-table{
+   .mat-header-cell{
+      font-size: 0.9rem
+   }
+   .mat-cell, .mat-footer-cell{
+      font-size: 0.95rem;
+   }
+   .table-chart-wrap{
+      height: 50px;
+   }
+}
+
+// mrkcap
+
+.mktcap-chart-wrap canvas{
+   height: 500px !important;
+   width: 100% !important;
+}
+
+//Trade
+//buy-sell
+.trade-chart-wrap canvas{
+   height: 410px !important;
+   width: 100% !important;
+}
+@media(max-width:991px){
+   .mrkcap-scroll-wrap{
+      margin-right: 1rem;
+      margin-left:1rem;
+      overflow-x: hidden;
+      .mktcap-wrapper .mat-expansion-panel{   
+         margin-right: 0rem;
+         margin-left:0rem;
+      }
+   }   
+   .mktcap-resp-scroll > .mat-card{
+      margin-right:0px;
+      margin-left:0px;
+   }
+}
+.mrkcap-scroll-wrap{
+   .mat-expansion-panel{   
+      margin-right:1rem;
+      margin-left:1rem;
+   }
+}   
+
+
+// client
+/*=========|Contact Page|=========*/
+
+.contact-wrapper.client-wrapper{
+   .contact-tab-wrapper {
+      .icon {
+         opacity:0;
+         position:absolute;
+         right:0;
+         bottom:5px;
+         left: auto;
+         transition: all 0.5s ease-in-out;
+      }
+      .mat-card .mat-card:hover .icon{
+         opacity:1;
+      }  
+      .contact-item-info{
+         text-align: center;
+      }
+   }  
+}    
+//Market cap
+.mktcap-wrap{
+   display: flex;
+   justify-content: space-between;
+   width: 100%;
+   padding: 1rem 0;
+   .mktcap-title{
+      width: calc(100% / 7);
+      white-space: nowrap;
+      text-align: center;
+      padding: 0 1rem;
+      &:first-child{
+         text-align: left;
+      }
+      &:last-child{
+         text-align: right;
+      }
+   }
+}
+.mktcap-wrapper{
+   width: 100%;
+   overflow: hidden;
+   overflow-x: auto;
+   .mktcap-resp-scroll{
+      min-width: 907px; 
+   }
+   .mat-expansion-panel-header-description, .mat-expansion-panel-header-title{
+      margin: 0;
+   }
+}
+
+// default class 
+.cdk-overlay-pane{
+   max-width: 98vw !important;
+}
+
+

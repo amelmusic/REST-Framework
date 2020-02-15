@@ -1,0 +1,120 @@
+<div class="user-manage-list">
+   <mat-card>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between">
+         <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="mrgn-r-sm">
+               <mat-icon class="mat-icon-grey cursor-pointer">loop</mat-icon>
+            </div>
+            <div class="mrgn-l-sm mrgn-r-sm">
+               <mat-form-field>
+                  <mat-select placeholder="More">
+                     <mat-option value="All">All</mat-option>
+                     <mat-option value="Remove">Remove</mat-option>
+                     <mat-option value="Edit">Edit</mat-option>
+                     <mat-option value="Recently">Recently</mat-option>
+                  </mat-select>
+               </mat-form-field>
+            </div>
+         </div>   
+         <div class="mrgn-l-md mrgn-b-md add-user-btn" fxLayoutAlign="start center">
+            <mat-card-actions class="mat-pad-none margin-none">
+               <button mat-raised-button mat-button-sm color="primary" (click)="addNewUserDialog()">ADD NEW USER<mat-icon class="mrgn-l-md gene-text-xl">add</mat-icon></button>
+            </mat-card-actions>
+         </div>
+      </div>
+      <mat-divider></mat-divider>       
+      <div class="table-responsive">  
+         <table class="full-wid" mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="select">
+               <th mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="$event ? masterToggle() : null"
+                     [checked]="selection.hasValue() && isAllSelected()"
+                     [indeterminate]="selection.hasValue() && !isAllSelected()">
+                  </mat-checkbox>
+               </th>
+               <td mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()"
+                     (change)="$event ? selection.toggle(row) : null"
+                     [checked]="selection.isSelected(row)">
+                  </mat-checkbox>
+               </td>
+            </ng-container>
+            <ng-container matColumnDef="user">
+               <th mat-header-cell *matHeaderCellDef>User</th>
+               <td mat-cell *matCellDef="let element">
+                  <div fxLayoutAlign="start center">
+                     <div class="mrgn-r-sm user-list-image">
+                        <img class="img-circle" src="{{element.img}}" height="50" width="50">
+                     </div>
+                     <div>   
+                        <h5 class="mrgn-b-xs">{{element.firstName}} {{element.lastName}}</h5>
+                        <div *ngIf="element.isNewUser">
+                        <mat-chip-list>
+                           <mat-chip color="primary" selected>{{element.isNewUser}}</mat-chip>
+                        </mat-chip-list>
+                        </div>
+                     </div>   
+                  </div>
+               </td>
+            </ng-container>
+
+            <ng-container matColumnDef="emailAddress">
+               <th mat-header-cell *matHeaderCellDef>Email Address</th>
+               <td mat-cell *matCellDef="let element"><div class="make-ellipse">{{element.emailAddress}} </div></td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+               <th mat-header-cell *matHeaderCellDef>Status</th>
+               <td mat-cell *matCellDef="let element"> 
+                  <div fxLayoutAlign="start start">
+                     <div class="rounded mrgn-r-xs primary-bg status-icon"></div>
+                     <div class="status-text">
+                        <div>{{element.status}}</div>
+                        <div class="mat-text-muted">{{element.statusTime}}</div>
+                     </div>
+                  </div>
+               </td>
+            </ng-container>
+
+            <ng-container matColumnDef="accountType">
+               <th mat-header-cell *matHeaderCellDef>Account Type</th>
+               <td mat-cell *matCellDef="let element">
+                  <mat-chip-list>
+                     <mat-chip color="{{element.accountTypeColor}}" selected> {{element.accountType}}</mat-chip>
+                  </mat-chip-list> 
+               </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateCreated">
+               <th mat-header-cell *matHeaderCellDef>Date Created</th>
+               <td mat-cell *matCellDef="let element"> {{element.dateCreated | date:'mediumDate'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+               <th mat-header-cell *matHeaderCellDef>Action</th>
+               <td mat-cell *matCellDef="let element;let i = index;">
+                  <button mat-icon-button>
+                     <mat-icon class="mat-icon-grey gene-text-lg" (click)="onEdit(element, i)">edit</mat-icon>
+                  </button>
+                   <button mat-icon-button>
+                     <mat-icon class="mat-icon-grey gene-text-lg">remove_red_eye</mat-icon>
+                  </button>
+                   <button mat-icon-button (click)="onDelete(i)">
+                     <mat-icon class="mat-icon-grey gene-text-lg">delete</mat-icon>
+                  </button>
+               </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"
+               (click)="selection.toggle(row)"></tr>
+         </table>
+      </div>   
+      <div class="pagination">
+         <mat-paginator [length]="usermanagelist.length"
+           [pageSize]="10"
+           [pageSizeOptions]="[5, 10, 25, 100]">
+         </mat-paginator>
+      </div>
+   </mat-card>
+</div>   

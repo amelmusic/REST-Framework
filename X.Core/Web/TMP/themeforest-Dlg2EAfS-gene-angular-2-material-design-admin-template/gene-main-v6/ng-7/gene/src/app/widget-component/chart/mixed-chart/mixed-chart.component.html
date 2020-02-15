@@ -1,0 +1,5 @@
+<div class="gene-card-content" *ngIf="showChart">
+	<div fxLayout="row" fxLayoutAlign="start center">
+		<canvas baseChart width="300" height="115" [datasets]="mixedPointChartData" [labels]="mixedChartLabels" [options]="mixedChartOptions" [colors]="mixedChartColors" [legend]="mixedChartLegend" [chartType]="barChartType"></canvas>
+	</div>
+</div>

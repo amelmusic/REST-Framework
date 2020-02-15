@@ -1,0 +1,22 @@
+.bdr-left{
+   border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+.bdr-all{
+   border:1px solid rgba(0, 0, 0, 0.12);
+}
+.invoice-table-wrap{
+   &.bdr-all{
+      border-bottom: 0;
+   }
+   table{
+      min-width: 536px;
+   }
+}
+@media(max-width:600px){
+   .invoice-meta.text-right{
+      text-align: left !important;
+   }
+   [dir="rtl"] .invoice-meta.text-right{
+      text-align: right !important;
+   }
+}

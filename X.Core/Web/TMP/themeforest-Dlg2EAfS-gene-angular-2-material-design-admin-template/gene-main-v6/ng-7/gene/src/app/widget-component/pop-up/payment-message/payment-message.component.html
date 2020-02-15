@@ -1,0 +1,7 @@
+<mat-dialog-content>
+	<h3>{{paymentMessage}}</h3>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button (click)="onSubmit()"  color="warn">OK</button>
+	<button mat-raised-button (click)="dialogRef.close()" color="primary">CANCEL</button>
+</mat-dialog-actions>

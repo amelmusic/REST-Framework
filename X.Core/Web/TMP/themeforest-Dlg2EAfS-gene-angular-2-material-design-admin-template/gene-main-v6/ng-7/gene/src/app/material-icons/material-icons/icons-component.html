@@ -1,0 +1,41 @@
+<div>
+   <div>
+      <mat-card>
+         <mat-card-title>{{'Material Buttons'|translate}}</mat-card-title>
+         <mat-tab-group class="gene-mat-tab">
+            <mat-tab label="DESCRIPTION">
+               <div>
+                  <h3>{{'Material Icons'|translate}}</h3>
+                  <h4>&lt;mat-icon&gt;</h4>
+                  <p>Icons are a neat way to add some live to only-text lists. Our theme comes with a great variety of icons from the official Material Icons font.</p>
+                  <h5>Example:</h5>
+                  <p><code>&lt;mat-icon&gt;grade&lt;/mat-icon&gt;</code></p>
+               </div>
+            </mat-tab>
+            <mat-tab label="Example">
+               <div class="pad-all-md mrgn-b-sm">
+                  <h3>HTML</h3>
+                  <p>Always use Material Icon Like this:</p>
+                  <code>&lt;mat-icon&gt;grade&lt;/mat-icon&gt;</code>
+               </div>
+               <div class="pad-all-md">
+                  <h3>Output</h3>
+                  <p>Output of used Icon</p>
+                  <mat-icon>grade</mat-icon>
+               </div>
+            </mat-tab>
+         </mat-tab-group>
+      </mat-card>
+      <mat-card>
+         <div>
+            <h2>List of all Material Icons</h2>
+            <div class="mat-grid-list">
+               <div *ngFor="let icon of icons">
+                  <mat-icon>{{ icon }}</mat-icon>
+                  <span>{{ icon }}</span> 
+               </div>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+</div>

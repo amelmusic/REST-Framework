@@ -1,0 +1,547 @@
+[{
+      "serial_number": "1",
+      "desktop_name": "Bitcoin",
+      "mobile_name": "BTC",
+      "price": "Ƀ 1.00",
+      "volume": "Ƀ 97.78 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": 0.00,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 9, 7, 8]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "2",
+      "desktop_name": "Bitcoin",
+      "mobile_name": "BTC",
+      "price": "Ξ 27.64",
+      "volume": "-",
+      "total_volume" : "Ξ 13.37 M",
+      "change": 1.49,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [9, 7, 8, 6, 5]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "3",
+      "desktop_name": "Bitcoin",
+      "mobile_name": "BTC",
+      "price": "€ 119.97",
+      "volume": "€ 21.50 M",
+      "total_volume" : "€ 1.55 B",
+      "change": -0.08,
+      "tag": "EUR",
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 5, 8, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "4",
+      "desktop_name": "Ethereum",
+      "mobile_name": "ETH",
+      "price": "Ƀ 0.03572",
+      "volume": "Ƀ 126.65 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": -0.03,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 8, 6, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "5",
+      "desktop_name": "Ethereum",
+      "mobile_name": "ETH",
+      "price": "Ξ 1.00",
+      "volume": "Ξ 11.19 M",
+      "total_volume" : "Ξ 13.37 M",
+      "change": 2.16,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 8, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "6",
+      "desktop_name": "Ethereum",
+      "mobile_name": "ETH",
+      "price": "€ 120.41",
+      "volume": "€ 21.43 M",
+      "total_volume" : "€ 1.55 B",
+      "change": 0.41,
+      "market_cap": "€ 60.37 B",
+      "tag": "EUR",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 9, 8, 7]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "7",
+      "desktop_name": "EOS",
+      "mobile_name": "EOS",
+      "price": "Ƀ 0.0009280",
+      "volume": "Ƀ 58.97 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": 1.94,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 5, 7, 9, 8]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "8",
+      "desktop_name": "EOS",
+      "mobile_name": "EOS",
+      "price": "Ξ 0.02596",
+      "volume": "Ξ 1.85 M",
+      "total_volume" : "Ξ 13.37 M",
+      "change": 2.04,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 8, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "9",
+      "desktop_name": "EOS",
+      "mobile_name": "EOS",
+      "price": "€ 3.16",
+      "volume": "€ 2.03 M",
+      "total_volume" : "€ 1.55 B",
+      "change": 2.27,
+      "tag": "EUR",
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [7, 6, 8, 5, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "10",
+      "desktop_name": "Litecoin",
+      "mobile_name": "LTC",
+      "price": "Ƀ 0.01160",
+      "volume": "Ƀ 39.63 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": 0.77,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 5, 7, 8, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "11",
+      "desktop_name": "Litecoin",
+      "mobile_name": "LTC",
+      "price": "Ξ 0.3322",
+      "volume": "Ξ 12.03 k",
+      "total_volume" : "Ξ 13.37 M",
+      "change": 0.94,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 8, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "12",
+      "desktop_name": "Litecoin",
+      "mobile_name": "LTC",
+      "price": "€ 39.77",
+      "volume": "€ 2.20 M",
+      "total_volume" : "€ 1.55 B",
+      "change": 1.02,
+      "tag": "EUR",
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [9, 7, 8, 6, 5]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "13",
+      "desktop_name": "XRP",
+      "mobile_name": "XRP",
+      "price": "Ƀ 0.00008144",
+      "volume": "Ƀ 189.39 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": -0.78,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [8, 9, 7, 8, 6]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "14",
+      "desktop_name": "XRP",
+      "mobile_name": "XRP",
+      "price": "Ξ 0.002286",
+      "volume": "Ξ 139.58 k",
+      "total_volume" : "Ξ 13.37 M",
+      "change": -0.70,
+      "market_cap": "Ξ 513.51 M",
+      "tag": "ETH",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [9, 7, 6, 8, 5]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "15",
+      "desktop_name": "XRP",
+      "mobile_name": "XRP",
+      "price": "€ 0.2729",
+      "volume": "€ 5.26 M",
+      "tag": "EUR",
+      "total_volume" : "€ 1.55 B",
+      "change": -0.87,
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [5, 6, 8, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "16",
+      "desktop_name": "Bitcoin Cash",
+      "mobile_name": "BCH",
+      "price": "Ƀ 0.03841",
+      "volume": "Ƀ 10.27 k",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": 0.00,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [7, 5, 6, 8, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "17",
+      "desktop_name": "Bitcoin Cash",
+      "mobile_name": "BCH",
+      "price": "Ξ 1.01",
+      "volume": "Ξ 225.53 k",
+      "total_volume" : "Ξ 13.37 M",
+      "change": 4.11,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 5, 7, 9, 8]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "18",
+      "desktop_name": "Bitcoin Cash",
+      "mobile_name": "BCH",
+      "price": "€ 0.2728",
+      "volume": "€ 5.26 M",
+      "total_volume" : "€ 1.55 B",
+      "change": -0.91,
+      "tag": "EUR",
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 8, 7, 5, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "19",
+      "desktop_name": "ZCash",
+      "mobile_name": "ZEC",
+      "price": "Ƀ 0.01334",
+      "volume": "Ƀ 9,188.98 K",
+      "total_volume" : "Ƀ 452.93 k",
+      "change": -2.20,
+      "tag": "BTC",
+      "market_cap": "Ƀ 17.58 M",
+      "circulating_supply" : "17,583,712 BTC",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [7, 8, 6, 7, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "20",
+      "desktop_name": "ZCash",
+      "mobile_name": "ZEC",
+      "price": "Ξ 0.3740",
+      "volume": "Ξ 498.19 k",
+      "total_volume" : "Ξ 13.37 M",
+      "change": -1.84,
+      "tag": "ETH",
+      "market_cap": "Ξ 513.51 M",
+      "circulating_supply" : "17,583,712 ETH",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [6, 7, 5, 8, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   },
+   {
+      "serial_number": "21",
+      "desktop_name": "ZCash",
+      "mobile_name": "ZEC",
+      "price": "€ 45.69",
+      "tag": "EUR",
+      "volume": "€ 89.09 k",
+      "total_volume" : "€ 1.55 B",
+      "change": -2.25,
+      "market_cap": "€ 60.37 B",
+      "circulating_supply" : "17,583,712 EUR",
+      "chartLabel": ["A", "B", "C", "D", "E"],
+      "chartData": [{
+         "data": [7, 6, 8, 5, 9]
+      }],
+      "chartColor": [{
+         "lineTension": 0.5,
+         "borderColor": "#0097a7",
+         "pointBorderColor": "#0097a7",
+         "pointBorderWidth": 2,
+         "pointRadius": 0,
+         "fill": false,
+         "pointBackgroundColor": "#FFFFFF",
+         "borderWidth": 3
+      }]
+   }
+]

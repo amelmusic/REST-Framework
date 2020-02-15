@@ -1,0 +1,21 @@
+<div fxLayout="row wrap" fxLayoutAlign="start">
+   <div fxFlex="100">
+      <div class="pad-all-md mat-white box-inset mrgn-all-md">
+         <form class="example-form" fxFlex="220px">
+            <mat-form-field class="full-wid">
+               <input matInput type="text" placeholder='Type to filter the name column...' (keyup)='updateFilter($event)' />
+            </mat-form-field>
+         </form>
+      </div>
+      <ngx-datatable #table 
+      class='material mrgn-all-md' 
+      [columns]="columns" 
+      [columnMode]="'force'" 
+      [headerHeight]="50" 
+      [footerHeight]="50" 
+      [rowHeight]="'auto'" 
+      [limit]="10" 
+      [rows]='rows'>
+      </ngx-datatable>
+   </div>
+</div>

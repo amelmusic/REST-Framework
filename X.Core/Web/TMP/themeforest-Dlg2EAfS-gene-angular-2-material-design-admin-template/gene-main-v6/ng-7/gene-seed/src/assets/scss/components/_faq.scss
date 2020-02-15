@@ -1,0 +1,21 @@
+/*============|FAQ|============*/
+.faq-wrapper {
+	.mat-expansion-panel {
+		margin: 1rem !important;
+	   border-radius: 8px !important;
+	   padding: 0.875rem 1.5rem;
+	   overflow: hidden;
+	   &:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled='true']):hover {
+     		background: none;
+		}
+	   .mat-expansion-panel-header {
+	   	padding-left:0px;
+	   	padding-right:0px;
+	   }
+	   .mat-expansion-panel-content {
+			.mat-expansion-panel-body {
+		   	padding:0px;
+		   }
+		}  
+	} 
+}

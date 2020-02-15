@@ -1,0 +1,106 @@
+<div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full">
+   <div fxFlex.gt-md="65" fxFlex.gt-xs="90" fxFlex="100">
+      <mat-card class="invoice wrap mat-pad-none">
+         <div class="invoice-header" fxLayout="row wrap" fxLayoutAlign="end center">
+            <div class="email-wrap text-center pad-y-md bdr-left" fxFlex.gt-xs="136px" fxFlex="50">
+               <i class="material-icons inline-block mrgn-r-md vertical-align-mid">email</i>
+               <span class="inline-block vertical-align-mid">Email</span>
+            </div>
+            <div class="print-wrap text-center pad-y-md bdr-left" fxFlex.gt-xs="136px" fxFlex="50">
+               <i class="material-icons inline-block mrgn-r-md vertical-align-mid">print</i>
+               <span class="inline-block vertical-align-mid">Print</span>
+            </div>
+         </div>
+         <mat-divider></mat-divider>
+         <div class="invoice-content-wrap pad-all-xl">
+            <div class="title-sec mrgn-b-lg" fxLayout="row wrap">
+               <div class="logo-content" fxFlex.gt-xs="50" fxFlex="100">
+                  <div class="logo-wrap mrgn-b-md">
+                     <img _ngcontent-c0="" src="assets/img/logo.png" width="150" height="27">
+                  </div>
+                  <div class="contact-info" fxLayout="row wrap">
+                     <p fxFlex="164px">
+                        1 Infinite Loop
+                        95014 Cuperino, CA
+                        United States
+                     </p>
+                     <div fxFlex="100">
+                        <p class="mrgn-b-none">Telephone: 8003-836-3225</p>
+                        <p>Fax: 8003-836-3225</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="invoice-meta text-right" fxFlex.gt-xs="50" fxFlex="100">
+                  <p class="mrgn-b-none">Invoice: #9048392</p>
+                  <p>27th December 2018 </p>
+               </div>
+            </div>
+            <div class="address-wrap mrgn-b-lg" fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+               <div class="to-addr pad-all-md mrgn-b-md bdr-all" fxFlex.gt-md="33.333" fxFlex.gt-sm="45" fxFlex.gt-xs="100" fxFlex="100">
+                  <div class="sec-title">
+                     <h4 class="title">To</h4>
+                  </div>
+                  <div class="sec-content">
+                     <span class="font-bold">Jack Perez</span>
+                     <span class="gene-block">2nd Floor</span>
+                     <span class="gene-block">St John Street, Aberdeenshire 2541</span>
+                     <span class="gene-block">United Kingdom</span>
+                     <span class="gene-block">Phone: 05343-364-273</span>
+                     <span class="gene-block">Email: <a class="primary-text" href="mailto:info@example.com">info@example.com</a></span>
+                  </div>
+               </div>
+               <div class="ship-to-addr pad-all-md mrgn-b-md bdr-all" fxFlex.gt-md="33.333" fxFlex.gt-sm="45" fxFlex.gt-xs="100" fxFlex="100">
+                  <div class="sec-title">
+                     <h4 class="title">Ship To</h4>
+                  </div>
+                  <div class="sec-content">
+                     <span class="font-bold">Jack Perez</span>
+                     <span class="gene-block">2nd Floor</span>
+                     <span class="gene-block">St John Street, Aberdeenshire 2541</span>
+                     <span class="gene-block">United Kingdom</span>
+                     <span class="gene-block">Phone: 05343-364-273</span>
+                     <span class="gene-block">Email: <a class="primary-text" href="mailto:info@example.com">info@example.com</a></span>
+                  </div>
+               </div>
+            </div>
+            <div class="order-info-wrap mrgn-b-lg">
+               <span class="font-bold gene-block mrgn-b-xs">Order Date: Jun 15, 2016</span>
+               <span class="font-bold gene-block mrgn-b-xs">Order Status: Pending</span>
+               <span class="font-bold gene-block mrgn-b-xs">Order ID: #123456</span>
+            </div>
+            <div class="invoice-table-wrap set-overflow-x-auto bdr-all">
+               <table class="full-wid" mat-table [dataSource]="invoicesData">
+                  <ng-container matColumnDef="qty">
+                     <th mat-header-cell *matHeaderCellDef>Qty</th>
+                     <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="description">
+                     <th mat-header-cell *matHeaderCellDef>Description</th>
+                     <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="unit_price">
+                     <th mat-header-cell *matHeaderCellDef>Unit Price</th>
+                     <td mat-cell *matCellDef="let element"> {{element.unit_price}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="total">
+                     <th mat-header-cell *matHeaderCellDef>Total</th>
+                     <td mat-cell *matCellDef="let element"> {{element.total|currency}} </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row  *matRowDef="let row; columns: displayedColumns;"></tr>
+               </table>
+            </div>
+         </div>
+         <div class="invoice-footer-wrap pad-x-xl pad-b-xl" fxLayout="row wrap" fxLayoutAlign="space-between stretch">
+            <div class="note-wrap" fxFlex.gt-md="70" fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100">
+               <h2>Note</h2>
+               <p>Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.</p>
+            </div>
+            <div class="total-wrap text-right" fxFlex.gt-md="30" fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100">
+               <h2>USD 7436.00</h2>
+               <button mat-raised-button color="primary">Send Now<i class="material-icons inline-block mrgn-l-xs mrgn-r-none vertical-align-mid gene-text-lg">send</i></button>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+</div>

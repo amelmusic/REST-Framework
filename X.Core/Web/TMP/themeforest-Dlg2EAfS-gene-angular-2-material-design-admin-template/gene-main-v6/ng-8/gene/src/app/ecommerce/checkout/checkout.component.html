@@ -1,0 +1,136 @@
+<div class="checkout-wrap" fxLayout="row wrap" fxLayoutAlign="start stretch">
+   <div fxFlex="60" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="60">
+      <mat-card class="card-full-height">
+         <div>
+            <div class="sec-title">
+               <h3 class="mrgn-b-lg">{{'Billing Details'|translate}}</h3>
+            </div>	
+            <mat-card-content class="mrgn-b-none">
+               <form [formGroup]="billingForm">
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutGap.gt-sm="30px">
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(50% -30px)" fxFlex.lg="calc(50% -30px)">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">person</i>
+                           <input matInput type="text" class="form-control" placeholder="First Name">
+                        </mat-form-field>
+                     </div>
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">person</i>
+                           <input matInput type="text" class="form-control"  placeholder="Last Name">
+                        </mat-form-field>
+                     </div>	
+                  </div>
+                  <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap.gt-sm="30px">
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(50% -30px)" fxFlex.lg="calc(50% -30px)">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">mail</i>
+                           <input matInput type="email" class="form-control" placeholder="Email">
+                        </mat-form-field>
+                     </div>
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">phone</i>
+                           <input matInput type="text" class="form-control" placeholder="Mobile No">
+                        </mat-form-field>
+                     </div>	
+                  </div>			
+                  <div>
+                     <div>	
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">home</i>
+                           <input matInput type="text" class="form-control" placeholder="Address 1">
+                        </mat-form-field>
+                     </div>
+                  </div>	
+                  <div>
+                     <div>
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">home</i>
+                           <input matInput type="text"  class="form-control" placeholder="Address 2">
+                        </mat-form-field>
+                     </div>	
+                  </div>
+                  <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap.gt-sm="30px" class="mrgn-b-md">
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(33% -30px)" fxFlex.lg="calc(33% -30px)" >
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">public</i>
+                           <mat-select formControlName="country" class="form-control">	
+                              <mat-option value="" disabled selected hidden>Country</mat-option>	
+                              <mat-option value="country" *ngFor="let country of countries">{{country.country}}</mat-option>
+                           </mat-select>
+                        </mat-form-field>
+                     </div>
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(33% -30px)" fxFlex.lg="calc(33% -30px)">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">location_city</i>
+                           <input matInput type="text" placeholder="State" formControlName="state">
+                        </mat-form-field>
+                     </div>
+                     <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(33% -30px)" fxFlex.lg="calc(33% -30px)">
+                        <mat-form-field class="full-wid mrgn-b-sm">
+                           <i matPrefix class="material-icons">domain</i>                           
+                           <input matInput type="text"  placeholder="City" formControlName="city">	
+                        </mat-form-field>
+                     </div>	
+                  </div>
+                  <div>			
+                     <div class="mrgn-b-sm">
+                        <mat-checkbox><span class="billing-ship-content">Shipping address is the same as billing add.</span></mat-checkbox>
+                     </div>
+                     <span class="gene-text-lg warn-text">All fields marked with an asterisk (*) are required</span>
+                  </div>  
+               </form>
+            </mat-card-content>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex="40" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="40">
+      <mat-card class="card-full-height">
+         <mat-card-content>
+            <div class="set-overflow-x-auto">
+               <ng-container *ngIf="ecommerceService.localStorageProduct.length == 0">
+                  <h4>No item found </h4>
+               </ng-container>
+               <table mat-table [dataSource]="ecommerceService.localStorageProduct" class="full-wid set-overflow-x-auto">
+                  <ng-container matColumnDef="image">
+                     <th class="pad-r-sm" mat-header-cell *matHeaderCellDef>Prdouct</th>
+                     <td class="pad-y-sm pad-r-sm" mat-cell *matCellDef="let element"><img src="{{element.image}}" width="60" height="63"></td>
+                  </ng-container>
+                  <ng-container matColumnDef="name">
+                     <th mat-header-cell *matHeaderCellDef></th>
+                     <td mat-cell *matCellDef="let element">{{element.name}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="quantity">
+                     <th class="text-center" mat-header-cell *matHeaderCellDef>Quantity</th>
+                     <td class="text-center" mat-cell *matCellDef="let element">{{element.quantity}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="total">
+                     <th class="text-center" mat-header-cell *matHeaderCellDef>Total</th>
+                     <td class="text-center" mat-cell *matCellDef="let element"> 
+                        <span>{{onQuantityClick(element) |currency}}
+                        </span> 
+                     </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsData">
+                  </tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsData;">
+                  </tr>
+               </table>
+            </div>	
+            <div  fxLayout="row" fxLayoutAlign="space-between center" class="total-wrap">
+               <div fxFlex="150px">
+                  <h4>Total</h4>
+               </div>
+               <div fxFlex="calc(100% - 150px)" class="text-right">
+                  <h4>{{calculate()|currency}}</h4>
+               </div>
+            </div>	
+         </mat-card-content>
+         <div class="text-right">
+            <button  mat-raised-button color="primary">PLACE ORDER</button>
+         </div>
+      </mat-card>
+   </div>
+</div>		
+<div >

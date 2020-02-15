@@ -1,0 +1,42 @@
+<div fxLayout="row wrap">
+   <div fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h3>{{'Date Picker'|translate}}</h3>
+               </div>
+               <span fxFlex></span>  
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content custom-height">
+            <mat-form-field>
+               <input matInput [matDatepicker]="myDatepicker" placeholder="Choose a date">
+               <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+               <mat-datepicker #myDatepicker></mat-datepicker>
+            </mat-form-field>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h3>{{'Date Picker'|translate}}</h3>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content custom-height">
+            <mat-form-field>
+               <input matInput [matDatepicker]="picker2" placeholder="Choose a date">
+               <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+               <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+         </div>
+      </mat-card>
+   </div>
+</div>

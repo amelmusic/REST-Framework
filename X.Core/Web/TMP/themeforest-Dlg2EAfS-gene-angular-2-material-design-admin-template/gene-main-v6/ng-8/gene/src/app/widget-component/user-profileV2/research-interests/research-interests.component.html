@@ -1,0 +1,10 @@
+<mat-card class="mrgn-b-lg">
+	<div class="mrgn-b-sm">
+		<div class="card-title mrgn-b-md"><h4>{{'Research Interests'|translate}}</h4></div>
+		<mat-chip-list>
+			<div *ngFor = "let research of researchInterest">
+		   	<mat-chip class="mrgn-b-xs" color="{{research.color}}" selected>{{research.type}}</mat-chip>
+			</div>
+		</mat-chip-list>
+	</div>
+</mat-card>

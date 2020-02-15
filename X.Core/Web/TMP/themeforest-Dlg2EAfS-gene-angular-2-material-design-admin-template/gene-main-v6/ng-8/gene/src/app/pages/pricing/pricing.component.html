@@ -1,0 +1,19 @@
+<div fxLayout="row wrap" fxLayoutAlign="center start" class="pricing-wrapper">
+   <div fxFlex.gt-sm="100" fxFlex="100">
+      <div fxLayout="row wrap">
+         <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let data of pricingContent">
+            <mat-card class="text-center">
+               <mat-card-title>{{data.title}}</mat-card-title>
+               <mat-card-subtitle class="primary-text">{{data.sub_title}}</mat-card-subtitle>
+               <div class="gene-card-content text-center">
+                  <h1><strong>$ {{data.price}} /Mo</strong></h1>
+                  <mat-list dense>
+                     <mat-list-item class="mat-text-muted" *ngFor = "let content of data.content">{{content}}</mat-list-item>
+                  </mat-list>
+                  <button mat-raised-button color="accent">Choose</button>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+</div>

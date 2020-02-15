@@ -1,0 +1,42 @@
+<div fxLayout="row wrap" fxLayoutAlign="start">
+   <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h3>{{'Global Locations'|translate}}</h3>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <div class="leaflet-maps"></div>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<mat-menu #options="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon>
+      View More 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      Disable notifications 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      Remove Panel 
+   </button>
+</mat-menu>

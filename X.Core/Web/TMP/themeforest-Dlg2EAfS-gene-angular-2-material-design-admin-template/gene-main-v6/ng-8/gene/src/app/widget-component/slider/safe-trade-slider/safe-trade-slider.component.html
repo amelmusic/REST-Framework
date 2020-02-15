@@ -1,0 +1,33 @@
+<ngx-slick-carousel [config]="safeTradeConfig">
+    <div class="gene-card-content" ngxSlickItem *ngFor="let safeContent of safeTradeContent">
+      <div class="safe-trade-wrap">
+         <div class="safe-trade-item">
+            <div class="mrgn-b-md"  fxLayoutAlign="start center">
+               <div class="crypto-icon-wrap inline-block">
+                  <span class="cc {{safeContent.icon}} {{safeContent.color}}-text"></span>
+               </div>
+               <div class="inline-block vertical-align-mid pad-wrap">
+                  <h2 class="mrgn-b-none">{{safeContent.name}}</h2>
+               </div>
+            </div>
+            <div>
+               <div class="chart-wrap mrgn-b-lg {{safeContent.color}}-chart-shadow">
+               	 <ms-stats-line-chart [data]="safeContent.chartData" [label]="safeContent.chartLabel" [color]="safeContent.chartColor"></ms-stats-line-chart>
+               </div>
+               <div class="chart info" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                  <span class="crypto-duration mat-grey-300">
+                     {{safeContent.duration}}
+                  </span>
+                  <span class="market-cap">
+                     <i class="fa {{safeContent.market_cap_icon}} {{safeContent.market_cap_color}}"> {{safeContent.market_cap_percent}}% </i>
+                  </span>
+               </div>
+            </div>
+            <mat-divider class="mrgn-r-none mrgn-l-none mrgn-t-sm mrgn-b-sm"></mat-divider>
+            <div class="status">
+               <span><strong class="success-text">${{safeContent.market_cap}}</strong> Market capitalisation</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</ngx-slick-carousel>

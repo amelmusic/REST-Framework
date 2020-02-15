@@ -1,0 +1,121 @@
+<div fxLayout="row" fxLayoutAlign="start" class="gene-chat-page" *ngIf="chats && chats.length>0">
+   <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex="100">
+      <mat-card class="mat-pad-none">
+         <mat-sidenav-container class="chat-content-area" id="chat-sidebar-container">
+            <mat-sidenav #chatnavbar [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" class="gene-chat-sidebar">
+            <mat-toolbar class="primary-bg chat-toolbar-side">
+               <a> <img class="img-circle" src="assets/img/register-user-1.jpg"> </a> <span fxFlex></span>
+               <button [matMenuTriggerFor]="user" mat-icon-button>
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </mat-toolbar>
+            <hr>
+            <mat-nav-list class="gene-chat-user">
+               <mat-list-item (click)="onSelect(chat, i)" *ngFor="let chat of chats;let i = index">
+               <div class="gene-chat-thumb"><img class="img-circle" mat-list-avatar src="{{chat.photo}}" alt=""></div>
+               <div class="gene-user-info pad-wrap">
+                  <span> {{chat.from}} </span>
+                  <p mat-line> {{chat.messages.slice(-1)[0].msg}} </p>
+               </div>
+               </mat-list-item>
+            </mat-nav-list>
+            </mat-sidenav>
+            <mat-toolbar class="chat-toolbar primary-bg">
+               <button (click)="chatSideBarToggle()" mat-icon-button>
+                  <mat-icon>short_text</mat-icon>
+               </button>
+               <a fxHide="true" fxHide.gt-xs="false"> <img class="img-circle" src="{{selectedChat.photo}}"> </a>
+               <div fxFlex class="pad-wrap">
+                  <span class="gene-block make-ellipse">{{selectedChat.from}}</span>
+                  <span class="margin-none inline-block gene-text-md">Online</span>
+               </div>
+               <button fxHide="true" fxHide.gt-xs="false" mat-icon-button>
+                  <mat-icon>attach_file</mat-icon>
+               </button>
+               <button [matMenuTriggerFor]="them" mat-icon-button>
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </mat-toolbar>
+            <div class="gene-chat-area " fxLayout="column" fxLayoutAlign="end stretch">
+               <perfect-scrollbar #chatScroll id="newid">
+                  <div class="gene-chat-content">
+                     <div class="gene-chat-wrap" *ngFor="let message of selectedChat.messages" [ngSwitch]="message.from" fxLayout="column">
+                     <div class="gene-chat-list accent-bg" *ngSwitchCase="'them'" fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md">
+                        <div><img class="img-circle" [src]="selectedChat.photo"></div>
+                        <div class="pad-wrap">
+                           <div class="accent-bg gene-chat-msg"><span class="gene-block font-bold"> {{selectedChat.from}} </span><span>{{ message.msg }}</span></div>
+                           <div> <span class="meta-post gene-text-md">{{message.time}}</span> </div>
+                        </div>
+                        <span fxFlex></span> 
+                     </div>
+                     <div class="gene-chat-list primary-bg" *ngSwitchCase="'me'" fxLayout="row" fxLayoutAlign="start start" class="mrgn-b-md">
+                        <span fxFlex></span>
+                        <div class="pad-wrap">
+                           <div class="primary-bg gene-chat-msg">
+                              <span class="gene-block font-bold"> Gene Admin </span>
+                              <span>{{ message.msg }}</span>
+                           </div>
+                           <div> 
+                              <span class="meta-post gene-text-md">{{message.time}}</span>
+                           </div>
+                        </div>
+                        <div><img class="img-circle" src="assets/img/register-user-1.jpg"></div>
+                     </div>
+                  </div>
+                  <div>
+                  <ng-container *ngIf="typing">
+                     <img class="radius-circle" [src]="selectedChat.photo" width="40" height="40">
+                     <div>typing...</div>
+                  </ng-container>
+               </div>
+            </div>
+            </perfect-scrollbar>
+            <div class="gene-chat-form">
+               <div>
+                  <mat-form-field>
+                     <input matInput (keyup.enter)="send()" [(ngModel)]="newMessage" placeholder="Send Message">
+                  </mat-form-field>
+                  <button mat-fab (click)="send()" color="primary" class="gene-send-btn">
+                     <mat-icon>send</mat-icon>
+                  </button>
+               </div>
+            </div>
+   </div>
+   </mat-sidenav-container>
+   </mat-card>
+</div>
+</div>
+<mat-menu #user="matMenu">
+   <button mat-menu-item>
+      <mat-icon> account_circle </mat-icon>
+      <span> Profile </span> 
+   </button>
+   <button mat-menu-item>
+      <mat-icon> settings </mat-icon>
+      <span> Settings </span> 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>help</mat-icon>
+      <span>Help</span> 
+   </button>
+   <mat-divider></mat-divider>
+   <button mat-menu-item>
+      <mat-icon> exit_to_app </mat-icon>
+      <span> Logout </span> 
+   </button>
+</mat-menu>
+<mat-menu #them="matMenu">
+   <button mat-menu-item>
+      <mat-icon> account_circle </mat-icon>
+      <span> Contact Info </span> 
+   </button>
+   <button mat-menu-item>
+      <mat-icon> volume_mute </mat-icon>
+      <span> Mute Chat </span> 
+   </button>
+   <mat-divider></mat-divider>
+   <button mat-menu-item (click)="clearMessages()">
+      <mat-icon> clear_all </mat-icon>
+      <span> Clear Messages </span> 
+   </button>
+</mat-menu>

@@ -1,0 +1,106 @@
+<div class="courses-wrap">
+   <ms-courses-banner></ms-courses-banner>
+   <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full">
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+         <div class="courses-grid-sec pad-y-lg">
+            <div fxLayout="row wrap" fxLayoutAlign="start stretch" class="height-full">
+               <div fxFlex.gt-md="35" fxFlex="100">
+                  <mat-card class="card-full-height card-full-width" fxLayoutAlign="start center">
+                     <div class="pad-y-xl">
+                        <h2 class="full-wid">Best collection from best tutors from around the globe</h2>
+                        <p class="full-wid">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                     </div>
+                  </mat-card>
+               </div>
+               <div fxFlex.gt-md="65" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                  <mat-card class="overflow-show tab-wrap set-ietab-height">
+                     <mat-tab-group animationDuration="0ms">
+                        <mat-tab label="Management">
+                           <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="getCoursesByType('management')">
+                              <div class="course-item-wrap" fxFlex.gt-sm="33" fxFlex.gt-xs="100" fxFlex="100" *ngFor = "let course of getCoursesByType('management'); let i = index">
+                                 <ng-container *ngIf = "i<3">
+                                    <ms-courses-card [course] = "course"></ms-courses-card>
+                                    <ms-courses-description [course] = "course"></ms-courses-description>
+                                 </ng-container>
+                              </div>
+                           </div>
+                           <div class="view-all-wrap text-right mrgn-x-md pad-x-xs pad-b-md">
+                              <a (click)="viewAll()" href="javascript:void(0)" class="warn-text">View All</a>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="Design">
+                           <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="getCoursesByType('design')">
+                              <div class="course-item-wrap" fxFlex.gt-sm="33" fxFlex.gt-xs="100" fxFlex="100" *ngFor = "let course of getCoursesByType('design'); let i = index">
+                                 <ng-container *ngIf = "i<2">
+                                    <ms-courses-card [course] = "course"></ms-courses-card>
+                                    <ms-courses-description [course] = "course"></ms-courses-description>
+                                 </ng-container>
+                              </div>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="Development">
+                           <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="getCoursesByType('develop')">
+                              <div class="course-item-wrap" fxFlex.gt-sm="33" fxFlex.gt-xs="100" fxFlex="100" *ngFor = "let course of getCoursesByType('develop'); let i = index">
+                                 <ng-container *ngIf = "i<1">
+                                    <ms-courses-card [course] = "course"></ms-courses-card>
+                                    <ms-courses-description [course] = "course"></ms-courses-description>
+                                 </ng-container>
+                              </div>
+                           </div>
+                        </mat-tab>
+                     </mat-tab-group>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+         <div class="courses-grid col-4-resp">
+            <div fxLayout="row wrap" fxLayoutAlign="start start" class="height-full">
+               <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                  <div class="overflow-show tab-wrap mat-pad-none">
+                     <mat-tab-group animationDuration="0ms">
+                        <mat-tab label="Top">
+                           <div fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('top'); let i = index">
+                                 <ng-container *ngIf = "i< 8">
+                                    <ms-courses-card [course] = "course"></ms-courses-card>
+                                    <ms-courses-description [course] = "course"></ms-courses-description>
+                                 </ng-container>
+                              </div>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="New">
+                           <div fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('new'); let i = index">
+                                 <ms-courses-card [course] = "course"></ms-courses-card>
+                                 <ms-courses-description [course] = "course"></ms-courses-description>
+                              </div>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="Trending">
+                           <div fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('trending'); let i = index">
+                                 <ms-courses-card [course] = "course"></ms-courses-card>
+                                 <ms-courses-description [course] = "course"></ms-courses-description>
+                              </div>
+                           </div>
+                        </mat-tab>
+                     </mat-tab-group>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="instructor-card-wrap pad-y-lg">
+            <div class="gene-sec-title  mrgn-l-md">
+               <h3>{{'Popular Instructors'|translate}}</h3>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="start" class="height-full">
+               <ng-container *ngIf = "jsonResponse.instructors && jsonResponse.instructors.length>0">
+                  <div *ngFor = "let instructor of jsonResponse.instructors" fxFlex.gt-md="20" fxFlex.gt-sm="33.333" fxFlex.gt-xs="50" fxFlex="100">
+                     <ms-instructor-card [instruct] = "instructor" class = "full-wid"></ms-instructor-card>
+                  </div>
+               </ng-container>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

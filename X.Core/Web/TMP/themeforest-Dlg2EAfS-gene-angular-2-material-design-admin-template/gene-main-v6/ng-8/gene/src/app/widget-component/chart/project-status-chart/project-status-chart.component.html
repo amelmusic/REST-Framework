@@ -1,0 +1,9 @@
+<div style="display: block;" *ngIf="showChart">
+   <canvas baseChart
+      [datasets]="data"
+      [labels]="label"
+      [options]="barChartOptions"
+      [colors]="color"
+      chartType="bar">   
+    </canvas>
+</div>

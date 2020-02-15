@@ -1,0 +1,27 @@
+<mat-form-field style="width:100%">
+  <input #uploadCmp id="fileUpload" type="file" (change)="upload($event)"  [accept]="accept" aria-describedby="fileHelp" class="inputfile">
+  <input style="width:100%" readonly matInput (click)="uploadCmp.click()" type="text" [placeholder]="placeholder" #uploadBoxElement [formControl]="uploadBox" matInput>
+  <mat-progress-spinner class="loading" *ngIf="isUploading" [diameter]="15" [strokeWidth]="2" mode="indeterminate"></mat-progress-spinner>
+  <mat-icon *ngIf="!value" class="hand" matSuffix>file_upload</mat-icon>
+  <mat-icon *ngIf="value" class="hand" matSuffix (click)="openInDialog()">pageview</mat-icon>
+  <mat-icon *ngIf="value" style="margin-left: 10px;" class="mrgn-r-xs" matSuffix (click)="download()">file_download</mat-icon>
+</mat-form-field>
+
+
+<!--<div fxLayout="row" fxLayoutWrap="wrap" >-->
+<!--<span *ngIf="!file" fxFlex.gt-xs="100" fxFlex.gt-sm="100" fxFlex="100">-->
+<!--<span *ngIf="isUploading">Uploading...</span>-->
+<!--<span>-->
+<!--<input #uploadCmp id="fileUpload" *ngIf="!isUploading" type="file" (change)="upload($event)" accept="*/*" aria-describedby="fileHelp" class="inputfile">-->
+<!--<label for="fileUpload">-->
+<!--Upload... <a (click)="uploadCmp.click()" mat-button-sm mat-raised-button mat-icon-button class="mrgn-all-xs"><mat-icon>file_upload</mat-icon></a>-->
+<!--</label>-->
+<!--</span>-->
+
+<!--</span>-->
+<!--<span *ngIf="file" fxFlex.gt-xs="100" fxFlex.gt-sm="100" fxFlex="100">-->
+<!--{{file?.title}}-->
+<!--<button (click)="download()" class="mrgn-all-xs" mat-button-sm mat-raised-button mat-icon-button color="primary"><mat-icon>file_download</mat-icon></button>-->
+<!--<button (click)="change()" class="mrgn-all-xs" mat-button-sm mat-raised-button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>-->
+<!--</span>-->
+<!--</div>-->

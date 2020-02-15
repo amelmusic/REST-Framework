@@ -1,0 +1,177 @@
+<ng-container *ngIf="projectDetails">
+   <div fxLayout="row wrap" fxLayoutAlign="center center" class="height-full">
+      <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="90" fxFlex="100">
+         <div fxLayout="row wrap" fxLayoutAlign="center start" class="height-full">
+            <div fxFlex.gt-md="70" fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100" class="pad-x-md pad-b-md">
+               <div fxLayout="column">
+                  <h2>{{projectDetails.name | translate}}</h2>
+                  <mat-card class="description-wrap pad-y-md mrgn-x-none mat-card">
+                     <div class="gene-sec-title">
+                        <h3>{{ 'Description' | translate}}</h3>
+                     </div>
+                     <div class="gene-sec-content mrgn">
+                        <p  class="font-bold mrgn-b-sm">{{projectDetails.decription_heading}}</p>
+                        <p >{{projectDetails.description}}</p>
+                        <ul class="mrgn-b-none pad-l-md pad-r-none">
+                           <li *ngFor="let points of projectDetails.description_points">{{points}}</li>
+                        </ul>
+                     </div>
+                  </mat-card>
+               </div>
+               <div fxLayout="column">
+                  <mat-card class="mrgn-x-none">
+                     <mat-card-title>
+                        <div class="sec-title">
+                           <h3>{{'Files Uploaded' | translate }}</h3>
+                        </div>
+                     </mat-card-title>             
+                     <div class="content-wrap">
+                        <mat-list>
+                           <ng-container *ngFor="let upload of projectDetails.fileUploads">
+                              <mat-list-item>
+                                 <mat-icon mat-list-icon>{{upload.icon}}</mat-icon>
+                                 <h4 mat-line>{{upload.file}} </h4>
+                                 <small mat-line>{{upload.date}}</small>
+                              </mat-list-item>
+                              <mat-divider></mat-divider>
+                           </ng-container>
+                        </mat-list>                            
+                     </div>
+                  </mat-card>
+               </div>
+               <div fxLayout="column">
+                  <mat-card class="mrgn-x-none">
+                     <mat-card-title>
+                        <div class="sec-title">
+                           <h3>{{ 'Statistics' | translate }}</h3>
+                        </div>
+                     </mat-card-title>             
+                     <div class="project-stats-chart">
+                        <ms-statistics [data]="projectDetails.chartData" [label]="projectDetails.chartLabel"></ms-statistics>
+                     </div>
+                  </mat-card>
+               </div>
+            </div>
+            <div fxFlex.gt-md="30" fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100" class="pad-b-xd">                  
+               <div class="project-info-wrap">
+                  <div fxLayout="column">
+                     <mat-card>
+                        <mat-list role="list">
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{'Budget' | translate}} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.budget}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{'Client' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.client}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{ 'Department' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.department}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{ 'Duration' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.duration}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{ 'Project Manager' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.project_manager}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{'Team' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <div class="team-img-wrap">
+                                       <img class="thumb-gap" src="{{image}}" width="30" height="30" *ngFor="let image of projectDetails.team_image">
+                                    </div>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{'Status' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5 class="success-text">{{projectDetails.status}}</h5>
+                                 </div>
+                              </div>
+                              <mat-divider></mat-divider>
+                           </mat-list-item>
+                           <mat-list-item role="listitem">
+                              <div class="project-details-listing full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                                 <div class="listing-title">
+                                    <h5 class="font-normal">{{'Deadline' | translate }} : </h5>
+                                 </div>
+                                 <div class="listing-detail">
+                                    <h5>{{projectDetails.deadline}}</h5>
+                                 </div>
+                              </div>
+                           </mat-list-item>
+                        </mat-list>  
+                     </mat-card>
+                  </div>
+                  <div fxLayout="column">
+                     <mat-card>                               
+                        <div class="progress-bar mrgn-b-md">
+                           <h5 class="mrgn-b-none">{{'Progress' | translate }} : <span class="primary-text">{{projectDetails.progress_value}}%</span></h5>
+                           <mat-progress-bar mode="determinate" value="{{projectDetails.progress_value}}"></mat-progress-bar>
+                        </div>
+                     </mat-card>
+                  </div>
+                  <div fxLayout="column">
+                     <mat-card>                               
+                        <div class="project-slider-wrap">
+                           <h5 class="mrgn-b-md">{{'Project Gallery' | translate }}</h5>
+                           <div class="project-slider">
+                              <ngx-slick-carousel [config]="projectGallaryConfig">
+                                 <img src="{{images}}" ngxSlickItem width="" height="" alt="" *ngFor="let images of projectDetails.project_gallery">
+                              </ngx-slick-carousel>
+                           </div>
+                        </div>
+                     </mat-card>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</ng-container>

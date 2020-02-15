@@ -1,0 +1,33 @@
+<mat-card>
+   <div class="price-wrap">
+      <span class="discount-price inline-block mrgn-r-xs">${{billingDetails.totalPrice*(100-billingDetails.discountPercent)/100}}</span>
+      <span class="base-price inline-block mrgn-r-xs"><del>${{billingDetails.totalPrice}}</del></span>
+      <span class="discount-value inline-block mrgn-r-xs">{{billingDetails.discountPercent}} % off</span>
+   </div>
+   <p class="price-duration warn-text" fxLayout="row wrap" fxLayoutAlign="start start">
+      <i class="material-icons">timer</i>
+      <span class="font-bold mrgn-r-xs">{{billingDetails.discountTime}} </span>left at this price!
+   </p>
+   <div class="button-wrap">
+      <button (click)="addToCart()" class="gene-block full-wid pad-y-sm gene-text-lg mrgn-b-lg" mat-flat-button color="warn">Add To Cart</button>
+      <p class="text-center">{{billingDetails.guarntee}} day money back garuntee</p>
+   </div>
+   <div class="incentives mrgn-b-lg">
+      <mat-list class="incentive-list">
+         <h4>Includes</h4>
+         <mat-list-item *ngFor = "let  response of billingDetails.includes">
+            <mat-icon mat-list-icon>{{response.icon}}</mat-icon>
+            <h4 mat-line>{{response.feature}}</h4>
+         </mat-list-item>
+      </mat-list>
+   </div>
+   <div class="coupon-available text-center mrgn-b-lg">
+      <a href="javascript:void(0)" class="accent-text">Have a coupon?</a>
+   </div>
+   <div>
+      <mat-divider class="gene-relative mrgn-b-sm"></mat-divider>
+   </div>
+   <div class="coupon-available text-center pad-all-md">
+      <a href="javascript:void(0)" class="accent-text">Share</a>
+   </div>
+</mat-card>

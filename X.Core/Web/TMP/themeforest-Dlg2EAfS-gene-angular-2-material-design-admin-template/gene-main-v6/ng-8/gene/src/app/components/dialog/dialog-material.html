@@ -1,0 +1,18 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Dialog'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p class="mrgn-b-lg">MatDialog is a service, which opens dialogs components in the view.</p>
+      <div>
+         <button mat-raised-button type="button" (click)="openDialog()" color="primary">Open Dialog</button>
+      </div>
+      <p *ngIf="result" class="primary-text">You chose: {{ result }}</p>
+   </div>
+</mat-card>

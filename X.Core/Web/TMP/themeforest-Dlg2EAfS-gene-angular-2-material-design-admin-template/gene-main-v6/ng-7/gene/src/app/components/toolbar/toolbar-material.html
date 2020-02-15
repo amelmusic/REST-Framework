@@ -1,0 +1,89 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Toolbar'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+         <button mat-icon-button>
+            <mat-icon>sync</mat-icon>
+         </button>
+         <button mat-icon-button>
+            <mat-icon>more_horiz</mat-icon>
+         </button>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p> <code>MatToolbar</code> is a vertical aligned bar, which can hold the application title or actions.</p>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'The default color toolbar'|translate}}</h5>
+         <mat-toolbar class="make-toolbar-responsive">
+            <button mat-button href="javascript:void(0)" mat-icon-button>
+               <mat-icon>menu</mat-icon>
+            </button>
+            <span>Default Toolbar</span>
+            <span class="gene-spacer"></span>
+            <button mat-button  mat-icon-button>
+               <mat-icon>search</mat-icon>
+            </button>
+            <button mat-button  mat-icon-button>
+               <mat-icon>more_vert</mat-icon>
+            </button>
+         </mat-toolbar>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'The primary color toolbar'|translate}}</h5>
+         <mat-toolbar color="primary" class="make-toolbar-responsive">
+            <button mat-button href="javascript:void(0)" mat-icon-button>
+               <mat-icon>menu</mat-icon>
+            </button>
+            <span>Primary Toolbar</span>
+            <span class="gene-spacer"></span>
+            <button mat-button mat-icon-button>
+               <mat-icon>search</mat-icon>
+            </button>
+            <button mat-button mat-icon-button>
+               <mat-icon>more_vert</mat-icon>
+            </button>
+         </mat-toolbar>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">The accent color toolbar'|translate}}</h5>
+         <mat-toolbar color="accent" class="make-toolbar-responsive">
+            <button mat-button href="javascript:void(0)" mat-icon-button>
+               <mat-icon>menu</mat-icon>
+            </button>
+            <span>Accent Toolbar</span>
+            <span class="gene-spacer"></span>
+            <button mat-button mat-icon-button>
+               <mat-icon>search</mat-icon>
+            </button>
+            <button mat-button mat-icon-button>
+               <mat-icon>more_vert</mat-icon>
+            </button>
+         </mat-toolbar>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'An accent toolbar using the second toolbar row'|translate}}</h5>
+         <mat-toolbar color="accent" class="make-toolbar-responsive">
+            <mat-toolbar-row></mat-toolbar-row>
+            <mat-toolbar-row>
+               <span>Second Line Toolbar</span>
+            </mat-toolbar-row>
+         </mat-toolbar>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h5 class="mrgn-b-md">{{'A primary toolbar using the third toolbar row:'|translate}}</h5>
+         <mat-toolbar color="primary" class="make-toolbar-responsive">
+            <mat-toolbar-row></mat-toolbar-row>
+            <mat-toolbar-row></mat-toolbar-row>
+            <mat-toolbar-row>
+               <span class="gene-spacer">Third Line Toolbar</span>
+               <mat-icon>favorite</mat-icon>
+               <mat-icon>delete</mat-icon>
+            </mat-toolbar-row>
+         </mat-toolbar>
+      </div>
+   </div>
+</mat-card>

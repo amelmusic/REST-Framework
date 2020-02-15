@@ -1,0 +1,23 @@
+<mat-card class="stats-card-wrap">
+	<div class="mrgn-b-md" fxLayoutAlign="start center">
+      <div class="crypto-icon-wrap inline-block">
+         <span class="cc {{statsCardData.icon}} {{statsCardData.color}}-text"></span>
+      </div>
+		<div class="inline-block vertical-align-mid pad-wrap">
+         <h2 class="mrgn-b-none">{{statsCardData.name}}</h2>
+		</div>
+   </div>
+   <div >
+      <div class="chart-wrap mrgn-b-lg {{statsCardData.color}}-chart-shadow">
+         <ms-stats-line-chart [data]="statsCardData.chartData" [label]="statsCardData.chartLabel" [color]="statsCardData.chartColor"></ms-stats-line-chart>
+      </div>
+      <div class="chart info" fxLayout="row wrap" fxLayoutAlign="space-between center">
+         <span class="crypto-duration mat-grey-300">
+            {{statsCardData.duration}}
+         </span>
+         <span class="market-cap">
+            <i class="fa  {{statsCardData.market_cap_icon}} {{statsCardData.market_cap_color}}"> {{statsCardData.market_cap}}% </i>
+         </span>
+      </div>
+   </div>
+</mat-card>

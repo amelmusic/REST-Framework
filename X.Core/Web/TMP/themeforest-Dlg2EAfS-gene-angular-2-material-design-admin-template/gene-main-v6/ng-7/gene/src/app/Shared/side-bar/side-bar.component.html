@@ -1,0 +1,105 @@
+<div class="sidebar-panel gene-sidenav" fxLayout="column">
+   <mat-toolbar class="sidebar-logo">
+      <div class="gene-logo">
+         <a href="javascript:void(0)" (click)="onClick()">
+            <div class="logo-sign inline-block"><img src="assets/img/logo-sign.png" width="30" height="30"></div>
+            <div class="logo-text inline-block"><img src="assets/img/logo-text.png" width="90" height="27"></div>
+         </a>
+      </div>
+   </mat-toolbar>
+   <perfect-scrollbar>
+      <div class="sidebar-container">
+         <div class="gene-user-thumb text-center">
+            <img class="img-responsive img-circle" src="assets/img/pro-thumb.jpg" width="107" height="107" alt="user list image">
+            <div class="gene-user-name">John Hobbs</div>
+         </div>
+         <div class="sidenav-scrollbar-container" fxLayout="column">
+            <ng-container *ngIf="verticalMenuStatus; else horizontalMenuStatus">
+               <mat-nav-list fxLayout="column" menuToggleDirective class="navigation">
+                  <mat-list-item menuToggleLink *ngFor="let menuitem of menuList.getAll()">
+                     <a menuToggle class="gene-relative" mat-ripple *ngIf="menuitem.type === 'button'" routerLinkActive="active-link"      [routerLink]="['/horizontal/dashboard/crm']">
+                     <mat-icon>{{ menuitem.icon }}</mat-icon>
+                     <span>{{ menuitem.name | translate }}</span>
+                     <ng-container *ngIf="menuitem.label">
+                        <span class="sidebar-label">{{ menuitem.label}}</span>
+                     </ng-container>
+                     </a>
+                     <a menuToggle class="gene-relative" mat-ripple [routerLink]="['/', menuitem.state]" routerLinkActive="active-link" *ngIf="menuitem.type === 'link'">
+                     <mat-icon>{{ menuitem.icon }}</mat-icon>
+                     <span>{{ menuitem.name | translate }}</span>
+                     <ng-container *ngIf="menuitem.label">
+                        <span class="sidebar-label">{{ menuitem.label}}</span>
+                     </ng-container>
+                     </a>
+                     <span></span>
+                     <a menuToggle class="gene-relative" mat-ripple href="javascript:void(0)" *ngIf="menuitem.type === 'sub'">
+                        <mat-icon>{{ menuitem.icon }}</mat-icon>
+                        <span>{{ menuitem.name | translate }}</span>
+                        <ng-container *ngIf="menuitem.label">
+                           <span class="sidebar-label">{{ menuitem.label}}</span>
+                        </ng-container>
+                        <span fxFlex></span>
+                        <mat-icon class="menu-caret">chevron_right</mat-icon>
+                     </a>
+                     <mat-nav-list class="sub-menu" *ngIf="menuitem.type === 'sub'">
+                        <mat-list-item *ngFor="let childitem of menuitem.children" routerLinkActive="open">
+                           <a [routerLink]="['/'+menuitem.state+'/'+childitem.state ]" routerLinkActive="active-link" class="gene-relative" mat-ripple>
+                              {{ childitem.name | translate }}
+                              <ng-container *ngIf="childitem.label">
+                                 <span class="sidebar-label">{{childitem.label}}</span>
+                              </ng-container>
+                           </a>
+                        </mat-list-item>
+                     </mat-nav-list>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+                  <mat-list-item>
+                     <a (click)="addMenuItem()">
+                        <mat-icon>add</mat-icon>
+                        <span>{{'Add'|translate}}</span>
+                     </a>
+                  </mat-list-item>
+               </mat-nav-list>
+            </ng-container>
+            <ng-template #horizontalMenuStatus>
+               <mat-nav-list fxLayout="column" menuToggleDirective class="navigation">
+                  <mat-list-item  *ngFor="let menuitem of menuList.getAll()" menuToggleLink>
+                     <a menuToggle class="gene-relative" mat-ripple *ngIf="menuitem.type === 'button'" routerLinkActive="active-link" [routerLink]="['/dashboard/crm']">
+                     <mat-icon>{{ menuitem.icon }}</mat-icon>
+                     <span>{{ menuitem.name | translate }}</span>
+                     <ng-container *ngIf="menuitem.label">
+                        <span class="sidebar-label">{{ menuitem.label}}</span>
+                     </ng-container>
+                     </a>
+                     <a href="javascript:void(0)" *ngIf="menuitem.type === 'sub'">
+                     <span class="gene-text-sm">{{ menuitem.name | translate }}</span>
+                     </a>
+                     <mat-nav-list *ngIf="menuitem.type === 'sub'">
+                        <mat-list-item menuToggleLink *ngFor = "let childItems of menuitem.children" [ngClass]="{'open':childItems.isOpen}">
+                        <a class="anglo-relative" menuToggle routerLinkActive="active-link"  [routerLink]="['/'+childItems.state]" *ngIf="childItems.type=='link'">
+                        <mat-icon >{{ childItems.icon }}</mat-icon>
+                        <span>{{ childItems.name | translate }}</span>
+                        </a>
+                        <a class="anglo-relative" menuToggle href="javascript:void(0)" *ngIf="childItems.type=='subChild'">
+                           <mat-icon >{{ childItems.icon }}</mat-icon>
+                           <span>{{ childItems.name | translate }}</span>
+                           <span fxFlex></span>
+                           <mat-icon class="menu-caret">chevron_right</mat-icon>
+                        </a>
+                        <mat-nav-list class="sub-menu" *ngIf="childItems.type === 'subChild'">
+                           <mat-list-item *ngFor="let subchilditem of childItems.children" routerLinkActive="open">
+                              <a class="anglo-relative" [routerLink]="['/'+childItems.state+'/'+subchilditem.state]" routerLinkActive="active-link">
+                              <span>{{ subchilditem.name | translate }}</span>
+                              </a>
+                           </mat-list-item>
+                        </mat-nav-list>
+                  </mat-list-item>
+                  </mat-nav-list>
+                  </mat-list-item>
+                  <mat-divider></mat-divider>
+               </mat-nav-list>
+            </ng-template>
+         </div>
+      </div>
+   </perfect-scrollbar>
+</div>

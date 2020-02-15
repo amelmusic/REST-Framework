@@ -1,0 +1,54 @@
+<form [formGroup]="addNewUserForm" class="popup-card-width add-new-user">
+	<div>
+		<h2 mat-dialog-title>Add New User</h2>
+	</div>	
+	<mat-dialog-content>
+		<div>
+			<div>
+				<mat-form-field class="mrgn-b-sm">
+					<input matInput type="text" formControlName="firstName" class="form-control" placeholder="First Name">
+					<mat-error *ngIf="addNewUserForm.controls['firstName'].touched && !addNewUserForm.controls['firstName'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['firstName'].hasError('required')" class="required alert-error">  
+							You must include a First Name.
+						</mat-error>
+		         </mat-error>
+				</mat-form-field>
+				<mat-form-field class="mrgn-b-sm">
+					<input matInput type="text" formControlName="lastName" class="form-control" placeholder="Last Name">
+					<mat-error *ngIf="addNewUserForm.controls['lastName'].touched && !addNewUserForm.controls['lastName'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['lastName'].hasError('required')" class="required alert-error">  
+			         	You must include a Last Name.
+                  </mat-error>  
+               </mat-error>
+				</mat-form-field>
+            <mat-form-field class="mrgn-b-sm">
+               <input matInput type="text" formControlName="emailAddress" class="form-control" placeholder="Email">
+               <mat-error *ngIf="addNewUserForm.controls['emailAddress'].touched && !addNewUserForm.controls['emailAddress'].valid">
+                  <mat-error *ngIf="addNewUserForm.controls['emailAddress'].hasError('required')" class="required alert-error">  
+                        You must include a E-mail Address.
+                  </mat-error>  
+                  <mat-error *ngIf="addNewUserForm.controls['emailAddress'].hasError('pattern')">
+                     E-mail must be valid
+                  </mat-error>
+               </mat-error>
+            </mat-form-field> 
+            <mat-form-field>
+               <select matNativeControl formControlName="accountType" placeholder="Account Type">
+                  <option value="Platinum">Platinum</option>
+						<option value="Gold">Gold</option>
+						<option value="Silver">Silver</option>
+					</select>	
+					<mat-error *ngIf="addNewUserForm.controls['accountType'].touched && !addNewUserForm.controls['accountType'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['accountType'].hasError('required')" class="required alert-error">  
+                     You must Select a Account Type.
+                  </mat-error>  
+               </mat-error>
+				</mat-form-field> 
+			</div>
+      </div>
+	</mat-dialog-content>
+	<mat-dialog-actions class="mrgn-b-xs pad-b-none">
+		<button type="button" mat-raised-button (click)="dialogRef.close()" color="primary">CLOSE</button>
+		<button (click)="onFormSubmit()" type="submit" [disabled]="!addNewUserForm.valid" mat-raised-button color="warn">SUBMIT</button>
+	</mat-dialog-actions>
+</form>

@@ -1,0 +1,21 @@
+<mat-card fxLayout="row wrap" fxLayoutAlign="start start" class="height-full margin-none">
+   <div fxFlex.gt-xs="125px" fxFlex="100">
+      <div class="image-wrap mrgn-r-md mrgn-b-md">
+         <img src="{{instructorInformation.image}}">
+      </div>
+   </div>
+   <div fxFlex.gt-md="calc(100% - 130px)" fxFlex="100">
+      <div class="instructor-meta mrgn-b-md">
+         <h4 class="mrgn-b-xs">{{instructorInformation.name}}</h4>
+         <mat-list class="instructor-list mat-pad-none">
+            <mat-list-item *ngFor = "let response of instructorInformation.features">
+               <mat-icon mat-list-icon>{{response.icon}}</mat-icon>
+               <h4 mat-line>{{response.feature}}</h4>
+            </mat-list-item>
+         </mat-list>
+      </div>
+   </div>
+   <div fxFlex.gt-sm="100" fxFlex="90">
+      <p class="mrgn-b-none">{{instructorInformation.content}}</p>
+   </div>
+</mat-card>

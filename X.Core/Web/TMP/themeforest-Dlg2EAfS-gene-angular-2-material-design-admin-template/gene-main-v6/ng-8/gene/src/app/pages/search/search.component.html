@@ -1,0 +1,53 @@
+<div class="search-wrapper">
+	<div>
+		<mat-card class="pad-all-lg mrgn-b-lg search-form-wrap">
+			<div fxLayout="row wrap">
+				<div class="mrgn-r-md" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+					<mat-form-field class="full-wid" floatLabel="never">
+						<input matInput placeholder="Search Here">
+					</mat-form-field>
+				</div>
+				<div  fxFlex.xs="100" fxFlex.sm="20" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20">
+					<button mat-raised-button color="primary">Search</button>
+				</div>
+			</div>
+		</mat-card>
+	</div>
+	<div>
+		<mat-card class="search-list-wrap">
+			<div class="mrgn-all-md">
+				<h4 class="search-title">Searching Result For 
+					<span class="accent-text text-lowercase">Admin Template</span>
+				</h4>
+			</div>
+			<div fxLayout="row wrap">
+				<div fxFlex="100" fxFlex.gt-sm="100" *ngFor = "let search of searchPage">
+			   	<mat-card class="pad-all-sm">
+						<div fxLayout="row wrap">
+							<div fxFlex="100" fxFlex.gt-xs="250px" fxFlex.gt-sm="300px" fxFlex.gt-md="300px" fxFlex.gt-lg="300px">
+								<div class="search-image mrgn-all-xs">
+			        				<img alt="search content image" src="{{search.image}}" width="700" height="450">
+			      			</div>
+		      			</div>
+		      			<div fxFlex="100" fxFlex.gt-xs="calc(100% - 250px)" fxFlex.gt-sm="calc(100% - 300px)" fxFlex.gt-md="calc(100% - 300px)" fxFlex.gt-lg="calc(100% - 300px)" fxLayoutAlign.md="center">
+			      			<div class="search-content mrgn-all-xs">
+			      				<div>
+			      					<h4 class="mrgn-b-xs primary-text text-capitalize">{{search.heading}}</h4>
+			      				</div>	
+			      				<div class="mrgn-b-xs meta-info">
+				      				<span class="meta-post mrgn-r-sm inline-block meta-date">
+				      				<mat-icon class="gene-text-md">date_range</mat-icon>{{search.date|date:'shortDate'}}</span>
+				      				<span class="meta-post meta-name"><mat-icon class="gene-text-md">person</mat-icon>{{search.name}}</span>
+			      				</div>
+			      				<div fxHide.sm="true">
+			      					<p >{{search.content}}</p>
+			      				</div>
+								</div>
+							</div>			
+						</div>
+					</mat-card>	
+				</div>
+			</div>
+		</mat-card>		
+	</div>		
+</div>

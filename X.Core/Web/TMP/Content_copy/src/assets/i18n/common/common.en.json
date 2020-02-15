@@ -1,0 +1,14 @@
+{
+    "Common": {
+        "Yes": "Yes",
+        "No": "No",
+        "Error": "Error while communicating with server"
+    },
+    "action": {
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "General": {
+        "Search": "Search"
+    }
+}

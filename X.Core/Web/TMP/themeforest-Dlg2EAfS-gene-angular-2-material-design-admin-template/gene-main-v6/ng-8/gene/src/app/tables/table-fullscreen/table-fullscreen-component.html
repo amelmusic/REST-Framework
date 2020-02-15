@@ -1,0 +1,21 @@
+<div>
+   <div fxLayout="row wrap" fxLayoutAlign="start">
+      <ngx-datatable
+         class="material fullscreen mrgn-all-md"
+         style="top: 64px;width: calc(100% - 2rem)"
+         [columnMode]="'force'"
+         [headerHeight]="50"
+         [footerHeight]="0"
+         [rowHeight]="50"
+         [scrollbarV]="true"
+         [scrollbarH]="true"
+         [rows]="rows">
+         <ngx-datatable-column name="Id" [width]="80"></ngx-datatable-column>
+         <ngx-datatable-column name="Name" [width]="300"></ngx-datatable-column>
+         <ngx-datatable-column name="Gender"></ngx-datatable-column>
+         <ngx-datatable-column name="Age"></ngx-datatable-column>
+         <ngx-datatable-column name="City" [width]="300" prop="address.city"></ngx-datatable-column>
+         <ngx-datatable-column name="State" [width]="300" prop="address.state"></ngx-datatable-column>
+      </ngx-datatable>    
+   </div>
+</div>

@@ -1,0 +1,67 @@
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+   <div fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="100" fxFlex.lg="50" fxFlex.xl="50" fxFlex="100" class="gene-sorted-drag-drop">
+      <mat-card class="primary-bg card-full-height">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h2>{{'Drag and Drop Anything'|translate}}</h2>
+               </div>
+               <span fxFlex></span> 
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <mat-list [sortablejs]="list1" [sortablejsOptions]="simpleOptions" class="no-gutter">
+         <mat-list-item class="draggable" *ngFor="let list of list1">
+            <div>
+               <mat-icon>more_vert</mat-icon>
+            </div>
+            <div> <img mat-list-avatar [src]="list.image" alt="..."></div>
+            <div class="pad-wrap">
+               <span mat-line class="gene-text-lg"> {{ list.name }} </span>
+               <p mat-line> <span> {{ list.subject }} </span> <span> -- {{ list.content }} </span> </p>
+               <p mat-line class="gene-text-md font-bold">5 min ago</p>
+            </div>
+         </mat-list-item>
+         </mat-list>
+      </mat-card>
+   </div>
+   <div fxFlex.sm="100" fxFlex.xs="100" fxFlex.md="100" fxFlex.lg="50" fxFlex.xl="50">
+      <mat-card class="card-full-height">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h2>{{'Drag & Drop Between Groups!'|translate}}</h2>
+               </div>
+               <span fxFlex></span> 
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between">
+               <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100">
+                  <mat-toolbar>Group 1</mat-toolbar>
+                  <mat-list [sortablejs]="list2" [sortablejsOptions]="groupOptions">
+                  <mat-list-item *ngFor="let list of list2">
+                     <h3 mat-line>
+                        <mat-icon class="drag-handle">drag_handle</mat-icon>
+                        {{ list.name }} 
+                     </h3>
+                  </mat-list-item>
+                  </mat-list>
+               </div>
+               <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100">
+                  <mat-toolbar>Group 2</mat-toolbar>
+                  <mat-list [sortablejs]="numbers" [sortablejsOptions]="groupOptions">
+                  <mat-list-item *ngFor="let list of numbers">
+                     <h3 mat-line>
+                        <mat-icon class="drag-handle">drag_handle</mat-icon>
+                        {{ list.name }} 
+                     </h3>
+                  </mat-list-item>
+                  </mat-list>
+               </div>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+</div>

@@ -1,0 +1,153 @@
+<mat-card class="pad-y-lg mrgn-b-lg">
+   <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+         <div class="pad-r-md">
+            <h2>{{'Search' | translate}}</h2>
+         </div>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+         <div fxLayout="row wrap">
+            <div class="form-group pad-r-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(100% - 200px)" fxFlex.lg="calc(100% - 200px)" fxFlex.xl="calc(100% - 200px)">
+               <mat-form-field class="full-wid" floatLabel="never">
+                  <input matInput placeholder="Search Projects">
+               </mat-form-field>
+            </div>
+            <div class="contact-btn" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="200px" fxFlex.lg="200px" fxFlex.xl="200px"> 
+               <button class="mrgn-r-sm mrgn-b-sm" mat-raised-button color="primary">Search</button>
+               <button mat-raised-button color="primary">Add<mat-icon class="mrgn-l-sm">add</mat-icon></button>
+            </div>
+         </div>
+      </div>
+   </div>			
+</mat-card>	
+<div class="mrgn-all-md" fxLayoutAlign="space-between center">
+   <div class="title">
+      <h2 class="mrgn-b-none">{{'Project' | translate }} {{showType | translate}}</h2>
+   </div>
+   <div class="project-icon">
+      <button id="grid" class="active" mat-icon-button (click)="projectShowType('grid')">
+         <mat-icon>apps</mat-icon>
+      </button>
+      <button id="list" mat-icon-button (click)="projectShowType('list')">
+         <mat-icon>list</mat-icon>
+      </button>
+   </div>
+</div>
+<ng-container *ngIf="showType == 'list';else gridtype">
+   <div fxLayout="row wrap">
+      <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+         <div class="project-list table-list-wrap">
+            <mat-card class="pad-t-none">
+               <!-- <div class="table-title">
+                  <h4 class="mrgn-b-none">Project List</h4>
+               </div>  -->
+               <mat-divider></mat-divider>       
+               <div class="table-responsive gene-card-content project-list-table">  
+                  <table class="full-wid" mat-table [dataSource]="liveTradeSource">
+                     <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>Id</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.id}}</td>
+                     </ng-container>
+                     <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Project Name</th>
+                        <td class="text-nowrap project-name" mat-cell *matCellDef="let element"><a href="javascript:void(0)" (click)="projectDetails(element)">{{element.name}}</a></td>
+                     </ng-container>
+                     <ng-container matColumnDef="budget">
+                        <th mat-header-cell *matHeaderCellDef>budget</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.budget}}</td>
+                     </ng-container>
+                     <ng-container matColumnDef="duration">
+                        <th mat-header-cell *matHeaderCellDef>Duration</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.duration}}</td>
+                     </ng-container>
+                     <ng-container matColumnDef="client">
+                        <th mat-header-cell *matHeaderCellDef>Client</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.client}}</td>
+                     </ng-container>
+                     <ng-container matColumnDef="team_image">
+                        <th mat-header-cell *matHeaderCellDef>Team</th>
+                        <td class="text-nowrap team-images-wrap pad-x-md" mat-cell *matCellDef="let element">
+                           <ng-container *ngFor="let image of element.team_image">
+                              <img class="img-circle inline-block" src="{{image}}" width="30" height="30">
+                           </ng-container>
+                        </td>
+                     </ng-container>      
+                     <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef>Status</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">
+                           <mat-chip-list>
+                              <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                           </mat-chip-list>
+                        </td>
+                     </ng-container>
+                     <ng-container matColumnDef="deadline">
+                        <th mat-header-cell *matHeaderCellDef>Deadline</th>
+                        <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.deadline}}</td>
+                     </ng-container>
+                     <tr mat-header-row *matHeaderRowDef="displayedProjectIdColumns"></tr>
+                     <tr mat-row *matRowDef="let row; columns: displayedProjectIdColumns"></tr>
+                  </table>
+               </div>   
+               <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+            </mat-card>
+         </div>
+      </div> 
+   </div>
+</ng-container>
+<ng-template #gridtype>
+   <div fxLayout="row wrap" fxLayoutAlign="start stretch">
+   	<div fxFlex.gt-md="33.33" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let content of projectContent">
+   		<mat-card>
+   			<div class="gene-card-title">
+   				<div fxLayout="row" fxLayoutAlign="start center">
+   					<div fxLayout="column">
+   						<h4 class="mrgn-b-none"><a href="javascript:void(0)" (click)="projectDetails(content)">{{content.name | translate}}</a></h4>
+   					</div> <span fxFlex></span>
+   					<button mat-icon-button>
+                      <mat-icon>sync</mat-icon>
+                   </button>
+   					<button mat-icon-button [matMenuTriggerFor]="options">
+                     <mat-icon>more_horiz</mat-icon>
+                  </button>
+   				</div>
+   				<mat-divider></mat-divider>
+   			</div>
+   			<div class="gene-card-content">
+   				<div class="desc-wrap">
+                  <h5>{{'Description' | translate}} : </h5>
+                  <p>{{content.short_description}}<p>
+               </div>
+               <div class="project-team mrgn-b-md">
+                  <h5>{{'Team Members' | translate}} : </h5>
+                  <div class="team-img-wrap">
+                     <img class="thumb-gap" src="{{image}}" width="30" height="30" *ngFor="let image of content.team_image">
+                  </div>
+               </div>
+               <div class="deadline-info mrgn-b-md">
+                  <h5>{{'Deadline' | translate}} : </h5>
+                  <p>{{content.deadline}}</p>
+               </div>
+               <div class="progress-bar mrgn-b-md">
+                  <h5 class="mrgn-b-none">{{'Progress' | translate}} : <span class="primary-text">{{content.progress_value}}%</span></h5>
+                  <mat-progress-bar mode="determinate" value="{{content.progress_value}}"></mat-progress-bar>
+               </div>
+               <div class="button-wrap text-right">               
+                  <a href="javascript:void(0)" (click)="projectDetails(content)" class="primary-text">{{'Learn More' | translate}}</a>
+               </div>
+   			</div>
+   		</mat-card>
+   	</div>
+   </div>
+</ng-template>
+
+<mat-menu #options="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon> Settings </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon> View More </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon> Disable notifications </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon> Remove Panel </button>
+</mat-menu>
+ 

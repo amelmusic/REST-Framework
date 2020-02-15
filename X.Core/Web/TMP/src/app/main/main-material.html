@@ -1,0 +1,80 @@
+<div id="main-app" class="app sidebar-color-dark header-color-dark" [dir]="layout"
+   [ngClass]="{'app-dark': dark, 'collapsed-sidebar': coreService.collapseSidebar, 'compact-sidebar': compactSidebar, 'customizer-in': customizerIn}"
+   [class.side-panel-opened]="coreService.sidenavOpen" [class.side-panel-closed]="!coreService.sidenavOpen">
+   <mat-sidenav-container class="gene-container">
+      <mat-sidenav #sidenav [(mode)]="coreService.sidenavMode" [(opened)]="coreService.sidenavOpen"
+         class="sidebar-area">
+         <ms-side-bar [menuList]="menuItems" [verticalMenuStatus]=true></ms-side-bar>
+      </mat-sidenav>
+      <mat-toolbar class="gene-header-toolbar">
+         <div class="gene-ham-icon">
+            <button class="" mat-mini-fab color="primary" mat-card-icon (click)="toggleSidebar()">
+               <mat-icon>menu</mat-icon>
+            </button>
+         </div>
+         <a class="navbar-brand">{{header}}</a>
+         <!-- <breadcrumb class="gene-breadcrumbs"></breadcrumb> -->
+         <span fxFlex></span>
+         <div class="search-bar" fxFlex>
+            <form class="search-form" fxShow="false" fxShow.gt-xs>
+               <mat-form-field>
+                  <input matInput placeholder="{{'General.Search' | translate}}">
+               </mat-form-field>
+            </form>
+         </div>
+         <div class="secondary-menu">
+            <button fxHide="true" fxHide.gt-sm="false" mat-button class="fullscreen-toggle"
+               (click)="toggleFullscreen()">
+               <mat-icon *ngIf="!isFullscreen">fullscreen</mat-icon>
+               <mat-icon *ngIf="isFullscreen">fullscreen_exit</mat-icon>
+            </button>
+            <button class="user-button" mat-button [matMenuTriggerFor]="menu">
+               <div fxLayout="row" fxLayoutAlign="center center">
+                  <mat-icon>account_circle</mat-icon>
+               </div>
+            </button>
+            <!-- <button (click)="end.toggle()" mat-icon-button class="overflow-visible">
+            <mat-icon>notifications</mat-icon>
+         </button> -->
+            <ms-language-drop-down></ms-language-drop-down>
+         </div>
+      </mat-toolbar>
+      <mat-sidenav #end position="end" class="chat-panel" mode="over" opened="false">
+         <div class="scroll">
+            <mat-toolbar class="primary-bg">
+               <h3>{{'Notifications'|translate}}</h3>
+            </mat-toolbar>
+            <mat-nav-list>
+               <mat-list-item>
+                  <mat-icon mat-list-avatar class="primary-text">person_add</mat-icon>
+                  <h4 mat-line>TODO</h4>
+                  <p mat-line>TODO</p>
+               </mat-list-item>
+            </mat-nav-list>
+         </div>
+      </mat-sidenav>
+      <div class="gene-base-container" #scrollContainer>
+         <div class="inner-container" fxLayout="row wrap">
+            <div class="full-wid" class="container">
+               <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet>
+               <ng-container>
+               </ng-container>
+            </div>
+            <div class="footer-wrap pad-t-none full-wid" fxFLex="100">
+               <ms-footer></ms-footer>
+            </div>
+         </div>
+      </div>
+   </mat-sidenav-container>
+</div>
+<mat-menu class="user-menu" x-position="before" y-position="below" #menu="matMenu">
+   <!-- <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>{{'Settings'|translate}}</span>
+   </button> -->
+   <mat-divider></mat-divider>
+   <button (click)="logOut()" mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>{{'Logout'|translate}}</span>
+   </button>
+</mat-menu>

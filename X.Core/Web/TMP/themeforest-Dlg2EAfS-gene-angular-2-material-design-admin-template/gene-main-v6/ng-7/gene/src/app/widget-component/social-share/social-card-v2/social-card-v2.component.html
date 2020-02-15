@@ -1,0 +1,11 @@
+<mat-card class="card-full-height" fxLayoutAlign="start center">
+	<div class="social-stats">
+		<div class="social-top mrgn-b-md">
+			<div fxLayout="row" fxLayoutAlign="start center">
+				<div fxLayout="column"><i class="fa {{socialCardContent.icon}} fa-2x {{socialCardContent.text_color}}"></i> </div>
+				<h3 class="mrgn-l-md">{{socialCardContent.name}}</h3>
+			</div>
+		</div>
+		<div class="social-bottom"> <span class="gene-block">Budget: ${{socialCardContent.budget}}</span> <span class="gene-block"><i class="fa fa-long-arrow-up success-text"></i>{{socialCardContent.growth}}</span> </div>
+	</div>
+</mat-card>

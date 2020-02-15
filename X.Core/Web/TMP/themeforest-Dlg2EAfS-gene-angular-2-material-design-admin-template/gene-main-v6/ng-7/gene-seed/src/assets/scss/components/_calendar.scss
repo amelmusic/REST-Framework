@@ -1,0 +1,127 @@
+/*============|Calender|============*/
+
+// Calendar vars
+$model-bg:rgba(0, 0, 0, 0.5);
+$model-width-for-lg :540px;
+$model-width-for-sm :80%;
+$model-padding :2rem;
+.event-editor-table {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #eceeef;
+}
+.event-editor-table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #eceeef;
+}
+.event-editor-table th,
+.event-editor-table td {
+    padding: .75rem;
+    vertical-align: top;
+}
+.event-editor-table td {
+    border: 1px solid #eceeef;
+}
+.cal-col {
+    width: 33.33%;
+    float: left;
+    height: 66px;
+}
+.gene-btn-group {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    .mat-icon {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        cursor: pointer;
+    }
+}
+.right-tab {
+    .gene-btn-group>.gene-btn {
+        float: right;
+    }
+}
+.gene-cal-head {
+    line-height: 50px;
+    margin-top: 0.5rem;
+}
+
+//Models
+
+.modal-dialog {
+    background-color: $model-bg;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+}
+@media(min-width:736px) {
+    .modal-content {
+        max-width: $model-width-for-lg;
+    }
+}
+@media(max-width:735px) {
+    .modal-content {
+        max-width: $model-width-for-sm;
+    }
+}
+.modal-content {
+    -moz-box-direction: normal;
+    -moz-box-orient: vertical;
+    background-clip: padding-box;
+    background-color: $light-color;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    outline: 0 none;
+    padding: $model-padding;
+    overflow-wrap: break-word;
+    position: relative;
+}
+.modal-open .modal,
+.modal-open .modal-dialog {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    .mat-icon {
+        cursor: pointer;
+        display: inline-block;
+        padding-top: 0.3rem;
+    }
+}
+.modal-confirm-btn {
+    border: 1px solid #f2f0f7;
+    cursor: pointer;
+    padding: 5px;
+}
+.app-dark ms-full-calendar .modal-content .mat-icon {
+    border-color: #000;
+    color: #000;
+}
+.app-dark ms-full-calendar .modal-body {
+    color: #000;
+}
+@media(max-width:599px){
+   .gene-calender{
+      .mat-icon {
+         font-size: 18px;
+         width: 18px;
+         margin-left: 0.3rem;
+         margin-right: 0.3rem;
+      }
+      .gene-cal-head{
+         font-size: 1rem;
+      }
+   }
+}

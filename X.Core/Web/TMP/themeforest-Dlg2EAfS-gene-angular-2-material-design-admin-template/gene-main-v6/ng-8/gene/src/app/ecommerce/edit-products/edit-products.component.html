@@ -1,0 +1,173 @@
+<mat-card class="pad-y-lg pad-b-md">
+   <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+         <div class="pad-r-md">
+            <div class="dash-title font-bold"><h4>{{'Search' | translate }}</h4></div>
+         </div>
+      </div>
+      <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+         <div fxLayout="row wrap">
+            <div class="form-group pad-r-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(100% - 300px)" fxFlex.lg="calc(100% - 300px)" fxFlex.xl="calc(100% - 300px)">
+               <mat-form-field class="full-wid" floatLabel="never">
+                  <input matInput placeholder="Search Products">
+               </mat-form-field>
+            </div>
+            <!-- form-group -->
+            <div class="contact-btn" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="300px" fxFlex.lg="300px" fxFlex.xl="300px"> 
+               <button class="mrgn-r-xs mrgn-b-xs" mat-raised-button color="primary">{{'Search' | translate }}</button>
+               <button mat-raised-button color="primary" (click)="addProduct()" >{{'Add Product' | translate }}<mat-icon class="mrgn-l-xs">add</mat-icon></button>
+            </div>
+            <!-- contact-btn -->
+         </div>
+      </div>
+   </div>			
+</mat-card>	
+<div class="mrgn-all-md" fxLayoutAlign="space-between center">
+   <div class="title">
+      <h4 class="mrgn-b-none">{{'Product' | translate }} {{showType | translate}}</h4>
+   </div>
+   <!-- title -->
+    <div class="product-icon">
+      <mat-card class="switcher-wrap pad-x-sm pad-y-sm margin-none" fxLayoutAlign="space-between stretch">
+         <i class="material-icons inline-block grid-icon active" id="grid" (click)="productShowType('grid')">apps</i>
+         <mat-divider [vertical]="true"></mat-divider>
+         <i class="material-icons inline-block mrgn-r-none mrgn-l-xs list-icon" id="list" (click)="productShowType('list')">list</i>
+      </mat-card>
+   </div>
+   <!-- product-icon -->
+</div>
+<div class="filter-wrap mrgn-x-md" fxLayout="row wrap" fxLayoutGap="15px">
+   <div>
+      <mat-form-field>
+         <mat-label>Type</mat-label>
+         <mat-select>
+            <mat-option value="Men">Men</mat-option>
+            <mat-option value="Women">Women</mat-option>
+            <mat-option value="Gadgets">Gadgets</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+   <div>
+      <mat-form-field>
+         <mat-label>Recent</mat-label>
+         <mat-select>
+            <mat-option value="This Week">This Week</mat-option>
+            <mat-option value="This Month">This Month</mat-option>
+            <mat-option value="Past Month">Past Month</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+   <div>
+      <mat-form-field>
+         <mat-label>No of Items</mat-label>
+         <mat-select>
+            <mat-option value="10">10</mat-option>
+            <mat-option value="20">20</mat-option>
+            <mat-option value="30">30</mat-option>
+         </mat-select>
+      </mat-form-field>
+   </div>
+</div>
+<ng-container *ngIf="productsGrid && productsGrid.length >= 0; else elseBlock">
+   <ng-container *ngIf="showType == 'list';else gridtype">
+      <div fxLayout="row wrap">
+         <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <div class="product-list">
+               <mat-card class="pad-t-none">
+                  <div class="overflow-hidden">
+                     <div class="table-responsive product-list-table">         
+                        <table class="full-wid table-scroll-wrap" mat-table [dataSource]="productsList" matSort>
+                           <ng-container matColumnDef="id">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">{{element.id}}</td>
+                           </ng-container>
+                            <ng-container matColumnDef="image">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef>Image</th>
+                              <td class="text-nowrap team-images-wrap pad-y-md pad-x-md" mat-cell *matCellDef="let element">
+                                 <img class="inline-block" src="{{element.image}}" width="30" height="30">  
+                              </td>
+                           </ng-container> 
+                           <ng-container matColumnDef="name">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                              <td class="text-nowrap product-name" mat-cell *matCellDef="let element"><span>{{element.name}}</span></td>
+                           </ng-container>
+                           <ng-container matColumnDef="brand">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Brand</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">{{element.brand}}</td>
+                           </ng-container>
+                           <ng-container matColumnDef="category">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">{{element.category}}</td>
+                           </ng-container>
+                            <ng-container matColumnDef="product_code">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Product Code</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">{{element.product_code}}
+                              </td>
+                           </ng-container>
+                           <ng-container matColumnDef="discount_price">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Discount Price</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">${{element.discount_price}}</td>
+                           </ng-container>
+                           <ng-container matColumnDef="price">
+                              <th class="text-nowrap pad-x-md" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                              <td class="text-nowrap pad-x-md" mat-cell *matCellDef="let element">{{element.price|currency}}</td>
+                           </ng-container>
+                           <ng-container matColumnDef="action">
+                              <th class="pad-x-md text-nowrap" mat-header-cell *matHeaderCellDef> Action </th>
+                              <td class="pad-x-md text-nowrap" mat-cell *matCellDef="let element;let i = index;">
+                                 <button mat-icon-button (click) ="onEditProduct(element)" class="success-text">
+                                    <i class="material-icons">edit</i>
+                                 </button> 
+                                 <button color="warn" mat-icon-button (click)="deleteProduct(i)">
+                                    <mat-icon class="">delete</mat-icon>
+                                 </button>
+                              </td>
+                           </ng-container>     
+                           <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+                           <tr mat-row *matRowDef="let row; columns: displayedProductColumns"></tr>
+                        </table>  
+                     </div>
+                  </div>   
+                  <!-- product-list-tabel-->
+                  <mat-paginator [pageSizeOptions]="[15, 30, 45, 60]"></mat-paginator>
+               </mat-card>
+            </div>
+            <!-- product-list-->
+         </div> 
+      </div>
+   </ng-container>
+   <ng-template #gridtype>
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="productsGrid && productsGrid.length>0">
+         <div fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let product of productsGrid; let i=index;">
+            <mat-card class="product-card">
+               <a class="p-link">
+                  <img width="626" height="800" mat-card-image [src] ="product?.image" alt="Photo of a Shiba Inu">
+               </a>
+               <div class="wishlist-icon">
+                  <a (click)="deleteProduct(i)"><mat-icon> delete </mat-icon></a>
+               </div>
+               <!-- wishlist-icon-->
+               <div class="m-icon">
+                  <button class="success-bg" mat-fab (click)="onEditProduct(product)"><i class="material-icons">edit</i></button>
+               </div>
+               <!-- m-icon -->
+               <mat-card-content class="product-content relative">
+                  <p class="category-wrap">{{product?.category}}</p>
+                  <h4><a class="title-link">{{product?.name}}</a> </h4>
+                  <div class="product-price">
+                     <div fxFlex fxLayoutAlign="start">
+                        <del class="text-line">{{product?.price | currency}}</del>
+                        <span class="success-text font-bold">{{product?.discountPriceValue | currency}}</span>
+                     </div>
+                  </div>
+                  <!--product-price-->
+               </mat-card-content>
+               <!-- product-content -->
+            </mat-card>
+         </div>
+      </div>
+   </ng-template>
+</ng-container>
+<ng-template #elseBlock>
+   <h5 class="mrgn-l-lg">No product found</h5>
+</ng-template>

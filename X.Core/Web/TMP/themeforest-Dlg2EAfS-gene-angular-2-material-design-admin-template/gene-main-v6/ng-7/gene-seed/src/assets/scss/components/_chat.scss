@@ -1,0 +1,119 @@
+/*=============|Chat|=============*/
+$chat-area-bg: #fff;
+$chat-sidebar-bg: #fff;
+body .gene-chat-page .mat-sidenav-content {
+    padding: 0;
+}
+.gene-chat-page {
+    img {
+        width: 50px;
+        min-width: 50px;
+    }
+    .chat-toolbar,
+    .chat-toolbar-side {
+        padding: 0.3rem 1rem;
+    }
+    .chat-toolbar{
+      &.mat-toolbar, &.mat-toolbar h1, &.mat-toolbar h2, &.mat-toolbar h3, &.mat-toolbar h4, &.mat-toolbar h5, &.mat-toolbar h6 {
+         font: 500 1.1rem/1.4 Roboto, "Helvetica Neue", sans-serif;
+      }
+      .make-ellipse{
+         width: 250px;
+      }
+    }
+    .gene-chat-area {
+        padding: 2rem;
+        height: 100%;
+    }
+    .gene-chat-msg {
+        border-radius: $border-radius-base;
+        padding: 0.4375rem 1.25rem;
+    }
+    .gene-chat-user {
+        padding: 1rem 1rem 1rem 0;
+    }
+    .gene-chat-thumb,
+    .gene-user-info {
+        display: inline-block;
+        vertical-align: top;
+    }
+    .gene-chat-user {
+        .mat-list-item-content {
+            margin-bottom: 1rem;
+        }
+        p {
+            margin: 0;
+        }
+    }
+    .chat-toolbar-side {
+        .mat-icon-button {
+            margin: 0;
+        }
+    }
+    .gene-chat-form {
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        margin-top: 2rem;
+        padding: 1.5rem 2rem 0.5rem;
+    }
+    .mat-sidenav.mat-sidenav-side {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    .gene-send-btn {
+        margin-left: 3rem;
+    }
+    .chat-toolbar {
+        .mat-icon-button {
+            margin: 0;
+        }
+    }
+    .ps-container .ps-content {
+        height: 500px;
+    }
+}
+.gene-send-text {
+    float: left;
+    width: calc(100% - 7rem);
+    margin-top: 1.2rem;
+}
+.chat-content-area .mat-sidenav-content {
+    background-color: $chat-area-bg;
+    height: auto;
+}
+.chat-content-area {
+    .cdk-focus-trap-content {
+        background-color: $chat-sidebar-bg;
+    }
+}
+.app-dark {
+    .chat-content-area .mat-sidenav-content {
+        background: mat-color($dark-background, card);
+        height: auto;
+    }
+    .chat-content-area {
+        .cdk-focus-trap-content {
+            background: mat-color($dark-background, card);
+        }
+    }
+}
+@media(max-width:1300px) {
+    .gene-chat-page .gene-send-btn {
+        margin-left: 2rem;
+    }
+}
+@media(max-width:580px) {
+   .gene-chat-page {
+      .gene-chat-sidebar {
+         width: 80%;
+      }
+   }
+   .gene-chat-page .chat-toolbar .make-ellipse{
+      width: 140px;
+   }
+   .gene-chat-page .gene-chat-area{
+      padding:1.5rem 1rem;
+   }
+   .gene-chat-page .gene-chat-form,.gene-chat-page .chat-toolbar{
+      padding-left:0rem;
+      padding-right:0rem;
+   }
+}

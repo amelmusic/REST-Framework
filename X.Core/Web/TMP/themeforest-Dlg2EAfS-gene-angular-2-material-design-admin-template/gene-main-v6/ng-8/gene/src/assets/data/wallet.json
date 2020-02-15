@@ -1,0 +1,38 @@
+[
+   {
+      "currency" : "Bitcoin",
+      "currencyIcon" : "BTC-alt",
+      "receivedAmount" : "+ 13247837654",
+      "sentAmount" : "- 13247837654",
+      "totalAmount" : "+ 13247837654",
+      "walletAddress" : "YXB35H24ISDJHCISDT",
+      "image" : "assets/img/gene-qr.jpg"
+   },
+   {
+      "currency" : "Ethereum",
+      "currencyIcon" : "ETC",
+      "receivedAmount" : "+ 13247837654",
+      "sentAmount" : "- 13247837654",
+      "totalAmount" : "+ 13247837654",
+      "walletAddress" : "YXB35H24ISDJHCISDT",
+      "image" : "assets/img/gene-qr.jpg"
+   },
+   {
+      "currency" : "Litecoin",
+      "currencyIcon" : "LTC-alt",
+      "receivedAmount" : "+ 13247837654",
+      "sentAmount" : "- 13247837654",
+      "totalAmount" : "+ 13247837654",
+      "walletAddress" : "YXB35H24ISDJHCISDT",
+      "image" : "assets/img/gene-qr.jpg"
+   },
+   {
+      "currency" : "Zcash",
+      "currencyIcon" : "ZEC-alt",
+      "receivedAmount" : "+ 13247837654",
+      "sentAmount" : "- 13247837654",
+      "totalAmount" : "+ 13247837654",
+      "walletAddress" : "YXB35H24ISDJHCISDT",
+      "image" : "assets/img/gene-qr.jpg"
+   }
+]

@@ -1,0 +1,30 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Radio Card'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p>Radio buttons allow the user to select one option from a set</p>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Basic Example'|translate}}</h5>
+         <mat-radio-group class="radio-group">
+            <mat-radio-button value="1" class="radio-button">Option 1</mat-radio-button>
+            <mat-radio-button value="2" class="radio-button">Option 2</mat-radio-button>
+         </mat-radio-group>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h5 class="mrgn-b-md">{{'Dynamic Example'|translate}}</h5>
+         <mat-radio-group class="radio-group" [(ngModel)]="favoriteSeason">
+         <mat-radio-button class="radio-button" *ngFor="let season of seasons" [value]="season">
+         {{season}}
+         </mat-radio-button>
+         </mat-radio-group>
+         <div class="selected-value">Your favorite season is: {{favoriteSeason}}</div>
+      </div>
+   </div>
+</mat-card>

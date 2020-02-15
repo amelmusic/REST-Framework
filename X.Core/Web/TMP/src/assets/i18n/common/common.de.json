@@ -1,0 +1,14 @@
+{
+    "Common": {
+        "Yes": "Ja",
+        "No": "Nein",
+        "Error": "Fehler bei der Kommunikation mit dem Server"
+    },
+    "action": {
+        "save": "Speichern",
+        "cancel": "Stornieren"
+    },
+    "General": {
+        "Search": "Suche"
+    }
+}

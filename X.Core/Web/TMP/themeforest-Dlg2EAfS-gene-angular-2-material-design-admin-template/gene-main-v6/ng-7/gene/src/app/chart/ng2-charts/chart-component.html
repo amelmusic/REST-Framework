@@ -1,0 +1,296 @@
+<div fxLayout="row" fxLayout="row wrap" fxLayoutAlign="center" *ngIf="showChart">
+   <!-- bar -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Bar'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas height="200" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- horizontal bar -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Horizontal Bar'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas height="200" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barHorizontalChartOptions" [colors]="barChartColors" [legend]="barHorizontalChartLegend" [chartType]="barHorizontalChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Stacked bar -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Stacked Bar'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button >
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas height="200" baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barStackChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Line Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Line'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Stepped Line Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Stepped Line'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [datasets]="lineChartSteppedData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Point Line Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Points Line'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [datasets]="linePointChartData" [labels]="lineChartLabels" [options]="linePointChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Pie Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Pie'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [data]="pieChartData"  [options]="PieChartOptions" [colors]="pieChartColors" [chartType]="pieChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Doughnut Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Doughnut'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [data]="doughnutChartData" [options]="PieChartOptions" [colors]="pieChartColors" [chartType]="doughnutChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Polar Area Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Polar Area'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [data]="polarAreaChartData" [labels]="polarAreaChartLabels" [legend]="polarAreaLegend" [colors]="pieChartColors" [chartType]="polarAreaChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Radar Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Radar'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [datasets]="radarChartData" [labels]="radarChartLabels" [legend]="polarAreaLegend" [colors]="lineChartColors" [chartType]="radarChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- bubble -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Bubble'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas height="200" baseChart [datasets]="bubbleChartData" [labels]="lineChartLabels" [options]="bubbleChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="bubbleChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+   <!-- Mixed Chart -->
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="50" fxFlex="100" fxFlex.gt-md="33.33">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Mixed'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menuopt">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content">
+            <canvas baseChart height="200" [datasets]="mixedPointChartData" [labels]="lineChartLabels" [options]="mixedChartOptions" [colors]="barChartColors" [legend]="lineChartLegend" [chartType]="barChartType"></canvas>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<mat-menu #menuopt="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon>
+      View More 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      Disable notifications 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      Remove Panel 
+   </button>
+</mat-menu>

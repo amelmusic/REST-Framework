@@ -1,0 +1,32 @@
+<mat-card class="course-item">
+   <div class="gene-card-content-wrap">
+      <div class="image-wrap">
+         <ng-container *ngIf="course.videoDemoStatus == false; else elseBlock">
+            <a (click)="openCourseDetail()" href="javascript:void(0)"><img src="{{course.image}}" alt="image"> </a>
+         </ng-container>
+         <ng-template #elseBlock>
+            <img src="{{course.image}}" alt="image"> 
+            <a class="video-icon" (click) = "onVideoPlayer(course.demoVideoUrl)"><i class="material-icons">play_circle_filled</i></a>  
+         </ng-template>
+         <div *ngIf = "course.bestseller == true">
+            <div class="bestseller-tag">bestseller</div>
+         </div>
+      </div>
+      <mat-card-content class="mrgn-b-none">
+         <div class="card-header mrgn-b-md">
+            <h4 class="make-ellipse"><a (click)="openCourseDetail()" href="javascript:void(0)">{{course.name}}</a></h4>
+         </div>
+         <div class="meta-info mrgn-b-xs">
+            <span>{{course.content}}</span>
+         </div>
+         <div class="rating-wrap mrgn-b-md" fxLayout="row wrap" fxLayoutAlign="start center">
+            <bar-rating [rate]="course.rating" [max]="5" [readOnly]="true" [theme]="'default'"></bar-rating>
+            <div class="rating-text">{{course.rating}} Stars</div>
+         </div>
+         <div class="text-right">
+            <h4 color="primary">{{course.oldPrice*(100-course.disount)/100|currency}}</h4>
+            <del>{{course.oldPrice|currency}}</del>
+         </div>
+      </mat-card-content>
+   </div>
+</mat-card>

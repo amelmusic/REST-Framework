@@ -1,0 +1,121 @@
+<div fxLayout="row wrap" fxLayoutAlign=" start" class="gene-form-wizard">
+   <mat-card fxFlex="100%">
+      <div class="gene-card-title">
+         <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column">
+               <h4>{{'Form Wizard'|translate}}</h4>
+            </div>
+            <span fxFlex></span> 
+         </div>
+         <mat-divider></mat-divider>
+      </div>
+      <div class="gene-card-content">
+         <mat-tab-group [selectedIndex]="selectedIndex">
+            <mat-tab label="Step 1">
+               <form #form="ngForm">
+                  <div fxLayout="column">
+                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg">
+                              <input matInput placeholder="Username" value="DemoUser" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg"> 
+                              <input matInput placeholder="Email address" required type="email">
+                           </mat-form-field>
+                        </div>
+                     </div>
+                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput placeholder="Password" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput placeholder="Confirm Password" required>
+                           </mat-form-field>
+                        </div>
+                     </div>
+                     <div fxLayout="row" fxLayoutAlign="start">
+                        <button mat-button type="button" disabled>Previous </button>
+                        <button mat-button mat-raised-button [disabled]="!form.valid" (click)="nextStep()" type="button">Next </button>
+                     </div>
+                  </div>
+               </form>
+            </mat-tab>
+            <mat-tab label="Step 2" [disabled]="!form.valid">
+               <form #form2="ngForm">
+                  <div fxLayout="column">
+                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput name="firstname" placeholder="First Name" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput name="lastname" placeholder="Last Name" required>
+                           </mat-form-field>
+                        </div>
+                     </div>
+                     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                        <div fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex="100" fxFlex.gt-md="32">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput name="street" required placeholder="Street" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex="100" fxFlex.gt-md="32">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput name="zipcode" required placeholder="Zipcode" required>
+                           </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-sm="32" fxFlex.gt-xs="32" fxFlex="100" fxFlex.gt-md="32">
+                           <mat-form-field class="full-wid mrgn-b-lg ">
+                              <input matInput name="city" required placeholder="City" required>
+                           </mat-form-field>
+                        </div>
+                     </div>
+                     <div fxLayout="row" fxLayoutAlign="start">
+                        <button mat-button type="button" (click)="previousStep()">Previous</button>
+                        <button mat-button mat-raised-button [disabled]="!form2.valid" (click)="nextStep()" type="button">Next</button>
+                     </div>
+                  </div>
+               </form>
+            </mat-tab>
+            <mat-tab label="Step 3" [disabled]="!form2.valid">
+               <form #form3="ngForm">
+                  <mat-form-field class="full-wid mrgn-b-lg ">
+                     <input matInput name="creditcard" placeholder="Credit Card Number" required>
+                  </mat-form-field>
+                  <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+                     <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                        <mat-form-field class="full-wid mrgn-b-lg ">
+                           <input matInput name="expirydate" required placeholder="Expiry Date (MM/YYYY)">
+                        </mat-form-field>
+                     </div>
+                     <div fxFlex.gt-sm="49" fxFlex.gt-xs="49" fxFlex="100" fxFlex.gt-md="49">
+                        <mat-form-field class="full-wid mrgn-b-lg ">
+                           <input matInput name="creditcardname" required placeholder="Credit Card Owner">
+                        </mat-form-field>
+                     </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="start">
+                     <button mat-button type="button" (click)="previousStep()">Previous</button>
+                     <button mat-button mat-raised-button [disabled]="!form3.valid" (click)="nextStep()" type="button">Next</button>
+                  </div>
+               </form>
+            </mat-tab>
+            <mat-tab label="Step 4" [disabled]="!form3.valid">
+               <div fxLayout="column">
+                  <div class="custom-pad text-center">
+                     <h1>Congratulations!</h1>
+                     <p>You submitted your form successfully.</p>
+                  </div>
+               </div>
+            </mat-tab>
+         </mat-tab-group>
+      </div>
+   </mat-card>
+</div>

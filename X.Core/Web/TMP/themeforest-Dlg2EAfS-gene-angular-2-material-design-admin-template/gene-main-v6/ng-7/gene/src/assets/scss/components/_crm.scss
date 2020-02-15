@@ -1,0 +1,44 @@
+.stats-card-wrap,.safe-trade-wrap{
+   .chart-wrap canvas{
+      height: 80px !important;
+      // filter: drop-shadow(0 8px 8px #716aca);
+   }
+}
+
+//Project List
+.project-list-table{
+   .team-images-wrap{
+      min-width: 200px;
+   }
+}
+.project-icon{
+   button{
+      opacity:0.5;
+      &.active{
+         opacity: 1;
+      }
+   }
+}
+
+.primary-chart-shadow canvas{
+   filter: drop-shadow(0 8px 8px $my-primary);
+}
+.success-chart-shadow canvas{
+   filter: drop-shadow(0 8px 8px $my-success);
+}
+.warn-chart-shadow canvas{
+   filter: drop-shadow(0 8px 8px $my-warn);
+}
+.accent-chart-shadow canvas{
+   filter: drop-shadow(0 8px 8px $my-accent);
+}
+
+//Project list
+.project-list .project-name a{
+   font-weight: 500;
+}
+.project-stats-chart{
+   canvas{
+      height:340px !important;
+   }
+}

@@ -1,0 +1,350 @@
+<div fxLayout="row wrap">
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="invoice-list table-list-wrap">
+         <mat-card class="pad-t-none">
+            <div class="table-title gene-card-title">
+               <h4 class="mrgn-b-none">{{'Invoices' | translate}}</h4>
+            </div> 
+            <mat-divider></mat-divider>       
+            <div class="table-responsive gene-card-content">  
+               <table class="full-wid" mat-table [dataSource]="invoicelist">
+                  <ng-container matColumnDef="id">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Invoice Id</th>
+                     <td mat-cell *matCellDef="let element">
+                        <div>{{element.id}}</div>
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="clientName">
+                     <th mat-header-cell *matHeaderCellDef>Client Name</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <div>   
+                           <h6 class="mrgn-b-none">{{element.firstName}} {{element.lastName}}</h6>
+                        </div>   
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="accountType">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Account Type</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <mat-chip-list>
+                           <mat-chip color="{{element.accountTypeColor}}" selected>{{element.accountType}}</mat-chip>
+                        </mat-chip-list> 
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="dateCreated">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date Created</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.dateCreated | date:'mediumDate'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="dueDate">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Due Date</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.dueDate | date:'mediumDate'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="amount">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedInvoiceColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedInvoiceColumns"></tr>
+               </table>
+            </div>   
+         </mat-card>
+      </div>
+   </div>  
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="payment-list table-list-wrap">
+         <mat-card class="pad-t-none">
+            <div class="table-title gene-card-title">
+               <h4 class="mrgn-b-none">{{'Payments' | translate}}</h4>
+            </div>
+            <mat-divider></mat-divider> 
+            <div class="table-responsive gene-card-content">  
+               <table class="full-wid" mat-table [dataSource]="paymentlist">
+                  <ng-container matColumnDef="payid">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Payment Id</th>
+                     <td mat-cell *matCellDef="let element">
+                        <div>{{element.payid}}</div>
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="clientName">
+                     <th mat-header-cell *matHeaderCellDef>Client Name</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <div>   
+                           <h6 class="mrgn-b-none">{{element.firstName}} {{element.lastName}}</h6>
+                        </div>   
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="paymentType">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Payment Type</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <mat-chip-list>
+                           <mat-chip color="{{element.paymentTypeColor}}" selected>{{element.paymentType}}</mat-chip>
+                        </mat-chip-list> 
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="paidDate">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Paid Date</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.paidDate | date:'mediumDate'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="amount">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns"></tr>
+               </table>
+            </div>   
+         </mat-card>
+      </div>
+   </div>  
+</div> 
+<div *ngIf="tableTabData">
+   <mat-card class="pad-all-md">
+      <mat-tab-group class="table-tab-list" color="accent">
+         <mat-tab label="{{'Transaction List' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="transactiion-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.transactionList">
+                        <ng-container matColumnDef="transid">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Transaction Id</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.transid}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="account">
+                           <th mat-header-cell *matHeaderCellDef>Account</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.account}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list>
+                           </td>   
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="debit">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Debit</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.debit}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="credit">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Credit</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.credit}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Balance</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.balance}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransactionColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransactionColumns"></tr>
+                     </table>
+                  </div>  
+               </div>
+            </div>
+         </mat-tab>
+         <mat-tab label="{{'Transfer Report' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="invoice-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.transferreport">
+                        <ng-container matColumnDef="transid">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Transfer Id</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.transid}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="account">
+                           <th mat-header-cell *matHeaderCellDef>Account</th>
+                           
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.account}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Balance</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.balance}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Status</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransferColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransferColumns"></tr>
+                     </table>
+                  </div>   
+               </div>
+            </div> 
+         </mat-tab>
+         <mat-tab label="{{'Expense Category' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="Expense-category-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.expenseCategory">
+                        <ng-container matColumnDef="itmNo">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Item No</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.itmNo}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>   
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Description</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Status</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedExpenseColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedExpenseColumns"></tr>
+                     </table>
+                  </div>   
+               </div>
+            </div>   
+         </mat-tab>
+      </mat-tab-group>
+   </mat-card>
+</div> 
+<div fxLayout="row wrap">
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="tax-rate-list table-list-wrap">
+         <mat-card class="pad-t-none">
+            <div class="table-title gene-card-title">
+               <h4 class="mrgn-b-none">{{'Tax Rates' | translate}}</h4>
+            </div> 
+            <mat-divider></mat-divider>       
+            <div class="table-responsive gene-card-content">  
+               <table class="full-wid" mat-table [dataSource]="taxrates">
+                  <ng-container matColumnDef="date">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="type">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Type</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <mat-chip-list>
+                           <mat-chip color="{{element.TypeColor}}" selected>{{element.type}}</mat-chip>
+                        </mat-chip-list> 
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="account">
+                     <th mat-header-cell *matHeaderCellDef>Account</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.account}}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="amount">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="credit">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Credit</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.credit}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="balance">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Balance</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.balance}} </td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedTaxColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedTaxColumns"></tr>
+               </table>
+            </div>   
+         </mat-card>
+      </div>
+   </div>  
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="payment-list table-list-wrap">
+         <mat-card class="pad-t-none">
+            <div class="table-title gene-card-title">
+               <h4 class="mrgn-b-none">{{'Add Tickets' | translate}}</h4>
+            </div>
+            <mat-divider></mat-divider> 
+            <div class="table-responsive gene-card-content">  
+               <table class="full-wid" mat-table [dataSource]="addtickets">
+                  <ng-container matColumnDef="srno">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Sr.No</th>
+                     <td mat-cell *matCellDef="let element">
+                        <div>{{element.srno}}</div>
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="ticketCode">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Tickets Code</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <div>   
+                           <h6 class="mrgn-b-none">{{element.ticketCode}}</h6>
+                        </div>   
+                     </td>
+                  </ng-container>
+                  <ng-container matColumnDef="subject">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Subject</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.subject}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="date">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>date</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="department">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Department</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.department}} </td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                     <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Status</th>
+                     <td class="text-nowrap" mat-cell *matCellDef="let element">
+                        <mat-chip-list>
+                           <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                        </mat-chip-list> 
+                     </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedAddTicketsColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedAddTicketsColumns"></tr>
+               </table>
+            </div>   
+         </mat-card>
+      </div>
+   </div>  
+</div>   

@@ -1,0 +1,80 @@
+<mat-card class="gene-btn-wrapper">
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Buttons'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p><code>mat-button</code> is an HTML button or a tag enhanced with styling and animation to match the Material Design button spec</p>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Flat buttons'|translate}}</h5>
+         <button class="mrgn-all-xs" mat-icon-button>
+            <mat-icon>favorite</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-button>Default</button>
+         <button class="mrgn-all-xs" mat-button color="primary">Primary</button>
+         <button class="mrgn-all-xs" mat-button color="accent">Accent</button>
+         <button class="mrgn-all-xs" mat-button color="warn">Warn</button>
+         <button class="mrgn-all-xs" mat-button disabled>Disabled</button>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Raised buttons'|translate}}</h5>
+         <button class="mrgn-all-xs" mat-raised-button mat-icon-button>
+            <mat-icon>favorite</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-raised-button>Default</button>
+         <button class="mrgn-all-xs" mat-raised-button color="primary">Primary</button>
+         <button class="mrgn-all-xs" mat-raised-button color="accent">Accent</button>
+         <button class="mrgn-all-xs" mat-raised-button color="warn">Warn</button>
+         <button class="mrgn-all-xs" mat-raised-button disabled>Disabled</button>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Small buttons'|translate}}</h5>
+         <button class="mrgn-all-xs" mat-raised-button mat-icon-button mat-button-sm>
+            <mat-icon>favorite</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-raised-button mat-button-sm>Default</button>
+         <button class="mrgn-all-xs" mat-raised-button mat-button-sm color="primary">Primary</button>
+         <button class="mrgn-all-xs" mat-raised-button mat-button-sm color="accent">Accent</button>
+         <button class="mrgn-all-xs" mat-raised-button mat-button-sm color="warn">Warn</button>
+         <button class="mrgn-all-xs" mat-raised-button mat-button-sm disabled>Disabled</button>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Fab buttons'|translate}}</h5>
+         <button class="mrgn-all-xs" mat-fab>
+            <mat-icon>add</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-fab disabled="">
+            <mat-icon>add</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-mini-fab>
+            <mat-icon>add</mat-icon>
+         </button>
+         <button class="mrgn-all-xs" mat-mini-fab disabled>
+            <mat-icon>add</mat-icon>
+         </button>
+      </div>
+      <div class="box-inset pad-all-md ">
+         <h5 class="mrgn-b-md">{{'Button toggles'|translate}}</h5>
+         <mat-button-toggle-group #group="matButtonToggleGroup">
+            <mat-button-toggle value="left">
+               <mat-icon>format_align_left</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="center">
+               <mat-icon>format_align_center</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="right">
+               <mat-icon>format_align_right</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="justify" disabled>
+               <mat-icon>format_align_justify</mat-icon>
+            </mat-button-toggle>
+         </mat-button-toggle-group>
+         <div class="example-selected-value">Selected value: {{group.value}}</div>
+      </div>
+   </div>
+</mat-card>

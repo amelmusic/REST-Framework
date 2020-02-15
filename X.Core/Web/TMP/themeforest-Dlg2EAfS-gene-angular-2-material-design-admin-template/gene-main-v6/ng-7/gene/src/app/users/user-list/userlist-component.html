@@ -1,0 +1,25 @@
+<div fxLayout="row wrap" fxLayoutAlign="start" class="user-list-wrapper">
+   <div fxFlex.gt-md="33.33" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let user of userGridList">
+      <mat-card>
+         <div class="user-list-wrap">
+            <div fxLayout="row" fxLayoutAlign="start center" class="mrgn-b-md">
+               <div fxLayout="column">
+                  <div class="user-thumb">
+                     <img class="img-responsive img-circle" src="{{user.image}}" width="107" height="107" alt="user list image"> 
+                  </div>
+               </div>
+               <div class="pad-wrap">
+                  <span class="user-name">{{user.name}}</span>
+               </div> 
+               <span fxFlex></span>
+            </div>
+            <div class="user-content">
+               <span class="gene-block"><mat-icon>location_on</mat-icon>{{user.city}}, {{user.country}}</span>
+               <span class="gene-block mrgn-b-md"><mat-icon>play_for_work</mat-icon>{{user.post}}</span> 
+               <a class="primary-bg gene-btn-sm">Message</a> 
+               <a class="primary-bg gene-btn-sm">Follow</a>
+            </div> 
+         </div>
+      </mat-card>
+   </div>
+</div>

@@ -1,0 +1,120 @@
+<div class="feedback-wrapper">	
+	<div>
+		<mat-card>
+			<div class="mrgn-b-lg">
+				<h3>{{'Search Ideas'|translate}}</h3>
+			</div>
+			<div fxLayout="row wrap">
+				<div class="mrgn-r-md" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+					<mat-form-field class="full-wid" floatLabel="never">
+						<input matInput placeholder="Search Here">
+					</mat-form-field>
+				</div>
+				<div fxFlex.xs="100" fxFlex.sm="20" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20">
+					<button mat-raised-button color="primary">Search</button>
+				</div>
+			</div>
+		</mat-card>	
+	</div>
+	<div fxLayout="row wrap">
+		<div class="app-card" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+			<mat-card>
+				<div>
+					<mat-tab-group>
+						<mat-tab label="All ({{feedbackList.length}})">
+							<div class="gene-card-content">
+								<div class="tab-content pad-y-sm" fxLayoutAlign="space-between start" *ngFor = "let list of feedbackList">
+									<div class="content" fxLayout="row wrap">
+										<div fxFlex.xl="76px" fxFlex.lg="76px" fxFlex.md="76px"  fxFlex.sm="76px" fxFlex.xs="100">
+											<div class="tab-image mrgn-b-sm mrgn-r-md">
+		                 					<img class="img-circle" alt="tab image" src="{{list.image}}" width="60" height="60">
+		                 				</div>
+		               			</div>
+		               			<div fxFlex.xl="calc(100% - 80px)" fxFlex.lg="calc(100% - 80px)" fxFlex.md="calc(100% - 80px)"  fxFlex.sm="calc(100% - 80px)" fxFlex.xs="100">
+											<p class="mrgn-b-xs"><a href="" class="primary-text">{{list.name}}</a> commented on <a href="javascript:void(0)" class="primary-text">{{list.comment}}</a></p>
+											<span class="mrgn-b-sm mat-icon-grey gene-block">{{list.time}}</span>
+											<ng-container *ngIf = "list.type == 'comment' ; else elseBlock">
+												<h4 class="desc pad-all-sm">{{list.feedback}}</h4>
+											</ng-container>
+											<ng-template #elseBlock>
+												<h4  class="desc pad-all-sm">{{list.feedback}}</h4>
+											</ng-template>
+											<div class="mrgn-b-sm">	
+												<mat-icon class="mrgn-r-sm">favorite</mat-icon>
+												<mat-icon>replye</mat-icon>
+											</div>
+										</div>		
+									</div>	
+									<div class="icon" fxLayoutAlign="start start">
+										<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+										<button mat-icon-button><mat-icon>delete</mat-icon></button>
+									</div>
+								</div>
+							</div>		
+						</mat-tab>
+
+						<mat-tab label="Ideas ({{ideaCount}})">
+							<ng-container *ngFor = "let list of feedbackList">
+								<div class="tab-content gene-card-content" fxLayoutAlign="space-between start" *ngIf= "list.type == 'idea'">
+									<div class="content" fxLayout="row wrap">
+										<div fxFlex.xl="76px" fxFlex.lg="76px" fxFlex.md="76px"  fxFlex.sm="76px" fxFlex.xs="100">
+											<div class="tab-image mrgn-b-sm mrgn-r-md">
+			                 				<img class="img-circle" alt="tab image" src="{{list.image}}" width="60" height="60">
+			               			</div>
+			               		</div>	
+		               			<div fxFlex.xl="calc(100% - 80px)" fxFlex.lg="calc(100% - 80px)" fxFlex.md="calc(100% - 80px)"  fxFlex.sm="calc(100% - 80px)" fxFlex.xs="100">
+											<p class="mrgn-b-xs"><a href="javascript:void(0)" class="primary-text">{{list.name}}</a> commented on <a href="" class="primary-text">{{list.comment}}</a></p>
+											<span class="mrgn-b-sm mat-icon-grey gene-block">{{list.time}}</span>
+											<h4  class="desc pad-all-sm">{{list.feedback}}</h4>
+											<div class="mrgn-b-sm">	
+												<mat-icon class="mrgn-r-sm">favorite</mat-icon>
+												<mat-icon>replye</mat-icon>
+											</div>
+										</div>		
+									</div>	
+									<div class="icon" fxLayoutAlign="start start">
+										<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+										<button mat-icon-button><mat-icon>delete</mat-icon></button>
+									</div>
+								</div>
+							</ng-container>	
+						</mat-tab>
+
+						<mat-tab label="Comments ({{commentCount}})">
+							<ng-container *ngFor = "let list of feedbackList">
+								<div class="tab-content gene-card-content" fxLayoutAlign="space-between start" *ngIf= "list.type == 'comment'">
+									<div class="content" fxLayout="row wrap">
+										<div fxFlex.xl="76px" fxFlex.lg="76px" fxFlex.md="76px"  fxFlex.sm="76px" fxFlex.xs="100">
+											<div class="tab-image mrgn-b-sm mrgn-r-md">
+			                 				<img class="img-circle" alt="tab image" src="{{list.image}}" width="60" height="60">
+			               			</div>
+		               			</div>
+		               			<div fxFlex.xl="calc(100% - 80px)" fxFlex.lg="calc(100% - 80px)" fxFlex.md="calc(100% - 80px)"  fxFlex.sm="calc(100% - 80px)" fxFlex.xs="100">
+											<p class="mrgn-b-xs"><a href="javascript:void(0)" class="primary-text">{{list.name}}</a> commented on <a href="" class="primary-text">{{list.comment}}</a></p>
+											<span class="mrgn-b-sm mat-icon-grey gene-block">{{list.time}}</span>
+											<h4  class="desc pad-all-sm">{{list.feedback}}</h4>
+											<div class="mrgn-b-sm">	
+												<mat-icon class="mrgn-r-sm">favorite</mat-icon>
+												<mat-icon>replye</mat-icon>
+											</div>
+										</div>		
+									</div>	
+									<div class="icon" fxLayoutAlign="start start">
+										<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+										<button mat-icon-button><mat-icon>delete</mat-icon></button>
+									</div>
+								</div>
+							</ng-container>	
+						</mat-tab>
+					</mat-tab-group>
+				</div>
+				<div class="pagination">
+					<mat-paginator [length]="100"
+			        [pageSize]="10"
+			        [pageSizeOptions]="[5, 10, 25, 100]">
+					</mat-paginator>
+				</div>
+			</mat-card>
+		</div>
+	</div>
+</div>	

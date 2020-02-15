@@ -1,0 +1,34 @@
+<div fxLayout="row wrap">
+   <div fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h3>{{'Color Picker'|translate}}</h3>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content custom-height">
+            <input [(colorPicker)]="color" [style.background]="color" [value]="color" />
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h3>{{'Color Picker'|translate}}</h3>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content custom-height">
+            <input [(colorPicker)]="color2" [style.background]="color2" [value]="color2" />
+         </div>
+      </mat-card>
+   </div>
+</div>

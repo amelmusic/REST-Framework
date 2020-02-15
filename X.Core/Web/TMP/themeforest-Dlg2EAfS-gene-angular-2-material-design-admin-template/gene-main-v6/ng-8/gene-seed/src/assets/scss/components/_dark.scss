@@ -1,0 +1,119 @@
+/*==============|Dark|=================*/
+.mails-container {
+    background: $light-color;
+}
+.content-container {
+    .search {
+        background: $light-color;
+    }
+}
+.app-dark {
+	tree-internal .tree .node-value {
+	color: $light-color !important;
+}
+
+    .mails-container {
+        background: mat-color($dark-background, card);
+        .mails .mail{
+            color: $light-color !important;
+            &:hover{
+                color: #000 !important;
+            }
+        }
+    }
+    .content-container {
+        .search {
+            background: mat-color($dark-background, card);
+        }
+    }
+    .cal-month-view .cal-cell-row:hover {
+        background-color: mat-color($dark-background, card);
+    }
+    .cal-month-view .cal-cell-row .cal-cell:hover,
+    .cal-month-view .cal-cell.cal-has-events.cal-open {
+        background: mat-color($dark-background, card);
+    }
+    code {
+        background: mat-color($dark-background, card);
+    }
+    .ngx-datatable.material .datatable-header .datatable-row-right,
+    .ngx-datatable.material .datatable-body .datatable-row-right,
+    .ngx-datatable.material .datatable-header .datatable-row-left,
+    .ngx-datatable.material .datatable-body .datatable-row-left {
+        background-color: mat-color($dark-background, card);
+    }
+    .mat-white{
+        background: transparent;
+    }
+}
+body .app-dark .gene-icon-display mat-icon {
+    color: mat-color($dark-foreground, base);
+}
+ body .app-dark .mat-form-field-appearance-legacy .mat-form-field-label, body .mat-form-field-appearance-legacy .mat-hint {
+	color: rgba(255,255,255,0.5) !important;
+}
+//For Dark Dialog Box
+.dark-theme-active{
+    .mat-dialog-container{
+       background-color:#424242;
+       color:$light-color;
+    }
+}
+body{
+   .app-dark{
+      .mat-card{
+         font-family: $mat-font-family;
+         background-color:#424242;
+         color:$light-color;
+      }
+      .mat-flat-button,.mat-raised-button, .mat-fab,.mat-mini-fab{
+         color:$light-color !important;
+      }
+      .sidebar-label{
+         background-color:$my-dark-warn;
+      }
+      .ecommerce-wrap .widgets-sidebar-wrap .clear-filter .ais-ClearRefinements-button,
+      .ecommerce-wrap .widgets-sidebar-wrap .ais-RefinementList .ais-RefinementList-label .ais-RefinementList-count{
+         background-color: $my-dark-primary; 
+      }
+      .mat-badge-warn .mat-badge-content{
+         background:$my-dark-warn;
+         color: $light-color;
+      }
+      .gene-fab-flat-icon {
+         background-color: #ffffff !important;
+         color: #37474F !important;     
+     }
+     .bdr-left,.bdr-all,.mat-divider{
+         border-color:rgba(255, 255, 255, 0.12)!important;
+      }
+      .ais-Breadcrumb, 
+      .ais-ClearRefinements, 
+      .ais-CurrentRefinements, .ais-GeoSearch, .ais-HierarchicalMenu, .ais-Hits, .ais-HitsPerPage,
+      .ais-InfiniteHits, .ais-InfiniteResults, .ais-Menu, .ais-MenuSelect, .ais-NumericMenu, 
+      .ais-NumericSelector, .ais-Pagination, .ais-Panel, .ais-PoweredBy, .ais-RangeInput, 
+      .ais-RangeSlider, .ais-RatingMenu, .ais-RefinementList, .ais-Results, .ais-ResultsPerPage, 
+      .ais-SearchBox, .ais-SortBy, .ais-Stats, .ais-ToggleRefinement{
+         color: $light-color;
+      }
+      .box-inset {
+         box-shadow: inset 0px 0px 3px rgba(255,255,255,0.3);
+     } 
+     .mat-checkbox-checkmark-path {
+         stroke: $light-color !important;  
+      }
+      .mat-card:not([class*="mat-elevation-z"]) {
+         box-shadow: 0px 2px 1px -1px rgba(255, 255, 255, 0.2), 0px 1px 1px 0px rgba(255, 255, 255, 0.14), 0px 1px 3px 0px rgba(255, 255, 255, 0.12);     
+     }
+      .mat-card:hover {
+         box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);     
+      }      
+   }
+   //crypto
+   .crypto-input-prefix .mat-form-field-appearance-outline .mat-form-field-prefix,
+   .crypto-input-prefix .mat-form-field-appearance-outline .mat-form-field-suffix{
+      span{
+         color: #000;
+      }
+   }
+}

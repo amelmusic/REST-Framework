@@ -1,0 +1,117 @@
+/*========|Session Pages|=========*/
+.gene-login{
+   background-image:url("assets/img/gene-login.jpg");
+}
+.gene-registration-form{
+   background-image:url("assets/img/gene-signup.jpg");
+}
+.gene-forgot{
+    background-image:url("assets/img/gene-forgot.jpg");
+}
+.gene-lockscreen{
+    background-image:url("assets/img/gene-lockscreen.jpg");
+}
+.gene-login,.gene-registration-form,.gene-forgot,.gene-lockscreen,.login-v2,.gene-registerV2,.gene-lockscreenV2,.gene-forgotpassV2{
+   background-size:cover;
+   background-repeat:no-repeat;
+   background-position:center center;
+}
+body .gene-login-v2,body .gene-registerV2-wrap {
+   padding-top: 3rem;
+   padding-bottom: 3rem;
+}
+.login-v2{
+   background-image : url('assets/img/login-bg.jpg');
+}
+.gene-registerV2{
+   background-image : url('assets/img/signup-bg.jpg');
+}
+.login-v2,.gene-registerV2{
+   .form-wrap-row{
+      padding-top:8%;
+   } 
+}
+.login-v2,.gene-registerV2,.gene-lockscreenV2,.gene-forgotpassV2,.gene-session{
+   min-height: 100vh;
+}
+.login-v2,.gene-registerV2,.gene-lockscreenV2,.gene-forgotpassV2{
+   .material-icons{
+      font-size: 1rem;
+      vertical-align: text-bottom;
+   }
+}
+
+.gene-lockscreenV2,.gene-forgotpassV2{
+   .form-wrap-row{
+      padding-top:10%;
+   } 
+}
+.login-v2,.gene-registerV2{
+   .overlay-wrap{
+      position:relative;
+      overflow: hidden;
+      margin:1rem 0;
+      border-radius:10px;
+      .overlay-content{
+         position:absolute;
+         left: 0;
+         top: 0;
+         bottom: 0;
+         right: 0;    
+         padding: 0;     
+      }
+   }
+   .slider-bg-img{
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      min-height:662px;
+      height: 100%;      
+   }
+   .content-wrap{
+      background: $overlay-content-overlay;
+      padding: 15px;
+   }
+   .social-list button{
+      font-weight: bold;
+      font-size: 22px;
+   }
+   .carousel{
+      margin-bottom: 0;
+   }
+}
+.gene-registerV2{
+   .policy-links{
+      font-size:0.75rem;
+      a{
+         text-decoration: underline;
+      }
+   }
+}
+
+.gene-forgotpassV2,.gene-lockscreenV2{
+   background-image : url('assets/img/lockscreen-bg.jpg');
+   .mat-card.gene-login-v2{
+      overflow: visible;
+      padding-top: 4.6rem;
+      padding-bottom: 3.5rem;
+   }
+   .gene-btn-wrap{
+      button{
+         padding: 0;
+      }
+   }
+   .login-logo {
+      position: absolute;
+      top: -50px;
+      left: 0;
+      right: 0;  
+   }
+}
+@media(max-width:599px){
+   .gene-login,.gene-registration-form,.gene-forgot,.gene-lockscreen,.login-v2,.gene-registerV2,.gene-lockscreenV2,.gene-forgotpassV2{
+      .mat-toolbar-row{
+         height: auto;
+      }
+   }
+}

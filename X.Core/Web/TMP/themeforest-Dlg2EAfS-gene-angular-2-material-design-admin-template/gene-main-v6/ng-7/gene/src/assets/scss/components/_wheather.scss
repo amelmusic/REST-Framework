@@ -1,0 +1,72 @@
+/*==========|Weather|==========*/
+.wheather-future-day ul li {
+   display: inline-block;
+   width: 13%;
+   text-align: center;
+   span {
+      margin-top: 1rem;
+   }
+}
+.wheather-future-day {
+   border-top: 2px solid #eaeaea;
+   margin-bottom: 1rem;
+   margin-top: 2.5rem;
+   padding-top: 2rem;
+}
+.wheather-info {
+   border-top: 2px solid #eaeaea;
+   margin-top: 1rem;
+   padding-top: 2rem;
+}
+.wheather-info ul {
+   @include clearfix;
+   margin-bottom: 1rem;
+   margin-top: 1rem;
+   li {
+      float: left;
+      margin-right: 6%;
+      width: 43%;
+      .info-head,
+      .info-data {
+         display: inline-block;
+      }
+      .info-head {
+         float: left;
+      }
+      .info-data {
+         float: right;
+      }
+   }
+}
+.current-temp.gene-absolute {
+   font-size: 36px;
+   right: 1.2rem;
+   top: 1rem;
+}
+.current-day.gene-relative {
+   margin-right: 6rem;
+}
+.gene-today-wheather {
+   border-bottom: 2px solid #f0f2f9;
+}
+.app-dark .gene-customizer {
+   background: mat-color($dark-background, card);
+   color: mat-color($dark-foreground, base);
+}
+[dir="rtl"] {
+   .current-day.gene-relative {
+      margin-left: 6rem;
+      margin-right: 0;
+   }
+   .wheather-info ul {
+      li {
+         margin-left: 6%;
+         margin-right: 0;
+      }
+   }
+}
+@media(max-width:991px) {
+   .current-day.gene-relative {
+      margin: 0;
+   }
+}

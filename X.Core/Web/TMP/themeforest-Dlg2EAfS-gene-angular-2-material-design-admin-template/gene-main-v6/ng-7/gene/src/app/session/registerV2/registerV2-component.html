@@ -1,0 +1,85 @@
+<div class="gene-registerV2 pad-y-xl">
+   <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="column" fxFlex="100" fxFlex.xs="90" fxFlex.sm="80" fxFlex.md="95" fxFlex.lg="70" fxFlex.xl="60">
+         <mat-toolbar-row fxLayoutAlign="space-between" fxLayout.xs="column" fxLayoutAlign.xs="center center">
+            <div class="mrgn-b-md">
+               <img src="assets/img/logo-sign.png">
+            </div>
+            <span class="mrgn-b-md">
+               <p class="text-center text-inverse"><span  class="mrgn-r-sm">{{'Already have an account?'|translate}}</span><button [routerLink]="['/session/loginV2']" mat-raised-button color="accent">{{'Login'|translate}}</button></p>
+            </span>
+         </mat-toolbar-row>
+         <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full pad-t-xl pad-b-xl form-wrap-row set-resp-space" fxLayoutGap.gt-md="15px">
+            <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+               <mat-card class="gene-registerV2-wrap  card-full-height card-full-width">
+                  <div>
+                     <div fxLayout="column" fxLayoutAlign="center center" class="mrgn-b-md text-center">
+                        <h2>{{'Get Started With Gene'|translate}}</h2>                                                    
+                        <p>{{'The most powerful angular app'|translate}}</p>
+                     </div>
+                     <form #form="ngForm" (ngSubmit)="register(form.value)" fxLayoutAlign="center start">
+                        <div fxLayout="column" fxFlex.xs="100" fxFlex.sm="80" fxFlex.md="80" fxFlex.lg="70" fxFlex.xl="70" fxLayoutAlign="start">
+                           <mat-form-field class="full-wid mrgn-b-sm">
+                              <input matInput placeholder="Name" type="text" name="name" required [(ngModel)]="name">
+                              <span matSuffix><i class="material-icons">account_circle</i></span>
+                           </mat-form-field>
+                           <mat-form-field class="full-wid mrgn-b-sm">
+                              <input matInput placeholder="E-Mail" type="text" name="email" required [(ngModel)]="email">
+                              <span matSuffix><i class="material-icons">verified_user</i></span>                                 
+                           </mat-form-field>
+                           <mat-form-field class="full-wid mrgn-b-sm">
+                              <input matInput placeholder="Password" type="password" name="password" required [(ngModel)]="password">
+                              <span matSuffix><i class="material-icons">vpn_key</i></span>
+                           </mat-form-field>
+                           <div fxLayoutAlign="center start" class=" mrgn-b-md">
+                              <button mat-flat-button [disabled]="!form.valid"  class="success-bg gene-btn-lg">{{'GET STARTED'|translate}}</button>
+                              <!-- <button [disabled]="!form.valid">LOGIN</button>     -->
+                           </div>
+                           <p class="text-center mrgn-b-sm">{{'Or Signup Using'|translate}}</p>
+                           <div class="social-list mrgn-b-sm" fxLayoutAlign="center start" fxLayoutGap="15px">        
+                              <button mat-fab color="primary" matTooltip="Facebook" aria-label="Button that displays a tooltip for social media link">f</button>
+                              <button mat-fab color="warn" matTooltip="Google" aria-label="Button that displays a tooltip for social media link">G</button>
+                              <button mat-fab color="accent" matTooltip="Twitter" aria-label="Button that displays a tooltip for social media link">t</button>
+                              <!-- <button mat-fab color="warn" matTooltip="Gmail" aria-label="Button that displays a tooltip for social media link">g</button>                            -->
+                           </div>
+                           <p class="text-center mrgn-b-xs">{{'By signing up you agree to Gene’s'|translate}}</p>
+                           <span class="text-center policy-links accent-text"><a href="javascript:void(0)">Terms Of Service</a>&nbsp; and &nbsp;<a href="javascript:void(0)">Privacy Policy</a></span>
+                        </div>
+                     </form>
+                  </div>
+               </mat-card>
+            </div>
+            <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="38" fxFlex.lg="38" fxFlex.xl="38" fxHide.lt-md>
+               <div class="height-full full-wid">
+                  <div fxLayout="column" fxLayoutAlign="center center" class="height-full full-wid">
+                     <ngx-slick-carousel [config]="slideConfig"  class="carousel height-full full-wid" #slickModal="slick-carousel">
+                        <div ngxSlickItem *ngFor="let slide of sessionSlider">
+                           <div class="session-slider overlay-wrap height-full full-wid">
+                              <div class="slider-bg-img full-wid" [ngStyle] = "{'background-image' : 'url(' + slide.image + ')'}"></div>
+                              <div class="overlay-content" fxLayoutAlign="start end">
+                                 <div class="content-wrap">
+                                    <div class="sec-title">
+                                       <h5 class="text-inverse">{{slide.name}}</h5>
+                                       <span class="text-inverse">{{slide.designation}}</span>
+                                    </div>
+                                    <div class="sec-content">
+                                       <p class="text-inverse">{{slide.content}}</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </ngx-slick-carousel>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+
+
+

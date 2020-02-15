@@ -1,0 +1,40 @@
+<div class="faq-wrapper">
+	<div>
+		<mat-card>
+			<div class="mrgn-b-lg">
+				<h3>{{'Type Your Question'}}</h3>
+			</div>
+			<div fxLayout="row wrap">
+				<div class="mrgn-r-md" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+					<mat-form-field class="full-wid" floatLabel="never">
+						<input matInput placeholder="Type Here">
+					</mat-form-field>
+				</div>
+				<div fxFlex.xs="100" fxFlex.sm="20" fxFlex.md="20" fxFlex.lg="20" fxFlex.xl="20">
+					<button mat-raised-button color="primary">Search</button>
+				</div>
+			</div>
+		</mat-card>	
+	</div>
+	<div fxLayout="row wrap">
+		<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let list of faqList; let i = index">
+			<div *ngIf = "i+1<=showCount">
+				<mat-accordion>
+		  			<mat-expansion-panel  [expanded]="true">
+		    			<mat-expansion-panel-header>
+		      			<mat-panel-title>
+		        				<h4 class="primary-text mrgn-b-none text-capitalize">{{list.heading}}</h4>
+		      			</mat-panel-title>
+		    			</mat-expansion-panel-header>
+		    			<p>{{list.content}}</p>
+		  			</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</div>
+	</div>					
+	<ng-container *ngIf="faqList.length>showCount">
+		<div class="pad-t-md mrgn-b-md" fxLayoutAlign="center center">			
+			<a [routerLink]="['/pages/faq']" [routerLinkActive]="['is-active']" (click)="loadMore()"><mat-icon class="mrgn-r-sm vertical-align-mid" mat-list-icon>cached</mat-icon>Load More</a>
+		</div>	
+	</ng-container>
+</div>					

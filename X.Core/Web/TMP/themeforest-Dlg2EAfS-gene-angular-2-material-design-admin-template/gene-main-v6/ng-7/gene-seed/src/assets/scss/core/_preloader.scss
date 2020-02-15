@@ -1,0 +1,28 @@
+/*-------------------------------------------------------------
+12.3 preloader
+-------------------------------------------------------------*/
+html body .loading-bar-fixed > div#loading-bar-spinner {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    left: 0;
+    right: 0;
+    top: 0 !important;
+    bottom: 0;
+    background:$loader-bg !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+html body div#loading-bar-spinner .spinner-icon {
+    width: 60px !important;
+    height: 60px !important;
+    color: $loader-color;
+}
+
+html body .loading-bar-fixed > div .bar {
+    background: transparent !important;
+    opacity:0 !important;
+    visibility:hidden !important;
+}

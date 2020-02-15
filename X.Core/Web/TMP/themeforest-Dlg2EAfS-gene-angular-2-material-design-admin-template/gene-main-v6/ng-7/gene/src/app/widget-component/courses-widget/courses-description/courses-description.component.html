@@ -1,0 +1,35 @@
+<mat-card class="course-hover-item">
+   <div class="gene-card-content-wrap">
+      <div class="header">
+         <div class="meta-info">
+            <span class="date-info">Last updated: {{course.lastUpdates}}</span>
+         </div>
+         <div class="card-header">
+            <h4><a href="javascript:void(0)">{{course.name}}</a></h4>
+         </div>
+         <div class="meta-info">
+            <div *ngIf = "course.bestseller == true">
+               <span class="category gene-block mrgn-b-sm "><span class="bestseller-tag bg-warn">bestseller</span> {{course.bestSell}}</span>
+            </div>
+            <span class="gene-block mrgn-b-sm">                                             
+            <span class="lectures"><i class="material-icons">play_circle_filled</i>{{course.lectures}} lectures</span>
+            <span class="durations"><i class="material-icons">access_time</i>{{course.hours}} hours</span>
+            <span class="durations"><i class="material-icons">show_chart</i>{{course.level}} Levels</span>
+            </span>
+         </div>
+      </div>
+      <mat-card-content>
+         <div class="short-desc">
+            <span>{{course.describe}}</span>
+            <ul class="course-list">
+               <ng-container *ngFor = "let feature of course.features">
+                  <li>{{feature}}</li>
+               </ng-container>
+            </ul>
+         </div>
+      </mat-card-content>
+   </div>
+   <div class="button-wrap">
+      <button (click)="addToCart()" class="btn-lg inline-block" mat-raised-button color="warn">Add to cart</button>
+   </div>
+</mat-card>

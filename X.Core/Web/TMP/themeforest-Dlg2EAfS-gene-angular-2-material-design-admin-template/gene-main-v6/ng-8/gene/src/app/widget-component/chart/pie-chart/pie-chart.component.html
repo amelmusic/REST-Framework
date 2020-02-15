@@ -1,0 +1,41 @@
+<div class="gene-chart-widget" [style.background]="bgColor">
+   <div class="gene-card-title">
+      <div [style.color]="textColor" fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h4>{{ title | translate}}</h4>
+         </div>
+         <span fxFlex></span>
+         <button mat-icon-button>
+            <mat-icon>sync</mat-icon>
+         </button>
+         <button mat-icon-button [matMenuTriggerFor]="options">
+            <mat-icon>more_horiz</mat-icon>
+         </button>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content center-gene-card-content">
+      <nvd3 class="intense-colors-pie-chart white-labels-pie-chart" [options]="chartOptions" [data]="data"></nvd3>
+   </div>
+</div>
+<mat-menu #options="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon>
+      View More 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      Disable notifications 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      Remove Panel 
+   </button>
+</mat-menu>
+
+
+

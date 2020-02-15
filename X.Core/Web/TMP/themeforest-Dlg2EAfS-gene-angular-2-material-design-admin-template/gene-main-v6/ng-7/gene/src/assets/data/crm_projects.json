@@ -1,0 +1,602 @@
+[
+   {
+      "id":"01",
+      "client":"Keith Terry",
+      "budget":"$35455",
+      "duration":"$300hrs",
+      "name":"Office Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "statusColor":"primary",
+      "deadline":"29/jan/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ] 
+   },
+   {
+      "id":"02",
+      "client":"Chris Garrison",
+      "budget":"$15455",
+      "name":"Project Management",
+      "statusColor":"warn",
+      "duration":"$300hrs",
+      "status":"inActive",
+      "deadline":"1/jan/2019",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"03",
+      "client":"Anna Valero",
+      "budget":"$45455",
+      "duration":"$350hrs",
+      "name":"Hotel Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "statusColor":"primary",
+      "deadline":"28/Feb/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"04",
+      "client":"Destiny Parker",
+      "budget":"$3545",
+      "duration":"$150hrs",
+      "name":"Video Calling App",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"inActive",
+      "statusColor":"warn",
+      "deadline":"1/Mar/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"05",
+      "client":"Carol Richards",
+      "budget":"$85455",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "name":"Hospital Administration",
+      "duration":"$300hrs",
+      "statusColor":"primary",
+      "deadline":"15/jan/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"06",
+      "client":"Nicole Johnston",
+      "budget":"$85455",
+      "duration":"$400hrs",
+      "name":"Hotel Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"inActive",
+      "statusColor":"warn",
+      "deadline":"18/Feb/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"07",
+      "client":"Pearl Pinheiro",
+      "budget":"$85455",
+      "duration":"$3500hrs",
+      "name":"Office Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "statusColor":"primary",
+      "deadline":"15/jan/2019", 
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"08",
+      "client":"Janet Moore",
+      "budget":"$55455",
+      "duration":"$200hrs",
+      "name":"Hospital Administration",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"inActive",
+      "statusColor":"warn",
+      "deadline":"18/Feb/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+    {
+      "id":"09",
+      "client":"Anna Valero",
+      "budget":"$45455",
+      "duration":"$350hrs",
+      "name":"Hotel Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "statusColor":"primary",
+      "deadline":"28/Feb/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"10",
+      "client":"Destiny Parker",
+      "budget":"$3545",
+      "duration":"$150hrs",
+      "name":"Video Calling App",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"inActive",
+      "statusColor":"warn",
+      "deadline":"1/Mar/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"11",
+      "client":"Carol Richards",
+      "budget":"$85455",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"Active",
+      "name":"Hospital Administration",
+      "duration":"$300hrs",
+      "statusColor":"primary",
+      "deadline":"15/jan/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   },
+   {
+      "id":"12",
+      "client":"Nicole Johnston",
+      "budget":"$85455",
+      "duration":"$400hrs",
+      "name":"Hotel Management",
+      "team_image" : [ "assets/img/user-1.jpg","assets/img/user-2.jpg","assets/img/user-3.jpg","assets/img/user-4.jpg","assets/img/user-5.jpg"],
+      "status":"inActive",
+      "statusColor":"warn",
+      "deadline":"18/Feb/2019",
+      "progress_value": 60,
+      "department" :"sale",
+      "project_manager" : "Ron Potter",
+      "short_description" : "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad recusandae quasi perferendis delectus, sequi enim repellendus harum praesentium culpa assumenda non!",
+      "decription_heading" : "Integer pharetra mi eu libero convallis ultricies",
+      "description" : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      "description_points" : [
+         "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+         "Donec auctor sapien eget sem blandit pharetra.",
+         "In sed tellus congue, rhoncus mi quis, iaculis magna.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla.",
+         "Vestibulum at mauris semper, tristique nulla et, tristique nulla."
+      ],
+      "project_gallery" : [
+         "assets/img/gridlist-5.jpg",
+         "assets/img/gridlist-4.jpg",
+         "assets/img/gridlist-1.jpg"
+      ],
+      "fileUploads" : [
+         {
+            "icon" : "picture_as_pdf",
+            "file" : "AX_Report.pdf",
+            "date" : "12/May/2019"
+         },
+         {   
+            "icon" :"image",
+            "file" : "Blueprint.jpg",
+            "date" : "08/May/2019"
+         }
+      ],
+      "chartLabel" : [
+         "January", "February", "March", "April","May", "June","July"
+      ],
+      "chartData" : [
+         {
+            "data": [60, 5, 100, 60, 170, 25, 60],
+            "label":"Progress"
+         }
+      ]      
+   }
+]

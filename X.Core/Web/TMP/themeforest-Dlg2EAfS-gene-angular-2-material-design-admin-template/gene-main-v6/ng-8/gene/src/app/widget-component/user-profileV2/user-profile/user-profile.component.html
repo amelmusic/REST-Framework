@@ -1,0 +1,53 @@
+<mat-card class="mat-pad-none" *ngFor = "let user of userProfile">
+	<div class="pad-all-md" fxLayout="row wrap">
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="65" fxFlex.lg="70" fxFlex.xl="70">
+			<div fxLayout="row wrap" class="profile-content">
+				<div fxFlex.xl="200px" fxFlex.lg="200px" fxFlex.md="200px"  fxFlex.sm="150px" fxFlex.xs="100">
+					<div class="profile-image mrgn-r-lg mrgn-b-md">
+						<img alt="profile image" src="{{user.userImage}}" width="200" height="200">
+					</div>
+				</div>
+				<div fxFlex.xl="calc(100% - 200px)" fxFlex.lg="calc(100% - 200px)" fxFlex.md="calc(100% - 200px)"  fxFlex.sm="calc(100% - 150px)" fxFlex.xs="100">
+					<div class="mrgn-b-md">
+						<h2 class="mrgn-b-md">{{user.userName}}</h2>
+						<p class="mrgn-b-xs">{{user.profession}}</p>
+						<p class="mrgn-b-xs">{{user.department}}</p>
+						<p>{{user.place}}</p>
+						<div>
+							<button mat-raised-button color="primary">Follow</button>
+							<button mat-button>Message<mat-icon class="mrgn-l-sm primary-text">mail_outline</mat-icon></button>
+						</div>	
+					</div>
+				</div>	
+			</div>
+		</div>
+		<div class="publication" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="35" fxFlex.lg="30" fxFlex.xl="30">
+			<div class="content-block" fxLayout="row wrap" fxLayoutAlign="end start">
+				<div class="pad-all-xs text-center" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+					<mat-card class="margin-none pad-all-md">
+						<h3 class="margin-none">{{user.postCount}}</h3>
+						<span class="gene-block mat-text-muted">Post</span>
+					</mat-card>	
+				</div>
+				<div class="pad-all-xs text-center" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+					<mat-card class="margin-none pad-all-md">
+						<h3 class="margin-none">{{user.followersCount}}</h3>
+						<span class="gene-block mat-text-muted">followers</span>
+					</mat-card>	
+				</div>
+				<div class="text-center pad-all-xs" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+					<mat-card class="margin-none pad-all-md">
+						<h3 class="margin-none">{{user.followingCount}}</h3>
+						<span class="gene-block mat-text-muted">following</span>
+					</mat-card>	
+				</div>
+				<div class="text-center pad-all-xs" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+					<mat-card class="margin-none pad-all-md">
+						<h3 class="margin-none">{{user.viewCount}}</h3>
+						<span class="gene-block mat-text-muted">Views</span>
+					</mat-card>	
+				</div>
+			</div>		
+		</div>
+	</div>			
+</mat-card>

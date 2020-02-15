@@ -1,0 +1,55 @@
+body .gene-icon-display mat-icon {
+  font-size: 50px !important;
+  height: 50px !important;
+  width: 50px !important;
+  margin: 24px 16px 8px !important;
+  color: #333;
+}
+
+.gene-mat-tab{
+   .mat-tab-body-content{
+      padding:2rem 0 0;
+      min-height: 200px;
+   }
+}
+.tab-center{
+   padding-top: 3rem;
+   .mat-icon{
+      font-size: 3rem;
+   }
+ code {
+  background: #f0f2f9 none repeat scroll 0 0;
+  padding: 8px;
+}
+}
+.mat-grid-list > div .mat-icon {
+  font-size: 36px;
+    width: 100%;
+}
+.mat-grid-list > div span {
+  display: block !important;
+}
+@media(min-width:650px){
+    .mat-grid-list > div {
+         width: 25%;
+    }
+}
+@media(max-width:649px){
+    .mat-grid-list > div {
+         width: 50%;
+    }
+}
+@media(max-width:420px){
+    .mat-grid-list > div {
+         width: 100%;
+    }
+}
+.mat-grid-list > div {
+  float: left;
+  margin: 20px 0;
+  text-align: center;
+ 
+}
+[dir="rtl"]  .mat-grid-list > div{
+    float: right;
+}

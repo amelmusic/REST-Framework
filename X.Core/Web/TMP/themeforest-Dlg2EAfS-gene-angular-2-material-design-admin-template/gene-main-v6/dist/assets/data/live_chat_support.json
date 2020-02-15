@@ -1,0 +1,30 @@
+[
+   {
+      "image" : "assets/img/register-user-3.jpg",
+      "name" : "Devy Finn",
+      "chat" : "Hi There! Recently I updated the latest version of your app, it crashed every time when i open.Please help me out as soon as possible.....Thanks",
+      "time" : "10 Min ago",
+      "classSendBy" : "sender"
+   },
+   {
+      "image" : "assets/img/register-user-1.jpg",
+      "name" : "Sam Brown",
+      "chat" : "Hi Devy, Can you please tell us your mobile configuraion.So that We can help you better.Please Also specify Version of your phone....Thank You!",
+      "time" : "8 Min ago",
+      "classSendBy" : "receiver"
+   },
+   {
+      "image" : "assets/img/register-user-3.jpg",
+      "name" : "Devy Finn",
+      "chat" : "Thanks you for quick response. I using iPhone 6s and the version of this is 10.2 . Please fix this issue I need this right now....Thanks",
+      "time" : "7 Min ago",
+      "classSendBy" : "sender"
+   },
+   {
+      "image" : "assets/img/register-user-1.jpg",
+      "name" : "Sam Brown",
+      "chat" : "Please wait for some time. Our tecnical support team will contact you soon and fix the issue .Thanks for using our App.We will Assit You better",
+      "time" : "6 Min ago",
+      "classSendBy" : "receiver"
+   }
+]

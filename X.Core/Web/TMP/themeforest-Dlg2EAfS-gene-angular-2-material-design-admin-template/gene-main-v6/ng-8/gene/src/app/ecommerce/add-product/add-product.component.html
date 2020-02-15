@@ -1,0 +1,114 @@
+<form [formGroup]="form">
+   <div class="product-detail-page section-gap" *ngFor="let detailData of data">
+      <div class="container">
+         <div fxLayout='row wrap' fxLayoutAlign="center center" class="col-gap">
+            <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=90 fxFlex.lg="80" fxFlex.xl="90">
+               <div fxLayout='row wrap' class="col-gap position-relative">
+                  <div class="col-pad" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=50 fxFlex.lg="50" fxFlex.xl="50">
+                     <div fxLayout='row wrap'>
+                        <div fxFlex.xs="15" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
+                           <div class="product-detail-image-gallery pad-r-md">
+                              <mat-grid-list cols="1" rowHeight="1:1" gutterSize="20px">
+                                 <mat-grid-tile *ngFor="let img of detailData.image_gallery; let i=index">
+                                    <div class="product-image-gallery-item add-icon">
+                                       <a id="{{i}}_img" class="p-link" [ngClass]="{ 'border-active': i === 0 }" href="javascript:void(0)" (mouseenter)="getImagePath(img, i)">
+                                       <img [src]="img" alt="" width="100" height="100">
+                                       </a>
+                                       <button class="add-btn" md-mini-fab type="button">
+                                          <label for="fileToUpload">
+                                             <mat-icon>add</mat-icon>
+                                          </label>
+                                       </button>
+                                       <!-- add-btn -->
+                                       <input mat id="fileToUpload" type="file" accept="image/*" style="display:none;">
+                                    </div>
+                                 </mat-grid-tile>
+                              </mat-grid-list>
+                           </div>
+                           <!-- product-detail-image-gallery -->
+                        </div>
+                        <div fxFlex.xs="85" fxFlex.sm="85" fxFlex.md="85" fxFlex.lg="85" fxFlex.xl="85" class="relative" *ngIf="mainImgPath">
+                           <app-img-zoom 
+                              [imgSrc]="mainImgPath" 
+                              imgStyle="width:auto; height:auto;" 
+                              resultStyle="background-repeat: no-repeat; z-index: 2; position:absolute;
+                              -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                              box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;"
+                              lensStyle="width:100px; height:100px"
+                              containerStyle="">
+                           </app-img-zoom>
+                        </div>
+                        <!-- relative -->
+                     </div>
+                  </div>
+                  <div class="col-pad" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=50 fxFlex.lg="50" fxFlex.xl="50">
+                     <div class="product-detail-content mrgn-l-md">
+                        <a class="primary-text font-bold inline-block mrgn-b-xs" href="javascript:void(0)" (click)="backToProduct()">{{'Back to Product' | translate }}</a>
+                        <h2 class="add-text"><input matInput formControlName="name" type="text" value="Add product Name"></h2>
+                        <div class="product-detail-price">
+                           <h3 class="warn-text add-text"><input matInput  formControlName="price" type="text" value="{{'Add Price' | translate }}"></h3>
+                        </div>
+                        <ul class="no-style mrgn-b-lg pad-l-none">
+                           <li class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
+                              <span class="font-bold"> {{'Availablity' | translate }} </span>: 
+                              <input class="mrgn-l-xs" matInput  formControlName="availablity" type="text">
+                           </li>
+                           <li class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
+                              <span class="font-bold">{{'Product Code' | translate }} </span>: 
+                              <input class="mrgn-l-xs" matInput formControlName="product_code" type="text">
+                           </li>
+                           <li class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
+                              <span class="font-bold">{{'Tags' | translate }}</span>: 
+                              <input class="mrgn-l-xs" matInput formControlName="tags" type="text">
+                           </li>
+                        </ul>
+                        <div class="short-des">
+                           <p class="add-text"><textarea matInput formControlName="description" value="{{'Add Description' | translate}}"></textarea></p>
+                        </div>
+                        <div class="bullets-points add-text">
+                           <div class="font-bold">{{'Featured points' | translate }} :</div>
+                           <p><input matInput formControlName="features" type="text" value="Add features"></p>
+                        </div>
+                        <div class="mrgn-b-md select-group">
+                           <ng-container *ngIf="detailData.type == 'men' || detailData.type == 'women'">
+                              <div class="add-text add-check mrgn-b-md">
+                                 <div class="font-medium mrgn-b-xs">{{'Color Varients' | translate }} :</div>
+                                 <ng-container *ngFor="let color of colorsArray">
+                                    <mat-checkbox class="mrgn-r-md">{{color}}</mat-checkbox>
+                                 </ng-container>
+                              </div>
+                              <div class="add-text add-check mrgn-b-md">
+                                 <div class="font-bold mrgn-b-xs">{{'Size Varients' | translate }} :</div>
+                                 <ng-container *ngFor = "let size of sizeArray">
+                                    <mat-checkbox class="mrgn-r-md">{{size}}</mat-checkbox>
+                                 </ng-container>
+                              </div>
+                           </ng-container>
+                           <mat-form-field class="add-text edit-check mrgn-b-md">
+                              <div class="font-bold mrgn-b-xs">{{'Total Products' | translate }} :</div>
+                              <ng-container>
+                                 <input type="number" matInput value="5"> 
+                              </ng-container>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xl detail-btns">
+                           <button mat-raised-button color="primary" class="button-lg mrgn-r-md">{{'Create' | translate }}</button>
+                           <button class="button-lg" mat-raised-button>{{'Discard' | translate }} </button>
+                        </div>
+                        <div fxLayoutAlign="start center">
+                           <div class="mrgn-r-md"><span class="gene-text-md">{{'Share Now' | translate }}</span></div>
+                           <div class="detail-product-share">
+                              <app-social-share-icons></app-social-share-icons>
+                           </div>
+                           <!-- detail-product-share -->
+                        </div>
+                     </div>
+                     <!-- product-detail-content -->
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- product-detail-page -->
+</form>

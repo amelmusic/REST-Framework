@@ -1,0 +1,28 @@
+<div class="gene-card-content">
+   <perfect-scrollbar class="chat-content-wrap">
+      <div fxLayout="row" fxLayoutAlign="start start" class="{{livechat.classSendBy}} chat-list pad-y-sm" *ngFor="let livechat of liveChatContent">
+         <div class="chat-thumbnail" fxFlex.gt-md="65px" fxFlex.gt-xs="70px" fxFlex="70px" >
+            <img class="img-responsive img-circle" src="{{livechat.image}}" alt="User Image" width="64" height="64">
+         </div>
+         <div class="pad-wrap chat-content" fxFlex.gt-md="calc(80% - 75px)" fxFlex.gt-xs="80" fxFlex.sm="100">
+            <div fxLayout="row wrap" class="title-wrap">
+               <span class="chat-text font-bold inline-block">{{livechat.name}}</span>
+               <h5 class="meta-post mrgn-b-none inline-block">{{livechat.time}}</h5>
+            </div>
+            <div class="gene-chat-content">
+               <p class="mrgn-b-none gene-msg-block">{{livechat.chat}}</p>
+            </div>
+         </div>
+      </div>
+   </perfect-scrollbar>
+   <div class="gene-chat-form">
+      <div>
+         <mat-form-field class="gene-send-text mrgn-r-md">
+            <input matInput placeholder="Send Message">
+         </mat-form-field>
+         <button mat-fab color="primary" class="gene-send-btn">
+            <mat-icon>send</mat-icon>
+         </button>
+      </div>
+   </div>
+</div>

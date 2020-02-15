@@ -1,0 +1,57 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'List'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p><code>mat-list</code> is a container component that wraps and formats a series of line items</p>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Basic List'|translate}}</h5>
+         <mat-list>
+            <h3 mat-subheader>Items</h3>
+            <mat-list-item *ngFor="let item of items">
+               {{item}}
+            </mat-list-item>
+         </mat-list>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Two-Line List with Thumb Images'|translate}}</h5>
+         <mat-list>
+            <mat-list-item *ngFor="let message of messages">
+               <img mat-list-avatar [src]="message.image" alt="Image of {{message.from}}">
+               <h3 mat-line>{{message.from}}</h3>
+               <p mat-line>
+                  <span>{{message.subject}} -- </span>
+                  <span class="subline">{{message.message}}</span>
+               </p>
+            </mat-list-item>
+         </mat-list>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Three-Line List with Thumb Images'|translate}}</h5>
+         <mat-list>
+            <mat-list-item *ngFor="let message of messages">
+               <img mat-list-avatar [src]="message.image" alt="Image of {{message.from}}">
+               <h3 mat-line>{{message.from}}</h3>
+               <p mat-line>{{message.subject}} -- </p>
+               <p mat-line class="subline">{{message.message}}</p>
+            </mat-list-item>
+         </mat-list>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h5 class="mrgn-b-md">{{'Three-Line List'|translate}}</h5>
+         <mat-list *ngFor="let message of messages">
+            <mat-list-item>
+               <h3 mat-line>{{message.from}}</h3>
+               <p mat-line>{{message.subject}}</p>
+               <p mat-line class="subline">{{message.message}}</p>
+            </mat-list-item>
+         </mat-list>
+      </div>
+   </div>
+</mat-card>

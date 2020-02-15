@@ -1,0 +1,9 @@
+.gene-spacer {
+   flex: 1 1 auto;
+}
+@media(max-width:599px){
+   .mat-progress-spinner svg{
+      width: 60px !important;
+      height: 60px !important;
+   }
+}

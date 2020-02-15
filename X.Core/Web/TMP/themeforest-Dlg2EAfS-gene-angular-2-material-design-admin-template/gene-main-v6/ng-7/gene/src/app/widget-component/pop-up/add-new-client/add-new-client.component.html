@@ -1,0 +1,50 @@
+<form [formGroup]="addNewUserForm" class="popup-card-width add-new-user">
+	<div>
+		<h2 mat-dialog-title>Add New Client</h2>
+	</div>	
+	<mat-dialog-content>
+		<div>
+			<div>
+				<mat-form-field class="mrgn-b-sm">
+					<input matInput type="text" formControlName="name" class="form-control" placeholder="Name">
+					<mat-error *ngIf="addNewUserForm.controls['name'].touched && !addNewUserForm.controls['name'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['name'].hasError('required')" class="required alert-error">  
+							You must include a Name.
+						</mat-error>
+		         </mat-error>
+				</mat-form-field>
+            <mat-form-field class="mrgn-b-sm">
+               <input matInput type="text" formControlName="emailAddress" class="form-control" placeholder="Email">
+               <mat-error *ngIf="addNewUserForm.controls['emailAddress'].touched && !addNewUserForm.controls['emailAddress'].valid">
+                  <mat-error *ngIf="addNewUserForm.controls['emailAddress'].hasError('required')" class="required alert-error">  
+                     You must include a E-mail Address.
+                  </mat-error>  
+                  <mat-error *ngIf="addNewUserForm.controls['emailAddress'].hasError('pattern')">
+                     E-mail must be valid
+                  </mat-error>
+               </mat-error>
+            </mat-form-field> 
+            <mat-form-field class="mrgn-b-sm">
+					<input matInput type="text" formControlName="phoneNumber" class="form-control" placeholder="Phone Number">
+					<mat-error *ngIf="addNewUserForm.controls['phoneNumber'].touched && !addNewUserForm.controls['phoneNumber'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['phoneNumber'].hasError('required')" class="required alert-error">  
+			         	You must include a Phone Number.
+                  </mat-error>  
+               </mat-error>
+				</mat-form-field>
+				<mat-form-field class="mrgn-b-sm">
+					<input matInput type="text" formControlName="location" class="form-control" placeholder="Location">
+					<mat-error *ngIf="addNewUserForm.controls['location'].touched && !addNewUserForm.controls['location'].valid">
+						<mat-error *ngIf="addNewUserForm.controls['location'].hasError('required')" class="required alert-error">  
+			         	You must include a Location.
+                  </mat-error>  
+               </mat-error>
+				</mat-form-field>
+			</div>
+      </div>
+	</mat-dialog-content>
+	<mat-dialog-actions class="mrgn-b-xs pad-b-none">
+		<button type="button" mat-raised-button (click)="dialogRef.close()" color="primary">CLOSE</button>
+		<button (click)="onFormSubmit()" type="submit" [disabled]="!addNewUserForm.valid" mat-raised-button color="warn">SUBMIT</button>
+	</mat-dialog-actions>
+</form>

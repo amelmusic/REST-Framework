@@ -1,0 +1,137 @@
+<mat-card class="ticker-slider" dir="ltr">
+   <ms-ticker-slider [sliderContent]="tickerSliderContent" [sliderConfig]="tickerSliderConfig"></ms-ticker-slider>
+</mat-card>
+<!-- ticker slider -->
+<div fxLayout="row wrap" fxLayoutAlign="start start">
+   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="currencies-available text-left mrgn-all-md">
+         <h4>{{'Currencies Available' | translate}}</h4>
+         <div class="button-wrap">
+            <button class="crypto-btn"><span class="cc BTC primary-text mrgn-r-sm"></span></button>
+            <button class="crypto-btn"><span class="cc ETC-alt success-text mrgn-r-sm"></span></button>
+            <button class="crypto-btn"><span class="cc LTC warn-text mrgn-r-sm"></span></button>
+            <button class="crypto-btn"><span class="cc ZEC-alt accent-text mrgn-r-sm"></span></button>
+         </div>
+      </div>
+      <!-- Currencies Available -->
+   </div>
+   <div fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxLayout="column">
+         <mat-accordion class="mrgn-all-md">
+            <ng-container *ngFor="let content of walletContent; first as isFirst">
+               <mat-expansion-panel [expanded]="isFirst">
+                  <mat-expansion-panel-header>
+                     <mat-panel-title>
+                        <h4 class="font-normal mrgn-b-none"><span class="cc {{content.currencyIcon}} primary-text mrgn-r-sm"></span>{{content.currency}}</h4>
+                     </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="currency-info" fxLayout="row wrap" fxLayoutAlign="start center">
+                     <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                        <div class="receive-sent-stats">
+                           <mat-list>
+                              <mat-list-item>                           
+                                 <div class="icon-wrap" mat-list-icon>
+                                    <span class="fa fa-money primary-text" aria-hidden="true"></span>
+                                 </div>
+                                 <h4 mat-line class="font-bold"> {{'Received Amount' | translate}}</h4>
+                                 <h4 mat-line>{{content.receivedAmount}}</h4>
+                              </mat-list-item>
+                              <mat-divider></mat-divider>
+                              <mat-list-item>                           
+                                 <div class="icon-wrap" mat-list-icon>
+                                    <span class="fa fa-credit-card warn-text" aria-hidden="true"></span>
+                                 </div>
+                                 <h4 mat-line class="font-bold"> {{'Sent Amount' | translate}}</h4>
+                                 <h4 mat-line>{{content.sentAmount}}</h4>
+                              </mat-list-item>
+                              <mat-divider></mat-divider>
+                              <mat-list-item>                           
+                                 <div class="icon-wrap" mat-list-icon>
+                                    <span class="fa fa-university success-text" aria-hidden="true"></span>
+                                 </div>
+                                 <h4 mat-line class="font-bold"> {{'Total Amount' | translate}}</h4>
+                                 <h4 mat-line>{{content.totalAmount}}</h4>
+                              </mat-list-item>
+                           </mat-list>
+                           <div class="button-wrap">
+                              <button mat-raised-button color="primary">{{'Withdraw' | translate}}</button>
+                              <button mat-raised-button color="accent">{{'Deposit' | translate}}</button>
+                           </div>
+                        </div>
+                     </div>
+                     <div fxFlex.gt-md="50" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                           <div class="qr-wrap mrgn-all-md text-center">
+                              <h4 class="mrgn-b-md">{{'Wallet Address' | translate}}</h4>
+                              <div class="trade-crypto crypto-input-prefix">
+                                 <mat-form-field class="full-wid" appearance="outline">
+                                    <mat-label> {{content.currency}} </mat-label>
+                                    <span matPrefix class="cc {{content.currencyIcon}}"></span>
+                                    <input class="form-control" matInput type="text" placeholder="Wallet" value="{{content.walletAddress}}">
+                                 </mat-form-field>
+                              </div>
+                              <div class="image-wrap shadow-box">
+                                 <img src="{{content.image}}" width="150" height="150">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </mat-expansion-panel>
+            </ng-container>
+         </mat-accordion>                
+      </div>
+   </div>
+   <div fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="crypto-progress">
+         <div fxLayout="row wrap" fxLayoutAlign="start start">
+            <div fxFlex.gt-sm="100" fxFlex.gt-md="50"  fxFlex.gt-xs="100" fxFlex="100" *ngFor="let content of cryptoProgress">
+               <mat-card class="{{content.card_color}} mat-card">
+                  <div class="mrgn-b-xs" mat-card-widget fxLayout="row" fxLayoutAlign="start center">
+                     <span class="inline-block lead">
+                        <i class="cc {{content.icon}} mrgn-r-xs"></i>
+                     </span>
+                     <span class="lead inline-block">{{content.name}}</span>
+                  </div>
+                  <div class="mrgn-b-md" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                     <span>+ {{content.viewers}}</span>
+                     <span>Trade : {{content.trade}}%</span>
+                  </div>
+                  <div class="crypto-progress-bar mrgn-b-xs">
+                     <mat-progress-bar mode="determinate" value={{content.progressValue}}></mat-progress-bar>
+                  </div>
+               </mat-card>
+            </div>
+         </div>
+      </div>
+      <!--Crypto Progress Cards -->
+      <div class="bank-details">
+         <mat-card>
+            <div class="sec-title mrgn-b-md">
+               <h4>{{'Bank Details' | translate}}</h4>
+            </div>
+            <div class="mrgn-b-xs" mat-card-widget fxLayout="row wrap" fxLayoutAlign="space-between start" fxLayoutGap="15px">
+               <div fxFlex.gt-sm="calc(100% - 180px)" fxFlex.gt-xs="100" fxFlex="100">
+                  <div class="bank-detail mrgn-b-md">
+                     <div class="font-bold mrgn-b-sm inline-block">{{'Rich Earnand' | translate}}</div>
+                     <h4 class="font-normal"><span class="fa fa-university primary-text mrgn-r-xs inline-block"></span>Central Bank Of Lorem</h4>
+                     <h5 class="verified-status success-text"><span class="fa fa-check mrgn-r-xs"></span> KYC Verified</h5>
+                  </div>
+                  <div class="font-bold">
+                     <div class="mrgn-b-xs">{{'Account' | translate }} : <span class="font-normal">XXXXXXXXX73823</span></div>
+                     <div>{{'Phone' | translate}} : <span class="font-normal">XXXXXXXX1234</span></div>
+                  </div>
+               </div>
+               <div class="price-wrap" fxFlex.gt-sm="160px" fxFlex.gt-xs="100" fxFlex="100">
+                  <h3 class="price text-right">$9783862</h3>
+                  <div class="button-wrap">
+                     <button class="gene-block mrgn-b-sm full-wid" mat-raised-button color="primary">{{'Withdraw' | translate}}</button>
+                     <button class="gene-block mrgn-b-sm full-wid" mat-raised-button color="accent">{{'Deposit' | translate}}</button>
+                     <button class="gene-block mrgn-b-sm full-wid" mat-raised-button color="warn" (click)="savedCard()">Saved Cards</button>
+                  </div>
+               </div>
+            </div>
+         </mat-card>
+      </div>
+   </div>
+</div>

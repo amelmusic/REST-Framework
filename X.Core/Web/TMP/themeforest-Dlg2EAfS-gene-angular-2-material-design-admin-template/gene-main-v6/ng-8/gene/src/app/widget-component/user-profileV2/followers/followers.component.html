@@ -1,0 +1,20 @@
+<mat-card>
+	<div class="mrgn-b-sm">
+		<div class="card-title mrgn-b-md"><h4>{{'Followers (33)'|translate}}</h4></div>
+		<div class="mrgn-b-sm" fxLayoutAlign="space-between center" *ngFor = "let follower of followers">
+			<div fxLayoutAlign="start center">
+				<div class="mrgn-r-md">
+					<img alt="profile image" src="{{follower.image}}" width="40" height="40">
+				</div>
+				<div>
+					<h5 class="primary-text margin-none">{{follower.name}}</h5>	
+					<span class="gene-text-md">{{follower.place}}</span>
+				</div>
+			</div>	
+			<div fxLayoutAlign="start center">
+				<span class="mrgn-r-sm">Follow</span>
+				<mat-icon class="primary-text">person_add</mat-icon>
+			</div>
+		</div>
+	</div>
+</mat-card>

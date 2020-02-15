@@ -1,0 +1,122 @@
+<div class="courses-payment">
+   <ms-courses-banner></ms-courses-banner>
+   <div fxLayout="row wrap" fxLayoutAlign="center center" class="height-full">
+      <div fxFlex.gt-sm="75" fxFlex.gt-xs="75" fxFlex="100">
+         <div class="bg-white shop-by-category section-gap pad-y-lg">
+            <div class="payment-option">
+               <div class="mat-ex-wrapper">
+                  <form card container=".card-container" [formGroup] = "paymentForm">
+                     <mat-card>
+                        <div class="gene-card-header">
+                           <h4>{{'Payment Options'|translate}}</h4>
+                        </div>
+                        <mat-tab-group>
+                           <mat-tab label="Debit/Credit Card" class="mrgn-b-md">
+                              <div class="text-center pad-y-lg mat-grey-50">
+                                 <div class="header-mat-tab">
+                                    <div class="mrgn-b-lg"><img src="assets/img/card.png" alt="card-icon">
+                                    </div>
+                                    <h4 >{{'Enter Card Details'|translate}}</h4>
+                                 </div>
+                              </div>
+                              <div>
+                                 <div fxLayout='row wrap' class="pad-t-lg pad-b-md">
+                                    <div class="mrgn-b-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50">
+                                       <div fxLayout='row wrap'>
+                                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                                             <mat-form-field class="full-wid mrgn-b-xs">
+                                                <input matInput type="text" placeholder="Card Number" formControlName="card_number" card-number>
+                                                <mat-error *ngIf="paymentForm.controls['card_number'].hasError('required') && paymentForm.controls['card_number'].touched">This field should not be empty.</mat-error>
+                                             </mat-form-field>
+                                          </div>
+                                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="100" fxFlex.lg="100" fxFlex.xl="100">
+                                             <mat-form-field class="full-wid mrgn-b-xs">
+                                                <input matInput type="text" placeholder="Name" formControlName="user_card_name" card-name>
+                                                <mat-error *ngIf="paymentForm.controls['user_card_name'].hasError('required') && paymentForm.controls['user_card_name'].touched">This field should not be empty.</mat-error>
+                                             </mat-form-field>
+                                          </div>
+                                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="45" fxFlex.lg="45" fxFlex.xl="45">
+                                             <mat-form-field class="full-wid pad-r-md mrgn-b-xs">
+                                                <input matInput type="text" placeholder="CVV" formControlName="cvv"  card-cvc>
+                                                <mat-error *ngIf="paymentForm.controls['cvv'].hasError('required') && paymentForm.controls['cvv'].touched">This field should not be empty.</mat-error>
+                                             </mat-form-field>
+                                          </div>
+                                          <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                                             <mat-form-field class="full-wid mrgn-b-xs">
+                                                <input matInput type="text" placeholder="Expiry Date (01/10)" formControlName="expiry_date" card-expiry>
+                                                <mat-error *ngIf="paymentForm.controls['expiry_date'].hasError('required') && paymentForm.controls['expiry_date'].touched">This field should not be empty.</mat-error>
+                                             </mat-form-field>
+                                          </div>
+                                       </div>
+                                       <button class="mrgn-b-xs mrgn-r-xs" mat-raised-button color="warn" type="button" (click)="onSubmit()">Submit</button>
+                                       <button class="mrgn-b-xs" mat-raised-button class="mx-2" (click)="onClear()">Clear</button>
+                                    </div>
+                                    <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" class="mrgn-b-md text-center">
+                                       <h4 class="mrgn-b-md">{{'Card Information'|translate}}</h4>
+                                       <div class="card-container"></div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </mat-tab>
+                           <mat-tab label="NetBanking" class="mrgn-b--md">
+                              <div class="">
+                                 <div class="bg-grey text-center pad-y-lg mat-grey-50 mrgn-b-xl text-center">
+                                    <div class="mrgn-b-lg"> <img src="assets/img/online-shop.png" alt=""></div>
+                                    <h4>{{'Select Bank for NetBanking'|translate}}</h4>
+                                 </div>
+                                 <mat-divider></mat-divider>
+                                 <div class="card-radio pad-y-lg">
+                                    <mat-radio-group>
+                                       <mat-radio-button class="mrgn-r-sm mrgn-b-sm" value="1">
+                                          <img src="assets/img/client-logo-1.png" width="150" height="30" alt="Bank">
+                                       </mat-radio-button>
+                                       <mat-radio-button class="mrgn-r-sm mrgn-b-sm" value="2">
+                                          <img src="assets/img/client-logo-2.png" width="150" height="30" alt="Bank">
+                                       </mat-radio-button>
+                                       <mat-radio-button class="mrgn-r-sm mrgn-b-sm" value="3">
+                                          <img src="assets/img/client-logo-3.png" width="150" height="30" alt="Bank">
+                                       </mat-radio-button>
+                                       <mat-radio-button class="mrgn-r-sm mrgn-b-sm" value="4">
+                                          <img src="assets/img/client-logo-4.png" width="150" height="30" alt="Bank">
+                                       </mat-radio-button>
+                                       <mat-radio-button class="mrgn-r-sm mrgn-b-sm" value="5">
+                                          <img src="assets/img/client-logo-5.png" width="150" height="30" alt="Bank">
+                                       </mat-radio-button>
+                                    </mat-radio-group>
+                                 </div>
+                              </div>
+                              <div fxLayout='row wrap' class="pad-y-lg">
+                                 <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="40" fxFlex.lg="40" fxFlex.xl="40">
+                                    <h4>{{'All Banks'|translate}}</h4>
+                                    <mat-form-field class="full-wid">
+                                       <mat-select>
+                                          <mat-option value=null disabled="disabled" hidden>Select</mat-option>
+                                          <mat-option value="option1">Option 1</mat-option>
+                                          <mat-option value="option2">Option 2</mat-option>
+                                          <mat-option value="option3">Option 3</mat-option>
+                                       </mat-select>
+                                    </mat-form-field>
+                                    <div>
+                                       <button mat-raised-button color="warn">Make Payment</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </mat-tab>
+                        </mat-tab-group>
+                     </mat-card>
+                  </form>
+               </div>
+            </div>
+         </div>
+         <ng-template>
+            <div class="section-gap-lg text-center">
+               <div class="mb-4">
+                  <img src="assets/img/empty-cart.png" height="128" width="128" alt="cart-empty">
+               </div>
+               <h4> Your Shopping Bag is empty.</h4>
+               <a href="javascript:void(0)" class="primary-text" [routerLink]="['/courses']">Go for Shopping</a>
+            </div>
+         </ng-template>
+      </div>
+   </div>
+</div>

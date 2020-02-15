@@ -1,0 +1,22 @@
+<mat-expansion-panel>
+   <mat-expansion-panel-header>
+      <mat-panel-title>{{courseTopics.name|translate}}</mat-panel-title>
+   </mat-expansion-panel-header>
+   <mat-list>
+      <mat-list-item *ngFor = "let response of courseTopics.courseDetail">
+         <div class="accordion-list-item full-wid">
+            <div class="title" fxLayout="row" fxLayoutAlign="start center">
+               <a fxLayoutAlign="start start" href="javascript:void(0)" (click)="onVideoPlayer(response.demoVideoUrl)"><i class="material-icons">play_circle_filled</i></a>                                    
+               <h4 class="font-normal inline-block mrgn-b-none make-ellipse">
+                  <a href="javascript:void(0)">{{response.name}}</a>
+               </h4>
+            </div>
+            <div class="details" fxLayout="row wrap" fxLayoutAlign="end start">
+               <span mat-line class="preview-text gene-text-md" fxFlex="45"><a href="javascript:void(0)">Preview</a></span>
+               <span mat-line class="content-time gene-text-md" fxFlex="45">{{response.time}}</span>
+            </div>
+         </div>
+         <mat-divider></mat-divider>
+      </mat-list-item>
+   </mat-list>
+</mat-expansion-panel>

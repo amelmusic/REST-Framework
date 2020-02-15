@@ -1,0 +1,89 @@
+/*===========|Tour|=============*/
+.mat-menu-panel{
+    width:auto;
+    max-width:390px !important;
+}
+.mat-menu-panel .mat-menu-content{
+    background:none;
+}
+.popover-header {
+    background-color: $my-primary;
+    color: $light-color;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.8)!important;
+    font-weight: normal;
+    border-radius: 5px 5px 0 0;
+    padding: 8px 14px;
+    margin-bottom: 0;
+}
+
+.popover-body {
+    background: $my-primary;
+    padding: 9px 14px 16px;
+    color: $light-color;
+    border-radius: 0 0 5px 5px;
+}
+.popover-body p {
+    margin:0;
+}
+.tour-step-content {
+    font-size: 16px;
+}
+.tour-step-navigation button {
+    color:$light-color !important;
+}
+
+.popover {
+    border: medium none;
+    width: 300px;
+    max-width: 300px;
+    border-radius: 4px;
+    border: 1px solid $my-primary;
+    box-shadow: 0 5px 14px 1px rgba($my-primary, 0.43);
+    background: $my-primary;
+}
+
+
+.tour-step-navigation {
+    .btn {
+        width: 66px;
+        padding: 1px 6px;
+        margin-right: 0.6rem;
+        border-radius: 3px;
+        background: transparent;
+        border: 1px solid $light-color;
+        color: $light-color;
+        &:last-child {
+            margin: 0;
+        }
+    }
+    i {
+        font-size: 1rem;
+        vertical-align: sub;
+    }
+
+}
+
+.popover.bs-popover-bottom .arrow::after,
+.popover.bs-popover-auto[x-placement^="bottom"] .arrow::after {
+    border-bottom-color: $my-primary;
+}
+
+.popover.bs-popover-bottom .popover-header::before,
+.popover.bs-popover-auto[x-placement^="bottom"] .popover-header::before {
+    border-bottom: 1px solid $my-primary;
+}
+
+
+.popover.bs-popover-right .arrow::after, .popover.bs-popover-auto[x-placement^="right"] .arrow::after {
+  border-right-color: $my-primary;
+
+}
+.popover.bs-popover-left .arrow::after, .popover.bs-popover-auto[x-placement^="left"] .arrow::after {
+  border-color: $my-primary;
+
+}
+
+.tour-step .mat-menu-content{
+overflow: hidden;
+}

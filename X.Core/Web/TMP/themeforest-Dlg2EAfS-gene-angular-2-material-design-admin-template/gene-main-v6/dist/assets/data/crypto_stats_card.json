@@ -1,0 +1,102 @@
+[
+   {
+      "icon" : "BTC",
+      "name" : "Bitcoin",
+      "color" : "primary",
+      "duration" : "last 4 days",
+      "market_cap" : "2.3",
+      "market_cap_icon" : "fa-arrow-up",
+      "market_cap_color" : "success-text",
+      "chartLabel" : ["A", "B", "C", "D", "E"],
+      "chartData" :[
+         {
+            "data":[1, 26, 8, 22, 1]
+         }
+      ],
+      "chartColor" :  [{
+         "lineTension": 0.4,
+         "borderColor": "#1565c0",
+         "pointBorderWidth": 0,
+         "pointHoverRadius": 0,
+         "pointRadius": 0,
+         "pointHoverBorderWidth": 0,
+         "borderWidth": 3,
+         "fill": false
+      }]
+   },
+   {
+      "icon" : "ETH",
+      "name" : "Ethereum",
+      "color" : "success",
+      "duration" : "last 4 days",
+      "market_cap" : "2.3",
+      "market_cap_icon" : "fa-arrow-up",
+      "market_cap_color" : "success-text",
+      "chartLabel" : ["A", "B", "C", "D", "E"],
+      "chartData" :[
+         {
+            "data":[29, 5, 26, 10, 21]
+         }
+      ],
+      "chartColor" :  [{
+         "lineTension": 0.4,
+         "borderColor": "#43a047",
+         "pointBorderWidth": 0,
+         "pointHoverRadius": 0,
+         "pointRadius": 0,
+         "pointHoverBorderWidth": 0,
+         "borderWidth": 3,
+         "fill": false
+      }]
+   },
+   {
+      "icon" : "LTC",
+      "name" : "Litecoin",
+      "color" : "warn",
+      "duration" : "last 4 days",
+      "market_cap" : "2.3",
+      "market_cap_icon" : "fa-arrow-up",
+      "market_cap_color" : "success-text",
+      "chartLabel" : ["A", "B", "C", "D", "E"],
+      "chartData" :[
+         {
+            "data":[1, 26, 8, 22, 1]
+         }
+      ],
+      "chartColor" :  [{
+         "lineTension": 0.4,
+         "borderColor": "#e53935",
+         "pointBorderWidth": 0,
+         "pointHoverRadius": 0,
+         "pointRadius": 0,
+         "pointHoverBorderWidth": 0,
+         "borderWidth": 3,
+         "fill": false
+      }]
+   },
+   {
+      "icon" : "ZEC-alt",
+      "name" : "Zcash",
+      "color" : "accent",
+      "duration" : "last 4 days",
+      "market_cap" : "2.3",
+      "market_cap_icon": "fa-arrow-up",
+      "market_cap_color" : "success-text",
+      "chartLabel" : ["A", "B", "C", "D", "E"],
+      "chartData" :[
+         {
+            "data":[29, 5, 26, 10, 21]
+         }
+      ],
+      "chartColor" :  [{
+         "lineTension": 0.4,
+         "borderColor": "#0097a7",
+         "pointBorderWidth": 0,
+         "pointHoverRadius": 0,
+         "pointRadius": 0,
+         "pointHoverBorderWidth": 0,
+         "borderWidth": 3,
+         "fill": false
+      }]
+   }
+]

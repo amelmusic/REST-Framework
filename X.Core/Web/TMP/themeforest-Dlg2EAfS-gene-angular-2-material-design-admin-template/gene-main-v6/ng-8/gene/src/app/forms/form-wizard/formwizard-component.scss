@@ -1,0 +1,49 @@
+$backround-color:#eeeeee;
+$btn-border:1px solid rgba(0,0,0,0.2);
+$active-tab-bg:#1565C0;
+$btn-bg-color:#1565C0;
+$btn-color:#fff;
+.gene-form-wizard {
+   .mat-tab-header {
+      background-color: $backround-color;
+      margin-bottom: 3rem;
+   }
+   .mat-tab-label-container .mat-tab-label-active {
+      background-color: $active-tab-bg;
+      opacity: 1;
+      border: none;
+   }
+   .mat-tab-nav-bar,
+   .mat-tab-header {
+      border: none;
+   }
+   .mat-input-container {
+      margin-bottom: 2rem;
+   }
+   .mat-button{
+      border:$btn-border;
+      margin: 0.3rem;
+   }
+  .custom-pad {
+    padding-bottom: 4.4rem;
+    padding-top: 4.4rem;
+}
+    .mat-tab-label-container{
+        margin-bottom: 0;
+    }
+}
+
+body .gene-form-wizard .mat-input-container {
+   font-size: 1rem;
+}
+
+
+.gene-form-wizard .mat-raised-button,.gene-form-wizard .mat-fab,.gene-form-wizard .mat-mini-fab,.gene-form-wizard .mat-tab-label-container .mat-tab-label-active{
+   background-color: $btn-bg-color;
+   color: $btn-color;
+}
+
+
+.app-dark .gene-form-wizard .mat-tab-header{
+    background-color: transparent;
+}

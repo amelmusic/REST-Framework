@@ -1,0 +1,176 @@
+<div class="taskboard-wrapper">	
+	<div class="taskboard-title">
+		<mat-card class="mrgn-b-lg">
+			<h3>{{'Task Board'|translate}}</h3>
+		</mat-card>
+	</div>	
+	<mat-card class="pad-y-lg">
+		<div fxLayout="row wrap">
+			<div class="mrgn-b-md taskboard-col" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="25"  fxFlex.lg="25" fxFlex.xl="25">
+				<div class="taskboard-title" fxLayoutAlign="center center">
+					<h4 class="margin-none" fxLayoutAlign="start center">
+						<mat-icon class="mrgn-r-sm">menu</mat-icon>All
+					</h4>
+				</div>
+				<div class="taskboard-content separator-line" dragula="board" [(dragulaModel)]="allTaskBoard">
+					<div *ngFor="let data of allTaskBoard" fxLayout="column">	
+						<mat-card >
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h4 class="margin-none">{{data.title}}</h4>
+								</div>
+								<div>
+									<button mat-icon-button><mat-icon class="mat-icon-grey gene-text-xl">more_vert</mat-icon></button>
+								</div>
+							</div>
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h5 class="margin-none">{{data.message}}</h5>
+								</div>
+								<div>
+									<ng-container *ngFor = "let image of data.taskboard_image">
+										<img class="img-circle" src="{{image}}" width="20" height="20">
+									</ng-container>
+								</div>
+							</div>
+							<div class="mrgn-b-md">
+								<mat-progress-bar mode="determinate" value="{{data.value}}"></mat-progress-bar>
+							</div>
+							<div class="text-center">	
+								<a class="primary-text" href="javascript:void(0)"><small>View More</small></a>
+							</div>	
+						</mat-card>
+					</div>
+				</div>	
+			</div>
+			<div class="mrgn-b-md taskboard-col" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="25"  fxFlex.lg="25" fxFlex.xl="25">	
+				<div class="taskboard-title" fxLayoutAlign="center center">
+					<h4 class="margin-none" fxLayoutAlign="start center">
+						<mat-icon class="mrgn-r-sm">list</mat-icon>To Do
+					</h4>
+				</div>
+				<div class="taskboard-content separator-line" dragula="board" [(dragulaModel)]="todoTaskBoard">
+					<div *ngFor="let data of todoTaskBoard" fxLayout="column">	
+						<mat-card >
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h4 class="margin-none">{{data.title}}</h4>
+								</div>
+								<div>
+									<button mat-icon-button><mat-icon class="mat-icon-grey gene-text-xl">more_vert</mat-icon></button>
+								</div>
+							</div>
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h5 class="margin-none">{{data.message}}</h5>
+								</div>
+								<div>
+									<ng-container *ngFor = "let image of data.taskboard_image">
+										<img class="img-circle" src="{{image}}" width="20" height="20">
+									</ng-container>
+								</div>
+							</div>
+							<div class="mrgn-b-md">
+								<mat-progress-bar mode="determinate" value="{{data.value}}"></mat-progress-bar>
+							</div>
+							<div class="text-center">	
+								<a class="primary-text" href="javascript:void(0)"><small>View More</small></a>
+							</div>	
+						</mat-card>
+					</div>
+				</div>
+			</div>	
+			<div class="mrgn-b-md taskboard-col" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="25"  fxFlex.lg="25" fxFlex.xl="25">
+				<div class="taskboard-title" fxLayoutAlign="center center">	
+					<h4 class="margin-none" fxLayoutAlign="start center">
+						<mat-icon class="mrgn-r-sm">trending_up</mat-icon>Doing
+					</h4>
+				</div>
+				<div class="taskboard-content separator-line" dragula="board" [(dragulaModel)]="doingTaskBoard">
+					<div *ngFor="let data of doingTaskBoard" fxLayout="column">	
+						<mat-card >
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h4 class="margin-none">{{data.title}}</h4>
+								</div>
+								<div>
+									<button mat-icon-button><mat-icon class="mat-icon-grey gene-text-xl">more_vert</mat-icon></button>
+								</div>
+							</div>
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h5 class="margin-none">{{data.message}}</h5>
+								</div>
+								<div>
+									<ng-container *ngFor = "let image of data.taskboard_image">
+										<img class="img-circle" src="{{image}}" width="20" height="20">
+									</ng-container>
+								</div>
+							</div>
+							<div class="mrgn-b-md">
+								<mat-progress-bar mode="determinate" value="{{data.value}}"></mat-progress-bar>
+							</div>
+							<div class="text-center">	
+								<a class="primary-text" href="javascript:void(0)"><small>View More</small></a>
+							</div>	
+						</mat-card>
+					</div>
+				</div>
+			</div>
+			<div class="mrgn-b-md taskboard-col" fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="25"  fxFlex.lg="25" fxFlex.xl="25">
+				<div class="taskboard-title" fxLayoutAlign="center center">	
+					<h4 class="margin-none" fxLayoutAlign="start center">
+						<mat-icon class="mrgn-r-sm">thumb_up</mat-icon>Done
+					</h4>
+				</div>	
+				<div class="taskboard-content" dragula="board" [(dragulaModel)]="doneTaskBoard">
+					<div *ngFor="let data of doneTaskBoard" fxLayout="column">	
+						<mat-card >
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h4 class="margin-none">{{data.title}}</h4>
+								</div>
+								<div>
+									<button mat-icon-button><mat-icon class="mat-icon-grey gene-text-xl">more_vert</mat-icon></button>
+								</div>
+							</div>
+							<div class="mrgn-b-md" fxLayoutAlign="space-between center">
+								<div>
+									<h5 class="margin-none">{{data.message}}</h5>
+								</div>
+								<div>
+									<ng-container *ngFor = "let image of data.taskboard_image">
+										<img class="img-circle" src="{{image}}" width="20" height="20">
+									</ng-container>
+								</div>
+							</div>
+							<div class="mrgn-b-md">
+								<mat-progress-bar mode="determinate" value="{{data.value}}"></mat-progress-bar>
+							</div>
+							<div class="text-center">	
+								<a class="primary-text" href="javascript:void(0)"><small>View More</small></a>
+							</div>	
+						</mat-card>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>		
+			<mat-card>
+				<h4>Create New Task</h4>
+					<div>
+						<mat-form-field class="full-wid">
+							<input matInput placeholder="Title" [(ngModel)]="title">
+						</mat-form-field>
+					</div>
+					<div>
+						<mat-form-field class="full-wid">
+							<input matInput placeholder="Message" [(ngModel)]="message">
+						</mat-form-field>
+					</div>	
+					<button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+			</mat-card>
+		</div>
+	</mat-card>		
+</div>
+	

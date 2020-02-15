@@ -1,0 +1,209 @@
+
+
+/*==========|Header|===========*/
+
+.gene-ham-icon {
+    margin-right: 1rem;
+}
+.gene-header-toolbar{
+   &.mat-toolbar-row, &.mat-toolbar-single-row{
+      height:75px;
+   }
+    .mat-button, .mat-icon-button, .mat-raised-button,.mat-input-element{
+        color: $header-font-color;
+    }
+}
+mat-sidenav.sidebar-panel .sub-menu {
+    padding-top: 0;
+    overflow: hidden;
+    -webkit-transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    -moz-transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    transition: 0.5s cubic-bezier(0.35, 0, 0.25, 1);
+    -webkit-transition-property: max-height;
+    -moz-transition-property: max-height;
+    transition-property: max-height;
+}
+mat-sidenav.sidebar-panel .sub-menu a {
+    margin-left: 30px;
+}
+mat-sidenav .sidebar-panel .navigation .open>.mat-list-item-content>.sub-menu {
+    max-height: 1000px;
+}
+.sub-menu {
+    padding-top: 0;
+    overflow: hidden;
+    max-height: 0;
+    -webkit-transition: .5s cubic-bezier(.35, 0, .25, 1);
+    -moz-transition: .5s cubic-bezier(.35, 0, .25, 1);
+    transition: .5s cubic-bezier(.35, 0, .25, 1);
+    -webkit-transition-property: max-height;
+    -moz-transition-property: max-height;
+    transition-property: max-height;
+}
+.relative {
+    position: relative;
+}
+body .gene-header-toolbar.mat-toolbar {
+    background: $header-bg-color;
+}
+//
+.app-dark {
+    .gene-header-toolbar.mat-toolbar {
+        background: rgba(54, 54, 54, 1);
+          .mat-button, .mat-icon-button, .mat-raised-button,.mat-input-element{
+        color: white;
+    }
+    }
+}
+[dir="rtl"] {
+    .gene-ham-icon {
+        margin-left: 1rem;
+        margin-right: 0;
+    }
+}
+
+.gene-chat-wrap{
+   .people-list{
+      transform: translateX(330px);
+      opacity: 0;
+      visibility: hidden;
+   }
+   .chat-window{
+      transform: translateY(435px);
+   }
+   &.show-chat-list{ 
+      .people-list{
+         transform: translateX(0);
+         transition: all 0.3s ease;
+         opacity: 1;
+         visibility: visible;
+      }
+      .chat-window.show-chat-window{
+         transform: translateY(0);
+      }
+   }
+   .mat-card{
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+   }
+   .mat-tab-body-wrapper{
+      height: 100%;
+   }
+   .chat-people-list mat-list{
+      cursor: pointer;
+   } 
+   img,.show-status{
+      border-radius: 100%;
+   }
+   .people-list{
+      position: fixed;
+      z-index: 99;
+      top: 64px;
+      bottom: 0;
+      right: 0;
+      width:330px; 
+      margin: 0;
+      border-radius: 0;
+      .mat-tab-label{
+         min-width: 0; 
+      }
+      .mat-list-base .mat-list-item .mat-list-item-content{
+         padding: 0;
+      }      
+   }
+   .mat-list-base .mat-list-item, .mat-list-base .mat-list-option{
+      height: auto;
+   }   
+   .show-status{
+      height: 10px;
+      width: 10px;
+      &.online{
+         background-color: $my-success !important;
+      }
+   }
+   .chat-window{
+      width: 370px;
+      position: fixed;
+      bottom: 0;
+      right: 400px;
+      z-index: 98;
+      margin: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+      .chat-header{
+         padding: 0.875rem 1.5rem;
+         margin: -0.875rem -1.5rem auto;
+         height: 55px;
+         .icons-wrap .material-icons{
+            font-size: 1.3rem;
+         }
+      }
+      .gene-card-content{
+         height: 270px;
+         overflow: hidden;
+         overflow-y:auto; 
+      }
+      .chat-block-wrap{
+         .chat-block p{
+            display: inline-block;
+            margin-bottom: 0.25rem;
+            padding: 0.5rem;
+            min-width: 2rem;
+            max-width: 80%;
+            border-radius: 10px;
+         }
+         .receiver-chat p{
+            background-color: $my-primary !important;
+            color:$light-color !important;
+            
+         }
+      }      
+      .gene-card-footer{
+         padding: 0.875rem 1.5rem !important;
+         margin: auto -1.5rem -0.875rem !important;
+      }
+
+   }
+}
+.icons-wrap a{
+   display: -webkit-inline-box !important;
+   display: -ms-inline-flexbox !important;
+   display: inline-flex !important;
+}
+
+.app-dark{
+   .gene-chat-wrap .chat-window .chat-block-wrap .receiver-chat p{
+      background-color: $my-dark-primary !important;
+   }
+}
+//cart popup
+.gene-cart-popup{
+   .cart-title-wrap{
+      margin-top:-8px;
+   }   
+   .cart-content-wrap {
+      max-height: 300px;
+      overflow: auto;
+      .cart-item-wrap:last-child{
+         .mat-divider{
+            display:none;
+         }
+      }
+   }
+   .close-icon{
+    cursor: pointer;
+   }
+}
+//language popup
+.gene-lang-popup{
+   .language-title{
+      margin-top: -8px;
+      width: 100%;
+   }
+   .lang-wrap{
+      margin:0.25rem;
+   }
+}
+//header toolbar
+body .gene-header-toolbar {
+   padding: 0 1.5rem;
+}

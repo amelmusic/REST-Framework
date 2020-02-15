@@ -1,0 +1,66 @@
+<mat-card class="gene-sliders-wrap">
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Slider'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p><code>mat-slider</code> is a component that allows users to select from a range of values by moving the slider thumb</p>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Default Slider'|translate}}</h5>
+         Label
+         <mat-slider #slidey></mat-slider>
+         {{slidey.value}}
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Disable Slider'|translate}}</h5>
+         Label
+         <mat-slider #slidey2 disabled></mat-slider>
+         {{slidey2.value}}
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Slider with set value'|translate}}</h5>
+         <mat-slider value="43"></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Slider with set tick interval'|translate}}</h5>
+         <mat-slider tick-interval="auto"></mat-slider>
+         <mat-slider tick-interval="9"></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Inverted slider'|translate}}</h5>
+         <mat-slider invert value="50" tick-interval="5"></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Vertical slide'|translate}}</h5>
+         <mat-slider vertical thumb-label tick-interval="auto" value="50"></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Inverted vertical slider'|translate}}</h5>
+         <p>Inverted vertical slider</p>
+         <mat-slider vertical invert thumb-label tick-interval="auto" value="50"></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Slider with Thumb Label'|translate}}</h5>
+         <mat-slider thumb-label></mat-slider>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Slider with one-way binding'|translate}}</h5>
+         <mat-slider [value]="val" step="40"></mat-slider>
+         <mat-form-field>
+            <input matInput [(ngModel)]="val">
+         </mat-form-field>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h5 class="mrgn-b-md">{{'Slider with two-way binding'|translate}}</h5>
+         <mat-slider [(ngModel)]="demo" step="40"></mat-slider>
+         <mat-form-field>
+            <input matInput [(ngModel)]="demo">
+         </mat-form-field>
+      </div>
+   </div>
+</mat-card>

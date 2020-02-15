@@ -1,0 +1,6 @@
+<mat-card class="course-info-box mrgn-x-none">
+	<h2 class="mrgn-b-md">{{"What you'll learn"|translate}}</h2>
+	<ul class="info-box-list gene-list">
+	   <li *ngFor = "let response of courseDetail.learn"><i class="material-icons">check</i><span>{{response}}</span></li>
+	</ul>
+</mat-card>

@@ -1,0 +1,73 @@
+<div class="gene-login login-v2 pad-y-xl">
+   <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="column" fxFlex="100" fxFlex.xs="90" fxFlex.sm="80" fxFlex.md="95" fxFlex.lg="70" fxFlex.xl="60">
+         <mat-toolbar-row fxLayoutAlign="space-between" fxLayout.xs="column" fxLayoutAlign.xs="center center" class="mrgn-x-md">
+            <div class="mrgn-b-md">
+               <img src="assets/img/logo-sign.png">
+            </div>
+            <span class="mrgn-b-md">
+               <p class="text-center text-inverse"><span  class="mrgn-r-sm">Not Having Account?</span><button [routerLink]="['/session/registerV2']" mat-raised-button color="accent">Sign Up</button></p>
+            </span>
+         </mat-toolbar-row>
+         <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full pad-t-xl pad-b-xl form-wrap-row set-resp-space" fxLayoutGap.gt-md="15px">
+            <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="60" fxFlex.lg="60" fxFlex.xl="60">
+               <mat-card class="gene-login-v2 card-full-height card-full-width">
+                  <div>
+                     <div fxLayout="column" fxLayoutAlign="center center" class="mrgn-b-lg text-center">
+                        <h2>Get Started With Gene</h2>
+                        <p>The most powerful angular app</p>
+                     </div>
+                     <form #form="ngForm" (ngSubmit)="login(form.value)" fxLayoutAlign="center start">
+                     <div fxLayout="column" fxFlex.xs="100" fxFlex.sm="80" fxFlex.md="80" fxFlex.lg="70" fxFlex.xl="70" fxLayoutAlign="start">
+                        <mat-form-field class="full-wid mrgn-b-md">
+                           <input class="mrgn-t-none" matInput placeholder="E-Mail" type="text" name="email" required [(ngModel)]="email">
+                           <span matSuffix><i class="material-icons">verified_user</i></span>                              
+                        </mat-form-field>
+                        <mat-form-field class="full-wid mrgn-b-md">
+                           <input class="mrgn-t-none" matInput placeholder="Password" type="password" name="password" required [(ngModel)]="password">
+                           <span matSuffix><i class="material-icons">vpn_key</i></span>
+                        </mat-form-field>
+                        <div class="mrgn-b-md"><a [routerLink]="['/session/forgot-passwordV2']">Forgot Password?</a></div>
+                        <div fxLayoutAlign="center start" class=" mrgn-b-lg">
+                           <button mat-flat-button class="success-bg gene-btn-lg" [disabled]="!form.valid">LOGIN</button>    
+                        </div>
+                        <p class="text-center mrgn-b-sm pad-t-xl">Or Signup Using</p>
+                        <div class="social-list" fxLayoutAlign="center start" fxLayoutGap="15px">
+                           <button mat-fab color="primary" matTooltip="Facebook" aria-label="Button that displays a tooltip for social media link">f</button>
+                           <button mat-fab color="warn" matTooltip="Google" aria-label="Button that displays a tooltip for social media link">G</button>
+                           <button mat-fab color="accent" matTooltip="Twitter" aria-label="Button that displays a tooltip for social media link">t</button>
+                           <!-- <button mat-fab color="warn" matTooltip="Gmail" aria-label="Button that displays a tooltip for social media link">g</button>                            -->
+                        </div>
+                     </div>
+                     </form>
+                  </div>
+               </mat-card>
+            </div>
+            <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="38" fxFlex.lg="38" fxFlex.xl="38" fxHide.lt-md>
+               <div class="height-full full-wid">
+                  <div fxLayout="column" fxLayoutAlign="center center" class="height-full full-wid">
+                     <ngx-slick-carousel [config]="slideConfig"  class="carousel full-wid height-full" #slickModal="slick-carousel">
+                     <div ngxSlickItem *ngFor="let slide of sessionSlider" class="height-full full-wid">
+                        <div class="session-slider overlay-wrap height-full full-wid">
+                           <div class="slider-bg-img full-wid" [ngStyle] = "{'background-image' : 'url(' + slide.image + ')'}"></div>
+                           <div class="overlay-content" fxLayoutAlign="start end">
+                              <div class="content-wrap">
+                                 <div class="sec-title">
+                                    <h5 class="text-inverse">{{slide.name}}</h5>
+                                    <span class="text-inverse">{{slide.designation}}</span>
+                                 </div>
+                                 <div class="sec-content">
+                                    <p class="text-inverse">{{slide.content}}</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     </ngx-slick-carousel>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

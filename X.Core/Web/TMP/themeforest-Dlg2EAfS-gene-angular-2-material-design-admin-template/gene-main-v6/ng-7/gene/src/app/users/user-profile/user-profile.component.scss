@@ -1,0 +1,64 @@
+  $facebook: #1565c0;
+  $twitter: #e53935;
+  $google-plus: #00bcd4;
+  $fa-linkedin: #4caf50;
+  .user-socail-stats {
+      margin-bottom: 1.5rem;
+      ul {
+          margin-top: 0.5rem;
+          padding: 0;
+      }
+      li {
+          display: inline-block;
+          a:hover {
+              cursor: pointer;
+          }
+          i {
+              width: 30px;
+              height: 30px;
+              line-height: 30px;
+              border-radius: 100%;
+              color: #fff;
+              text-align: center;
+          }
+          i.fa-facebook {
+              background: $facebook
+          }
+          i.fa-twitter {
+              background: $twitter
+          }
+          i.fa-google-plus {
+              background: $google-plus
+          }
+          i.fa-linkedin {
+              background: $fa-linkedin;
+          }
+      }
+  }
+  
+  .user-contact-info {
+      ul {
+          list-style: none;
+          padding-left: 2rem;
+          margin: 0;
+          li {
+              margin-bottom: 1rem;
+          }
+      }
+  }
+  
+  .contact-list {
+      min-width: 120px;
+      float: left;
+  }
+  
+ 
+
+  @media(max-width:599px) {
+      .user-contact-info ul {
+          padding-left: 0;
+      }
+      .contact-list {
+         min-width: 90px;
+      }
+  }

@@ -1,0 +1,244 @@
+<div class="gene-mail-wrapper" fxLayout="column">
+   <div fxLayout="row wrap" fxLayoutAlign="start">
+      <div class="navigation" fxFlex.gt-sm="20" fxFlex.gt-xs="20" fxFlex="100">
+         <div class="compose-container">
+            <button (click)="openComposeDialog()" class="gene-compose-btn warn-bg" mat-raised-button color="primary">
+            <span>Compose</span>
+            </button>
+         </div>
+         <mat-nav-list class="mail-nav-list">
+            <a class="nav-item mt0 mat-list-item">
+            <span class="text warn-text">Inbox(45)</span>
+            </a>
+            <a class="nav-item mat-list-item">
+            <span class="text warn-text">Important</span>
+            </a>
+            <a class="nav-item mat-list-item">
+            <span class="text warn-text">Sent</span>
+            </a>
+            <a class="nav-item mat-list-item">
+            <span class="text warn-text">Draft</span>
+            </a>
+            <a class="nav-item mat-list-item">
+            <span class="text warn-text">Trash</span>
+            </a>
+         </mat-nav-list>
+         <div class="mail-lebel-area">
+            <h5 class="meta-post mrgn-b-md">Labels</h5>
+            <span class="text gene-block">Important <i class="fa fa-circle label-imp"></i></span>
+            <span class="text gene-block">Banking <i class="fa fa-circle label-banking"></i></span>
+            <span class="text gene-block">Private <i class="fa fa-circle label-private"></i></span>
+            <span class="text gene-block">Hosting <i class="fa fa-circle label-host"></i></span>
+         </div>
+         <div class="mail-online-area">
+            <h5 class="meta-post mrgn-b-md">Online</h5>
+            <div fxLayout="row" fxLayoutAlign="start center" class="mrgn-b-md gene-relative msg-wrap-list">
+               <div class="dash-thumb gene-relative">
+                  <img class="img-responsive img-circle" src="assets/img/register-user-3.jpg" alt="User Image" width="64" height="64">
+               </div>
+               <div class="pad-wrap dash-content">
+                  <div class="">
+                     <span>Hugh Patt</span>
+                  </div>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="mrgn-b-md gene-relative msg-wrap-list">
+               <div class="dash-thumb gene-relative">
+                  <img class="img-responsive img-circle" src="assets/img/register-user-1.jpg" alt="User Image" width="64" height="64">
+               </div>
+               <div class="pad-wrap dash-content">
+                  <div class="">
+                     <span>Marry Hales</span>
+                  </div>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="mrgn-b-md gene-relative msg-wrap-list">
+               <div class="dash-thumb gene-relative">
+                  <img class="img-responsive img-circle" src="assets/img/register-user-2.jpg" alt="User Image" width="64" height="64">
+               </div>
+               <div class="pad-wrap dash-content">
+                  <div class="">
+                     <span>Jonna Haze</span>
+                  </div>
+               </div>
+               <span fxFlex></span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" class="mrgn-b-md gene-relative msg-wrap-list">
+               <div class="dash-thumb gene-relative">
+                  <img class="img-responsive img-circle" src="assets/img/register-user-4.jpg" alt="User Image" width="64" height="64">
+               </div>
+               <div class="pad-wrap dash-content">
+                  <div class="">
+                     <span>Kaily Mills</span>
+                  </div>
+               </div>
+               <span fxFlex></span>
+            </div>
+         </div>
+      </div>
+      <div class="content-container" fxFlex.gt-sm="80" fxFlex.gt-xs="80" fxFlex="100">
+         <div class="mails-container mrgn-x-md mat-elevation-z2" fxFlex>
+            <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="header-upper">
+               <div class="mail-tabs-base" fxFlex.gt-sm="calc(100% - 150px)" fxFlex.gt-xs="calc(100% - 150px)" fxFlex="100">
+                  <ul class="gene-list list-inline">
+                     <li>
+                        <a class="primary-bg gene-link">Inbox</a>
+                     </li>
+                     <li>
+                        <a>Promotions</a>
+                     </li>
+                     <li>
+                        <a>Social</a>
+                     </li>
+                  </ul>
+               </div>
+               <div fxFlex.gt-sm="150px" fxFlex.gt-xs="150px" fxFlex="100">
+                  <div class="search-bar">
+                     <form class="search-form">
+                        <mat-form-field class="gene-block">
+                           <input matInput placeholder="Search">
+                        </mat-form-field>
+                     </form>
+                  </div>
+               </div>
+            </div>
+            <div class="search mat-elevation-z2">
+               <div class="icon-group">
+                  <button class="archive" mat-icon-button matTooltip="Archive">
+                     <mat-icon>archive</mat-icon>
+                  </button>
+                  <button class="spam" mat-icon-button matTooltip="Mark as Spam">
+                     <mat-icon>backspace</mat-icon>
+                  </button>
+                  <button class="delete" mat-icon-button matTooltip="Delete">
+                     <mat-icon>delete</mat-icon>
+                  </button>
+               </div>
+            </div>
+            <div *ngIf="!shownMailDetail" class="toolbar" fxLayout="row" fxLayoutAlign="start center">
+               <div>
+                  <mat-checkbox class="checkbox" [(ngModel)]="checked">Select</mat-checkbox>
+               </div>
+               <span fxFlex>
+                  <!-- fill space -->
+               </span>
+            </div>
+            <div *ngIf="shownMailDetail" class="toolbar toolbar-detail" fxLayout="row" fxLayoutAlign="start center">
+               <div class="icon-group">
+                  <button class="back" (click)="resetTemporaries()" mat-icon-button matTooltip="Back">
+                     <mat-icon>arrow_back</mat-icon>
+                  </button>
+               </div>
+               <div class="icon-group">
+                  <button class="archive" mat-icon-button matTooltip="Archive">
+                     <mat-icon>archive</mat-icon>
+                  </button>
+                  <button class="spam" mat-icon-button matTooltip="Mark as Spam">
+                     <mat-icon>backspace</mat-icon>
+                  </button>
+                  <button class="delete" mat-icon-button matTooltip="Delete">
+                     <mat-icon>delete</mat-icon>
+                  </button>
+               </div>
+               <div class="icon-group">
+                  <button class="archive" mat-icon-button matTooltip="Move to">
+                     <mat-icon>folder</mat-icon>
+                  </button>
+                  <button class="spam" mat-icon-button matTooltip="Label">
+                     <mat-icon>label</mat-icon>
+                  </button>
+               </div>
+               <button class="delete" [matMenuTriggerFor]="mailOptions" mat-icon-button>
+                  <mat-icon>more_vert</mat-icon>
+               </button>
+               <span fxFlex>
+                  <!-- fill space -->
+               </span>
+               <span class="detail-pagi">1 - 25 of 25</span>
+               <div class="chevrons">
+                  <button mat-icon-button>
+                     <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <button mat-icon-button>
+                     <mat-icon>chevron_right</mat-icon>
+                  </button>
+               </div>
+            </div>
+            <div class="mails set-overflow-x-auto">
+               <div *ngIf="!shownMailDetail" class="mail-list">
+                  <div class="mail" *ngFor="let mail of shownMails"  [class.read]="mail.read">
+                  <div class="td-actions" fxLayout="row" fxLayoutAlign="start center">
+                     <mat-checkbox class="checkbox" [checked]="checked"></mat-checkbox>
+                     <button fxHide="true" fxHide.gt-sm="false" mat-icon-button>
+                        <mat-icon class="star">star_border</mat-icon>
+                     </button>
+                  </div>
+                  <a #mailList class="td-content">
+                     <div class="start-wrapper">
+                        <span class="from-name">{{ mail.from }}</span>
+                     </div>
+                     <p class="content-wrapper" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="subject">{{ mail.subject }}</span>
+                     </p>
+                     <span fxFlex></span>
+                     <div class="end-wrapper">
+                        <span class="when">{{ mail.date }}</span>
+                     </div>
+                  </a>
+               </div>
+            </div>
+            <div class="mail-detail" *ngIf="shownMailDetail">
+               <div class="mail-header" fxLayout="row">
+                  <img class="avatar" src="http://placehold.it/40x40">
+                  <div class="mail-info" fxLayout="column">
+                     <span class="from">Jones Carlo</span>
+                     <span class="to">
+                        to me 
+                        <mat-icon>arrow_drop_down</mat-icon>
+                     </span>
+                  </div>
+                  <span fxFlex>
+                     <!-- fill space-->
+                  </span>
+                  <div class="mail-extra">
+                     <span class="when">Today</span>
+                  </div>
+               </div>
+               <div class="mail-content">
+                  <div class="mail-content-text">
+                     <p>Consectetur adipisicing elit. Magnam molestias consectetur quas officia magni reiciendis autem ab at minus dolor obcaecati vel in repellat error voluptate odit praesentium quibusdam, harum aut reprehenderit ipsa voluptas unde rerum vitae facere!
+                     </p>
+                     <p> Natus consequuntur perspiciatis esse beatae illo quos eaque. Earum, quisquam, fugit? Numquam dolor magni nisi? Suscipit odit, ipsam iusto enim culpa, temporibus vero possimus error voluptates sequi. Iusto ipsam, nihil? Eveniet modi maxime animi excepturi a dignissimos doloribus, inventore sed ratione, ducimus atque earum maiores tenetur officia commodi dicta tempora consequatur non nesciunt ipsam, consequuntur quia fuga aspernatur impedit et? Natus, earum.</p>
+                     <p>Dolor, obcaecati! temporibus vero possimus error</p>
+                     <p>Best Regard!</p>
+                  </div>
+               </div>
+            </div>
+            <div class="mail-pagination-wrap">
+               <mat-paginator [length]="length"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="pageSizeOptions">
+               </mat-paginator>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+<mat-menu #mailOptions="matMenu">
+   <button mat-menu-item>
+      <mat-icon>markunread_mailbox</mat-icon>
+      Mark as unread 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>label</mat-icon>
+      Labels 
+   </button>
+   <mat-divider></mat-divider>
+   <button mat-menu-item>
+      <mat-icon>delete</mat-icon>
+      Delete 
+   </button>
+</mat-menu>

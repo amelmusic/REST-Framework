@@ -1,0 +1,118 @@
+<mat-card class="ticker-slider" dir="ltr">
+   <ms-ticker-slider [sliderContent]="tickerSliderContent" [sliderConfig]="tickerSliderConfig"></ms-ticker-slider>
+</mat-card>
+<!-- ticker slider -->
+<div fxLayout="row wrap" fxLayoutAlign="start stretch" class="crypto-dash-card">
+   <div class="crypto-progress" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxLayout="row wrap" fxLayoutAlign="start start">
+         <div fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" *ngFor="let content of statsProgressCard">
+            <mat-card class="{{content.bg_color}} mat-card">
+               <div class="mrgn-b-xs" mat-card-widget fxLayout="row" fxLayoutAlign="start center">
+                  <span class="inline-block lead">
+                     <i class="cc {{content.icon}} mrgn-r-xs"></i>
+                  </span>
+                  <span class="lead inline-block">{{content.coinName}}</span>
+               </div>
+               <div class="mrgn-b-md" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                  <span>{{content.code}}</span>
+                  <span>{{'Trade'|translate}} : {{content.trade}}</span>
+               </div>
+               <div class="crypto-progress-bar mrgn-b-xs">
+                  <mat-progress-bar mode="determinate" value="{{content.progress}}"></mat-progress-bar>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+   <!--Crypto Progress Cards -->
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch" class="crypto-dash-card">
+   <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div class="mrkcap-scroll-wrap">
+         <div class="mktcap-wrapper">
+            <div class="mktcap-resp-scroll">
+               <mat-card>
+                  <div class="mktcap-wrap">
+                     <div class="mktcap-title mktcap-sno">
+                        S.No
+                     </div>
+                     <div class="mktcap-title mktcap-currency">
+                        Currency
+                     </div>
+                     <div class="mktcap-title mktcap-value">
+                        Market cap
+                     </div>
+                     <div class="mktcap-title mktcap-price">
+                        Price
+                     </div>
+                     <div class="mktcap-title mktcap-volume">
+                        Volume
+                     </div>
+                     <div class="mktcap-title mktcap-change">
+                        Change(24hr)
+                     </div>
+                     <div class="mktcap-title mktcap-more">
+                        More
+                     </div>
+                  </div>
+               </mat-card>
+               <mat-accordion>
+                  <mat-expansion-panel class="mrgn-y-md" [expanded]="content.expand" *ngFor="let content of marketCap">
+                     <mat-expansion-panel-header>
+                        <div class="mktcap-wrap">
+                           <div class="mktcap-title mktcap-sno">
+                              {{content.sr_no}}
+                           </div>
+                           <div class="mktcap-title mktcap-currency">
+                              {{content.currency}}
+                           </div>
+                           <div class="mktcap-title mktcap-value">
+                              {{content.market_cap}}
+                           </div>
+                           <div class="mktcap-title mktcap-price">
+                              {{content.price}}
+                           </div>
+                           <div class="mktcap-title mktcap-volume">
+                              {{content.volume}}
+                           </div>
+                           <div class="mktcap-title mktcap-change">
+                              {{content.change}}
+                           </div>
+                           <div class="mktcap-title mktcap-more">
+                              {{content.more}}
+                           </div>
+                        </div>
+                     </mat-expansion-panel-header>
+                     <div class="buttongroup mrgn-b-md">
+                        <button class="mrgn-b-xs" (click)="dataChange('year')" mat-raised-button color="primary">Yearly</button>
+                        <button class="mrgn-b-xs" (click)="dataChange('month')" mat-raised-button color="warn">Monthly</button>
+                        <button class="mrgn-b-xs" (click)="dataChange('week')" mat-raised-button color="accent">Weekly</button>
+                     </div> 
+                     <ng-container *ngIf="changeType == 'year'">
+                        <ng-container *ngIf="content.yearly">
+                           <div class="mktcap-chart-wrap">
+                              <ms-market-cap-charts [data]="content.yearly.chartData" [label]="content.yearly.chartLabel"></ms-market-cap-charts>
+                           </div>
+                        </ng-container>
+                     </ng-container>
+                      <ng-container *ngIf="changeType == 'month'">
+                        <ng-container *ngIf="content.monthly">
+                           <div class="mktcap-chart-wrap">
+                              <ms-market-cap-charts [data]="content.monthly.chartData" [label]="content.monthly.chartLabel"></ms-market-cap-charts>
+                           </div>
+                        </ng-container>
+                     </ng-container>
+                      <ng-container *ngIf="changeType == 'week'">
+                        <ng-container *ngIf="content.weekly">
+                           <div class="mktcap-chart-wrap">
+                              <ms-market-cap-charts [data]="content.weekly.chartData" [label]="content.weekly.chartLabel"></ms-market-cap-charts>
+                           </div>
+                        </ng-container>
+                     </ng-container>
+                  </mat-expansion-panel>
+               </mat-accordion>
+            </div>
+         </div>
+      </div>   
+   </div>
+</div>  

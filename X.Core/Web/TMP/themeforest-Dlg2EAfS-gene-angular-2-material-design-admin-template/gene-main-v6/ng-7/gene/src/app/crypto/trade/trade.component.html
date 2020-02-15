@@ -1,0 +1,438 @@
+<mat-card class="ticker-slider" dir="ltr">
+   <ms-ticker-slider [sliderContent]="tickerSliderContent" [sliderConfig]="tickerSliderConfig"></ms-ticker-slider>
+</mat-card>
+<!-- ticker slider -->
+<div fxLayout="row wrap" fxlayoutAlign="start start">
+   <div fxFlex.gt-sm="100" fxFlex.gt-md="65" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxLayout="row wrap" fxlayoutAlign="start start">
+         <div fxFlex.gt-xs="50" fxFlex.xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Wallet Address' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content">
+                  <div class="trade-crypto crypto-input-prefix">
+                     <div class="pad-t-sm">
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Bitcoin</mat-label>
+                              <span matPrefix class="cc BTC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="AXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>                       
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label> Ethereum </mat-label>
+                              <span matPrefix class="cc ETC"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="YXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label> Litecoin </mat-label>
+                              <span matPrefix class="cc LTC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="TXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>
+                        <div>
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label> Zcash </mat-label>
+                              <span matPrefix class="cc ZEC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="XXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>
+                        <h4 class="font-normal success-text mrgn-b-md">Total amount in all wallet is <span>200 $</span></h4>           
+                        <div class="button-wrap">
+                           <button mat-raised-button color="primary">Go To Wallet</button>
+                        </div>
+                     </div>                           
+                  </div>
+               </div>
+            </mat-card>
+         </div>
+         <div fxFlex.gt-xs="50" fxFlex.xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Buy Cryptocurrency' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content">
+                  <div class="trade-crypto crypto-input-prefix">
+                     <div class="pad-t-sm">
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Choose Currency</mat-label>
+                              <span matPrefix class="fa fa-money" aria-hidden="true"></span>
+                              <mat-select value="Bitcoin"> 
+                                 <mat-option value="Bitcoin">Bitcoin</mat-option>
+                                 <mat-option value="Ethereum">Ethereum</mat-option>
+                                 <mat-option value="EOS">EOS</mat-option>
+                                 <mat-option value="Litecoin">Litecoin</mat-option>
+                              </mat-select>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Payment Method</mat-label>
+                              <span matPrefix class="fa fa-credit-card" aria-hidden="true"></span>
+                              <mat-select value="Debit Card"> 
+                                 <mat-option value="Debit Card">Debit Card</mat-option>
+                                 <mat-option value="PayPal">PayPal</mat-option>
+                                 <mat-option value="Bank Transfer">Bank Transfer</mat-option>
+                                 <mat-option value="Credit Cards">Credit Cards</mat-option>
+                              </mat-select>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Select Amount</mat-label>
+                              <input class="form-control" matInput type="number" placeholder="Amount" min="1" value="200">
+                           </mat-form-field>
+                        </div>
+                        <div>
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Wallet Address</mat-label>
+                              <span matPrefix class="cc BTC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="AXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>
+                        <h4 class="font-normal success-text mrgn-b-md">Total amount is <span>200 $</span></h4>           
+                        <div class="button-wrap">
+                           <button mat-raised-button color="primary">Purchase</button>
+                           <h4 class="font-normal inline-block success-text">Transaction successfull</h4>
+                        </div>
+                     </div>                           
+                  </div>
+               </div>
+            </mat-card>
+         </div>
+         <div fxFlex.gt-xs="50" fxFlex.xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Sell Cryptocurrency' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content">
+                  <div class="trade-crypto crypto-input-prefix">
+                     <div class="pad-t-sm">
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Choose Currency</mat-label>
+                              <span matPrefix class="fa fa-money" aria-hidden="true"></span>
+                              <mat-select placeholder="Coins" value="Bitcoin"> 
+                                 <mat-option value="Bitcoin">Bitcoin</mat-option>
+                                 <mat-option value="Ethereum">Ethereum</mat-option>
+                                 <mat-option value="EOS">EOS</mat-option>
+                                 <mat-option value="Litecoin">Litecoin</mat-option>
+                              </mat-select>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Select Amount</mat-label>
+                              <input class="form-control" matInput type="number" placeholder="Amount" min="1" value="200">
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Password</mat-label>
+                              <span matPrefix class="fa fa-shield" aria-hidden="true"></span>
+                              <input class="form-control" matInput type="password" placeholder="Amount">
+                           </mat-form-field>
+                        </div>
+                        <div>
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Wallet Address</mat-label>
+                              <span matPrefix class="cc BTC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet" value="AXB35H24ISDJHCISDT">
+                           </mat-form-field>
+                        </div>
+                        <h4 class="font-normal success-text mrgn-b-md">Your Account will be credited with <span>200 $</span></h4>           
+                        <div class="button-wrap">
+                           <button mat-raised-button color="primary">Sell</button>
+                           <h4 class="font-normal inline-block success-text">Transaction successfull</h4>
+                        </div>
+                     </div>                           
+                  </div>
+               </div>
+            </mat-card>
+         </div>
+         <div fxFlex.gt-xs="50" fxFlex.xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Transfer Cryptocurrency' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content">
+                  <div class="trade-crypto crypto-input-prefix">
+                     <div class="pad-t-sm">
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Choose Currency</mat-label>
+                              <span matPrefix class="fa fa-money" aria-hidden="true"></span>
+                              <mat-select placeholder="Coins" value="Bitcoin"> 
+                                 <mat-option value="Bitcoin">Bitcoin</mat-option>
+                                 <mat-option value="Ethereum">Ethereum</mat-option>
+                                 <mat-option value="EOS">EOS</mat-option>
+                                 <mat-option value="Litecoin">Litecoin</mat-option>
+                              </mat-select>
+                           </mat-form-field>
+                        </div>                        
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Select Amount</mat-label>
+                              <input class="form-control" matInput type="number" placeholder="Amount" min="1" value="200">
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Password</mat-label>
+                              <span matPrefix class="fa fa-shield" aria-hidden="true"></span>
+                              <input class="form-control" matInput type="password" placeholder="Amount">
+                           </mat-form-field>
+                        </div>
+                        <div>
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Send To</mat-label>
+                              <span matPrefix class="cc BTC-alt"></span>
+                              <input class="form-control" matInput type="text" placeholder="Wallet Address">
+                           </mat-form-field>
+                        </div>
+                        <h4 class="font-normal success-text mrgn-b-md">Total amount transfered <span>200 $</span></h4>           
+                        <div class="button-wrap">
+                           <button mat-raised-button color="primary">Transfer</button>
+                           <h4 class="font-normal inline-block success-text">Transaction successfull</h4>
+                        </div>
+                     </div>                           
+                  </div>
+               </div>
+            </mat-card>
+         </div>
+         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Buy' | translate }} / {{ 'Sell' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content">
+                  <div class="buttongroup mrgn-b-md text-right">
+                     <button class="mrgn-b-xs" mat-raised-button color="primary">This Month</button>
+                     <button class="mrgn-b-xs" mat-raised-button color="warn">This Year</button>
+                     <button class="mrgn-b-xs" mat-raised-button color="accent">Overall</button>
+                  </div>
+                  <div class="trade-chart-wrap">
+                     <ms-buy-sell-chart [color]="buySellChartColors" [data]="buySellChartData" [label]="buySellChartLabel"></ms-buy-sell-chart>
+                  </div>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+   <div fxFlex.gt-sm="100" fxFlex.gt-md="35" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxLayout="row wrap">
+         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <mat-card>
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Expenditure Stats' | translate }}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <ms-amcharts-pie-chart [data]="expenditureChartData"></ms-amcharts-pie-chart>
+            </mat-card>
+         </div>   
+         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <mat-card class="exchange-rate-widget">
+               <div class="gene-card-title">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <h4 class="mrgn-b-none">{{'Exchange Rate' | translate}}</h4>
+                     </div>
+                     <span fxFlex></span>
+                     <button mat-icon-button>
+                        <mat-icon>sync</mat-icon>
+                     </button>
+                     <button mat-icon-button [matMenuTriggerFor]="options">
+                        <mat-icon>more_horiz</mat-icon>
+                     </button>
+                  </div>
+                  <mat-divider></mat-divider>
+               </div>
+               <div class="gene-card-content trade-crypto crypto-input-prefix">
+                  <div>
+                     <div class="chart-wrap">
+                        <div class="mrgn-b-xs">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Choose Currency</mat-label>
+                              <span matPrefix class="fa fa-money" aria-hidden="true"></span>
+                                 <mat-select placeholder="Coins" value="Bitcoin"> 
+                                    <mat-option value="Bitcoin">Bitcoin</mat-option>
+                                    <mat-option value="Ethereum">Ethereum</mat-option>
+                                    <mat-option value="EOS">EOS</mat-option>
+                                    <mat-option value="Litecoin">Litecoin</mat-option>
+                                 </mat-select>
+                           </mat-form-field>
+                        </div>
+                        <div class="mrgn-b-md">
+                           <div class="rotate-exchange-icon text-center">
+                              <span class="fa fa-exchange inline-block" aria-hidden="true"></span>
+                           </div>
+                        </div>
+                        <div class="mrgn-b-md">
+                           <mat-form-field class="full-wid" appearance="outline">
+                              <mat-label>Choose Currency</mat-label>
+                              <span matPrefix class="fa fa-money" aria-hidden="true"></span>
+                              <mat-select placeholder="Coins" value="Ethereum"> 
+                                    <mat-option value="Bitcoin">Bitcoin</mat-option>
+                                    <mat-option value="Ethereum">Ethereum</mat-option>
+                                    <mat-option value="EOS">EOS</mat-option>
+                                    <mat-option value="Litecoin">Litecoin</mat-option>
+                                 </mat-select>
+                           </mat-form-field>
+                        </div>
+                        <div class="evaluated-text success-text">
+                           <span>1 BTC = 0.45373 ETC</span>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </mat-card>
+         </div>     
+         <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <div class="trade-list table-list-wrap">
+               <mat-card>
+                  <div class="gene-card-title">
+                     <div fxLayout="row" fxLayoutAlign="start center">
+                        <div fxLayout="column">
+                           <h4 class="mrgn-b-none">{{'Recent Trades' | translate}}</h4>
+                        </div>
+                        <span fxFlex></span>
+                        <button mat-icon-button>
+                           <mat-icon>sync</mat-icon>
+                        </button>
+                        <button mat-icon-button [matMenuTriggerFor]="options">
+                           <mat-icon>more_horiz</mat-icon>
+                        </button>
+                     </div>
+                     <mat-divider></mat-divider>
+                  </div>
+                  <div class="gene-card-content">
+                     <div class="crypto-table table-hover mrgn-b-lg">
+                        <perfect-scrollbar class="crypto-table table-hover mrgn-b-lg">
+                           <div class="table-responsive recent-trade-table">
+                              <table mat-table [dataSource]="recentTradeElement">
+                                 <ng-container matColumnDef="currency">
+                                    <th mat-header-cell *matHeaderCellDef> Currency </th>
+                                    <td mat-cell *matCellDef="let element">  <span class="cc {{element.currencyIcon}} style-icon"></span> </td>
+                                 </ng-container>
+                                 <!-- Currency Column -->
+                                 <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                                    <td mat-cell *matCellDef="let element"><span class="{{element.statusClass | translate}}">{{element.status}}</span></td>
+                                 </ng-container>
+                                 <!-- Status Column -->
+                                 <ng-container matColumnDef="price">
+                                    <th mat-header-cell *matHeaderCellDef> Price </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+                                 </ng-container>
+                                 <!-- Price Column -->
+                                 <ng-container matColumnDef="total">
+                                    <th mat-header-cell *matHeaderCellDef> Total($) </th>
+                                    <td mat-cell *matCellDef="let element"> ${{element.total}} </td>
+                                 </ng-container>
+                                 <!-- Total Column -->               
+                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table>
+                           </div>
+                        </perfect-scrollbar>
+                     </div>
+                     <div class="stats-summary mrgn-b-sm">
+                        <div>Overall Profit: <span></span><i class="fa fa-plus success-text"> $35237 </i></div>
+                        <div>Overall Loss: <span></span><i class="fa fa-minus warn-text"> $200 </i></div>
+                     </div>
+                     <div class="button-wrap">
+                        <button mat-raised-button color="primary">Download CSV</button>
+                     </div>
+                  </div>
+               </mat-card>
+            </div>
+         </div>   
+      </div>   
+   </div>
+</div>
+<mat-menu #options="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon> Settings </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon> View More </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon> Disable notifications </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon> Remove Panel </button>
+</mat-menu>

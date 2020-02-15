@@ -1,0 +1,64 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Progress Elements'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h2 class="mrgn-b-md">{{'Progress circle'|translate}}</h2>
+         <p>mat-progress-spinner is a component for indicating progress and activity, matching the spec of Material Design Progress & Activity.</p>
+         <h5>{{'Determinate'|translate}}</h5>
+         <div class="mrgn-b-lg">
+            <div fxLayout="row">
+               <mat-progress-spinner mode="determinate" [value]="value" class="primary"></mat-progress-spinner>
+               <mat-progress-spinner mode="determinate" [value]="value" color="accent"></mat-progress-spinner>
+               <mat-progress-spinner mode="determinate" [value]="value" color="warn"></mat-progress-spinner>
+            </div>
+         </div>
+         <button mat-raised-button (click)="step(10)">Increase</button>
+         <button class="mrgn-all-xs" mat-raised-button (click)="step(-10)">Decrease</button>
+         <div class="mrgn-b-lg"></div>
+         <h5>{{'Indeterminate'|translate}}</h5>
+         <div>
+            <div fxLayout="row">
+               <mat-progress-spinner mode="indeterminate" class="primary"></mat-progress-spinner>
+               <mat-progress-spinner mode="indeterminate" color="accent"></mat-progress-spinner>
+               <mat-progress-spinner mode="indeterminate" color="warn"></mat-progress-spinner>
+            </div>
+         </div>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h2 class="mrgn-b-md">{{'Progress bar'|translate}}</h2>
+         <p class="mrgn-b-lg">mat-progress-bar is a component for indicating progress and activity, matching the spec of Material Design Progress & Activity</p>
+         <h5>{{'Determinate'|translate}}</h5>
+         <mat-progress-bar mode="determinate" [value]="determinateValue" color="primary" class="mrgn-b-md">
+         </mat-progress-bar>
+         <button class="mrgn-all-xs" mat-raised-button (click)="stepDeterminateVal(10)">Increase</button>
+         <button class="mrgn-all-xs" mat-raised-button (click)="stepDeterminateVal(-10)">Decrease</button>
+         <div class="mrgn-b-lg"></div>
+         <h5>{{'Buffer'|translate}}</h5>
+         <mat-progress-bar [value]="bufferValue" [bufferValue]="bufferBufferValue" mode="buffer" color="warn" class="mrgn-b-md">
+         </mat-progress-bar>
+         <div fxLayout="row wrap" class="mrgn-b-lg">
+            <button class="mrgn-all-xs" mat-raised-button (click)="stepBufferVal(10)">Increase</button>
+            <button class="mrgn-all-xs" mat-raised-button (click)="stepBufferVal(-10)">Decrease</button>
+            <span fxFlex></span>
+            <button class="mrgn-all-xs" mat-raised-button (click)="stepBufferBufferVal(10)">Increase</button>
+            <button class="mrgn-all-xs" mat-raised-button (click)="stepBufferBufferVal(-10)">Decrease</button>
+         </div>
+         <h5>{{'Indeterminate'|translate}}</h5>
+         <mat-progress-bar mode="indeterminate" class="mrgn-b-md"></mat-progress-bar>
+         <h5>{{'Query'|translate}}</h5>
+         <mat-progress-bar mode="query" class="mrgn-b-md"></mat-progress-bar>
+         <h5>{{'Colors'|translate}}</h5>
+         <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+         <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+         <mat-progress-bar mode="indeterminate" color="warn"></mat-progress-bar>
+      </div>
+   </div>
+</mat-card>

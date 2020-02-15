@@ -1,0 +1,127 @@
+<div class="contact-wrapper">
+	<div>
+		<mat-card class="pad-all-lg mrgn-b-lg">
+			<div fxLayout="row wrap" fxLayoutAlign="space-between center">
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="30" fxFlex.lg="30" fxFlex.xl="30">
+					<div class="pad-r-md">
+						<h2>{{'Contact List'|translate}}</h2>
+					</div>
+				</div>
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="70" fxFlex.lg="70" fxFlex.xl="70">
+					<div fxLayout="row wrap">
+						<div class="form-group pad-r-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="calc(100% - 200px)" fxFlex.lg="calc(100% - 200px)" fxFlex.xl="calc(100% - 200px)">
+							<mat-form-field class="full-wid" floatLabel="never">
+								<input matInput placeholder="Search Contact">
+							</mat-form-field>
+						</div>
+						<div class="contact-btn" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="200px" fxFlex.lg="200px" fxFlex.xl="200px"> 
+							<button class="mrgn-r-sm mrgn-b-sm" mat-raised-button color="primary">Search</button>
+							<button mat-raised-button color="primary">Add<mat-icon class="mrgn-l-sm">add</mat-icon></button>
+						</div>
+					</div>
+				</div>
+			</div>			
+		</mat-card>	
+	</div>
+	<div class="contact-tab-wrapper">
+		<div>
+			<mat-card class="pad-all-md">
+				<mat-tab-group color="accent">
+					<mat-tab label="All Contact">
+					   <div class="gene-card-content pad-b-xs" fxLayout="row wrap">
+					   	<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let contacts of allContacts">
+						   	<mat-card class="pad-all-md">
+									<div fxLayout="row wrap" fxLayoutAlign="space-between start">
+										<div fxFlex.xl="80" fxFlex.lg="80" fxFlex.md="80"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="contact-item-info" fxLayout="row wrap" fxLayoutAlign="start center">
+												<div class="pad-all-xs" fxFlex.xl="110px" fxFlex.lg="110px" fxFlex.md="110px" fxFlex.sm="100" fxFlex.xs="100">
+													<div class="tab-image">
+					                 				<img alt="tab image" src="{{contacts.image}}" width="95" height="95">
+					               			</div>
+					               		</div>	
+				               			<div class="pad-all-xs" fxFlex.xl="calc(100% - 115px)" fxFlex.lg="calc(100% - 115px)" fxFlex.md="calc(100% - 115px)"  fxFlex.sm="100" fxFlex.xs="100">
+                                       <h4 class="margin-none primary-text">{{contacts.name}}</h4>
+                                       <span class="contact-links gene-block make-ellipse"><a class="gene-text-md" href="{{contacts.e_mail}}">{{contacts.e_mail}}</a></span>
+                                       <span class="contact-links gene-block"><a class="gene-text-md" href="{{contacts.phone_number}}">{{contacts.phone_number}}</a> </span>
+                                       <span class="gene-block gene-text-md">{{contacts.country}}</span>
+												</div>		
+											</div>
+										</div>
+										<div fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="20"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="icon" fxLayoutAlign="start start">
+												<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+												<button mat-icon-button><mat-icon>delete</mat-icon></button>
+											</div>
+										</div>
+									</div>	
+								</mat-card>	
+							</div>	
+						</div>					
+					</mat-tab>
+					<mat-tab label="Favourite">
+					   <div class="gene-card-content pad-b-xs" fxLayout="row wrap">
+					   	<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let contacts of favouriteContacts">
+						   	<mat-card class="pad-all-md">
+									<div fxLayout="row wrap" fxLayoutAlign="space-between start">
+										<div fxFlex.xl="80" fxFlex.lg="80" fxFlex.md="80"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="contact-item-info" fxLayout="row wrap" fxLayoutAlign="start center">
+												<div class="pad-all-xs" fxFlex.xl="110px" fxFlex.lg="110px" fxFlex.md="110px" fxFlex.sm="100" fxFlex.xs="100">
+													<div class="tab-image">
+					                 				<img alt="tab image" src="{{contacts.image}}" width="95" height="95">
+					               			</div>
+					               		</div>	
+				               			<div class="pad-all-xs" fxFlex.xl="calc(100% - 115px)" fxFlex.lg="calc(100% - 115px)" fxFlex.md="calc(100% - 115px)"  fxFlex.sm="100" fxFlex.xs="100">
+                                       <h4 class="margin-none primary-text">{{contacts.name}}</h4>
+                                       <span class="contact-links gene-block make-ellipse"><a class="gene-text-md" href="{{contacts.e_mail}}">{{contacts.e_mail}}</a></span>
+                                       <span class="contact-links gene-block"><a class="gene-text-md" href="{{contacts.phone_number}}">{{contacts.phone_number}}</a> </span>
+                                       <span class="gene-block gene-text-md">{{contacts.country}}</span>
+												</div>		
+											</div>
+										</div>
+										<div fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="20"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="icon" fxLayoutAlign="start start">
+												<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+												<button mat-icon-button><mat-icon>delete</mat-icon></button>
+											</div>
+										</div>
+									</div>	
+								</mat-card>	
+							</div>	
+						</div>					
+					</mat-tab>
+					<mat-tab label="Recently Added">
+					   <div class="gene-card-content pad-b-xs" fxLayout="row wrap">
+					   	<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let contacts of recentlyAddedContacts">
+						   	<mat-card class="pad-all-md">
+									<div fxLayout="row wrap" fxLayoutAlign="space-between start">
+										<div fxFlex.xl="80" fxFlex.lg="80" fxFlex.md="80"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="contact-item-info" fxLayout="row wrap" fxLayoutAlign="start center">
+												<div class="pad-all-xs" fxFlex.xl="110px" fxFlex.lg="110px" fxFlex.md="110px" fxFlex.sm="100" fxFlex.xs="100">
+													<div class="tab-image">
+					                 				<img alt="tab image" src="{{contacts.image}}" width="95" height="95">
+					               			</div>
+					               		</div>	
+				               			<div class="pad-all-xs" fxFlex.xl="calc(100% - 115px)" fxFlex.lg="calc(100% - 115px)" fxFlex.md="calc(100% - 115px)"  fxFlex.sm="100" fxFlex.xs="100">
+                                       <h4 class="margin-none primary-text">{{contacts.name}}</h4>
+                                       <span class="contact-links gene-block make-ellipse"><a class="gene-text-md" href="{{contacts.e_mail}}">{{contacts.e_mail}}</a></span>
+                                       <span class="contact-links gene-block"><a class="gene-text-md" href="{{contacts.phone_number}}">{{contacts.phone_number}}</a> </span>
+                                       <span class="gene-block gene-text-md">{{contacts.country}}</span>
+												</div>		
+											</div>
+										</div>
+										<div fxFlex.xl="20" fxFlex.lg="20" fxFlex.md="20"  fxFlex.sm="100" fxFlex.xs="100">
+											<div class="icon" fxLayoutAlign="start start">
+												<button mat-icon-button><mat-icon>remove_red_eye</mat-icon></button>
+												<button mat-icon-button><mat-icon>delete</mat-icon></button>
+											</div>
+										</div>
+									</div>	
+								</mat-card>	
+							</div>	
+						</div>					
+					</mat-tab>					
+				</mat-tab-group>
+			</mat-card>
+		</div>		
+	</div>
+</div>	

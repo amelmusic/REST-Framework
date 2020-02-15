@@ -1,0 +1,82 @@
+<form [formGroup]="productNumberCardForm" class="popup-card-width">
+	<div>
+		<h2 mat-dialog-title>{{'Add New Card'|translate}}</h2>
+	</div>	
+	<mat-dialog-content>
+		<div>
+			<div >
+				<mat-form-field>
+					<input matInput  [textMask]="{mask: mask}" [(ngModel)]="myModel" type="text" formControlName="number" class="form-control" placeholder="card Number">
+						<mat-error *ngIf="productNumberCardForm.controls['number'].touched && !productNumberCardForm.controls['number'].valid">
+							<mat-error *ngIf="productNumberCardForm.controls['number'].hasError('required')" class="required alert-error">  
+				         You must include a card number.
+				         </mat-error>
+			         </mat-error>
+				</mat-form-field>
+			</div>	
+		</div>
+		<div>
+			<div>	
+				<mat-form-field>
+					<input matInput type="text" formControlName="fullName" class="form-control" placeholder="Name">
+						<mat-error *ngIf="productNumberCardForm.controls['fullName'].touched && !productNumberCardForm.controls['fullName'].valid">
+							<mat-error *ngIf="productNumberCardForm.controls['fullName'].hasError('required')" class="required alert-error">  
+				         You must include a name
+				       	</mat-error>  
+			         </mat-error>
+				</mat-form-field>
+			</div>	
+		</div>	
+		<div>
+			<div>
+				<mat-form-field>
+					<mat-select formControlName="expiryMonth" class="form-control">
+						<mat-option value="" disabled selected hidden>Expiry Month</mat-option>
+						<mat-option value="month" *ngFor="let month of months">{{month}}</mat-option>
+						
+						<mat-error *ngIf="productNumberCardForm.controls['expiryMonth'].touched && !productNumberCardForm.controls['expiryMonth'].valid">
+							<mat-error *ngIf="productNumberCardForm.controls['expiryMonth'].hasError('required')" class="required alert-error">  
+				         You must include a name
+				         </mat-error>  
+		        		</mat-error>
+					</mat-select>
+				</mat-form-field> 
+			</div>	
+			<div>
+				<mat-form-field>
+					<mat-select formControlName="expiryYear" class="form-control">
+						<mat-option value="" disabled selected hidden>Expiry Year</mat-option>
+						<mat-option value="year" *ngFor="let year of expiryYear">{{year}}</mat-option>
+						
+						<mat-error *ngIf="productNumberCardForm.controls['expiryYear'].touched && 
+						!productNumberCardForm.controls['expiryYear'].valid">
+							<mat-error *ngIf="productNumberCardForm.controls['expiryYear'].hasError('required')" class="required alert-error">  
+				         You must include a name
+				         </mat-error>
+		        		</mat-error>
+					</mat-select>
+				</mat-form-field> 
+			</div>
+			<div>
+		 		<mat-form-field>
+					<input matInput type="text" formControlName="cvv" class="form-control" placeholder="CVV">
+					<mat-error *ngIf="productNumberCardForm.controls['cvv'].touched && !productNumberCardForm.controls['cvv'].valid">
+						<mat-error *ngIf="productNumberCardForm.controls['cvv'].hasError('required')" class="required alert-error">  
+			         You must include a CVV
+			         </mat-error>  
+			         <mat-error *ngIf="productNumberCardForm.controls['cvv'].hasError('minlength') " class="patern alert-error">  
+		             Correct CVV number.
+		            </mat-error>  
+		            <mat-error *ngIf="productNumberCardForm.controls['cvv'].hasError('maxlength') " class="patern alert-error">  
+		             Correct CVV number.
+		            </mat-error> 
+		         </mat-error>
+				</mat-form-field> 
+			</div>
+		</div>			
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button type="button" mat-raised-button (click)="dialogRef.close()" color="primary">CLOSE</button>
+		<button (click)="onFormSubmit()" type="submit" [disabled]="!productNumberCardForm.valid" mat-raised-button color="warn">SUBMIT</button>
+	</mat-dialog-actions>
+</form>

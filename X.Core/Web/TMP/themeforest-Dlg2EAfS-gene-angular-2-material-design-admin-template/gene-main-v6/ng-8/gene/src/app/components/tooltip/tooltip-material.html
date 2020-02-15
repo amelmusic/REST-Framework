@@ -1,0 +1,17 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Tooltips'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p class="mrgn-b-lg"> Tooltip allows the user to specify text to be displayed when the mouse hovers over an element.</p>
+      <button #tooltip="matTooltip" mat-raised-button color="primary" matTooltip="to see a tooltip" matTooltipPosition="below">
+      Mouse over to see the tooltip
+      </button>
+   </div>
+</mat-card>

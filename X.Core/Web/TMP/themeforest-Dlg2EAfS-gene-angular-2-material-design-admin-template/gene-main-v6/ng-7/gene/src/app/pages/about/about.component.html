@@ -1,0 +1,261 @@
+<div class="about-wrapper">
+	<div>
+		<mat-card class="pad-all-md mrgn-b-xl">
+			<div class="card-title text-center mrgn-b-lg">
+				<h2 class="sec-title-font"> {{'About Us'|translate}}</h2>
+			</div>
+			<div class="about-info" fxLayout="row wrap" *ngFor = "let about of aboutUs"> 	
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50"  fxFlex.lg="50" fxFlex.xl="50">
+               <div class="mrgn-all-md">
+                  <img src="{{about.image}}" alt="About Us Image" width="1060" height="681">                  
+               </div>
+				</div>
+				<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" fxLayoutAlign="center center">
+					<div class="mrgn-all-md card-content mat-pad-none">
+						<h2 class="mrgn-b-md">{{about.heading}}</h2>
+						<p class="mrgn-b-md">{{about.content}}</p>
+					</div>
+				</div>			
+			</div>
+		</mat-card>	
+	</div>		
+	<div class="core-wrap">
+		<mat-card class="pad-all-lg mrgn-b-xl">
+			<div class="card-title mrgn-b-lg text-center">
+				<h2 class="sec-title-font">{{'Our Core Values'|translate}}</h2>
+			</div>
+			<div fxLayout="row wrap">
+				<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="33.33" fxFlex.lg="33.33" fxFlex.xl="33.33" *ngFor= "let value of coreValue">
+					<div class="pad-r-md" fxLayoutAlign="start start">
+						<div class="mrgn-r-md">
+		     				<mat-icon>{{value.icon}}</mat-icon>
+		   			</div>
+						<mat-card-content>
+							<div class="value-content">
+								<h4 class="gene-card-title mrgn-b-md">{{value.title}}</h4>
+								<p>{{value.content}}</p>
+							</div>	
+						</mat-card-content>	
+					</div>	
+				</div>
+			</div>
+		</mat-card>					
+	</div>
+	<div class="service-wrapper">
+		<div class="card-title mrgn-b-xl text-center">
+			<h2 class="mrgn-b-lg sec-title-font">{{'Services'|translate}}</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>	
+		</div>
+		<div class="mat-tab-content">
+			<mat-card class="mrgn-b-xl">
+				<mat-tab-group color="accent">
+					<mat-tab label="Web">
+					   <div class="pad-t-lg" fxLayout="row wrap">
+							<div class="card-content pad-x-md mrgn-b-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let service of serviceWeb">
+								<div class="service-tab-item">
+									<div class="service-label mrgn-b-sm">
+										<mat-chip-list>
+	                           	<mat-chip color="primary" selected>{{service.serviceType}}</mat-chip>
+	                        	</mat-chip-list>
+									</div>
+									<div class="mrgn-b-xs" fxLayoutAlign="start center">
+										<div class="service-name pad-r-sm">
+											<span>{{service.serviceName}}</span>
+										</div>
+										<div class="service-dots">
+											<span class="seprator-dots"></span>
+										</div>
+										<div class="service-cost pad-l-sm">${{service.serviceCost}}</div>
+									</div>
+									<div>
+										<p>{{service.serviceContent}}
+										</p>
+									</div>	
+								</div>
+							</div>
+						</div>					
+					</mat-tab>
+					<mat-tab label="Apps">
+					   <div class="pad-t-lg" fxLayout="row wrap">
+							<div class="card-content pad-x-md mrgn-b-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let service of serviceApps">
+								<div class="service-tab-item">
+									<div class="service-label mrgn-b-sm">
+										<mat-chip-list>
+	                           	<mat-chip color="primary" selected>{{service.serviceType}}</mat-chip>
+	                        	</mat-chip-list>
+									</div>
+									<div class="mrgn-b-xs" fxLayoutAlign="start center">
+										<div class="service-name pad-r-sm">
+											<span>{{service.serviceName}}</span>
+										</div>
+										<div class="service-dots">
+											<span class="seprator-dots"></span>
+										</div>
+										<div class="service-cost pad-l-sm">${{service.serviceCost}}</div>
+									</div>
+									<div>
+										<p>{{service.serviceContent}}
+										</p>
+									</div>	
+								</div>
+							</div>
+						</div>		
+					</mat-tab>
+					<mat-tab label="Technique">
+						<div class="pad-t-lg" fxLayout="row wrap">
+							<div class="card-content pad-x-md mrgn-b-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="33.33" *ngFor = "let service of serviceTechnique">
+								<div class="service-tab-item">
+									<div class="service-label mrgn-b-sm">
+										<mat-chip-list>
+	                           	<mat-chip color="primary" selected>{{service.serviceType}}</mat-chip>
+	                        	</mat-chip-list>
+									</div>
+									<div class="mrgn-b-xs" fxLayoutAlign="start center">
+										<div class="service-name pad-r-sm">
+											<span>{{service.serviceName}}</span>
+										</div>
+										<div class="service-dots">
+											<span class="seprator-dots"></span>
+										</div>
+										<div class="service-cost pad-l-sm">${{service.serviceCost}}</div>
+									</div>
+									<div>
+										<p>{{service.serviceContent}}
+										</p>
+									</div>	
+								</div>
+							</div>
+						</div>			
+					</mat-tab>
+					<mat-tab label="Technology">
+						<div class="pad-t-lg" fxLayout="row wrap">
+							<div class="card-content pad-x-md mrgn-b-md" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="50" fxFlex.lg="50" fxFlex.xl="50" *ngFor = "let service of serviceTechnology">
+								<div class="service-tab-item">
+									<div class="service-label mrgn-b-sm">
+										<mat-chip-list>
+	                           	<mat-chip color="primary" selected>{{service.serviceType}}</mat-chip>
+	                        	</mat-chip-list>
+									</div>
+									<div class="mrgn-b-xs" fxLayoutAlign="start center">
+										<div class="service-name pad-r-sm">
+											<span>{{service.serviceName}}</span>
+										</div>
+										<div class="service-dots">
+											<span class="seprator-dots"></span>
+										</div>
+										<div class="service-cost pad-l-sm">${{service.serviceCost}}</div>
+									</div>
+									<div>
+										<p>{{service.serviceContent}}
+										</p>
+									</div>	
+								</div>
+							</div>
+						</div>				
+					</mat-tab>
+				</mat-tab-group>
+			</mat-card>
+		</div>		
+	</div>	
+	<div class="counter-wrapper">
+		<mat-card class="primary-bg mrgn-b-xl pad-all-lg">
+		<div fxLayout="row wrap">
+			<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="25" fxFlex.lg="25" fxFlex.xl="25" *ngFor = "let counter of counterArray">
+				<div class="stats-counter text-center">
+					<span>{{counter.counterNumber}}</span>
+					<div class="counter-title">
+						<h3>{{counter.counterTitle}}</h3>
+					</div>
+					<div class="counter-description">
+						<p>{{counter.counterDescription}}</p>
+					</div>			
+				</div>
+			</div>
+		</div>
+		</mat-card>
+	</div>
+	<div class="upcomming-event mrgn-b-lg">
+		<div class="card-title mrgn-b-lg text-center">
+			<h2 class="mrgn-b-lg sec-title-font">{{'Upcoming events'|translate}}</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>	
+		</div>
+		<div fxLayout="row wrap">
+			<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="33.33"  fxFlex.lg="33.33" fxFlex.xl="33.33" *ngFor = "let events of upcomingEvents">
+				<mat-card class="mat-pad-none">
+					<div>
+						<img src="{{events.image}}" alt="About Us Image" width="700" height="390">
+					</div>
+					<div class="text-center pad-all-md">
+						<div class="card-content">
+							<h4 class="mrgn-b-sm">{{events.heading}}</h4>
+							<span class="mat-text-muted gene-block mrgn-b-sm">{{events.date|date:'longDate'}}</span>
+							<p class="mrgn-b-sm">{{events.content}}</p>
+						</div>
+					</div>
+				</mat-card>	
+			</div>		
+		</div>		
+	</div>
+	<div class="call-in-action-wrap">
+		<mat-card class="warn-bg pad-all-lg">
+			<div class="card-content"  fxLayout="row wrap">
+				<div class="custom-heading" fxFlex.xs="100" fxFlex.sm="70" fxFlex.md="80"  fxFlex.lg="80" fxFlex.xl="80">
+					<h2 class="mrgn-y-xs">Looking for a First-Class Business Plan Consultant?</h2>
+				</div>
+				<div class="callin-action-btn mrgn-y-xs text-right" fxFlex.xs="100" fxFlex.sm="30" fxFlex.md="20"  fxFlex.lg="20" fxFlex.xl="20">
+					<button color="primary" mat-raised-button>Get a quote<mat-icon class="mrgn-l-xs gene-text-lg">arrow_forward_ios</mat-icon></button>
+				</div>
+			</div>
+		</mat-card>		
+	</div>
+	<div class="contact-info-wrapper">
+		<div class="pad-t-lg pad-b-md" fxLayout="row wrap" fxLayoutAlign="start">
+			<div fxFlex.gt-xl="25" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+				<div class="pad-x-md mrgn-b-sm" fxLayoutAlign="start start">
+					<div class="mrgn-r-sm">
+						<mat-icon class="warn-text">location_on</mat-icon>
+					</div>
+					<div>
+						<p class="gene-text-md">E-51, Phase-8B Mohali, 151001</p>
+					</div>	
+				</div>
+			</div>
+			<div fxFlex.gt-xl="25" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+				<div class="pad-x-md mrgn-b-sm" fxLayoutAlign="start start">
+					<div class="mrgn-r-sm">
+						<mat-icon class="warn-text">schedule</mat-icon>
+					</div>
+					<div>
+						<p class="gene-text-md">Monday – Friday: 9am to 20 pm <br>
+							Saturday: 9am to 17 pm<br>
+							Sunday: day off
+						</p>
+					</div>	
+				</div>
+			</div>
+			<div fxFlex.gt-xl="25" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+				<div class="pad-x-md mrgn-b-sm" fxLayoutAlign="start start">
+					<div class="mrgn-r-sm">
+						<mat-icon class="warn-text">perm_phone_msg</mat-icon>
+					</div>
+					<div>
+						<a class="gene-block gene-text-md" href="tel:+1 234 567 8910">+1 234 567 8910</a>
+						<a class="gene-block gene-text-md" href="tel:0172-462-9900">0172-462-9900</a>
+					</div>	
+				</div>
+			</div>
+			<div fxFlex.gt-xl="25" fxFlex.gt-lg="25" fxFlex.gt-md="25" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+				<div class="pad-x-md mrgn-b-sm" fxLayoutAlign="start start">
+					<div class="mrgn-r-sm">
+						<mat-icon class="warn-text">mail_outline</mat-icon>
+					</div>
+					<div>
+						<a class="gene-block gene-text-md" href="mailto:info@example.com">info@example.com</a>
+						<a class="gene-block gene-text-md" href="mailto:help@example.com">help@example.com</a>
+					</div>	
+				</div>
+			</div>	
+		</div>
+	</div>	
+</div>

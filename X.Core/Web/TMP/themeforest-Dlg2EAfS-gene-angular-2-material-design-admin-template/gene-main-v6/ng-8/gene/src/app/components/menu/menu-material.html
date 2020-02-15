@@ -1,0 +1,54 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Menus (dropdowns)'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <mat-card-subtitle><code>mat-menu</code> is a list of options that displays when triggered.</mat-card-subtitle>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Menu without Icons'|translate}}</h5>
+         <mat-toolbar>
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open basic menu">
+               <mat-icon>more_vert</mat-icon>
+            </button>
+         </mat-toolbar>
+         <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let item of items">
+            {{ item.text }}
+            </button>
+         </mat-menu>
+      </div>
+      <div class="box-inset pad-all-md mrgn-b-md">
+         <h5 class="mrgn-b-md">{{'Menu with Icons'|translate}}</h5>
+         <mat-toolbar>
+            <button mat-icon-button [matMenuTriggerFor]="menuicon" aria-label="Open icon menu">
+               <mat-icon>grade</mat-icon>
+            </button>
+         </mat-toolbar>
+         <mat-menu #menuicon="matMenu">
+            <button mat-menu-item *ngFor="let item of iconItems" [disabled]="item.disabled">
+            <mat-icon>{{ item.icon }}</mat-icon>
+            {{ item.text }}
+            </button>
+         </mat-menu>
+      </div>
+      <div class="box-inset pad-all-md">
+         <h5 class="mrgn-b-md">{{'Clicking these will navigate'|translate}}</h5>
+         <mat-toolbar>
+            <button mat-icon-button [matMenuTriggerFor]="anchorMenu" aria-label="Open anchor menu">
+               <mat-icon>more_vert</mat-icon>
+            </button>
+         </mat-toolbar>
+         <mat-menu #anchorMenu="matMenu">
+            <a mat-menu-item *ngFor="let item of items" href="javascript:void(0)" [disabled]="item.disabled">
+            {{ item.text }}
+            </a>
+         </mat-menu>
+      </div>
+   </div>
+</mat-card>

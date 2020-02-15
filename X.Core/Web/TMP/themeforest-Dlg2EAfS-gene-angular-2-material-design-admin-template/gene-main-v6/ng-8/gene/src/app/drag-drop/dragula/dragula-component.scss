@@ -1,0 +1,21 @@
+.inner-block{
+   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2) inset;
+   padding: 1rem;
+}
+.gene-dragula{
+   .mat-checkbox-inner-container{
+      margin-right:1.25rem;
+   }
+}
+body .gene-dragula .mat-list-item div.mat-list-item-content {
+  margin-bottom: 1rem;
+}
+
+.app-dark .gene-dragula .mat-list .mat-list-item {
+  color: white;
+}
+@media(max-width:599px){
+   .inner-block{
+      padding: 0;
+   }
+}

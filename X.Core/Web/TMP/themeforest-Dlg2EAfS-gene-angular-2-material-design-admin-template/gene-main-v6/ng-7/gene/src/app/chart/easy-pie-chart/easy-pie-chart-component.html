@@ -1,0 +1,113 @@
+<div fxLayout="row wrap" fxLayoutAlign="center start" class="gene-easy-page">
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Easy Pie Chart'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content text-center gene-relative set-chart-resp">
+            <easy-pie-chart [percent]="percent" [options]="options"><span>70</span></easy-pie-chart>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Easy Pie'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content text-center gene-relative set-chart-resp">
+            <span class="gene-absolute">70</span>
+            <easy-pie-chart [percent]="percent2" [options]="options2"><span class="percent" ng-bind="percent">70</span></easy-pie-chart>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="center start" class="gene-easy-page">
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Easy Pie'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content text-center gene-relative set-chart-resp">
+            <span class="gene-absolute">100</span>
+            <easy-pie-chart [percent]="percent3" [options]="options3"><span class="percent" ng-bind="percent">100</span></easy-pie-chart>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-md="50" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card>
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4>{{'Easy Pie'|translate}}</h4>
+               </div>
+               <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content text-center gene-relative set-chart-resp">
+            <span class="gene-absolute">90</span>
+            <easy-pie-chart [percent]="percent4" [options]="options4"><span class="percent" ng-bind="percent">90</span></easy-pie-chart>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<mat-menu #menu="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      Settings 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon>
+      View More 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      Disable notifications 
+   </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      Remove Panel 
+   </button>
+</mat-menu>

@@ -1,0 +1,35 @@
+<div class="gene-login gene-session pad-y-xl">
+   <div fxLayout="row" fxLayoutAlign="center start">
+      <div fxLayout="column" fxFlex.xl="540px" fxFlex.lg="540px" fxFlex.md="540px" fxFlex.sm="540px" fxFlex.xs="100">
+         <mat-card class="gene-login-wrapper">
+            <div>
+               <div fxLayout="column" fxLayoutAlign="center center mrgn-b-md">
+                  <div class="login-logo justify-content">
+                     <img src="assets/img/logo.png">
+                     <h5>Please enter your user information</h5>
+                  </div>
+               </div>
+               <form #form="ngForm" (ngSubmit)="login(form.value)">
+               <div fxLayout="column" fxLayoutAlign="start stretch">
+                  <mat-form-field class="full-wid mrgn-b-md">
+                     <input matInput placeholder="E-Mail" type="text" name="email" required [(ngModel)]="email">
+                  </mat-form-field>
+                  <mat-form-field class="full-wid mrgn-b-md ">
+                     <input matInput placeholder="Password" type="password" name="password" required [(ngModel)]="password">
+                  </mat-form-field>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                     <div fxLayout="column">
+                        <mat-checkbox class="remember-me">Remember Me</mat-checkbox>
+                     </div>
+                     <span fxFlex></span>
+                     <div><a [routerLink]="['/session/forgot-password']">Forgot Password?</a></div>
+                  </div>
+                  <button class="success-bg" mat-raised-button [disabled]="!form.valid">SIGN IN</button>
+                  <p class="text-center">Don't have an account? <a [routerLink]="['/session/register']" class="primary-text">Click here to create one</a></p>
+               </div>
+               </form>
+            </div>
+         </mat-card>
+      </div>
+   </div>
+</div>

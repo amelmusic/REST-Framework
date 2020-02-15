@@ -1,0 +1,324 @@
+//customizer
+.gene-customizer {
+	right: 0;
+	width: 300px;
+	backface-visibility: hidden;
+	background: $light-color none repeat scroll 0 0;
+	bottom: 0;
+	height: 100vh;
+	position: fixed;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	right: -300px;
+	top: 0;
+	transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99) 0s;
+	width: 300px;
+	z-index: 99;
+	mat-card-content {
+	padding: 2rem 0;
+		.mat-checkbox-layout {
+			display: block;
+			width: 100%;
+		}
+		.mat-checkbox-label-before .mat-checkbox-inner-container {
+			float: right;
+			margin-left: 8px;
+			margin-right: auto;
+			order: 0;
+		}
+	}
+	.customizer-toggle {
+		background: $my-primary none repeat scroll 0 0;
+		border: medium none;
+		color: $light-color;
+		cursor: pointer;
+		height: 45px;
+		left: -45px;
+		line-height: 45px;
+		position: absolute;
+		text-align: center;
+		top: 25%;
+		width: 45px;
+		.mat-icon {
+			line-height: 45px;
+		}
+	}
+	.theme-options {
+		> div {
+			margin-bottom: 1rem;
+			margin-bottom: 1rem;
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+		h3 {
+			padding-left: 2rem;
+			padding-right: 2rem;
+		}
+		.mat-divider {
+			margin-bottom: 1rem;
+		}
+	}
+	.settings-panel {
+		height:100vh;
+		overflow-y:auto;
+	}
+	.theme-color {
+		border-radius: 4px;
+    	box-shadow: 0 2px 10px rgba(0,0,0,.09);
+    	margin-bottom: 1rem;
+    	padding: 1rem;
+		.gene-list {
+			.gene-list-link {
+			   height: 1.75rem;
+			   margin: 0 .25rem;
+			   position: relative;
+			   width: 1.75rem;
+			   cursor: pointer;
+			   display: inline-block;
+				span {
+    				display: inline-block;
+    				height: 1.75rem;
+    				position: relative;
+    				width: 1.75rem;
+    				transition: all .5s ease-in-out;
+				}
+			}
+		}
+	}
+}
+
+.customizer-in .gene-customizer {
+	right: 0;
+}
+
+.boxed {
+	box-shadow: 0 0 9px rgba(0, 0, 0, 0.4);
+	margin: 0 auto;
+	width: 1200px;
+	.dash-card .mat-card {
+		padding-left: 0.8rem;
+		padding-right: 0.8rem;
+  }
+	.social-stats {
+		padding: 0;
+  }
+  .lead {
+		font-size: 1.05rem;
+	}
+	.social-col mat-card {
+		padding: 0.8rem;
+		h3{
+			font-size: 1rem;
+		}
+	}
+}
+
+.app-dark {
+	.gene-customizer .customizer-toggle {
+		background: $my-dark-primary;
+	}
+}
+
+.side-panel-opened{
+   .mat-sidenav-content{
+      margin-left: 16.06rem !important;
+      margin-right: unset !important;
+   }
+}
+.side-panel-close{
+   .mat-sidenav-content{
+      margin-left: 0 !important;
+      margin-right: unset !important;
+   }
+   .mat-drawer-shown ~ .mat-sidenav-content{
+      margin:0 !important;
+   }
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel .navigation > .mat-list-item > .mat-list-item-content > a{
+   padding-left:1.9rem;
+   transition: all 0.1s ease 0s;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel:hover .navigation > .mat-list-item > .mat-list-item-content > a {
+   padding-left:1.5rem;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel .mat-list-item > .mat-list-item-content > a > .menu-caret,
+.collapsed-sidebar mat-sidenav .sidebar-panel .mat-list-item > .mat-list-item-content > a > span:not(.menu-badge) {
+   opacity: 0;
+   transition: all 0.1s ease 0s !important;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel:hover .mat-list-item > .mat-list-item-content > a > .menu-caret,
+.collapsed-sidebar mat-sidenav .sidebar-panel:hover .mat-list-item > .mat-list-item-content > a > span:not(.menu-badge) {
+   opacity: 1;
+   transition: all 0.3s ease 0.2s !important;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel:not(:hover) .navigation .open > .mat-list-item-content > .sub-menu {
+   max-height: 0px;
+   transition-duration: 0.1s;
+   transition-delay:0s;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel:hover .navigation .open > .mat-list-item-content > .sub-menu {
+   max-height: 1000px;
+   transition-duration: 0.4s;
+   transition-delay: 0.12s;
+}
+
+.collapsed-sidebar mat-sidenav.mat-sidenav-opened ~ .mat-sidenav-content {
+   margin-left: 5rem !important;
+   margin-right:auto !important;
+}
+
+.collapsed-sidebar mat-sidenav .sidebar-panel:not(:hover) {
+	width: 5rem;
+	min-width: 5rem;
+}
+
+.collapsed-sidebar.side-panel-opened mat-sidenav.sidebar-area ~ .mat-drawer-content {
+	margin-left: 5rem !important;
+}
+.collapsed-sidebar.side-panel-close mat-sidenav.sidebar-area ~ .mat-drawer-content {
+	margin-left: 0px !important;
+}
+.collapsed-sidebar mat-sidenav .sidebar-panel {
+	transition: all 0.4s ease 0s;
+}
+.collapsed-sidebar.side-panel-opened.sidebar-overlay mat-sidenav.sidebar-area ~ .mat-drawer-content{
+   margin:0 !important;
+}
+.collapsed-sidebar{
+   .mat-drawer-shown ~ .mat-sidenav-content{
+      margin:0 !important;
+   }
+}
+
+.collapsed-sidebar {
+	.gene-user-thumb {
+      width: 75%;
+      margin: 0 auto;
+   }
+   .gene-user-name{
+      display: none;
+   }
+	.logo-text {
+		display: none;
+	}
+}
+
+.collapsed-sidebar[dir="rtl"] mat-sidenav.mat-sidenav-opened ~ .mat-sidenav-content,
+[dir="rtl"] .collapsed-sidebar mat-sidenav.mat-sidenav-opened ~ .mat-sidenav-content {
+	margin-left: 0 !important;
+	margin-right: 4rem !important;
+}
+
+
+
+.collapsed-sidebar[dir="rtl"].side-panel-opened mat-sidenav.sidebar-area ~ .mat-drawer-content {
+	margin-left: 0 !important;
+	margin-right: 81px !important;
+}
+
+
+
+// sidebar images classes
+
+.app {	
+	#sidebar-color-1 {
+      background: $sidebar-bg-color;
+   }
+   #sidebar-color-2 {
+      background: $my-primary;
+   }
+   #sidebar-color-3{
+      background: $my-accent;
+   }
+   #sidebar-color-4{
+      background: $my-warn; 
+   }
+   #sidebar-color-5{
+      background: $my-success;
+   }
+
+   #header-color-1 {
+      background: $header-bg-color;
+   }
+   #header-color-2 {
+      background: $my-primary;
+   }
+   #header-color-3{
+      background: $my-accent;
+   }
+   #header-color-4{
+      background: $my-warn; 
+   }
+   #header-color-5{
+      background: $my-success;
+   }
+
+   .radius-circle , .radius-active{
+   		border-radius:100%;
+   }
+}
+
+// sidebar-theme-color
+
+.sidebar-color-dark .sidebar-area.mat-sidenav {
+   background: $sidebar-bg-color
+}    
+.sidebar-color-primary .sidebar-area.mat-sidenav {
+   background: $my-primary;
+}    
+.sidebar-color-accent .sidebar-area.mat-sidenav {
+   background: $my-accent;
+}    
+.sidebar-color-warn .sidebar-area.mat-sidenav {
+   background: $my-warn;
+}    
+.sidebar-color-green .sidebar-area.mat-sidenav {
+   background: $my-success;
+}    
+
+// header-theme-color
+
+.header-color-light .gene-header-toolbar.mat-toolbar {
+   background-color:$header-bg-color;
+}
+.header-color-primary .gene-header-toolbar.mat-toolbar {
+   background-color: $my-primary;
+}
+.header-color-accent .gene-header-toolbar.mat-toolbar {
+   background-color: $my-accent;
+}
+.header-color-warning .gene-header-toolbar.mat-toolbar {
+   background-color: $my-warn;
+}
+.header-color-green .gene-header-toolbar.mat-toolbar {
+   background-color: $my-success;
+}
+
+.header-color-primary,.header-color-warning,.header-color-accent,.header-color-green {
+   .gene-header-toolbar {
+      .navbar-brand, .mat-icon  {
+      	color:$light-color;
+      }
+	   .mat-form-field-wrapper {
+	      .mat-form-field-label, .mat-toolbar,.mat-input-element {
+	         color: $light-color !important;
+	      }
+	      .mat-form-field-underline,  .mat-form-field-ripple{
+	      	background-color:$light-color;
+	      }
+	   }
+	   ul .breadcrumb-item{
+	   	color:$light-color;
+	   }
+	}
+} 
+
+html body div.sidebar-overlay .gene-container .mat-sidenav-content{
+   margin: 0 !important;
+}
+@media (max-width: 600px) {
+	.gene-customizer {
+		right: -250px;
+		width: 250px;
+	}
+
+}

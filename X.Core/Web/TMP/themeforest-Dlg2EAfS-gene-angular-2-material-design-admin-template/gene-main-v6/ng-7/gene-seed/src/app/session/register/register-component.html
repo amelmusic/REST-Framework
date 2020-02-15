@@ -1,0 +1,37 @@
+<div class="gene-registration-form gene-session pad-y-xl">
+   <div fxLayout="row" fxLayoutAlign="center center" >
+      <div fxLayout="column" fxFlex.xl="600px" fxFlex.lg="600px" fxFlex.md="600px" fxFlex.sm="600px"  fxFlex.xs="100">
+         <mat-card>
+            <div>
+            <div fxLayout="column" fxLayoutAlign="center center">
+               <div class="login-logo text-center">
+               <img src="assets/img/logo.png">
+               <h5 class="">{{'Please Enter your details for registrations'|translate}}</h5>
+               </div>
+            </div>
+            <form #form="ngForm" (ngSubmit)="register(form.value)">
+               <div fxLayout="column" fxLayoutAlign="start stretch">
+                  <mat-form-field class="full-wid mrgn-b-sm">
+                  <input matInput placeholder="Name" type="text" name="name" required [(ngModel)]="name">
+                  </mat-form-field>
+                  <mat-form-field class="full-wid mrgn-b-sm">
+                     <input matInput placeholder="E-Mail" type="text" name="email" required [(ngModel)]="email">
+                  </mat-form-field>
+                  <mat-form-field class="full-wid mrgn-b-sm">
+                     <input matInput placeholder="Password" type="password" name="password" required [(ngModel)]="password">
+                  </mat-form-field>
+                  <mat-form-field class="full-wid mrgn-b-sm">
+                     <input matInput placeholder="Password (Confirm)" type="password" name="password-confirm" required [(ngModel)]="passwordConfirm">
+                  </mat-form-field>
+                  <div fxLayout="row" fxLayoutAlign="start" class="mrgn-b-md">
+                  <mat-checkbox>I accept the <a href="#" class="primary-text">{{'terms and conditions.'|translate}}</a></mat-checkbox>
+                  </div>
+                  <button mat-raised-button [disabled]="!form.valid" class="primary-bg mrgn-b-md">{{'CREATE ACCOUNT'|translate}}</button>
+                  <p>{{'Already have an account?'|translate}} <a [routerLink]="['/session/login']" class="primary-text">{{'Sign in here'|translate}}</a></p>
+               </div>
+            </form>
+            </div>
+         </mat-card>
+      </div>
+   </div>
+</div>

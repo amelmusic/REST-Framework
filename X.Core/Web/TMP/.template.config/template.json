@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Amel Musić",
+  "classifications": [
+    "X.Core"
+  ], // Use command 'dotnet new' to see list of other classifications
+  "name": "X.Core WEB template (angular)", // Name that is displayed when running 'dotnet new' command
+  "identity": "X.Core.Template.Web", // Unique name for this template
+  "shortName": "xweb", // Alternative shortname
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "xcorewebapp", // Will replace the string 'xcorewebapp' with the value provided via -n.
+  "preferNameDirectory": true, // If -n is not specified, will use name of the current directory
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        ".template.config/**",
+        "node_modules/**",
+        "package-lock.json",
+      ],
+      "modifiers": [
+        {
+          "condition": "(excludeDummyModule)",
+          "exclude": [
+            "src/app/modules/xhello/**"
+          ]
+        }
+      ]
+    }
+  ],
+  "symbols": {
+    "excludeDummyModule": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Exclude dummy module implementation"
+    },
+    "clientId": {
+      "type": "parameter",
+      "dataType": "string",
+      "defaultValue": "xcoreuiclient",
+      "description": "Client id for oauth2 config",
+      "replaces": "xcoreuiclient"
+    },
+    "issuer": {
+      "type": "parameter",
+      "dataType": "string",
+      "defaultValue": "http://localhost/Core360.IdentityManager.Identity/oauth",
+      "description": "Issuer for oauth2 config",
+      "replaces": "http://localhost/Core360.IdentityManager.Identity/oauth"
+    },
+    "api": {
+      "type": "parameter",
+      "dataType": "string",
+      "defaultValue": "https://localhost:5001/api",
+      "description": "API base url",
+      "replaces": "https://localhost:5001/api"
+    }
+  }
+}

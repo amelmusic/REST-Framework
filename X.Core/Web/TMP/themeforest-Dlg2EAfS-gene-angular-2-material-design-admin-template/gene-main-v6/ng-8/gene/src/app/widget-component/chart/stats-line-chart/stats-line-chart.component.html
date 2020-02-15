@@ -1,0 +1,9 @@
+<div class="stats-line-chart-wrap" *ngIf="showChart">
+   <canvas baseChart
+	   [datasets]="data"
+	   [labels]="label"
+	   [options]="lineChartOptions"
+	   [colors]="color"
+	   chartType="line">   
+	</canvas>
+</div>      

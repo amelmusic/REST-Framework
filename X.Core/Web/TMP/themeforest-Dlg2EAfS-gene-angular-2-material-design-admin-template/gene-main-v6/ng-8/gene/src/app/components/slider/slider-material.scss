@@ -1,0 +1,14 @@
+/** No CSS for this example */
+.gene-sliders-wrap mat-slider {
+  width: 270px;
+}
+@media(max-width:599px){
+   .gene-sliders-wrap{
+      .mat-form-field{
+         width: 80px;
+      } 
+      mat-slider {
+         width: calc(100% - 30px);  
+      }
+   }
+}

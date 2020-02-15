@@ -1,0 +1,166 @@
+{  
+   "allTaskBoard":[  
+      {  
+         "title":"Responsive",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"100",
+         "date":"May 17"
+      },
+      {  
+         "title":"Checklist",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"0",
+         "date":"Apr 11"
+      },
+      {  
+         "title":"Angular 7",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"50",
+         "date":"Aug 22"
+      }
+   ],
+   "todoTaskBoard":[  
+      {  
+         "title":"Assessment",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"100",
+         "date":"Jun 19"
+      },
+      {  
+         "title":"QA Testing",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"30",
+         "date":"May 17"
+      },
+      {  
+         "title":"Navigation",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"0",
+         "date":"Apr 11"
+      }
+   ],
+   "doingTaskBoard":[  
+      {  
+         "title":"Fields",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"70",
+         "date":"Aug 22"
+      },
+      {  
+         "title":"Schedule",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"98",
+         "date":"Jun 19"
+      },
+      {  
+         "title":"Budget",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"0",
+         "date":"May 17"
+      }
+   ],
+   "doneTaskBoard":[  
+      {  
+         "title":"Material Design",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"0",
+         "date":"Apr 11"
+      },
+      {  
+         "title":"Task board",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"68",
+         "date":"Aug 22"
+      },
+      {  
+         "title":"Unit tests",
+         "message":"Team",
+         "taskboard_image":[  
+            "assets/img/user-1.jpg",
+            "assets/img/user-2.jpg",
+            "assets/img/user-3.jpg",
+            "assets/img/user-4.jpg",
+            "assets/img/user-5.jpg"
+         ],
+         "value":"100",
+         "date":"Jun 19"
+      }
+   ]
+}

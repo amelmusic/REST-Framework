@@ -1,0 +1,58 @@
+[
+   {
+      "date":"4 Jan 2018",
+      "account":"The Bank of America",
+      "TypeColor":"primary",
+      "type":"Expense",
+      "amount":"$1000.00",
+      "credit":"$300.00",
+      "balance":"$200.00"
+   },
+   {
+      "date":"28 Feb 2018",
+      "account":"Barclays Bank",
+      "TypeColor":"accent",
+      "type":"Income",
+      "amount":"$2500.00",
+      "credit":"$200.00",
+      "balance":"$150.00"
+  	},
+   {
+      "date":"10 Mar 2018",
+		"account":"Bank of Scotland",
+      "TypeColor":"primary",
+      "type":"Saving",
+      "amount":"$500.00",
+      "credit":"$100.00",
+      "balance":"$50.00"
+   },
+   {
+      "date":"23 Aug 2018",
+		"account":"Deutsche Bank",
+      "TypeColor":"warn",
+      "type":"Income",
+      "amount":"$700.00",
+      "credit":"$300.00",
+      "balance":"$200.00"  
+   },
+   {
+      "date":"25 June 2018",
+      "account":"HSBC Bank",
+      "TypeColor":"accent",
+      "type":"Saving",
+      "amount":"$1090.00",
+      "credit":"$800.00",
+      "balance":"$600.00"
+      
+   },
+   {
+      "date":"29 Nov 2018",
+      "account":"HSBC Bank",
+      "TypeColor":"warn",
+      "type":"Expense",
+      "amount":"$1900.00",
+      "credit":"$600.00",
+      "balance":"$400.00"
+     
+   }
+]

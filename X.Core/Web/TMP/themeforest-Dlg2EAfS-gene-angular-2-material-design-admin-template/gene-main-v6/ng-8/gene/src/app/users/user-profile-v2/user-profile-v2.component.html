@@ -1,0 +1,44 @@
+<div class="user-profile-v2">
+	<ms-user-profile [userProfile] = "userProfile"></ms-user-profile>
+	<div fxLayout="row wrap">
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="65" fxFlex.lg="65" fxFlex.xl="65">
+			<div>
+				<mat-card class="mrgn-b-lg">
+					<div>
+						<div class="card-title mrgn-b-md"><h4>{{'About'|translate}}</h4></div>
+						<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex.</p>
+						<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
+						
+						<p>Dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex lorem ipsum.</p>
+						<p>Sit amet, consectetur adipisicing elit, sed do eiusmod tempor lorem ipsum dolor .</p>
+						
+						<p>Amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex lorem ipsum dolor sit.</p>
+						<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
+						
+						<p>Consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex lorem ipsum dolor sit amet.</p>
+						<p>Sed do eiusmod tempor lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+					</div>
+				</mat-card>
+			</div>
+			<div class="publication-wrap">
+				<ms-publications [publicationArray] = "publicationArray"></ms-publications>
+			</div>	
+		</div>
+		<div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="35" fxFlex.lg="35" fxFlex.xl="35">
+			<div>
+				<ms-research-interests [researchInterest] = "researchInterest"></ms-research-interests>
+			</div>
+			<div>
+				<ms-followers [followers] = "followers"></ms-followers>
+			</div>
+		</div>
+	</div>
+</div>	

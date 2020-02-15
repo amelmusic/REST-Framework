@@ -1,0 +1,26 @@
+/*=======|Feedback Page|=======*/
+
+.feedback-wrapper {
+	.tab-content {
+		.content {
+			.desc {
+				border-left:4px solid $my-primary;
+			}
+		}	
+		.mat-icon {
+			color:$mat-card-icon-color;
+			font-size:18px;
+		}
+	}
+	.mat-icon-button {
+   	width: 2.125rem;
+    	height: 2.125rem;
+    	line-height: 30px;
+	}
+}
+
+@media (max-width: 800px) {
+	.feedback-wrapper .tab-content .content .desc {
+		font-size:12px;
+	}
+}	

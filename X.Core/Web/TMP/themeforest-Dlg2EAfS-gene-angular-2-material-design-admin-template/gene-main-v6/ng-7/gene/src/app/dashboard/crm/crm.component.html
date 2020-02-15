@@ -1,0 +1,451 @@
+<div fxLayout="row wrap" fxLayoutAlign="start stretch" class="crm-stats-cards" *ngIf="statsCards">
+   <div class="crm-stats" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+      <div fxLayout="row wrap" fxLayoutAlign="start start">
+         <div fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex.gt-xs="100" fxFlex="100" *ngFor="let cards of statsCards">
+            <mat-card class="{{cards.card_color}} mat-card">
+               <div class="mrgn-b-xs" mat-card-widget fxLayout="row" fxLayoutAlign="start center">
+                  <span class="inline-block lead">
+                     <i class="fa {{cards.icon}} mrgn-r-xs" aria-hidden="true"></i>
+                  </span>
+                  <span class="lead inline-block">{{cards.title}}</span>
+               </div>
+              
+               <div class="chart-wrap">
+                  <ms-stats-line-chart [label]="cards.chartLabel" [data]="cards.chartData" [color]="cards.chartColors"></ms-stats-line-chart>
+               </div>
+               <div class="mrgn-b-md" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                  <span>{{cards.viewer}}</span>
+                  <span>Trade : {{cards.trade}}%</span>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+   <!--Crm stats cards -->
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+   <div fxFlex.gt-md="66.66" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card class="card-full-height card-full-width">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4 class="mrgn-b-none">{{'Project Status' | translate}}</h4>
+               </div> <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content crm-progress-wrap">
+            <div class="chart-wrap">
+               <ms-column-chart-with-images></ms-column-chart-with-images>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-md="33.33" fxFlex.gt-sm="50" fxFlex="100">
+      <mat-card class="card-full-height card-full-width">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4 class="mrgn-b-none">{{'Sales' | translate}}</h4>
+               </div> <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content crm-progress-wrap">
+            <div class="chart-wrap">
+               <ms-amcharts-pie-chart [data]="saleChartData"></ms-amcharts-pie-chart>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">
+   <div fxFlex.gt-md="33.33" fxFlex.gt-sm="33.33" fxFlex="100">
+      <mat-card class="card-full-height card-full-width">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4 class="mrgn-b-none">{{'Upcoming Events' | translate}}</h4>
+               </div> <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content crm-list-wrap">
+            <mat-list class="mat-pad-none">
+               <mat-list-item *ngFor="let events of UpcomingEvents">
+                  <div class="full-wid pad-b-sm pad-t-xs" fxLayout="row" fxLayoutAlign="space-between start">   
+                     <div>
+                        <h4 class="mrgn-b-none" mat-line>{{events.title}}</h4>
+                        <p mat-line class="meta-post mrgn-b-none">{{events.date}}, {{events.location}}</p>
+                     </div>
+                     <div>
+                        <a href="javascript:void(0)" class="crypto-duration mat-grey-300 inline-block"> {{events.status}} </a>
+                     </div>
+                  </div>
+                  <mat-divider></mat-divider>
+               </mat-list-item>
+            </mat-list>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-md="33.33" fxFlex.gt-sm="33.33" fxFlex="100">
+      <mat-card class="card-full-height card-full-width">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4 class="mrgn-b-none">{{'Ongoing Projects' | translate}}</h4>
+               </div> <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content crm-progress-wrap">
+            <h4 class="mrgn-b-sm">{{'Project' | translate}} 1</h4>
+            <div class="project-descp">
+               <mat-list class="pad-t-none mrgn-b-md">
+                  <mat-list-item>                     
+                     <div class="full-wid" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="mrgn-b-xs font-bold" fxFlex="170px" mat-line><i class="fa fa-user-circle-o primary-text" aria-hidden="true"></i>{{'Supervisor' | translate}} : </span>
+                        <span class="mrgn-b-xs" fxFlex="calc(100% - 170px)">John Gena</span>
+                     </div>
+                  </mat-list-item>
+                  <mat-list-item>                     
+                     <div class="full-wid" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="mrgn-b-xs font-bold" fxFlex="170px" mat-line><i class="fa fa-clock-o primary-text" aria-hidden="true"></i>{{'Duration' | translate}} : </span>
+                        <span class="mrgn-b-xs" fxFlex="calc(100% - 170px)">3 Weeks</span>
+                     </div>
+                  </mat-list-item>
+                  <mat-list-item>                     
+                     <div class="full-wid" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="mrgn-b-xs font-bold" fxFlex="170px" mat-line><i class="fa fa-money primary-text" aria-hidden="true"></i>Net {{'Worth' | translate}} : </span>
+                        <span class="mrgn-b-xs" fxFlex="calc(100% - 170px)">$2364378</span>
+                     </div>
+                  </mat-list-item>
+                  <mat-list-item>                     
+                     <div class="full-wid" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="mrgn-b-xs font-bold" fxFlex="170px" mat-line><i class="fa fa-envelope-o primary-text" aria-hidden="true"></i>{{'Email' | translate}} : </span>
+                        <span class="mrgn-b-xs text-ellipse" fxFlex="calc(100% - 170px)">support@theironnetwork.org</span>
+                     </div>
+                  </mat-list-item>
+                  <mat-list-item>                     
+                     <div class="full-wid" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="mrgn-b-xs font-bold" fxFlex="170px" mat-line><i class="fa fa-phone primary-text" aria-hidden="true"></i>{{'Phone' | translate}} : </span>
+                        <span class="mrgn-b-xs" fxFlex="calc(100% - 170px)">+01 3456 25378</span>
+                     </div>
+                  </mat-list-item>
+               </mat-list>
+               <div class="progress-wrap">
+                  <div class="mrgn-b-md" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                     <span class="font-bold">{{'Progress' | translate}} : </span>
+                     <span> 30%</span>
+                  </div>
+                  <div class="mrgn-b-xs">
+                     <mat-progress-bar mode="determinate" value="30"></mat-progress-bar>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </mat-card>
+   </div>
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-md="33.33%" fxFlex="100">
+      <mat-card class="card-full-height card-full-width">
+         <div class="gene-card-title">
+            <div fxLayout="row" fxLayoutAlign="start center">
+               <div fxLayout="column">
+                  <h4 class="mrgn-b-none">{{'Project Status' | translate}}</h4>
+               </div> <span fxFlex></span>
+               <button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+               <button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+            </div>
+            <mat-divider></mat-divider>
+         </div>
+         <div class="gene-card-content crm-progress-wrap">
+            <mat-list class="mat-pad-none">
+               <mat-list-item *ngFor ="let status of projectStatus">
+                  <div class="full-wid">
+                     <div class="full-wid pad-b-sm pad-t-xs" fxLayout="row" fxLayoutAlign="space-between start">   
+                        <div>
+                           <span class="mrgn-b-none font-bold" mat-line>{{status.title}}</span>
+                        </div>
+                        <div>
+                           <a href="javascript:void(0)" class="crypto-duration {{status.color}} inline-block"> {{status.duration}} </a>
+                        </div>
+                     </div>
+                     <div class="progress-wrap mrgn-b-md">
+                        <mat-progress-bar mode="determinate" value="{{status.value}}"></mat-progress-bar>
+                     </div>
+                  </div>
+               </mat-list-item> 
+            </mat-list>
+         </div>
+      </mat-card>
+   </div>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="start stretch">   
+   <div fxFlex.gt-sm="33.33" fxFlex.gt-xs="100" fxFlex="100">
+		<mat-card class="notification-wrap card-full-height">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxLayout="column">
+						<h4 class="mrgn-b-none">{{'Notifications' | translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content text-inverse-all">
+				<mat-list class="gene-theme-list mrgn-b-lg">
+               <ng-container *ngFor="let content of notificationContent">
+   					<mat-list-item class="{{content.card_color}} mat-list-item">
+   						<div> {{content.notification}} </div>
+   					</mat-list-item>
+   			   </ng-container>
+               </mat-list>
+				<div class="text-center mrgn-b-md">
+               <button class="mrgn-all-xs meta-post" mat-button>View All Notfications</button>
+            </div>
+			</div>
+		</mat-card>
+	</div>
+	<div fxFlex.gt-sm="66.66%" fxFlex="100">
+		<mat-card class="card-full-height live-chat-card">
+			<div class="gene-card-title">
+				<div fxLayout="row" fxLayoutAlign="start center">
+					<div fxLayout="column">
+						<h4 class="mrgn-b-none">{{'Live Chat Support' | translate}}</h4>
+					</div> <span fxFlex></span>
+					<button mat-icon-button>
+                  <mat-icon>sync</mat-icon>
+               </button>
+					<button mat-icon-button [matMenuTriggerFor]="options">
+                  <mat-icon>more_horiz</mat-icon>
+               </button>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+			<div class="gene-card-content">
+            <perfect-scrollbar class="chat-content-wrap">
+               <div fxLayout="row" fxLayoutAlign="start start" class="{{livechat.classSendBy}} chat-list pad-y-sm" *ngFor="let livechat of liveChatSupport">
+                  <div class="chat-thumbnail" fxFlex.gt-md="65px" fxFlex.gt-xs="70px" fxFlex="70px" >
+                     <img class="img-responsive img-circle" src="{{livechat.image}}" alt="User Image" width="64" height="64">
+                  </div>
+                  <div class="pad-wrap chat-content" fxFlex.gt-md="calc(80% - 75px)" fxFlex.gt-xs="80" fxFlex.sm="100">
+                     <div fxLayout="row wrap" class="title-wrap">
+                        <span class="chat-text font-bold inline-block">{{livechat.name}}</span>
+                        <h5 class="meta-post mrgn-b-none inline-block">{{livechat.time}}</h5>
+                     </div>
+                     <div class="gene-chat-content">
+                        <p class="mrgn-b-none gene-msg-block">{{livechat.chat}}</p>
+                     </div>
+                  </div>
+               </div>
+            </perfect-scrollbar>
+            <div class="gene-chat-form">
+               <div>
+                  <mat-form-field class="gene-send-text mrgn-r-md">
+                     <input matInput placeholder="Send Message">
+                  </mat-form-field>
+                  <button mat-fab color="primary" class="gene-send-btn">
+                     <mat-icon>send</mat-icon>
+                  </button>
+               </div>
+            </div>
+			</div>
+		</mat-card>
+   </div>
+</div>
+<div *ngIf="tableTabData">
+   <mat-card class="pad-all-md">
+      <mat-tab-group class="table-tab-list" color="accent">
+         <mat-tab label="{{'Transaction List' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="transactiion-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.transactionList">
+                        <ng-container matColumnDef="transid">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Transaction Id</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.transid}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="account">
+                           <th mat-header-cell *matHeaderCellDef>Account</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.account}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list>
+                           </td>   
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="debit">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Debit</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.debit}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="credit">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Credit</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.credit}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Balance</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.balance}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransactionColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransactionColumns"></tr>
+                     </table>
+                  </div>  
+               </div>
+            </div>
+         </mat-tab>
+         <mat-tab label="{{'Transfer Report' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="invoice-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.transferreport">
+                        <ng-container matColumnDef="transid">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Transfer Id</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.transid}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="account">
+                           <th mat-header-cell *matHeaderCellDef>Account</th>
+                           
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.account}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Balance</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.balance}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Status</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedTransferColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedTransferColumns"></tr>
+                     </table>
+                  </div>   
+               </div>
+            </div> 
+         </mat-tab>
+         <mat-tab label="{{'Expense Category' | translate}}">
+            <div fxFlex.gt-md="100" fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+               <div class="Expense-category-list table-list-wrap">
+                  <div class="table-responsive">  
+                     <table class="full-wid" mat-table [dataSource]="tableTabData.expenseCategory">
+                        <ng-container matColumnDef="itmNo">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Item No</th>
+                           <td mat-cell *matCellDef="let element">
+                              <div>{{element.itmNo}}</div>
+                           </td>
+                        </ng-container>
+                        <ng-container matColumnDef="date">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Date</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.date | date:'mediumDate'}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Type</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.typeColor}}" selected>{{element.type}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>   
+                        </ng-container>
+                        <ng-container matColumnDef="description">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Description</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="amount">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Amount</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">{{element.amount}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                           <th class="text-nowrap" mat-header-cell *matHeaderCellDef>Status</th>
+                           <td class="text-nowrap" mat-cell *matCellDef="let element">
+                              <mat-chip-list>
+                                 <mat-chip color="{{element.statusColor}}" selected>{{element.status}}</mat-chip>
+                              </mat-chip-list> 
+                           </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedExpenseColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedExpenseColumns"></tr>
+                     </table>
+                  </div>   
+               </div>
+            </div>   
+         </mat-tab>
+      </mat-tab-group>
+   </mat-card>
+</div> 
+<mat-menu #options="matMenu" x-position="before">
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon> Settings </button>
+   <button mat-menu-item>
+      <mat-icon>more</mat-icon> View More </button>
+   <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon> Disable notifications </button>
+   <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon> Remove Panel </button>
+</mat-menu>

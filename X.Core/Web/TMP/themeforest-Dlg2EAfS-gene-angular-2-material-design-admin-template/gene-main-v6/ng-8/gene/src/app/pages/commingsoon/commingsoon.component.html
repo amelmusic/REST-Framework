@@ -1,0 +1,59 @@
+<div class="comingsoon-wrap pad-y-xl pad-x-md" fxLayoutAlign="center center">
+	<div class="card-content text-center text-inverse full-wid">
+		<div class="card-title text-center mrgn-b-lg">
+			<span class="text-inverse">{{'COMING SOON'|translate}}</span>
+		</div>
+		<div fxLayout="row wrap" fxLayoutAlign="center center" class="text-center mrgn-b-lg">
+			<div fxFlex.xs="90" fxFlex.sm="90" fxFlex.md="80" fxFlex.lg="60" fxFlex.xl="60">
+				<p class="text-inverse">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.
+				</p>
+			</div>	
+		</div>
+		<div class="counter-wrapper text-center mrgn-b-lg">
+			<div class="text-inverse" fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="difference>0">
+				<div class="mrgn-b-sm" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="12" fxFlex.lg="12" fxFlex.xl="12">
+					<div class="text-center">
+						<h1 class="mrgn-b-md">{{days}}</h1>
+						<div>
+							<h3>DAYS</h3>
+						</div>			
+					</div>
+				</div>
+				<div class="mrgn-b-sm" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
+					<div class="text-center">
+						<h1 class="mrgn-b-md">{{hours}}</h1>
+						<div>
+							<h3>HOURS</h3>
+						</div>			
+					</div>
+				</div>	
+				<div class="mrgn-b-sm" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
+					<div class="text-center">
+						<h1 class="mrgn-b-md">{{minutes}}</h1>
+						<div>
+							<h3>MINUTES</h3>
+						</div>			
+					</div>
+				</div>	
+				<div class="mrgn-b-sm" fxFlex.xs="50" fxFlex.sm="25" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
+					<div class="text-center">
+						<h1 class="mrgn-b-md">{{seconds}}</h1>
+						<div>
+							<h3>SECONDS</h3>
+						</div>			
+					</div>
+				</div>		
+			</div>
+		</div>
+		<div class="text-center">
+			<mat-card-actions class="mrgn-b-none">
+				<button class="mrgn-r-sm mrgn-b-sm" color="accent" mat-raised-button (click)="goToHome()">GO TO HOME</button>
+				<button  color="accent" class="mrgn-b-sm" mat-raised-button (click)="goToAbout()">ABOUT US</button>
+			</mat-card-actions>
+		</div>
+	</div>		
+	<div class="overlay"></div>
+</div>

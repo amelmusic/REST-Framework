@@ -1,0 +1,437 @@
+<div id = "main-app" class="app {{isSidebarFilterClass}} {{isHeaderFilterClass}}" [dir]="layout" [ngClass]="{'app-dark': dark, 'collapsed-sidebar': coreService.collapseSidebar, 'compact-sidebar': compactSidebar, 'customizer-in': customizerIn}" [class.side-panel-opened]="coreService.sidenavOpen" [class.side-panel-closed]="!coreService.sidenavOpen">
+<mat-sidenav-container class="gene-container">
+   <mat-sidenav #sidenav [(mode)]="coreService.sidenavMode" [(opened)]="coreService.sidenavOpen" class="sidebar-area">
+   <ms-side-bar [menuList]="menuItems" [verticalMenuStatus] = true></ms-side-bar>
+   </mat-sidenav>
+   <mat-toolbar class="gene-header-toolbar">
+      <div class="gene-ham-icon" tourAnchor="start.tour" >
+         <button class="" mat-mini-fab color="primary" mat-card-icon (click)="toggleSidebar()">
+            <mat-icon>menu</mat-icon>
+         </button>
+      </div>
+      <a class="navbar-brand" href="#">{{header}}</a>
+      <breadcrumb class="gene-breadcrumbs"></breadcrumb>
+      <span fxFlex></span>
+      <div class="search-bar" fxFlex>
+         <form class="search-form" fxShow="false" fxShow.gt-xs tourAnchor="tour-search">
+            <mat-form-field>
+               <input matInput placeholder="Search">
+            </mat-form-field>
+         </form>
+      </div>
+      <div class="secondary-menu">
+         <button fxHide="true" fxHide.gt-sm="false" mat-button class="fullscreen-toggle" (click)="toggleFullscreen()" tourAnchor="tour-full-screen">
+            <mat-icon *ngIf="!isFullscreen">fullscreen</mat-icon>
+            <mat-icon *ngIf="isFullscreen">fullscreen_exit</mat-icon>
+         </button>
+         <button class="user-button" mat-button [matMenuTriggerFor]="menu">
+            <div fxLayout="row" fxLayoutAlign="center center">
+               <mat-icon>account_circle</mat-icon>
+            </div>
+         </button>
+         <button (click)="end.toggle()" mat-icon-button class="overflow-visible">
+            <mat-icon>notifications</mat-icon>
+         </button>
+         <button mat-button [matMenuTriggerFor]="shopping_cart">
+            <mat-icon class="material-icons icon-color" matBadge="{{ecommerceService.cartProductLength}}" matBadgeColor="warn" >shopping_cart</mat-icon>
+         </button>
+         <button mat-icon-button class="overflow-visible" [matMenuTriggerFor]="appsmenu">
+            <mat-icon>apps</mat-icon>
+         </button>
+         <ms-language-drop-down></ms-language-drop-down>
+         <button mat-icon-button class="overflow-visible" (click)="chatMenu()">
+            <mat-icon>chat</mat-icon>
+         </button>
+      </div>
+   </mat-toolbar>
+   <mat-sidenav #end position="end" class="chat-panel" mode="over" opened="false">
+      <div class="scroll">
+         <mat-toolbar class="primary-bg">
+            <h3>{{'Notifications'|translate}}</h3>
+         </mat-toolbar>
+         <mat-nav-list>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="primary-text">person_add</mat-icon>
+               <h4 mat-line>New User</h4>
+               <p mat-line>10 New Users Registered</p>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="primary-text">system_update</mat-icon>
+               <h4 mat-line>Updates</h4>
+               <p mat-line>New Updates are available for Server</p>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="primary-text">info</mat-icon>
+               <h4 mat-line>Backup</h4>
+               <p mat-line>Backup task is completed</p>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="primary-text">delete_sweep</mat-icon>
+               <h4 mat-line>Junk Files are deleted</h4>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="primary-text">check_circle</mat-icon>
+               <h4 mat-line>2 New project Completed</h4>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="warn-text">notifications_paused</mat-icon>
+               <h4 mat-line>Need 4 Data Entry Operator</h4>
+            </mat-list-item>
+            <mat-list-item>
+               <mat-icon mat-list-avatar class="warn-text">error</mat-icon>
+               <h4 mat-line>Server 2 is down for 1 hour</h4>
+            </mat-list-item>
+         </mat-nav-list>
+         <mat-menu #shopping_cart>
+            <div class="gene-cart-popup">
+               <div class="cart-title-wrap pad-all-sm primary-bg" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                  <div class="sec-title" fxFlex="60">
+                     <h4 class="mrgn-b-none">{{'Cart'|translate}}</h4>
+                  </div>
+                  <div fxFlex="40" class="text-right">
+                     <span class="gene-text-md" *ngIf="ecommerceService.cartProductLength>0">{{ecommerceService.cartProductLength}} NEW</span>
+                  </div>
+               </div>
+               <div class="pad-all-md cart-content-wrap" *ngIf="(ecommerceService.localStorageProduct && ecommerceService.cartProductLength>0); else elseBlock">
+                  <div class="cart-item-wrap" *ngFor="let cart of ecommerceService.localStorageProduct">
+                     <div class="cart-item" fxLayout="row" fxLayoutAlign="space-between start">
+                        <div class="content-wrap" fxFlex="calc(100% - 35px)">
+                           <div fxLayout="row wrap">
+                              <div class="image-wrap mrgn-r-sm" fxFlex="50px">
+                                 <img width="50" height="50" src='{{cart.image}}'>
+                              </div>
+                              <div fxFlex="calc(100% - 70px)">
+                                 <div class="make-ellipse">{{cart.name}}</div>
+                                 <div>{{cart.price|currency}}</div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="close-icon text-right" fxFlex="30px">
+                           <span (click)="onDelete(cart)">
+                              <mat-icon>close</mat-icon>
+                           </span>
+                        </div>
+                     </div>
+                     <mat-divider class="mrgn-y-sm"></mat-divider>
+                  </div>
+               </div>
+               <ng-template #elseBlock>
+                  <div class="text-center pad-all-md">
+                     <div>
+                        <mat-icon>shopping_cart</mat-icon>
+                     </div>
+                     <div>
+                        <h4 class="mrgn-b-none">No Item Found</h4>
+                     </div>
+                  </div>
+               </ng-template>
+            </div>
+         </mat-menu>
+      </div>
+   </mat-sidenav>
+   <div class="gene-base-container" #scrollContainer>
+      <div class="inner-container" fxLayout="row wrap">
+         <div class="full-wid" fxFlex="100">
+            <router-outlet (activate)="onActivate($event, scrollContainer)"></router-outlet>
+            <ng-container>
+               <tour-step-template>
+                  <ng-template let-step="step">
+                     <div (click)="$event.stopPropagation()" class="popover bs-popover-bottom">
+                        <div class="popover-header">
+                           {{step?.title}}
+                        </div>
+                        <div class="popover-body">
+                           <p class="tour-step-content">
+                              {{step?.content}}
+                           </p>
+                        </div>
+                        <div class="tour-step-navigation">
+                           <button mat-icon-button [disabled]="!tourService.hasPrev(step)" (click)="tourService.prev()">
+                           <mat-icon>chevron_left</mat-icon>
+                           </button>
+                           <button mat-icon-button [disabled]="!tourService.hasNext(step)" (click)="tourService.next()">
+                           <mat-icon>chevron_right</mat-icon>
+                           </button>
+                           <button mat-button (click)="tourService.end()">End</button>
+                        </div>
+                     </div>
+                  </ng-template>
+               </tour-step-template>
+            </ng-container>
+         </div>
+         <div class="footer-wrap pad-t-none full-wid" fxFLex="100">
+            <mat-card class="mrgn-b-none">
+               <div class="footer-card-content pad-t-xs" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                  <div class="mrgn-b-md">
+                     <div class="footer-logo mrgn-b-sm">
+                        <a href="javascript:void(0)" [routerLink]="['/dashboard/crm']">
+                           <div class="logo-sign inline-block"><img src="assets/img/logo.png" width="100" height="47"></div>
+                        </a>
+                     </div>
+                     <div class="copyright-info">
+                        <p class="mrgn-b-none">© 2017 - 2019 Gene. All Rights Reserved</p>
+                     </div>
+                  </div>
+                  <a class="gene-block mrgn-b-md" mat-raised-button color="primary" href="https://goo.gl/forms/wT6b2pgUGPNAq1403" target="_blank">
+                     Feedback
+                     <mat-icon class="mrgn-l-xs">feedback</mat-icon>
+                  </a>
+               </div>
+            </mat-card>
+         </div>
+      </div>
+   </div>
+</mat-sidenav-container>
+<div class="gene-customizer">
+   <button class="customizer-toggle" (click)="customizerFunction()">
+      <mat-icon class="fa-spin">settings</mat-icon>
+   </button>
+   <div class="settings-panel">
+      <mat-toolbar color="primary">
+         <span fxFlex>{{'Options'|translate}}</span>
+      </mat-toolbar>
+      <mat-card-content class="theme-options">
+         <h3>{{'Layout Options'| translate }}</h3>
+         <mat-divider></mat-divider>
+         <div fxHide fxShow.gt-md>
+            <mat-checkbox [(ngModel)]="coreService.collapseSidebar" (change)="compactSidebar = false" [align]="end">{{'Collapsed Sidebar'| translate }}</mat-checkbox>
+         </div>
+         <div>
+            <mat-checkbox [(ngModel)]="dark" (change) = "addClassOnBody($event)" [align]="end">{{'Dark Mode'| translate }}</mat-checkbox>
+         </div>
+         <div>
+            <mat-checkbox (change)="changeRTL($event.checked)" >{{'RTL'| translate }}</mat-checkbox>
+         </div>
+         <div>
+            <mat-select placeholder="Language" class="mt-1" [(ngModel)]="currentLang" #langSelect="ngModel" (ngModelChange)="translate.use(currentLang)">
+            <mat-option *ngFor="let lang of translate.getLangs()" [value]="lang">{{ lang }}</mat-option>
+            </mat-select>
+         </div>
+         <div class="inner-toolbar" fxHide fxShow.gt-md>
+            <div class="theme-color">
+               <div class="text-center mrgn-b-md">
+                  <h4>{{'Sidebar Filters'|translate}}</h4>
+               </div>
+               <div class="gene-list" fxLayoutAlign="center center">
+                  <div *ngFor = "let filter of sideBarFilterClass; let i=index">
+                     <a class="gene-list-link" (click)="sidebarFilter(filter)">
+                     <span [ngClass] = "{'radius-circle': i == 0 }" id = "{{filter.sideBarSelect}}"></span>
+                     </a>
+                  </div>
+               </div>
+            </div>
+            <div class="theme-color">
+               <div class="text-center mrgn-b-md">
+                  <h4 class="theme-light-color">{{'Header Filters'|translate}}</h4>
+               </div>
+               <div class="gene-list" fxLayoutAlign="center center">
+                  <div *ngFor = "let filter of headerFilterClass; let i=index">
+                     <a class="gene-list-link" (click)="headerFilter(filter)">
+                     <span [ngClass]="{'radius-active': i == 0 }" id="{{filter.headerSelect}}"></span>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </mat-card-content>
+   </div>
+</div>
+<div class="gene-chat-wrap" id ="gene-chat">
+   <mat-card class="people-list">
+      <mat-tab-group class="height-full">
+         <mat-tab label="Chat" class="height-full">
+            <div class="gene-card-content height-full">
+               <div class="chat-people-list height-full">
+                  <mat-list role="list">
+                     <ng-container *ngFor = "let chat of chatList">
+                        <mat-list-item role="listitem" (click) = "onChatOpen()">
+                           <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-around center">
+                              <div class="image-wrap" fxFlex="50px" class="mrgn-r-sm">
+                                 <img src="{{chat.image}}"  alt="User">
+                              </div>
+                              <div class="people-desc" fxFlex="calc(100% - 100px)">
+                                 <h4 class="margin-none font-normal make-ellipse">{{chat.name}}</h4>
+                                 <span class="gene-text-md inline-block make-ellipse">{{chat.chat}}</span>
+                              </div>
+                              <div fxFlex="30px">
+                                 <div class="show-status mat-grey-300 {{chat.mode}}"></div>
+                              </div>
+                           </div>
+                        </mat-list-item>
+                        <mat-divider class="mrgn-y-xs gene-relative"></mat-divider>
+                     </ng-container>
+                  </mat-list>
+               </div>
+            </div>
+         </mat-tab>
+         <mat-tab label="Settings">
+            <div class="gene-card-content height-full">
+               <div class="chat-settings-list mrgn-b-xl">
+                  <mat-list role="list">
+                     <h3 mat-subheader class="mat-pad-none mrgn-b-md"><i class="material-icons">settings</i>Settings</h3>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Notifications</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Quick Results</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Auto Update</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                  </mat-list>
+               </div>
+               <div class="chat-account-list">
+                  <mat-list role="list">
+                     <h3 mat-subheader class="mat-pad-none mrgn-b-md"><i class="material-icons">perm_identity</i>Account</h3>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Offline Mode</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Location Share</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Show Offline User</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                     <mat-list-item role="listitem">
+                        <div class="gene-list-item full-wid" fxLayout="row wrap" fxLayoutAlign="space-between center">
+                           <div class="people-desc" fxFlex="200px">
+                              <h4 class="margin-none font-normal make-ellipse">Save History</h4>
+                           </div>
+                           <div fxFlex="60px">
+                              <mat-slide-toggle></mat-slide-toggle>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                     <mat-divider class="mrgn-y-sm gene-relative"></mat-divider>
+                  </mat-list>
+               </div>
+            </div>
+         </mat-tab>
+      </mat-tab-group>
+   </mat-card>
+   <mat-card class="chat-window" id="chat-open">
+      <div class="chat-header primary-bg" fxLayout="row wrap" fxLayoutAlign="space-between center">
+         <div class="profile-wrap" fxFlex="calc(100% - 100px)">
+            <div fxLayoutAlign="start center">
+               <div class="image-wrap" fxFlex="40px" class="mrgn-r-xs">
+                  <img src="assets/img/user-1.jpg" width="" height="" alt="">
+               </div>
+               <div fxFlex="calc(100% - 40px)">
+                  <h5 class="margin-none make-ellipse">Abhijit Thapa</h5>
+                  <span class="status-text gene-block gene-text-sm">Online</span>
+               </div>
+            </div>
+         </div>
+         <div class="icons-wrap text-right" fxFlex="100px" fxLayoutAlign="end center">
+            <a href="javascript:void(0)"> <i class="material-icons inline-block">phone</i></a>
+            <a href="javascript:void(0)"> <i class="material-icons inline-block">videocam</i></a>
+            <a href="javascript:void(0)"> <i class="material-icons inline-block margin-none" (click)="chatWindowClose()">close</i></a>
+         </div>
+      </div>
+      <mat-card-content class="gene-card-content">
+         <div class="chat-block-wrap">
+            <div class="chat-block sender-chat mrgn-b-sm">
+               <p class="mat-grey-300">Hi There! Recently I updated the latest version of your app, it crashed every time when i open.Need Assistance</p>
+               <span class="sent-time gene-text-md gene-block">11:20pm</span>
+            </div>
+            <div class="chat-block receiver-chat text-right mrgn-b-sm">
+               <p class="mat-grey-300">Hi, Can you please tell us your mobile configuraion. Thank You!</p>
+               <span class="sent-time gene-text-md gene-block">12:00am</span>
+            </div>
+         </div>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions class="gene-card-footer">
+         <mat-form-field class="full-wid">
+            <input matInput placeholder="Type Your message">
+            <mat-icon matSuffix>send</mat-icon>
+         </mat-form-field>
+      </mat-card-actions>
+   </mat-card>
+</div>
+</div>
+<mat-menu class="user-menu" x-position="before" y-position="below" #menu="matMenu">
+   <button mat-menu-item>
+      <mat-icon>account_circle</mat-icon>
+      <span>{{'Profile'|translate}}</span>
+   </button>
+   <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>{{'Settings'|translate}}</span>
+   </button>
+   <button mat-menu-item>
+      <mat-icon>help</mat-icon>
+      <span>{{'Help'|translate}}</span>
+   </button>
+   <mat-divider></mat-divider>
+   <button (click)="logOut()" mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>{{'Logout'|translate}}</span>
+   </button>
+</mat-menu>
+<mat-menu class="apps-menu" x-position="after" y-position="below" #appsmenu="matMenu">
+   <button mat-menu-item>
+      <mat-icon>storage</mat-icon>
+      <span>{{'Total App Memory'|translate}}</span>
+   </button>
+   <button mat-menu-item>
+      <mat-icon>memory</mat-icon>
+      <span>{{'Total Memory Used'|translate}}</span>
+   </button>
+   <button mat-menu-item>
+      <mat-icon>mail</mat-icon>
+      <span>{{'12 Unread Mail'|translate}}</span>
+   </button>
+   <button mat-menu-item>
+      <mat-icon>feedback</mat-icon>
+      <span>{{'2 Feedback'|translate}}</span>
+   </button>
+</mat-menu>

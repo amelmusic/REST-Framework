@@ -1,0 +1,36 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div fxLayout="row" fxLayoutAlign="start center">
+         <div fxLayout="column">
+            <h3>{{'Grid List'|translate}}</h3>
+         </div>
+         <span fxFlex></span>
+      </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content">
+      <p><code>mat-grid-list</code> is an alternative list view that arranges cells into grid-based layout.</p>
+      <mat-tab-group>
+         <mat-tab>
+            <ng-template mat-tab-label>Fixed height</ng-template>
+            <mat-card-content class="mrgn-b-none">
+               <mat-grid-list [cols]="fixedCols" [rowHeight]="fixedRowHeight">
+               <mat-grid-tile *ngFor="let tile of tiles" [colspan]="tile.cols" [rowspan]="tile.rows" [style.background]="tile.color">
+               {{tile.text}}
+               </mat-grid-tile>
+               </mat-grid-list>
+            </mat-card-content>
+         </mat-tab>
+         <mat-tab>
+            <ng-template mat-tab-label>Ratio height</ng-template>
+            <mat-card-content class="mrgn-b-none">
+               <mat-grid-list cols="2" [rowHeight]="ratio" gutterSize="4px">
+                  <mat-grid-tile *ngFor="let tile of tiles" [style.background]="'#1565c0'">
+                  {{tile.text}}
+                  </mat-grid-tile>
+               </mat-grid-list>
+            </mat-card-content>
+         </mat-tab>
+      </mat-tab-group>
+   </div>
+</mat-card>

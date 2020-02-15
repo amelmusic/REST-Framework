@@ -1,0 +1,51 @@
+<mat-card>
+   <div class="gene-card-title">
+      <div>
+         <div fxLayout="column">
+            <h3>{{'Horizontal Drag and Drop Container'|translate}}</h3></div> <span fxFlex></span> </div>
+      <mat-divider></mat-divider>
+   </div>
+   <div class="gene-card-content pad-b-none gene-dragula">
+      <div fxLayout="row wrap" fxLayoutGap.gt-sm="1.5rem">
+         <div fxFlex.gt-sm="calc(50% - 0.75rem)" fxFlex="100">
+            <div class="mrgn-b-md">
+               <h2 class="mrgn-b-md">{{'Project A'|translate}}</h2>
+               <div class="inner-block">
+                  <mat-list [dragula]='"dragable-bag"'>
+                     <mat-list-item class="mrgn-b-md" *ngFor="let grp of group1">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+                           <div fxFlex>
+                              <mat-checkbox>{{ grp.name }}<span class="gene-block">{{ grp.des }}</span></mat-checkbox>
+                              
+                           </div>
+                           <div>
+                              <mat-icon>drag_handle</mat-icon>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                  </mat-list>
+               </div>
+            </div>
+         </div>
+         <div fxFlex.gt-sm="calc(50% - 0.75rem)" fxFlex="100">
+            <div class="mrgn-b-md">
+               <h2 class="mrgn-b-md">{{'Project B'|translate}}</h2>
+               <div class="inner-block">
+                  <mat-list [dragula]='"dragable-bag"'>
+                     <mat-list-item class="mrgn-b-md" *ngFor="let grp2 of group2">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+                           <div fxFlex>
+                              <mat-checkbox>{{ grp2.name }}<span class="gene-block">{{ grp2.des }}</span></mat-checkbox>
+                           </div>
+                           <div>
+                              <mat-icon>drag_handle</mat-icon>
+                           </div>
+                        </div>
+                     </mat-list-item>
+                  </mat-list>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</mat-card>

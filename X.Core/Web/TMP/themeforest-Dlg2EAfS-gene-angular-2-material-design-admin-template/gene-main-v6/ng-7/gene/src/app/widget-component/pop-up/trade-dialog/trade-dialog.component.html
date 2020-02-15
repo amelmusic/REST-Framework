@@ -1,0 +1,77 @@
+<mat-card class="txn-details-wrap txn-popup-wrap">
+   <div class="txn-info">
+      <div class="sec-title">
+         <h4>Transaction Details</h4>
+      </div>
+      <div class="sec-content">
+         <p>Transaction with Txn No <span>{{data.txnno}}</span> was placed on {{data.date}}, 11:10 with Payment done being <span class="success-text">Successful</span>.</p>
+      </div>
+   </div>
+   <div class="purchase-info-wrap">
+      <mat-list role="list">
+         <mat-list-item role="listitem">
+            <div class="purchase-info mrgn-b-sm" fxLayout="row" fxLayoutAlign="start start">
+               <div class="info-title mrgn-b-xs" fxFlex="200px">
+                  <span>Currency :</span>
+               </div>
+               <div class="info-value mrgn-b-xs" fxFlex="calc(100% - 200px)">
+                  <span class="cc {{data.currencyIcon}}"></span>
+               </div>
+            </div>
+         </mat-list-item>
+         <mat-list-item role="listitem">
+            <div class="purchase-info mrgn-b-sm" fxLayout="row" fxLayoutAlign="start start">
+               <div class="info-title mrgn-b-xs" fxFlex="200px">
+                  <span>Payment Currency :</span>
+               </div>
+               <div class="info-value mrgn-b-xs" fxFlex="calc(100% - 200px)">
+                  <span>{{data.payment_currency}}</span>
+               </div>
+            </div>
+         </mat-list-item>
+         <mat-list-item role="listitem">
+            <div class="purchase-info mrgn-b-sm" fxLayout="row" fxLayoutAlign="start start">
+               <div class="info-title mrgn-b-xs" fxFlex="200px">
+                  <span>Price :</span>
+               </div>
+               <div class="info-value mrgn-b-xs" fxFlex="calc(100% - 200px)">
+                  <span>{{data.price}}</span>
+               </div>
+            </div>
+         </mat-list-item>
+         <mat-list-item role="listitem">
+            <div class="purchase-info mrgn-b-sm" fxLayout="row" fxLayoutAlign="start start">
+               <div class="info-title" fxFlex="200px">
+                  <span>Total :</span>
+               </div>
+               <div class="info-value" fxFlex="calc(100% - 200px)">
+                  <span> {{data.total}}</span>
+               </div>
+            </div>
+         </mat-list-item>
+         <mat-list-item role="listitem">
+            <div class="purchase-info mrgn-b-sm" fxLayout="row" fxLayoutAlign="start start">
+               <div class="info-title" fxFlex="200px">
+                  <span>To/From :</span>
+               </div>
+               <div class="info-value" fxFlex="calc(100% - 200px)">
+                  <span> {{data.from}}</span>
+               </div>
+            </div>
+         </mat-list-item>
+         <mat-list-item role="listitem">
+            <div class="purchase-info trade-crypto crypto-input-prefix">
+               <div class="info-title mrgn-b-xs">
+                  <span>Wallet Address :</span>
+               </div>
+               <div class="info-value">
+                  <mat-form-field class="full-wid" appearance="outline">
+                     <span matPrefix class="cc {{data.currencyIcon}}"></span>
+                     <input class="form-control" matInput type="text" placeholder="Wallet" value="AXB35H24ISDJHCISDT">
+                  </mat-form-field>
+               </div>
+            </div>
+         </mat-list-item>
+      </mat-list>             
+   </div>
+</mat-card>

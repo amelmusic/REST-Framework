@@ -1,0 +1,55 @@
+<div class="course-list-wrap">
+   <ms-courses-banner></ms-courses-banner>
+   <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full">
+      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+         <div class="courses-grid col-4-resp">
+            <div fxLayout="row wrap" fxLayoutAlign="start start" class="height-full">
+               <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                  <div class="overflow-show tab-wrap mat-pad-none">
+                     <mat-tab-group animationDuration="0ms">
+                        <mat-tab label="Top">
+                           <!-- put this in next two tabs -->
+                           <div class="pad-t-md" fxLayout="row wrap" fxLayoutAlign="start">
+                              <!-- add loop on following div -->
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('top'); let i = index">
+                                 <ms-courses-card [course] = "course"></ms-courses-card>
+                                 <ms-courses-description [course] = "course"></ms-courses-description>
+                              </div>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="New">
+                           <div class="pad-t-md" fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('new'); let i = index">
+                                 <ms-courses-card [course] = "course"></ms-courses-card>
+                                 <ms-courses-description [course] = "course"></ms-courses-description>
+                              </div>
+                           </div>
+                        </mat-tab>
+                        <mat-tab label="Trending">
+                           <div class="pad-t-md" fxLayout="row wrap" fxLayoutAlign="start">
+                              <div class="course-item-wrap" fxFlex.gt-md="25" fxFlex.gt-sm="33" fxFlex.gt-xs="50" fxFlex="100" *ngFor = "let course of getCoursesByPopularity('trending'); let i = index">
+                                 <ms-courses-card [course] = "course"></ms-courses-card>
+                                 <ms-courses-description [course] = "course"></ms-courses-description>
+                              </div>
+                           </div>
+                        </mat-tab>
+                     </mat-tab-group>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="instructor-card-wrap pad-y-lg">
+            <div class="gene-sec-title mrgn-l-md">
+               <h3>{{'Popular Instructors'|translate}}</h3>
+            </div>
+            <div fxLayout="row" fxLayout.lt-lg="row wrap" fxLayoutAlign="start" class="height-full">
+               <ng-container *ngIf = "jsonResponse.instructors && jsonResponse.instructors.length>0">
+                  <div *ngFor = "let instructor of jsonResponse.instructors" fxFlex.gt-md="20" fxFlex.gt-sm="33.333" fxFlex.gt-xs="50" fxFlex="100">
+                     <ms-instructor-card [instruct] = "instructor"></ms-instructor-card>
+                  </div>
+               </ng-container>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

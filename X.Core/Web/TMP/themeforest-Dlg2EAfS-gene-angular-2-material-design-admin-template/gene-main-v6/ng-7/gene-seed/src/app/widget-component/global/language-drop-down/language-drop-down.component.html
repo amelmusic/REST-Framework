@@ -1,0 +1,29 @@
+<div class="language-dropdown-wrap">
+	<button mat-button [matMenuTriggerFor]="menu_activator">
+	  <img width="24" height="24" [src]="selectImage">
+	</button>
+   <mat-menu #menu_activator>
+      <div class="gene-lang-popup">
+         <div class="language-title pad-all-sm primary-bg" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div class="sec-title" fxFlex="60">
+               <h4 class="mrgn-b-none">{{'Languages'|translate}}</h4>
+            </div>
+            <div fxFlex="40" class="text-right">   
+               <span class="gene-text-md">{{langArray.length}} NEW</span>
+            </div>   
+         </div>
+         <div  fxLayout="row wrap" class="pad-all-xs">
+         	<ng-container *ngFor="let lang of translate.getLangs()">
+               <ng-container *ngFor="let language of langArray">
+                  <mat-card class="mat-pad-none lang-wrap" *ngIf="language.value == lang" fxFlex="calc(50% - 0.5rem)" >
+                     <a class="pad-all-xs gene-block" href="javascript:void(0);" (click)="setLang(lang)">
+                        <img class="mrgn-r-xs" width="25" height="14" src="{{language.img}}">
+                        <span>{{language.name}}</span>
+                     </a>
+                  </mat-card>
+               </ng-container>
+            </ng-container>
+         </div>
+      </div>
+   </mat-menu>
+</div>

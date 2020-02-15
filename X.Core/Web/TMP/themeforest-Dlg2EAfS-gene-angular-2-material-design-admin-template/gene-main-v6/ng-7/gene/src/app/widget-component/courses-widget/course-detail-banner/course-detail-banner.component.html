@@ -1,0 +1,41 @@
+<div class="banner-image-wrap mat-grey-900 pad-y-xl">
+   <div class="banner-content-wrap height-full">
+      <div fxLayout="row wrap" fxLayoutAlign="center stretch" class="height-full">
+         <div fxFlex.gt-lg="80" fxFlex.gt-xs="90" fxFlex="90">
+            <div fxLayout="row wrap" fxLayoutAlign="start center" class="height-full">
+               <div fxFlex.gt-md="70" fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100">
+                  <h2 class="text-inverse">{{courseDetail.heading}}</h2>
+                  <h4 class="text-inverse">{{courseDetail.content}}</h4>
+                  <div class="meta-info">
+                     <p class="text-inverse">
+                        <span class="bestseller-tag inline-block">Bestseller</span>
+                        <span class="rating-wrap inline-block mrgn-r-xs"></span>
+                        <span class="student-count inline-block"><span class="count font-bold">{{courseDetail.bestSeller}}</span> students enrolled</span>
+                     </p>
+                     <p class="text-inverse">
+                        <span class="mrgn-r-xs">Created By</span>
+                        <span class="instructor-name inline-block mrgn-r-xs"><a href="javascript:void(0)">{{courseDetail.createdBy}}</a></span>
+                        <span class="updated-time inline-block mrgn-r-xs">Last Updated {{courseDetail.lastUpdates}}</span>
+                     </p>
+                     <p class="text-inverse" fxLayoutAlign="start">
+                        <span class="language mrgn-r-xs" fxLayoutAlign="start center"><i class="material-icons inline-block">chat_bubble_outline</i>{{courseDetail.language}}</span>
+                     </p>
+                  </div>
+               </div>
+               <div fxFlex.gt-md="30" fxFlex.gt-sm="40" fxFlex.gt-xs="60" fxFlex="100">
+                  <mat-card class="pad-all-md">
+                     <div class="video-wrap overlay-wrap" (click) = "onVideoPlayer()">
+                        <img src="assets/img/about2.png" width="" height="" alt="">
+                        <div class="overlay-content" fxLayoutAlign="center center">
+                           <div>
+                              <a href="javascript:void(0)"><i class="material-icons">play_circle_filled</i></a>  
+                           </div>
+                        </div>
+                     </div>
+                  </mat-card>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

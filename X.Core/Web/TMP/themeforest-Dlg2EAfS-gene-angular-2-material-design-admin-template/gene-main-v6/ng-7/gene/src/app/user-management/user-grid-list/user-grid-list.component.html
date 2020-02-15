@@ -1,0 +1,48 @@
+<div class="user-grid-list-wrap">
+	<div fxLayout="row wrap">
+		<div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="33.33" fxFlex.lg="25" fxFlex.xl="25" *ngFor = "let gridlist of userGridList">
+			<mat-card class="grid-list-card mat-pad-none">	
+				<div class="grid-image">
+				 	<img class="#" src="{{gridlist.backgroundImage}}" height="450" width="700">
+				 	<div class="img-overlay" fxLayoutAlign="end start">
+                  <div class="social-icon-wrapper warn-bg">
+                     <a href="javascript:void(0)" class="icon facebook">
+                     	<mat-icon class="fa fa-facebook"></mat-icon>
+                     </a>
+                  	<a href="javascript:void(0)" class="icon google">
+                  		<mat-icon class="fa fa-google"></mat-icon>
+                  	</a>
+                  	<a href="javascript:void(0)" class="icon twitter">
+                  		<mat-icon class="fa fa-twitter"></mat-icon>
+                  	</a>
+                  	<a href="javascript:void(0)" class="icon twitter">
+                  		<mat-icon class="fa fa-github-alt"></mat-icon>
+                  	</a>
+                  </div>
+               </div>
+				</div>
+				<div class="pad-x-sm pad-b-sm"> 	
+					<mat-card-content>
+						<div class="mrgn-b-md pad-l-sm" fxLayoutAlign="start center">
+							<div class="img-thumbnail mrgn-r-sm mrgn-b-sm">
+	                     <img class="img-circle" src="{{gridlist.image}}" height="50" width="50">
+	                  </div>
+							<div>
+								<h5 class="margin-none">{{gridlist.name}}</h5>
+								<span class="mat-text-muted gene-text-md" fxLayoutAlign="start center"><mat-icon>location_on</mat-icon>{{gridlist.location}}</span>
+							</div>
+						</div>	
+						<div class="add-user-btn">
+		               <mat-card-actions class="mat-pad-none mrgn-b-sm">
+		                  <button mat-raised-button color="{{gridlist.buttonColor}}">SEND MESSAGE <mat-icon class="mrgn-l-sm">send</mat-icon></button>
+		               </mat-card-actions>
+	         		</div>
+	         		<span class="mat-text-{{gridlist.colorClass}}" fxLayoutAlign="start center">
+	         			<mat-icon>{{gridlist.icon}}</mat-icon><small>Availabel For Hire</small>
+	         		</span>
+					</mat-card-content>	
+				</div>	
+			</mat-card>
+		</div>
+	</div>
+</div>

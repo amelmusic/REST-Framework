@@ -1,0 +1,35 @@
+<form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+	<div>
+		<h2 mat-dialog-title>Edit User</h2>
+	</div>	
+	<div>
+		<mat-dialog-content>
+			<mat-form-field class="full-wid">
+				<label>Name</label>
+				<input matInput  formControlName="name" type="text">
+			</mat-form-field> 
+
+			<mat-form-field class="full-wid">
+				<label>E-mail</label>
+				<input matInput formControlName="e_mail" type="text">
+			</mat-form-field> 
+
+			<mat-form-field class="full-wid">
+				<label>Phone Number</label>
+				<input matInput formControlName="phone_number" type="text">
+			</mat-form-field> 
+			
+			<mat-form-field class="full-wid">
+				<label>Location</label>
+				<input matInput formControlName="country" type="text">
+			</mat-form-field> 
+		</mat-dialog-content>
+	</div>	
+	<div>
+		<mat-dialog-actions class="mrgn-b-xs pad-b-none" align="right">
+			<button mat-raised-button type="button" (click)="dialogRef.close()" color="primary">CANCEL</button>
+			<button mat-raised-button type="submit" color="warn">UPDATE</button>
+		</mat-dialog-actions>
+	</div>	
+</form>
+

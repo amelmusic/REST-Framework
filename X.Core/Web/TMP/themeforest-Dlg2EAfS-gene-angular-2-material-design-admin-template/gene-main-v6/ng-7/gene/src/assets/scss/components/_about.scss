@@ -1,0 +1,50 @@
+/*=============|About|============*/
+.about-wrapper {
+	.service-tab-item {
+		.service-dots {
+			display: block;
+    		width: 100%;
+    		border-bottom: 1px dashed $my-primary;
+		}
+		.service-name a {
+			font-weight:$font-weight-bold;
+		}
+		.service-label {
+			.mat-standard-chip {
+				font-size: 12px;
+				min-height: 23px;
+				border-radius: 5px;
+			}	
+		}
+	}
+	.upcomming-event .card-title p, .service-wrapper .card-title p {
+		margin:0 auto;
+		width:60%;
+	}
+	.counter-wrapper {
+		.stats-counter span {
+			font-size:48px;
+			font-weight:$font-weight-bold;
+		}
+		.counter-title h3 {
+    		font-weight:$font-weight-bold;
+		}	
+	}	
+}
+
+@media (max-width: 800px){
+   .about-wrapper {
+   	.upcomming-event .card-title p, .service-wrapper .card-title p {
+   		width:100%;
+   	}	
+	   .about-info .card-content, .service-wrapper .card-content {
+	   	padding:1rem !important;
+	   }
+	} 
+} 
+
+@media (max-width: 599px){
+   .about-wrapper .call-in-action-wrap .custom-heading, .call-in-action-wrap  .callin-action-btn  {
+      text-align: center !important;
+   }
+}

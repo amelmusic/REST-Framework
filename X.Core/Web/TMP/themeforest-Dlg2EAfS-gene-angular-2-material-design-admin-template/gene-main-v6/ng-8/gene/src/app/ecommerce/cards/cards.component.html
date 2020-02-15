@@ -1,0 +1,36 @@
+<mat-card class="add-card-wrapper">
+   <div class="pad-t-md">
+      <button mat-raised-button color="primary" (click)="addNewCard()">
+      {{'Add New Card'|translate}}
+      </button>
+   </div>
+   <div>
+      <mat-card-content>
+         <div class="set-overflow-x-auto">
+            <table mat-table [dataSource]="ecommerceService.localStorageCard" class="full-wid">
+               <ng-container matColumnDef="number">
+                  <th mat-header-cell *matHeaderCellDef>Number</th>
+                  <td mat-cell *matCellDef="let element">{{replaceCardNumber(element.number)}}</td>
+               </ng-container>
+               <ng-container matColumnDef="fullName">
+                  <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                  <td mat-cell *matCellDef="let element">{{element.fullName}}</td>
+               </ng-container>
+               <ng-container matColumnDef="removeCard">
+                  <th mat-header-cell *matHeaderCellDef>Remove</th>
+                  <td mat-cell *matCellDef="let element">
+                     <button mat-icon-button (click)="onRemoveCard(element)">
+                        <mat-icon>close</mat-icon>
+                     </button>
+                  </td>
+               </ng-container>
+               <tr mat-header-row *matHeaderRowDef="['number','fullName','removeCard']"></tr>
+               <tr mat-row *matRowDef="let row; columns: ['number','fullName','removeCard'];"></tr>
+            </table>
+            <ng-container *ngIf="ecommerceService.localStorageCard.length==0">
+               <h4 class="pad-t-md">No cards Added</h4>
+            </ng-container>
+         </div>
+      </mat-card-content>
+   </div>
+</mat-card>
