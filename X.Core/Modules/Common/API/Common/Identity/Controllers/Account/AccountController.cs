@@ -2,9 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Common.Model;
+using Common.Model.Requests;
 using Common.Services.Database;
 using Identity.Controllers.Account;
 using Identity.Models;
+using Identity.Services;
 using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -21,6 +24,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetUsers = Common.Services.Database.AspNetUsers;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -34,6 +38,8 @@ namespace IdentityServer4.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly TemplateRESTClient _templateRESTClient;
+        private readonly EmailRESTClient _emailRESTClient;
 
         public AccountController(
             UserManager<AspNetUsers> userManager,
@@ -41,7 +47,9 @@ namespace IdentityServer4.Quickstart.UI
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events)
+            IEventService events,
+            TemplateRESTClient templateRESTClient,
+            EmailRESTClient emailRESTClient)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -49,6 +57,8 @@ namespace IdentityServer4.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _templateRESTClient = templateRESTClient;
+            _emailRESTClient = emailRESTClient;
         }
 
         /// <summary>
@@ -214,6 +224,36 @@ namespace IdentityServer4.Quickstart.UI
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            // build a model so we know what to show on the login page
+            var vm = new ForgotPasswordViewModel();
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel vm)
+        {
+            var user = await _userManager.FindByEmailAsync(vm.Email);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            // build a model so we know what to show on the login page
+            TemplateGenerateRequest template = new TemplateGenerateRequest();
+            template.Data = new { Token = token, User = user};
+            template.Code = "REG_EMAIL";
+            var emailContent = await _templateRESTClient.Post<TemplateGenerateAsString>(template, actionName: "GenerateAsPost");
+
+            EmailInsertRequest email = new EmailInsertRequest();
+            email.To = vm.Email;
+            email.Subject = "Reset password";
+            email.Content = emailContent.Content;
+            var e = await _emailRESTClient.Post<Common.Model.Email>(email);
+            await _emailRESTClient.Put<int>(e.Id, actionName: "Send");
+            vm.SuccessMessage = "Link for resetting password is sent to your email";
+            return View(vm);
         }
 
         [HttpGet]

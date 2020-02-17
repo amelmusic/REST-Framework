@@ -10,6 +10,7 @@ namespace Common.Model
     [ModelGenerator(Behaviour = EntityBehaviourEnum.CRUD)]
     public partial class AspNetUsers
     {
+        [Filter(Filter = FilterEnum.Equal)]
         [Key]
         public string Id { get; set; }
         [RequestField(RequestName = "Insert")]

@@ -3,7 +3,7 @@
   <ItemGroup>
     <!--Version metadata is updated to match the package's one
         by SetPackageVersionInProps target in .csproj-->
-    <DotNetCliToolReference Include="dotnet-codegen-x" Version="0.23.0" />
+    <DotNetCliToolReference Include="dotnet-codegenx" Version="*" />
   </ItemGroup>
 
   <ItemDefinitionGroup>

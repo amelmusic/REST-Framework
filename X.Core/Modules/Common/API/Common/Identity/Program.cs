@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +43,8 @@ namespace Identity
                     args = args.Except(new[] { "/seed" }).ToArray();
                 }
 
-                var host = CreateHostBuilder(args).Build();
+                var host = CreateHostBuilder(args)
+                    .UseServiceProviderFactory(new AutofacServiceProviderFactory()).Build();
 
                 if (seed)
                 {

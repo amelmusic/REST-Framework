@@ -16,5 +16,8 @@ namespace Common.Interfaces
 
         [MethodBehaviour(Behaviour = BehaviourEnum.Get)]
         Task<TemplateGenerateAsString> GenerateAsString(TemplateGenerateRequest request);
+
+        [MethodBehaviour(Behaviour = BehaviourEnum.Insert)]
+        Task<TemplateGenerateAsString> GenerateAsPost(TemplateGenerateRequest request);
     }
 }

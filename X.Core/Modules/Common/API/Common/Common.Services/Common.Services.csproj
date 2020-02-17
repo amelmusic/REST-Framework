@@ -26,9 +26,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="PermissionModule.All" Version="0.1.1" />
     <PackageReference Include="RazorLight" Version="2.0.0-beta4" />
-    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
-    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
-    <PackageReference Include="X.Core.Services" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Generator" Version="0.1.82" />
+    <PackageReference Include="X.Core.Root" Version="0.1.82" />
+    <PackageReference Include="X.Core.Services" Version="0.1.82" />
   </ItemGroup>
 
   <ItemGroup>

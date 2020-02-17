@@ -268,6 +268,12 @@ namespace X.Core.Generator
                 route = $"[Route(\"{friendlyMethodName}\")]";
             }
 
+            if (behaviour == "BehaviourEnum.Insert" && !friendlyMethodName.Equals("Insert", StringComparison.InvariantCultureIgnoreCase))
+            {
+                route = $"[Route(\"{friendlyMethodName}\")]";
+            }
+
+
             if (behaviour == "BehaviourEnum.Download" || behaviour == "BehaviourEnum.DownloadAsPost")
             {
                 builder.AppendLine(

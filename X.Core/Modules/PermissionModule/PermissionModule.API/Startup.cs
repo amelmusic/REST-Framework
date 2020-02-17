@@ -58,7 +58,9 @@ namespace PermissionModule.API
                     //options.Audience = "api1";
                     options.Audience = $"roles";
                 });
-
+            var t = Configuration["Test"];
+            Console.WriteLine($"Config: {authUrl}");
+            Console.WriteLine($"Test conf: {t}");
             services.AddCors();
 
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

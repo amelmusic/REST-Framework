@@ -2,6 +2,7 @@
   <ItemGroup>
     <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
     <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
+    <DotNetCliToolReference Include="dotnet-codegenx" Version="$(CodegenXVersion)" />
   </ItemGroup>
 
 </Project>

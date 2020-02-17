@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
-    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
-  </ItemGroup>
-
-</Project>

@@ -19,6 +19,17 @@ using IdentityServer4.AspNetIdentity;
 using IdentityServer4.Services;
 using Identity.Services;
 using Common.Services.Database;
+using Autofac;
+using System;
+using X.Core.WebAPI.Core;
+using Autofac.Extensions.DependencyInjection;
+using Common.Services;
+using AutoMapper;
+using X.Core.Interface;
+using Autofac.Extras.DynamicProxy;
+using X.Core;
+using X.Core.Interceptors;
+using X.Core.Services.Core.StateMachine;
 
 namespace Identity
 {
@@ -26,7 +37,7 @@ namespace Identity
     {
         public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
-
+        IContainer _container = null;
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
@@ -91,6 +102,9 @@ namespace Identity
                 .AddAspNetIdentity<AspNetUsers>();
             //.AddProfileService<ProfileService<ApplicationUser>>();
             services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<EmailRESTClient, EmailRESTClient>();
+            services.AddTransient<TemplateRESTClient, TemplateRESTClient>();
+
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
@@ -105,6 +119,38 @@ namespace Identity
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+                .AssignableTo<IService>()
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired()
+                .EnableClassInterceptors(new Castle.DynamicProxy.ProxyGenerationOptions() { Hook = new ForceVirtualMethodsHook() })
+                .InterceptedBy(typeof(LogInterceptorProxy))
+                .InterceptedBy(typeof(CacheInterceptorProxy))
+                .InterceptedBy(typeof(TransactionInterceptorProxy));
+
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+                .AsClosedTypesOf(typeof(StateMachine<,>))
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired()
+                .EnableClassInterceptors(new Castle.DynamicProxy.ProxyGenerationOptions() { Hook = new ForceVirtualMethodsHook() })
+                .InterceptedBy(typeof(LogInterceptorProxy))
+                .InterceptedBy(typeof(CacheInterceptorProxy))
+                .InterceptedBy(typeof(TransactionInterceptorProxy));
+
+            builder.RegisterType<ActionContext>()
+                .As<IActionContext>()
+                .InstancePerLifetimeScope()
+                .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+                .EnableClassInterceptors();
+
+            new ServicesRegistration().Register(ref builder);
         }
 
         public void Configure(IApplicationBuilder app)

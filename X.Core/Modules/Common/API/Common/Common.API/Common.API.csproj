@@ -20,9 +20,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
     <PackageReference Include="PermissionModule.All" Version="0.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
-    <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
-    <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
-    <PackageReference Include="X.Core.WebAPI" Version="$(XCoreNugetVersion)" />
+    <PackageReference Include="X.Core.Generator" Version="0.1.82" />
+    <PackageReference Include="X.Core.Root" Version="0.1.82" />
+    <PackageReference Include="X.Core.WebAPI" Version="0.1.82" />
   </ItemGroup>
 
   <ItemGroup>

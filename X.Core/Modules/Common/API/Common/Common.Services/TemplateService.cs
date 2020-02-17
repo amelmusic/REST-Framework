@@ -36,6 +36,10 @@ namespace Common.Services
             throw new UserException($"Template {request.Code} not found");
         }
 
+        public async Task<TemplateGenerateAsString> GenerateAsPost(TemplateGenerateRequest request)
+        {
+            return await GenerateAsString(request);
+        }
         public async Task<TemplateGenerateAsString> GenerateAsString(TemplateGenerateRequest request)
         {
             TemplateSearchObject searchObject = new TemplateSearchObject();
