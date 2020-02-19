@@ -23,7 +23,7 @@
     <PackageReference Include="X.Core.Generator" Version="$(XCoreNugetVersion)" />
     <PackageReference Include="X.Core.Root" Version="$(XCoreNugetVersion)" />
     <PackageReference Include="X.Core.WebAPI" Version="$(XCoreNugetVersion)" />
-    <DotNetCliToolReference Include="dotnet-codegenx" Version="$(CodegenXVersion)" />
+    <!--<DotNetCliToolReference Include="dotnet-codegenx" Version="$(CodegenXVersion)" />-->
   </ItemGroup>
 
   <ItemGroup>

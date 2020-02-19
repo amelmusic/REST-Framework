@@ -28,4 +28,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="dotnet-codegenx" Version="$(CodegenXVersion)" />
+  </ItemGroup>
 </Project>

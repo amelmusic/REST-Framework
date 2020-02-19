@@ -25,7 +25,7 @@ namespace X.Core.RESTClient.Core
             context.Data.TryGetValue("Language", out var language);
             context.Data.TryGetValue("RequestId", out var requestId);
 
-            var request = url.WithOAuthBearerToken(token?.ToString());
+            var request = url.WithHeader("Authorization", token?.ToString());
             request = request.WithHeader("Accept-Language", language?.ToString());
             request = request.WithHeader("RequestId", requestId?.ToString());
             return request;
