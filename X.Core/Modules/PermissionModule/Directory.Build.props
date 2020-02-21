@@ -18,7 +18,7 @@
    
     <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
     <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
-    <XCoreNugetVersion>0.1.81</XCoreNugetVersion>
+    <XCoreNugetVersion>0.1.83</XCoreNugetVersion>
     <CodegenXVersion>0.25.0</CodegenXVersion>
   </PropertyGroup>
   <PropertyGroup>

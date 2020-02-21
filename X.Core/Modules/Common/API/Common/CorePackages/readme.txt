@@ -1,1 +1,0 @@
-Copy and paste here custom xcore nugets

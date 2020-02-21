@@ -18,7 +18,8 @@
    
     <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
     <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
-    <XCoreNugetVersion>0.1.80</XCoreNugetVersion>
+    <XCoreNugetVersion>0.1.83</XCoreNugetVersion>
+	<XCoreCodegenXVersion>0.25.0</XCoreCodegenXVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
@@ -30,8 +31,6 @@
   <ItemGroup>
     <!--Version metadata is updated to match the package's one
         by SetPackageVersionInProps target in .csproj-->
-    <!--<DotNetCliToolReference Include="dotnet-codegen-x" Version="0.25.0" />-->
-    <DotNetCliToolReference Include="dotnet-codegen-x" Version="*" />
-	
+    <DotNetCliToolReference Include="dotnet-codegenx" Version="$(XCoreCodegenXVersion)" />
   </ItemGroup>
 </Project>
