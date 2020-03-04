@@ -212,7 +212,7 @@ namespace Common.API
                 c.OAuthClientId("XCore");
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

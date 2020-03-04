@@ -25,6 +25,8 @@ namespace Common.Services
                 PermissionModuleContext.Permission.Add(new Permission()
                 {
                     Name = permissionContent,
+                    Description = permissionContent,
+                    PermissionGroupId =1,
                     IsAllowed = true,
                     OperationType = "View",
                     OwnerPermission = "PermissionModule.Permission.Insert",

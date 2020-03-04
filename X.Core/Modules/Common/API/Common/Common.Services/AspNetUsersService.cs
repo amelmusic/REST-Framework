@@ -34,6 +34,7 @@ namespace Common.Services
             if (entity != null)
             {
                 var validationResult = await ValidateInsertAsync(request, entity);
+                
                 MapInsert(request, entity);
                 if (validationResult.HasErrors)
                 {
