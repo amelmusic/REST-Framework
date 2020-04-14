@@ -11,6 +11,11 @@ export const environment = {
     xcorewebapp: "https://localhost:5001/api",
     permission: "https://localhost:5001/api"
   },
+  tinymce: {
+    config: {
+      base_url: '/tinymce'
+    }
+  },
   auth: {
 
     // Url of the Identity Provider

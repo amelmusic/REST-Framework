@@ -25,7 +25,6 @@ import { registerTranslateExtension } from './services/translate-formly-extensio
 import { XCoreErrorHandlerService } from './services/xcore-error-handler.service';
 import { ErrorComponent } from './components/error/error.component';
 import { FormlyMatDatepickerModule } from '@ngx-formly/material/datepicker';
-import { DatePickerTypeXCoreComponent } from './components/formly/date-picker-type-xcore/date-picker-type-xcore.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { UploadComponent } from './components/upload/upload.component';
@@ -34,6 +33,7 @@ import { FileViewerComponent } from './components/file-viewer/file-viewer.compon
 import { FileViewerDialogComponent } from './components/file-viewer/file-viewer-dialog/file-viewer-dialog.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormlyTinymceComponent } from './components/formly/formly-tinymce/formly-tinymce.component';
+import { environment } from 'environments/environment';
 
 registerLocaleData(localeBs);
 
@@ -48,7 +48,6 @@ registerLocaleData(localeBs);
 		FormlyButtonComponent,
 		CellLocalizerDirective,
 		ErrorComponent,
-		DatePickerTypeXCoreComponent,
 		SpinnerComponent,
 		UploadComponent,
 		FormlyUploadComponent,
@@ -111,7 +110,7 @@ registerLocaleData(localeBs);
 				, defaultOptions: {
 					templateOptions: {
 						config: {
-							base_url: '/tinymce',
+							base_url: environment.tinymce.config.base_url,
 							height: 500,
 							menubar: true,
 							plugins: [
@@ -195,7 +194,6 @@ registerLocaleData(localeBs);
 		FormlyButtonComponent,
 		CellLocalizerDirective,
 		ErrorComponent,
-		DatePickerTypeXCoreComponent,
 		SpinnerComponent,
 		UploadComponent,
 		FormlyUploadComponent,

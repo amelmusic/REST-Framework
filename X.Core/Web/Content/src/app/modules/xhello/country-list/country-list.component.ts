@@ -45,8 +45,8 @@ export class CountryListComponent implements OnInit, AfterViewInit {
       'code', 'name', 
       
       ]
-      @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-      @ViewChild(MatSort, {static: false}) sort: MatSort;
+      @ViewChild(MatPaginator) paginator: MatPaginator;
+      @ViewChild(MatSort) sort: MatSort;
 
       constructor(public mainService: CountryService,
                      private location: Location,

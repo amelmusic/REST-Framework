@@ -113,7 +113,7 @@ export class UploadComponent implements MatFormFieldControl<any>, OnInit, OnDest
   // Region COMPONENT SPECIFIC CODE
 
   uploadBox: FormControl = new FormControl();
-  @ViewChild('uploadCmp', {static: false}) uploadCmp: ElementRef;
+  @ViewChild('uploadCmp') uploadCmp: ElementRef;
 
   static nextId = 0;
 

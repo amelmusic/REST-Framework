@@ -7,6 +7,10 @@ import {FieldArrayType} from '@ngx-formly/core';
   styleUrls: ['./formly-repeat.component.scss']
 })
 export class FormlyRepeatComponent extends FieldArrayType implements OnInit {
+    // TODO: add explicit constructor
+    constructor() {
+      super();
+    }
     @HostBinding('class') class = 'col-xs-12';
 
 
