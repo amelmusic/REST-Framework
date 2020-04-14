@@ -67,6 +67,7 @@ namespace X.Core.Generator
 
             var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName("Requests")).NormalizeWhitespace();
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System")));
+            @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Collections.Generic")));
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("X.Core.Model")));
             //Debugger.Launch();
             var distinctArgValues = GetDistinctArgumentValues(applyToClass, "RequestField", "RequestName");
@@ -140,6 +141,8 @@ namespace X.Core.Generator
 
             var @namespace = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName("SearchObjects")).NormalizeWhitespace();
             @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("X.Core.Model")));
+            @namespace = @namespace.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System.Collections.Generic")));
+
             var classDeclarationAdditionalData = SyntaxFactory.ClassDeclaration($"{applyToClass.Identifier.ValueText}AdditionalSearchRequestData");
             classDeclarationAdditionalData = classDeclarationAdditionalData.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.PartialKeyword));
 
@@ -301,13 +304,32 @@ namespace X.Core.Generator
                 throw new ApplicationException($"Model: {applyToClass.Identifier.ValueText} doesn't have Key attribute");
             }
 
+            //Debugger.Launch();
+            var queryAttrs = GetAttributes(applyToClass, "Query");
+            string queryProperty = null;
+            string queryPropertyType = null;
+            string query = null;
+            if (queryAttrs.Count > 0)
+            {
+                foreach(var queryAttr in queryAttrs)
+                {
+                    queryProperty = GetAttributeArgumentValue(queryAttr, "Property", true);
+                    queryPropertyType = GetAttributeArgumentValue(queryAttr, "PropertyType", true);
+                    query = GetAttributeArgumentValue(queryAttr, "Query", true);
+
+                    var property = CreatePropertyForSearchObject(queryPropertyType, queryProperty, "Custom", query);
+                    classDeclaration = classDeclaration.AddMembers(property);
+                }
+            }
+
+
             @namespace = @namespace.AddMembers(classDeclaration);
 
             results = results.Add(@namespace);
             return results;
         }
 
-        protected virtual PropertyDeclarationSyntax CreatePropertyForSearchObject(string propertyType, string propertyName, string argumentValue)
+        protected virtual PropertyDeclarationSyntax CreatePropertyForSearchObject(string propertyType, string propertyName, string argumentValue, string query = "")
         {
             //Debugger.Launch();
             TypeSyntax type = null;
@@ -356,15 +378,24 @@ namespace X.Core.Generator
                                         SyntaxFactory.IdentifierName("Filter"))
                                     .WithArgumentList(
                                         SyntaxFactory.AttributeArgumentList(
-                                            SyntaxFactory.SingletonSeparatedList<AttributeArgumentSyntax>(
-                                                SyntaxFactory.AttributeArgument(
-                                                        SyntaxFactory.MemberAccessExpression(
-                                                            SyntaxKind.SimpleMemberAccessExpression,
-                                                            SyntaxFactory.IdentifierName("FilterEnum"),
-                                                            SyntaxFactory.IdentifierName(argumentValue)))
-                                                    .WithNameEquals(
-                                                        SyntaxFactory.NameEquals(
-                                                            SyntaxFactory.IdentifierName("Filter"))))))))));
+                                            SyntaxFactory.SeparatedList<AttributeArgumentSyntax>(
+                                    new SyntaxNodeOrToken[]{
+                                        SyntaxFactory.AttributeArgument(
+                                            SyntaxFactory.MemberAccessExpression(
+                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                SyntaxFactory.IdentifierName("FilterEnum"),
+                                                SyntaxFactory.IdentifierName(argumentValue)))
+                                        .WithNameEquals(
+                                            SyntaxFactory.NameEquals(
+                                                SyntaxFactory.IdentifierName("Filter"))),
+                                        SyntaxFactory.Token(SyntaxKind.CommaToken),
+                                        SyntaxFactory.AttributeArgument(
+                                            SyntaxFactory.LiteralExpression(
+                                                SyntaxKind.StringLiteralExpression,
+                                                SyntaxFactory.Literal(query)))
+                                        .WithNameEquals(
+                                            SyntaxFactory.NameEquals(
+                                                SyntaxFactory.IdentifierName("Query")))})))))));
 
             if (isList)
             {
@@ -386,69 +417,32 @@ namespace X.Core.Generator
 
 
         #region HELPER METHODS
-        protected IList<PropertyDeclarationSyntax> GetPropertiesWithSpecificAttribute(MemberDeclarationSyntax document, string attributeName)
-        {
-            var filteredProps = document.DescendantNodes()
-                .OfType<PropertyDeclarationSyntax>()
-                .Where(y => y.AttributeLists.Any(z => z.Attributes.Any(u => u.Name.ToFullString() == attributeName)))
-                .ToList();
+        //protected IList<PropertyDeclarationSyntax> GetPropertiesWithSpecificAttribute(MemberDeclarationSyntax document, string attributeName)
+        //{
+        //    var filteredProps = document.DescendantNodes()
+        //        .OfType<PropertyDeclarationSyntax>()
+        //        .Where(y => y.AttributeLists.Any(z => z.Attributes.Any(u => u.Name.ToFullString() == attributeName)))
+        //        .ToList();
 
-            return filteredProps;
-        }
+        //    return filteredProps;
+        //}
 
-        protected IList<AttributeSyntax> GetAttributes(MemberDeclarationSyntax member, string attributeName)
-        {
-            //var prop = member
-            //    .DescendantNodes()
-            //    .OfType<PropertyDeclarationSyntax>()
-            //    .SelectMany(y => y.AttributeLists)
-            //    .SelectMany(y => y.Attributes)
-            //    .ToList();
+        //protected IList<AttributeSyntax> GetAttributes(MemberDeclarationSyntax member, string attributeName)
+        //{
+        //    //var prop = member
+        //    //    .DescendantNodes()
+        //    //    .OfType<PropertyDeclarationSyntax>()
+        //    //    .SelectMany(y => y.AttributeLists)
+        //    //    .SelectMany(y => y.Attributes)
+        //    //    .ToList();
 
-            //var names = prop.Select(y => y.Name.ToFullString()).ToList();
-            var argumentvalue = member.DescendantNodes().OfType<AttributeSyntax>()
-                .Where(x => x.Name.ToFullString() == attributeName).ToList();
+        //    //var names = prop.Select(y => y.Name.ToFullString()).ToList();
+        //    var argumentvalue = member.DescendantNodes().OfType<AttributeSyntax>()
+        //        .Where(x => x.Name.ToFullString() == attributeName).ToList();
 
-            return argumentvalue;
-        }
+        //    return argumentvalue;
+        //}
 
-        protected string GetAttributeArgumentValue(AttributeSyntax attribute, string argumentName)
-        {
-            var args = attribute.ArgumentList.Arguments
-                .FirstOrDefault(x => x.NameEquals.Name.Identifier.ValueText == argumentName)
-                ?.Expression.ToFullString()?.Trim();
-
-            return args;
-        }
-
-        protected IList<string> GetDistinctArgumentValues(MemberDeclarationSyntax member,
-            string attributeName, string argumentName)
-        {
-
-            var filteredProps = member.DescendantNodes()
-                .OfType<AttributeSyntax>()
-                .Where(u => u.Name.ToFullString() == attributeName)
-                .SelectMany(x => x.ArgumentList.Arguments)
-                .Where(x => x.NameEquals.Name.Identifier.ValueText == argumentName)
-                .Select(x => x.Expression.ToFullString()).Distinct().ToList();
-
-            return filteredProps;
-        }
-
-        protected IList<PropertyDeclarationSyntax> GetPropertiesWithAttributeAndArgumentValue(
-            MemberDeclarationSyntax member,
-            string attributeName, string argumentName, string argumentValue)
-        {
-            var filteredProps = member.DescendantNodes()
-                .OfType<PropertyDeclarationSyntax>()
-                .Where(y => y.AttributeLists.Any(z => z.Attributes.Any(u => u.Name.ToFullString() == attributeName
-                                                                            && u.ArgumentList.Arguments.Any(i => i.NameEquals.Name.Identifier.ValueText == argumentName && i.Expression.ToFullString() == argumentValue)
-                                                                            )))
-
-                .ToList();
-
-            return filteredProps;
-        }
         #endregion
     }
 }

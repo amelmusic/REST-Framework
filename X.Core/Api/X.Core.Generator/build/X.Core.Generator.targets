@@ -20,16 +20,16 @@
     </ItemGroup>
     <PropertyGroup>
       <GenerateCodeFromAttributesToolPathOverride Condition="'$(GenerateCodeFromAttributesToolPathOverride)' == ''">codegenx</GenerateCodeFromAttributesToolPathOverride>
-      <_CodeGenToolOutputBasePath>$(IntermediateOutputPath)$(MSBuildProjectFile).dotnet-codegen-x</_CodeGenToolOutputBasePath>
+      <_CodeGenToolOutputBasePath>$(BaseIntermediateOutputPath)$(MSBuildProjectFile).dotnet-codegenx</_CodeGenToolOutputBasePath>
       <_CodeGenToolResponseFileFullPath>$(_CodeGenToolOutputBasePath).rsp</_CodeGenToolResponseFileFullPath>
       <_CodeGenToolGeneratedFileListFullPath>$(_CodeGenToolOutputBasePath).GeneratedFileList.txt</_CodeGenToolGeneratedFileListFullPath>
-      <_CodeGenToolWarningText>dotnet-codegenx: Failed to generate the list of generated files. The tool didn't run successfully. Please check https://github.com/AArnott/CodeGeneration.Roslyn for usage instructions.</_CodeGenToolWarningText>
+      <_CodeGenToolWarningText>dotnet-codegenx: Failed to generate the list of generated files. The tool didn't run successfully. Please check https://github.com/amelmusic/REST-Framework for usage instructions.</_CodeGenToolWarningText>
       <_CodeGenToolResponseFileLines>
         @(ReferencePath->'-r%0d%0a%(Identity)', '%0d%0a')
         @(DefineConstantsItems->'-d%0d%0a%(Identity)', '%0d%0a')
         @(GeneratorAssemblySearchPaths->'--generatorSearchPath%0d%0a%(Identity)', '%0d%0a')
         --out
-        $(IntermediateOutputPath)
+        $(BaseIntermediateOutputPath)
         --projectDir
         $(MSBuildProjectDirectory)
         --generatedFilesList

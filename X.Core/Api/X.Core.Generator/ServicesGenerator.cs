@@ -125,9 +125,12 @@ namespace X.Core.Generator
                 var service = SyntaxFactory.ClassDeclaration($"{classDeclarationSyntax.Identifier.ValueText}Service");
                 service = service.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.PartialKeyword));
                 var className = classDeclarationSyntax.Identifier.ValueText;
-
                 var behaviour = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "Behaviour")?.FirstOrDefault();
                 behaviour = behaviour ?? "EntityBehaviourEnum.Empty";
+                //Debugger.Launch();
+                var mapTo = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "MapTo")?.FirstOrDefault();
+                mapTo = mapTo?.Replace("\"", "")?.Trim() ?? className;
+
                 if (behaviour == "EntityBehaviourEnum.Empty")
                 {
                     service = service.AddBaseListTypes(
@@ -136,22 +139,22 @@ namespace X.Core.Generator
                 else if (behaviour == "EntityBehaviourEnum.Read")
                 {
                     service = service.AddBaseListTypes(
-                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedReadService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedReadService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{mapTo}>")));
                 }
                 else if (behaviour == "EntityBehaviourEnum.CRUD")
                 {
                     service = service.AddBaseListTypes(
-                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{mapTo}>")));
                 }
                 else if (behaviour == "EntityBehaviourEnum.CRUDAsUpsert")
                 {
                     service = service.AddBaseListTypes(
-                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}UpsertRequest, {_modelNamespace}.Requests.{className}UpsertRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{mapTo}>")));
                 }
                 else if (behaviour == "EntityBehaviourEnum.CRUDAsUpload")
                 {
                     service = service.AddBaseListTypes(
-                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{className}>")));
+                        SyntaxFactory.SimpleBaseType(SyntaxFactory.ParseTypeName($"X.Core.Services.Core.BaseEFBasedCRUDService<{_modelNamespace}.{className}, {_modelNamespace}.SearchObjects.{className}SearchObject, {_modelNamespace}.SearchObjects.{className}AdditionalSearchRequestData, {_modelNamespace}.Requests.{className}InsertRequest, {_modelNamespace}.Requests.{className}UpdateRequest, {_entityFrameworkContextNamespace}.{_entityFrameworkContextName}, {_entityFrameworkContextNamespace}.{mapTo}>")));
                 }
 
                 service = service.AddBaseListTypes(
@@ -172,7 +175,7 @@ namespace X.Core.Generator
                                                         SyntaxFactory.NameEquals(
                                                             SyntaxFactory.IdentifierName("Behaviour"))))))))));
 
-                service = GenerateFilter(service, classDeclarationSyntax, className);
+                service = GenerateFilter(service, classDeclarationSyntax, className, mapTo);
                 @namespace = @namespace.AddMembers(service);
             }
 
@@ -189,23 +192,48 @@ namespace X.Core.Generator
             return results;
         }
 
-        protected ClassDeclarationSyntax GenerateFilter(ClassDeclarationSyntax root, ClassDeclarationSyntax modelClass,string className)
+        protected ClassDeclarationSyntax GenerateFilter(ClassDeclarationSyntax root, ClassDeclarationSyntax modelClass,string className, string mapTo)
         {
             var str = new StringBuilder();
 
             //Debugger.Launch();
             var filterProps = GetPropertiesWithSpecificAttribute(modelClass, "Filter");
             //Append filter foreach
-            str.AppendLine($@"protected override void AddFilterFromGeneratedCode({_modelNamespace}.SearchObjects.{className}SearchObject search, ref IQueryable<{_entityFrameworkContextNamespace}.{className}> query)
+            str.AppendLine($@"protected override void AddFilterFromGeneratedCode({_modelNamespace}.SearchObjects.{className}SearchObject search, ref IQueryable<{_entityFrameworkContextNamespace}.{mapTo}> query)
                     {{
                         base.AddFilterFromGeneratedCode(search, ref query);");
+
+            var classAttrs = GetAttributes(modelClass, "Query");
+            foreach(var attr in classAttrs)
+            {
+                var query = GetAttributeArgumentValue(attr, "Query", true);
+                var propertyType = GetAttributeArgumentValue(attr, "PropertyType", true);
+                var propertyName = GetAttributeArgumentValue(attr, "Property", true);
+                var propertyValueCheck = GetAttributeArgumentValue(attr, "PropertyValueCheck", true);
+
+                if(!string.IsNullOrWhiteSpace(query))
+                {
+                    if (!string.IsNullOrWhiteSpace(propertyValueCheck))
+                    {
+                        str.AppendLine($"if ({propertyValueCheck}) {{query = query.Where(x => {query}); }}");
+                    }
+                    else
+                    {
+                        str.AppendLine(propertyType.Equals("string", StringComparison.OrdinalIgnoreCase)
+                            ? $"if (!string.IsNullOrWhiteSpace(search.{propertyName})) {{query = query.Where(x => {query}); }}"
+                            : $"if (search.{propertyName}.HasValue) {{query = query.Where(x => {query}); }}");
+                    }
+                }
+            }
             //Filters
             foreach (var propertyDeclarationSyntax in filterProps)
             {
                 //we will regenerate here
                 var attrs = GetAttributes(propertyDeclarationSyntax, "Filter");
+                var attr = attrs.First();
+                var attrValueTmp = GetAttributeArgumentValue(attr, "Filter");
+                var queryTmp = GetAttributeArgumentValue(attr, "Query", true);
 
-                var attrValueTmp = GetAttributeArgumentValue(attrs.First(), "Filter");
                 var attrValue = attrValueTmp.Replace("\"", "").Split('|').ToList();
                 attrValue = attrValue.Select(x => x.Trim()).ToList();
 
@@ -315,6 +343,14 @@ namespace X.Core.Generator
                 {
                     str.AppendLine($"if (search.{propertyName}ListNE.Count > 0) {{query = query.Where(x => !search.{propertyName}ListNE.Contains(x.{propertyName})); }}");
                 }
+
+                //Debugger.Launch();
+                if (attrValue.Contains("FilterEnum.Custom"))
+                {
+                    str.AppendLine(propertyType.Equals("string", StringComparison.OrdinalIgnoreCase)
+                        ? $"if (!string.IsNullOrWhiteSpace(search.{propertyName})) {{query = query.Where(x => {queryTmp}); }}"
+                        : $"if (search.{propertyName}.HasValue) {{query = query.Where(x => {queryTmp}); }}");
+                }
             }
 
             var keyProp = GetPropertiesWithSpecificAttribute(modelClass, "Key").FirstOrDefault();
@@ -385,6 +421,8 @@ namespace X.Core.Generator
                 propertyName = propertyName?.Trim().Trim('"');
                 var property = GetPropertiesWithSpecificName(classDeclarationSyntax, propertyName);
                 var propertyType = property.Type.ToFullString().Trim();
+                var mapTo = GetDistinctArgumentValues(classDeclarationSyntax, "ModelGenerator", "MapTo")?.FirstOrDefault();
+                mapTo = mapTo?.Replace("\"", "")?.Trim() ?? classDeclarationSyntax.Identifier.ValueText;
 
                 StateMachineDefinition stateMachineDefinition = new StateMachineDefinition();
                 //stateMachineDefinition.Parse(_modelPath + "/" + path, classDeclarationSyntax.Identifier.ValueText);
@@ -506,7 +544,7 @@ namespace X.Core.Generator
                                 ConfigureStateMachine();
                                 await _machine.Init(({classDeclarationSyntax.Identifier.ValueText}StateMachineEnum)entity.{propertyName}, entity);
                                 await _machine.Fire({classDeclarationSyntax.Identifier.ValueText}StateMachineTriggerEnum.{transition}, request);
-                                var machineEntity = this._machine.Entity as {_entityFrameworkContextNamespace}.{classDeclarationSyntax.Identifier.ValueText};
+                                var machineEntity = this._machine.Entity as {_entityFrameworkContextNamespace}.{mapTo};
                                 machineEntity.{propertyName} = ({propertyType})_machine.CurrentState.State;
                                 
                                 await SaveAsync(machineEntity, request);

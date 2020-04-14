@@ -9,6 +9,11 @@ namespace X.Core.Generator.Attributes
     public class FilterAttribute : Attribute
     {
         public FilterEnum Filter { get; set; }
+
+        /// <summary>
+        /// If populated this will be the query for property. Currently works only for FilterEnum.Custom
+        /// </summary>
+        public string Query { get; set; }
     }
 
     [Flags]
@@ -33,5 +38,6 @@ namespace X.Core.Generator.Attributes
         ListOrNull = LowerThanOrNull << 1,
         ListNotEqualOrNull = ListOrNull << 1,
         ListNotEqual = ListNotEqualOrNull << 1,
+        Custom = ListNotEqual << 1,
     }
 }

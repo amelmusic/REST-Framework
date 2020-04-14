@@ -203,7 +203,7 @@ namespace X.Core.Services.Core
         /// <param name="id"></param>
         /// <param name="saveChanges"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteAsync(object id, bool saveChanges = true)
+        public virtual async Task<bool> DeleteAsync(object id, bool saveChanges = true)
         {
             var entity = await GetByIdInternalAsync(id);
             Entity.Remove(entity);

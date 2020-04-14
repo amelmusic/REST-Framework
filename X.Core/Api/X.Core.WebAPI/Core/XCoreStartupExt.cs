@@ -54,6 +54,11 @@ namespace X.Core.WebAPI.Core
             // in the ServiceCollection. Mix and match as needed.
             builder.Populate(services);
 
+            AddXCore(builder);
+        }
+
+        public static void AddXCore(ContainerBuilder builder)
+        {
             builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
                 .AssignableTo<IService>()
                 .AsImplementedInterfaces()

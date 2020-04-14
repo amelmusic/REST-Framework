@@ -18,8 +18,8 @@
    
     <PackageOutputPath>$(MSBuildThisFileDirectory)/OutputPackages/</PackageOutputPath>
     <RoslynNugetVersion>3.0.0</RoslynNugetVersion>
-    <XCoreNugetVersion>0.1.83</XCoreNugetVersion>
-    <CodegenXVersion>0.25.0</CodegenXVersion>
+    <XCoreNugetVersion>0.1.84</XCoreNugetVersion>
+    <CodegenXVersion>0.27.0</CodegenXVersion>
   </PropertyGroup>
   <PropertyGroup>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>

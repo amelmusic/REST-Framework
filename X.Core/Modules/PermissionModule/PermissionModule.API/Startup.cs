@@ -128,7 +128,6 @@ namespace PermissionModule.API
             var builder = new ContainerBuilder();
 
             services.AddXCore(builder);
-
             //we need reference so that ioc can work by default
             XCoreHelloServicesRunner servicesRunner = null;
 

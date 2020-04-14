@@ -150,12 +150,12 @@ namespace X.Core.RESTClient.Core
             }
         }
 
-        public static async Task<T> DeleteAsync<T>(this string url, IActionContext context, object queryString = null, object model = null)
+        public static async Task<String> DeleteAsync(this string url, IActionContext context, object queryString = null)
         {
             try
             {
                 var request = await ToQueryStringInternal(url, queryString).WithStandardHeaders(context)
-                    .DeleteAsync().ReceiveJson<T>();
+                    .DeleteAsync().ReceiveString();
 
                 return request;
             }

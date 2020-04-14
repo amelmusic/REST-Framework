@@ -14,6 +14,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -120,6 +121,8 @@ namespace ApiTemplate.API
             
             var connection = Configuration.GetConnectionString("ApiTemplate");
             services.AddDbContext<Services.Database.ApiTemplateContext>(options => options.UseSqlServer(connection));
+            
+            //NOTE: you can add service workers here
 
             var builder = new ContainerBuilder();
 
@@ -154,6 +157,11 @@ namespace ApiTemplate.API
                 .AllowAnyHeader());
 
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -171,7 +179,7 @@ namespace ApiTemplate.API
                 c.OAuthClientId("ApiTemplate");
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection(); on production, handled by docker
 
             app.UseStaticFiles();
 
@@ -184,6 +192,7 @@ namespace ApiTemplate.API
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <PackageType>DotnetCliTool</PackageType>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -14,8 +14,30 @@
     <Company>Amel Musić</Company>
     <Product>dotnet-codegenx</Product>
     <Copyright>Copyright © Amel Musić</Copyright>
+  </PropertyGroup>-->
+
+  <PropertyGroup Label="Metadata">
+    <Authors>Amel Musić</Authors>
+    <Company>Amel Musić</Company>
+    <Copyright>Copyright © Amel Musić</Copyright>
+    <LicenseExpression>MS-PL</LicenseExpression>
+    <PackageProjectUrl>https://github.com/amelmusic</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/amelmusic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>dotnet-codegenx</ToolCommandName>
+    <PackageOutputPath>../nupkg</PackageOutputPath>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <PackageId>codegenx</PackageId>
+  </PropertyGroup>
+
+  
   <ItemGroup>
     <Content Include="prefercliruntime" Pack="true" PackagePath="" />
     <Compile Update="CommandLine\Strings.Designer.cs">

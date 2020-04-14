@@ -31,6 +31,18 @@
 		"dataType":"bool",
 		"defaultValue": "true",
 		"description": "Enable auth for this project."
-		}
+	},
+	"port": {
+		"type": "parameter",
+		"dataType":"string",
+		"defaultValue": "5000",
+		"description": "Http port for this module"
+	},
+	"portHttps": {
+		"type": "parameter",
+		"dataType":"string",
+		"defaultValue": "5001",
+		"description": "Https port for this module"
+	}
   }
 }

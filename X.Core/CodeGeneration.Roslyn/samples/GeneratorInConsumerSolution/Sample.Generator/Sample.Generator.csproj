@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeGeneration.Roslyn" Version="$(LocalNuGetVersion)" />
+    <PackageReference Include="X.CodeGeneration.Roslyn" Version="0.31.0" />
+    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.31.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

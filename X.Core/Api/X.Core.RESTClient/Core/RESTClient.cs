@@ -75,7 +75,7 @@ namespace X.Core.RESTClient.Core
             return $"{ResourceName}/{id}{actionName}".PutAsync<TModel>(ActionContext, queryString, request);
         }
 
-        public virtual Task<TModel> Delete<TModel>(object id, object request = null, object queryString = null, string actionName = "")
+        public virtual Task<String> Delete(object id, object queryString = null, string actionName = "")
         {
             if (!string.IsNullOrWhiteSpace(actionName))
             {
@@ -84,7 +84,7 @@ namespace X.Core.RESTClient.Core
                     actionName = "/" + actionName;
                 }
             }
-            return $"{ResourceName}/{id}{actionName}".DeleteAsync<TModel>(ActionContext, queryString, request);
+            return $"{ResourceName}/{id}{actionName}".DeleteAsync(ActionContext, queryString);
         }
     }
 }

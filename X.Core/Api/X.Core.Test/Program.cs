@@ -56,7 +56,9 @@ namespace X.Core.Test
         Task<DownloadRequest> Download(int id);
     }
 
-    [ModelGenerator(Behaviour = EntityBehaviourEnum.Read, Internal = false)]
+    [Query(Property = "FTSAmel", PropertyType = "string", Query = "x.Name == search.FTSAmel")]
+    [Query(Property = "FTSId", PropertyType = "int", Query = "x.Id == search.FTSId", PropertyValueCheck = "search.Id > 0")]
+    [ModelGenerator(Behaviour = EntityBehaviourEnum.Read , Internal = true, MapTo = "Amel")]
     [StateMachineModelGenerator(StateMachineDefinitionPath = "AccountStateMachine.txt", PropertyName = "AccountId")]
     public partial class Channels
     {

@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeGeneration.Roslyn.BuildTime" Version="$(LocalNuGetVersion)" PrivateAssets="all" />
-    <DotNetCliToolReference Include="dotnet-codegen" Version="$(LocalNuGetVersion)" />
+    <PackageReference Include="X.CodeGeneration.Roslyn.BuildTime" Version="0.31.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

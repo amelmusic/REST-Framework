@@ -24,11 +24,11 @@ namespace X.Core.WebAPI.Filters
         {
             if (_logger.IsEnabled(LogLevel.Error))
             {
-                _logger.Log(LogLevel.Error, context.Exception, "Something went wrong");
+                _logger.Log(LogLevel.Error, context.Exception, context.Exception.Message);
             }
-            if (context.Exception is UserException)
+            if (context.Exception is UserException ex)
             {
-                context.ModelState.AddModelError("ERROR", context.Exception.Message);
+                context.ModelState.AddModelError(ex.Code ?? "ERROR", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             else if (context.Exception is ValidationException)
@@ -44,7 +44,7 @@ namespace X.Core.WebAPI.Filters
             }
             else
             {
-                context.ModelState.AddModelError("ERROR", "Greška na serveru");
+                context.ModelState.AddModelError("SERVER_ERROR", "Server error");
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 
