@@ -26,6 +26,8 @@ import { FormlyModule } from '@ngx-formly/core';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { MultiTranslateHttpLoader } from './shared/services/multi-translate-loader';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 // AoT requires an exported function for factories
@@ -61,7 +63,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		LoadingBarHttpClientModule,
 		SharedModule,
 		FormlyModule.forRoot(),
-		OAuthModule.forRoot()
+		OAuthModule.forRoot(),
+		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
 	],
 	declarations: [
 		XCoreAppComponent, 

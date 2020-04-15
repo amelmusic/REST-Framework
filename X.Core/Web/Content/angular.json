@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "XCore": {
-      "root": "e2e",
+      "root": "",
       "sourceRoot": "src",
       "projectType": "application",
       "architect": {
@@ -21,15 +21,17 @@
               "src/assets",
               { "glob": "**/*", "input": "node_modules/tinymce/skins", "output": "/tinymce/skins/" },
               { "glob": "**/*", "input": "node_modules/tinymce/themes", "output": "/tinymce/themes/" },
-              { "glob": "**/*", "input": "node_modules/tinymce/plugins", "output": "/tinymce/plugins/" }
+              { "glob": "**/*", "input": "node_modules/tinymce/plugins", "output": "/tinymce/plugins/" },
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/assets/scss/style.scss",
+              "src/assets/bootstrap.min.css",
               "node_modules/videogular2/fonts/videogular.css",
               "node_modules/angular-calendar/css/angular-calendar.css",
               "node_modules/font-awesome/css/font-awesome.css",
-              "src/assets/fonts/data-table/icons.css",
-              "node_modules/dragula/dist/dragula.css"
+              "node_modules/dragula/dist/dragula.css",
+              "node_modules/material-icons/iconfont/material-icons.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
@@ -61,7 +63,9 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             }
           }
         },
@@ -118,7 +122,8 @@
               "node_modules/ngx-bar-rating/themes/br-default-theme.css"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ]
           }
         },
@@ -135,7 +140,7 @@
       }
     },
     "XCore-e2e": {
-      "root": "",
+      "root": "e2e",
       "sourceRoot": "e2e",
       "projectType": "application",
       "architect": {
